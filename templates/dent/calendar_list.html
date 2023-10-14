@@ -1,0 +1,217 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans 'Calendar' %}{% endblock %}
+{% block content %}
+  <head>
+  </head>
+  <!-- Content Header (Page header) -->
+  <section class="content-header" style="padding-top: 6px!important; padding-bottom: 2px!important;">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+{#          <h4 style="display: inline-block; float: left">{% trans 'Calendar' %}</h4>#}
+          <div class="btn-group" style="margin-left: 10px">
+            <button id="addEvent" onclick="showModalLg()" type="button"
+                  class="btn btn-success btn-sm">
+              <i class="fa fa-plus"></i>
+             {% trans 'Add appointment' %}
+            </button>
+            <button id="listview" onclick="location.href='{% url 'calendar' %}'" type="button"
+                  class="btn btn-warning btn-sm">
+              <i class="fa fa-list"></i>
+             {% trans 'Calendar view' %}
+            </button>
+          </div>
+
+        </div>
+        <div class="col-sm-6">
+{#          <ol class="breadcrumb float-sm-right">#}
+{#            <li class="breadcrumb-item"><a href="#">Home</a></li>#}
+{#            <li class="breadcrumb-item active">{% trans 'Calendar' %}</li>#}
+{#          </ol>#}
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+<!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th style="padding: 0; text-align: center"><span style="font-size: .9rem">{% trans 'Cancel' %}</span></th>
+                <th>{% trans 'Patient' %}</th>
+                <th>{% trans 'Time' %}</th>
+                <th>{% trans 'Procedure' %}</th>
+              </tr>
+            </thead>
+            <tbody id="event_list">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- MODAL FORM -->
+  <div class="modal fade" id="modal-lg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{% trans 'Add appointment' %}</h4>
+          <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="addEventForm">
+            <div class="form-group">
+              <label>{% trans 'Patient' %}</label>
+              <select id="patient_box" name="patient_id" class="form-control select2_mode">
+                <option></option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{% trans 'Title' %}Title</label>
+              <input class="form-control" name="title" type="text" placeholder="Title">
+            </div>
+            <div class="form-group">
+              <label>{% trans 'Start time' %}</label>
+              <input class="form-control jdatetimepicker" id="start_time" name="start_time" type="text"
+                     placeholder="Start time">
+            </div>
+            <div>
+              <label>{% trans 'End time' %}</label>
+              <input class="form-control jdatetimepicker" id="end_time" name="end_time" type="text"
+                     placeholder="{% trans 'Start time' %}">
+            </div>
+            <div class="form-group">
+              <label>{% trans 'Background' %}</label>
+              <input class="form-control" name="background" type="color" value="#99ff00">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" onclick="closeModal()" class="btn btn-default" data-dismiss="modal">{% trans 'Close' %}</button>
+          <button type="button" onclick="addEvent()" class="btn btn-primary">{% trans 'Add' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+
+    $(document).ready(function () {
+      fillTable();
+    });
+
+
+    function addEvent() {
+      let formData = $("#addEventForm").serialize();
+      $.ajax({
+        type: "POST",
+        url: "{% url 'add_event' %}",
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        data: formData,
+        success: function (response) {
+          if (response.success) {
+            $('#modal-lg').modal('hide');
+            fillTable();
+          } else {
+            alert('Error: ' + response.error_msg);
+          };
+        }
+      });
+    }
+
+    function cancelEvent(event_id) {
+      if (confirm("{% trans 'Cancel appointment?' %}")){
+        var p_data = {"event_id": event_id};
+        $.ajax({
+          type: "POST",
+          url: "{% url 'delete_event' %}",
+          headers: {'X-CSRFToken': getCookie('csrftoken')},
+          data: p_data,
+          success: function (response) {
+            if (response.success) {
+              $('#modal-sm').modal('hide');
+              fillTable();
+            } else {
+              alert('Error: ' + response.error_msg);
+            };
+          }
+        });
+      }
+
+    }
+
+    function closeModal() {
+      $('#patient_box')
+        .find('option')
+        .remove()
+        .end()
+        .append('<option></option>')
+        .val('');
+      $("#addEventForm").trigger('reset');
+      $('#modal-lg').modal('hide');
+    }
+
+    function showModalLg() {
+      $.ajax({
+        type: 'POST',
+        url: '{% url "patient_list_json" %}',
+        data: {},
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        success: function (response) {
+          if (response.success == true) {
+            $.each(response.data, function (key, val) {
+              $('#patient_box').append('<option value="' + val.id + '">' + val.name + ' | ' + val.phone + '</option>');
+
+            })
+          }
+          $('.select2_mode').select2();
+
+          $('#modal-lg').modal();
+        },
+        error: function (respose) {
+          alert(respose)
+        }
+      });
+    }
+
+    function fillTable() {
+      $.ajax({
+        type: 'GET',
+        url: '/api/eventlist/',
+        data: {},
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        success: function (response) {
+          console.log(response);
+          $('#event_list').empty();
+          $.each(response, function (key, val) {
+            console.log(val);
+            $('#event_list').append('<tr><td><button type="button" onclick="cancelEvent(' + val.id + ')" class="btn btn-block bg-gradient-danger btn-sm"><i class="fa fa-trash"></i></button></td>' +
+                                        '<td>' + val.patient_name + ' <b>|</b> ' + val.patient_phone + '</td>' +
+                                        '<td>' + val.start_format + '<b> <i class="fa fa-minus" aria-hidden="true"></i> </b>' + val.end_format.substring(11, 16) + '</td>' +
+                                        '<td>' + val.title + '</td>' +
+                                     '</tr>');
+          })
+        },
+        error: function (response) {
+          alert(response)
+        }
+      })
+    }
+  </script>
+
+{% endblock %}

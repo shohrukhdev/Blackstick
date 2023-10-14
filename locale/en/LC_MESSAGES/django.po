@@ -1,0 +1,334 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-10 18:17+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/dent/add_patient.html:14
+msgid "Add new patient"
+msgstr ""
+
+#: templates/dent/add_patient.html:25 templates/dent/edit_patient.html:26
+#: templates/dent/treatement.html:363
+msgid "Full name"
+msgstr ""
+
+#: templates/dent/add_patient.html:29 templates/dent/edit_patient.html:30
+msgid "Phone"
+msgstr ""
+
+#: templates/dent/add_patient.html:33 templates/dent/edit_patient.html:34
+msgid "Male/Female"
+msgstr ""
+
+#: templates/dent/add_patient.html:35 templates/dent/edit_patient.html:36
+msgid "Male"
+msgstr ""
+
+#: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:37
+msgid "Female"
+msgstr ""
+
+#: templates/dent/add_patient.html:40 templates/dent/edit_patient.html:41
+#: templates/dent/treatment_info.html:42 templates/dent/treatment_print.html:63
+msgid "Date birth"
+msgstr ""
+
+#: templates/dent/add_patient.html:44 templates/dent/edit_patient.html:45
+msgid "Additional(address, phones, allergies ...)"
+msgstr ""
+
+#: templates/dent/add_patient.html:47 templates/dent/edit_patient.html:55
+msgid "Submit"
+msgstr ""
+
+#: templates/dent/calendar.html:4 templates/dent/calendar_list.html:4
+#: templates/home.html:192
+msgid "Calendar"
+msgstr ""
+
+#: templates/dent/calendar.html:23 templates/dent/calendar.html:69
+#: templates/dent/calendar_list.html:18 templates/dent/calendar_list.html:66
+#: templates/dent/treatment_info.html:123
+msgid "Add appointment"
+msgstr ""
+
+#: templates/dent/calendar.html:28
+msgid "List view"
+msgstr ""
+
+#: templates/dent/calendar.html:77 templates/dent/calendar_list.html:47
+#: templates/dent/calendar_list.html:74 templates/dent/report.html:95
+#: templates/dent/treatment_info.html:41 templates/dent/treatment_print.html:62
+msgid "Patient"
+msgstr ""
+
+#: templates/dent/calendar.html:83 templates/dent/calendar_list.html:80
+msgid "Title"
+msgstr ""
+
+#: templates/dent/calendar.html:87 templates/dent/calendar.html:94
+#: templates/dent/calendar_list.html:84 templates/dent/calendar_list.html:91
+msgid "Start time"
+msgstr ""
+
+#: templates/dent/calendar.html:92 templates/dent/calendar_list.html:89
+msgid "End time"
+msgstr ""
+
+#: templates/dent/calendar.html:97 templates/dent/calendar_list.html:94
+msgid "Background"
+msgstr ""
+
+#: templates/dent/calendar.html:103 templates/dent/calendar.html:131
+#: templates/dent/calendar_list.html:100 templates/dent/treatment_info.html:131
+msgid "Close"
+msgstr ""
+
+#: templates/dent/calendar.html:104 templates/dent/calendar_list.html:101
+#: templates/dent/patient_list.html:10 templates/dent/treatment_info.html:132
+msgid "Add"
+msgstr ""
+
+#: templates/dent/calendar.html:123 templates/dent/calendar_list.html:49
+msgid "Procedure"
+msgstr ""
+
+#: templates/dent/calendar.html:125 templates/dent/calendar_list.html:48
+msgid "Time"
+msgstr ""
+
+#: templates/dent/calendar.html:132 templates/dent/calendar_list.html:46
+msgid "Cancel"
+msgstr ""
+
+#: templates/dent/calendar_list.html:23
+msgid "Calendar view"
+msgstr ""
+
+#: templates/dent/calendar_list.html:138
+msgid "Cancel appointment?"
+msgstr ""
+
+#: templates/dent/edit_patient.html:14
+msgid "Edit Patient Info"
+msgstr ""
+
+#: templates/dent/edit_patient.html:49 templates/dent/treatement.html:238
+msgid "State"
+msgstr ""
+
+#: templates/dent/patient_list.html:11
+msgid "Edit"
+msgstr ""
+
+#: templates/dent/patient_list.html:12
+msgid "Delete"
+msgstr ""
+
+#: templates/dent/patient_list.html:14
+msgid "History"
+msgstr ""
+
+#: templates/dent/patient_list.html:15
+msgid "Add treatment"
+msgstr ""
+
+#: templates/dent/patient_list.html:26
+msgid "ID"
+msgstr ""
+
+#: templates/dent/patient_list.html:27
+msgid "FULL NAME"
+msgstr ""
+
+#: templates/dent/patient_list.html:28
+msgid "PHONE NUMBER"
+msgstr ""
+
+#: templates/dent/patient_list.html:29
+msgid "DATE BIRTH"
+msgstr ""
+
+#: templates/dent/report.html:5
+msgid "Report"
+msgstr ""
+
+#: templates/dent/report.html:33
+msgid "Treatments done(current month)"
+msgstr ""
+
+#: templates/dent/report.html:48
+msgid "Total received pay(current month)"
+msgstr ""
+
+#: templates/dent/report.html:62
+msgid "Total debts of patients"
+msgstr ""
+
+#: templates/dent/report.html:77
+msgid "From"
+msgstr ""
+
+#: templates/dent/report.html:86
+msgid "To"
+msgstr ""
+
+#: templates/dent/report.html:104
+msgid "Category"
+msgstr ""
+
+#: templates/dent/report.html:113
+msgid "Filter"
+msgstr ""
+
+#: templates/dent/report.html:121
+msgid "Number of services by category for period"
+msgstr ""
+
+#: templates/dent/treatement.html:93
+msgid "Dr."
+msgstr ""
+
+#: templates/dent/treatement.html:339
+msgid "Pt."
+msgstr ""
+
+#: templates/dent/treatement.html:354
+msgid "Patient info"
+msgstr ""
+
+#: templates/dent/treatement.html:367
+msgid "Birth date"
+msgstr ""
+
+#: templates/dent/treatement.html:371
+msgid "Comments"
+msgstr ""
+
+#: templates/dent/treatement.html:378 templates/dent/treatment_history.html:38
+#: templates/dent/treatment_info.html:45 templates/dent/treatment_print.html:66
+msgid "Complaint"
+msgstr ""
+
+#: templates/dent/treatement.html:382 templates/dent/treatment_history.html:39
+#: templates/dent/treatment_info.html:49 templates/dent/treatment_print.html:70
+msgid "Diagnosis"
+msgstr ""
+
+#: templates/dent/treatement.html:385
+msgid "Next"
+msgstr ""
+
+#: templates/dent/treatement.html:697
+msgid "Tooth"
+msgstr ""
+
+#: templates/dent/treatement.html:738 templates/dent/treatment_info.html:90
+#: templates/dent/treatment_print.html:111
+msgid "Total"
+msgstr ""
+
+#: templates/dent/treatement.html:755 templates/dent/treatment_history.html:41
+#: templates/dent/treatment_info.html:92
+#: templates/dent/treatment_print.html:113
+msgid "Paid"
+msgstr ""
+
+#: templates/dent/treatement.html:758 templates/dent/treatment_info.html:86
+#: templates/dent/treatment_print.html:107
+msgid "Recommendations"
+msgstr ""
+
+#: templates/dent/treatement.html:759
+msgid "SAVE"
+msgstr ""
+
+#: templates/dent/treatment_history.html:5
+msgid "Treatment history"
+msgstr ""
+
+#: templates/dent/treatment_history.html:29
+msgid "More info"
+msgstr ""
+
+#: templates/dent/treatment_history.html:31
+#: templates/dent/treatment_info.html:21
+msgid "Back"
+msgstr ""
+
+#: templates/dent/treatment_history.html:37
+msgid "Date"
+msgstr ""
+
+#: templates/dent/treatment_history.html:40
+msgid "Price"
+msgstr ""
+
+#: templates/dent/treatment_info.html:5
+msgid "Treatment"
+msgstr ""
+
+#: templates/dent/treatment_info.html:17
+msgid "Treatment info"
+msgstr ""
+
+#: templates/dent/treatment_info.html:20
+msgid "Print"
+msgstr ""
+
+#: templates/dent/treatment_info.html:55 templates/dent/treatment_print.html:76
+msgid "Teeth"
+msgstr ""
+
+#: templates/dent/treatment_info.html:56 templates/dent/treatment_print.html:77
+msgid "States"
+msgstr ""
+
+#: templates/dent/treatment_info.html:78 templates/dent/treatment_info.html:90
+#: templates/dent/treatment_info.html:91 templates/dent/treatment_info.html:92
+#: templates/dent/treatment_print.html:99
+#: templates/dent/treatment_print.html:111
+#: templates/dent/treatment_print.html:112
+#: templates/dent/treatment_print.html:113
+msgid "sum"
+msgstr ""
+
+#: templates/dent/treatment_info.html:91
+#: templates/dent/treatment_print.html:112
+msgid "Discount"
+msgstr ""
+
+#: templates/dent/treatment_info.html:95
+msgid "Files"
+msgstr ""
+
+#: templates/dent/treatment_info.html:103
+msgid "Download"
+msgstr ""
+
+#: templates/home.html:17
+msgid "Home"
+msgstr ""
+
+#: templates/home.html:20 templates/home.html:211
+msgid "Log Out"
+msgstr ""
+
+#: templates/home.html:201
+msgid "Patients"
+msgstr ""

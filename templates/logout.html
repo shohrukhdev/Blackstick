@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Log Out {% endblock %}
+{% block container %}
+<div class="row h-100 justify-content-center align-items-center" style="margin-top: 10%">
+  <div class="card bg-gradient-secondary">
+  <div class="card-header">
+    <h3 class="card-title">You are loged aout</h3>
+    <div class="card-tools">
+      <!-- Buttons, labels, and many other things can be placed here! -->
+      <!-- Here is a label for example -->
+    </div>
+    <!-- /.card-tools -->
+  </div>
+  <!-- /.card-header -->
+  <div class="card-body">
+    <button type="button" onclick="window.location.href='/login'" class="btn btn-block bg-gradient-info btn-lg">Login Again</button>
+  </div>
+  <!-- /.card-body -->
+  <div class="card-footer">
+
+  </div>
+  <!-- /.card-footer -->
+</div>
+  </div>
+{% endblock %}

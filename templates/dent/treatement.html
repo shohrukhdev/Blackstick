@@ -1,0 +1,790 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}Treatement{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+    .largeCheckBox {
+      transform: scale(1.3);
+    }
+
+    .largeInput {
+      transform: scale(0.8);
+    }
+
+    .teethtable tr td {
+      cursor: pointer;
+    }
+
+    .active_td {
+      {#color: #fff;#}
+      {#border-width: 2px!important;#}
+      {#border-color: #2ba6cb!important;#}
+      background: radial-gradient(circle, rgba(95,181,12,0) 0%, rgba(208,78,135,0) 79%, rgba(83,168,0,1) 100%);
+      {#border-style: solid;#}
+      {#border-radius: 3px!important;#}
+    }
+
+    .input-number {
+      width: 40px;
+    }
+
+    .teethtable td {
+      position: relative;
+      padding: .312rem;
+      transition: all .2s ease-in;
+    }
+
+    .teethtable .tooth-order {
+      font-size: .8rem;
+      position: absolute;
+      bottom: 0;
+      left: 2px;
+    }
+
+    .teethtable .upper-row .tooth-order {
+      top: 0;
+    }
+
+    .teethtable .tooth-img {
+      max-width: 3.125rem;
+      height: auto;
+    }
+    .active_tab {
+      background: linear-gradient(0deg, rgba(95,181,12,0) 0%, rgba(208,78,135,0) 76%, rgba(83,168,0,1) 100%);
+    }
+
+    .select-editable {
+     position:relative;
+     background-color:white;
+     border:solid grey 1px;
+     width:120px;
+     height:18px;
+ }
+ .select-editable select {
+     position:absolute;
+     top:0px;
+     left:0px;
+     font-size:14px;
+     border:none;
+     width:120px;
+     margin:0;
+ }
+ .select-editable input {
+     position:absolute;
+     top:0px;
+     left:0px;
+     width:100px;
+     padding:1px;
+     font-size:12px;
+     border:none;
+ }
+ .select-editable select:focus, .select-editable input:focus {
+     outline:none;
+ }
+  </style>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="card" style="margin-top: 2px">
+          <div class="card-header p-2">
+            <h4>{% trans 'Dr.' %}  {{ doctor.user.last_name }}</h4>
+          </div>
+          <div class="card-body" style="overflow-x: auto">
+            <table class="table table-bordered">
+              <tbody id="teeth_table" class="teethtable">
+              <tr class="upper-row">
+                <td>
+                    <span class="tooth-order">{{ teeth.0.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth1.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.1.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth2.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.2.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth3.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.3.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth4.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.4.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth5.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.5.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth6.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.6.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth7.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.7.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth8.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.8.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth9.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.9.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth10.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.10.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth11.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.11.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth12.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.12.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth13.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.13.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth14.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.14.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth15.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.15.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth16.png' %}">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="tooth-order">{{ teeth.16.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth17.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.17.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth18.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.18.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth19.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.19.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth20.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.20.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth21.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.21.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth22.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.22.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth23.png' %}"w>
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.23.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth24.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.24.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth25.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.25.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth26.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.26.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth27.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.27.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth28.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.28.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth29.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.29.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth30.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.30.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth31.png' %}">
+                </td>
+                <td>
+                    <span class="tooth-order">{{ teeth.31.code }}</span>
+                    <img class="tooth-img" src="{% static 'teeth/teeth32.png' %}">
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <ul class="nav nav-tabs" style="margin-top: 5px; text-align: center;" role="tablist">
+                <li class="nav-item" id="toothstate" onclick="fillStates()">
+                  <a class="nav-link"
+                     data-toggle="pill" href="#tab_pane"
+                     role="tab" aria-controls="toothstatepane">
+                     {% trans 'State' %}
+                  </a>
+                </li>
+              {% for c in categories %}
+                {% if LANG_CODE == 'uz' %}
+                <li class="nav-item" id="category{{ c.id }}" onclick="fillServices({{ c.id }})">
+                  <a class="nav-link" id="service_category{{ c.id }}"
+                     data-toggle="pill" href="#tab_pane"
+                     role="tab" aria-controls="service_category{{ c.id }}">
+                    {{ c.name_uz }}
+                  </a>
+                </li>
+                {% endif %}
+                {% if LANG_CODE == 'ru' %}
+                <li class="nav-item" id="category{{ c.id }}" onclick="fillServices({{ c.id }})">
+                  <a class="nav-link" id="service_category{{ c.id }}"
+                     data-toggle="pill" href="#tab_pane"
+                     role="tab" aria-controls="service_category{{ c.id }}">
+                    {{ c.name_ru }}
+                  </a>
+                </li>
+                {% endif %}
+                {% if LANG_CODE == 'en' %}
+                <li class="nav-item" id="category{{ c.id }}" onclick="fillServices({{ c.id }})">
+                  <a class="nav-link" id="service_category{{ c.id }}"
+                     data-toggle="pill" href="#tab_pane"
+                     role="tab" aria-controls="service_category{{ c.id }}">
+                    {{ c.name }}
+                  </a>
+                </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+            <div class="tab-content" id="custom-content-below-tabContent" style="margin-top: 5px">
+              <div class="tab-pane active" role="tabpanel" id="tab_pane">
+                <div class="row" id="service_list">
+                  <div class="col-2">
+                    <div style="width: 100px">
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn btn-success btn-number btn-sm"
+                                    data-type="plus" data-field="">
+                              <span class="fas fa-plus"></span>
+                            </button>
+                        </span>
+                        </div>
+                        <input type="text" id="quantity" name="quantity" class="form-control form-control-sm" value="0"
+                               min="0" max="100">
+                        <div class="input-group-append">
+                          <span class="input-group-btn">
+                            <button type="button" class="quantity-left-minus btn btn-danger btn-number btn-sm"
+                                    data-type="minus" data-field="">
+                            <span class="fas fa-minus"></span>
+                          </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    Service name 1 120000
+                  </div>
+
+
+                  <div class="col-2">
+                    <div style="width: 100px">
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-danger btn-number btn-sm"
+                                  data-type="minus" data-field="">
+                            <span class="fas fa-minus"></span>
+                          </button>
+                        </span>
+                        </div>
+                        <input type="text" id="quantity" name="quantity" class="form-control form-control-sm" value="0"
+                               min="0" max="100">
+                        <div class="input-group-append">
+                          <span class="input-group-btn">
+                            <button type="button" class="quantity-right-plus btn btn-success btn-number btn-sm"
+                                    data-type="plus" data-field="">
+                              <span class="fas fa-plus"></span>
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    Service name 2 130000
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card" style="margin-top: 2px">
+          <div class="card-header p-2">
+            <h4>{% trans 'Pt.' %} {{ patient.full_name }}</h4>
+            <input type="hidden" id="patient_id" value="{{ patient.id }}">
+          </div>
+          <div id="cart" class="card-body" style="overflow-x: auto">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- MODAL FORM -->
+  <div class="modal fade" id="modal-xl" style="" data-keyboard="false" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{% trans 'Patient info' %}</h4>
+{#          <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">#}
+{#            <span aria-hidden="true">×</span>#}
+{#          </button>#}
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <td>{% trans 'Full name' %}</td>
+                  <td>{{ patient.full_name }}</td>
+                </tr>
+              <tr>
+                <td>{% trans 'Birth date' %}</td>
+                <td>{{ patient.date_birth }}</td>
+              </tr>
+              <tr>
+                <td>{% trans 'Comments' %}</td>
+                <td>{{ patient.comments }}</td>
+              </tr>
+              </tbody>
+            </table>
+          <form>
+            <div class="form-group">
+              <label for="complaint">{% trans 'Complaint' %}</label>
+              <input id="complaint" class="form-control" type="text" name="complaint">
+            </div>
+            <div class="form-group">
+              <label for="diagnosis">{% trans 'Diagnosis' %}</label>
+              <input id="diagnosis" class="form-control" type="text" name="diagnosis">
+            </div>
+            <button type="button" id="next" style="width: 100%" class="btn btn-primary">{% trans 'Next' %}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+    var services = null;
+    var cart = {};
+    var selected_teeth = null;
+    var selected_category = null;
+    var state_selected = null;
+    $(document).ready(function () {
+      services = JSON.parse('{{ services }}'.replace(/&quot;/g, '"'));
+      tooth_states = JSON.parse('{{ tooth_states }}'.replace(/&quot;/g, '"'));
+      fillStates();
+      //////  ON TEETH SELECT  ////////////////////////////
+      $('#teeth_table tr td').on('click', function () {
+        $(this).parent().find('td').removeClass('active_td');
+        $(this).parent().parent().children().find('td').removeClass('active_td');
+        $(this).addClass('active_td');
+        selected_teeth = parseInt($(this).text());
+        if (cart.hasOwnProperty(selected_teeth)) {
+
+        } else {
+          cart[selected_teeth] = [];
+        }
+        if (!cart.hasOwnProperty("teeth_states")){
+          cart.teeth_states = {};
+          cart.teeth_states[selected_teeth] = []
+        } else if (!cart.teeth_states.hasOwnProperty(selected_teeth)){
+          cart.teeth_states[selected_teeth] = []
+        }
+        if (state_selected){
+          fillStates();
+        } else {
+          fillServices(selected_category)
+        }
+      });
+
+///////////////  ADD Service ///////////////////////
+      {#$('.quantity-right-plus').click(function () {#}
+      $(document).on('click', '.quantity-right-plus', function () {
+        str_val = JSON.stringify($(this).data("val"));
+        json_val = JSON.parse(str_val);
+        if (selected_teeth) {
+          quantity = parseInt($('#serviceid' + json_val.id).val()) + 1;
+          $('#serviceid' + json_val.id).val(quantity);
+          json_val.quantity = quantity;
+          cart[selected_teeth].find(function (service, index) {
+            if (service.id === json_val.id) {
+              cart[selected_teeth].splice(index, 1);
+            }
+          });
+          cart[selected_teeth].push(json_val);
+        }
+        fillCart();
+      });
+
+///////////////// REMOVE SERVICE ///////////////////
+
+      {#$('.quantity-left-minus').click(function () {#}
+      $(document).on('click', '.quantity-left-minus', function () {
+        str_val = JSON.stringify($(this).data("val"));
+        json_val = JSON.parse(str_val);
+        if (selected_teeth) {
+          quantity = parseInt($('#serviceid' + json_val.id).val()) - 1;
+          if (quantity >= 0) {
+            $('#serviceid' + json_val.id).val(quantity);
+            json_val.quantity = quantity;
+            cart[selected_teeth].find(function (service, index) {
+              if (service.id === json_val.id) {
+                cart[selected_teeth].splice(index, 1)
+              }
+            });
+            if (quantity !== 0){
+              cart[selected_teeth].push(json_val);
+            }
+          }
+        }
+        fillCart();
+      });
+
+
+      $('#modal-xl').modal('show');
+
+    });
+
+
+ ////////////////////  ON NEXT CLICK /////////////////////
+    $('#next').click(function () {
+      cart.complaint = $('#complaint').val();
+      cart.diagnosis = $('#diagnosis').val();
+      cart.patient_id = $('#patient_id').val();
+      cart.discount = 0;
+      closeModal();
+    });
+
+////////////////////   ON BTN SAVE  ///////////////////////////////
+    $(document).on('click', '#btnsave', function () {
+      cart.recommendations = $('#recommendations').val();
+      console.log(cart);
+      $.ajax({
+        type: "POST",
+        url: "{% url 'treatement_save' %}",
+        headers: {'X-CSRFToken': getCookie('csrftoken')},
+        data: JSON.stringify(cart),
+        success: function (response) {
+          if (response.success) {
+              location.href='{% url 'treatment_info' %}?treatment_ref_id=' + response.treatment_ref_id.toString();
+          } else {
+            alert('Error: ' + response.error_msg);
+          };
+        }
+      });
+
+    });
+
+///////////////////////// ON Tooth STATE changed //////////////////////
+    $(document).on('change', '.stateinput', function () {
+      var state_id = parseInt($(this).attr("data-id"));
+      var state_list = [];
+      if (this.checked){
+        if (cart.teeth_states.hasOwnProperty(selected_teeth)){
+          state_list = cart.teeth_states[selected_teeth];
+          state_list.push(state_id);
+          cart.teeth_states[selected_teeth] = state_list
+        } else {
+          state_list.push(state_id);
+          cart.teeth_states[selected_teeth] = state_list
+        }
+      } else {
+        state_list = cart.teeth_states[selected_teeth];
+        state_list.splice(state_list.indexOf(state_id, 1));
+        cart.teeth_states[selected_teeth] = state_list;
+      }
+    });
+
+
+////////////////// FILL STATES ////////////////////////////////
+    function fillStates() {
+      state_selected = true;
+      var state = '';
+      $('#toothstate').children().addClass('active_tab');
+      $('#toothstate').siblings().children().removeClass('active_tab');
+      $('#service_list').empty();
+      if (cur_lang === 'ru' && selected_teeth != null){
+        $.each(tooth_states, function (i, val) {
+          state = '';
+          if (jQuery.inArray(val.id, cart.teeth_states[selected_teeth]) !== -1){
+            state = 'checked'
+          }
+          $('#service_list').append(
+            '<div class="col-2">' +
+              '<div class="icheck-primary d-inline">' +
+                '<input ' + state + ' data-id="' + val.id + '"  class="stateinput" type="checkbox" id="statecheck' + val.id + '" name="state' + val.id + '">' +
+                '<label for="statecheck' + val.id + '">' + val.name_ru + '</label>' +
+              '</div>' +
+            '</div');
+        });
+      } else if (cur_lang === 'uz' && selected_teeth != null){
+        $.each(tooth_states, function (i, val) {
+          state = '';
+          if (jQuery.inArray(val.id, cart.teeth_states[selected_teeth]) !== -1){
+            state = 'checked'
+          }
+          $('#service_list').append(
+            '<div class="col-2">' +
+              '<div class="icheck-primary d-inline">' +
+                '<input ' + state + ' data-id="' + val.id + '" class="stateinput" type="checkbox" id="statecheck' + val.id + '" name="state' + val.id + '">' +
+                '<label for="statecheck' + val.id + '">' + val.name_uz + '</label>' +
+              '</div>' +
+            '</div');
+        });
+      } else if (cur_lang === 'en' && selected_teeth != null){
+        $.each(tooth_states, function (i, val) {
+          state = '';
+          if (jQuery.inArray(val.id, cart.teeth_states[selected_teeth]) !== -1){
+            state = 'checked'
+          }
+          $('#service_list').append(
+            '<div class="col-2">' +
+              '<div class="icheck-primary d-inline">' +
+                '<input ' + state + ' data-id="' + val.id + '" class="stateinput" type="checkbox" id="statecheck' + val.id + '" name="state' + val.id + '">' +
+                '<label for="statecheck' + val.id + '">' + val.name + '</label>' +
+              '</div>' +
+            '</div');
+        });
+      }
+    }
+
+
+    function fillServices(cat_id) {
+      selected_category = cat_id;
+      state_selected = false;
+      $('#category' + cat_id).children().addClass('active_tab');
+      $('#category' + cat_id).siblings().children().removeClass('active_tab');
+      filteredServices = services.filter(v => v.category_id === cat_id);
+      $('#service_list').empty();
+      $.each(filteredServices, function (i, val) {
+        var val_str = JSON.stringify(val);
+        var quantity = 0;
+        if (selected_teeth != null){
+          current_obj = cart[selected_teeth].filter(function (obj) {
+            return obj.id === val.id
+          }).pop();
+          if (current_obj){
+            quantity = current_obj.quantity
+          }
+
+        }
+        if (cur_lang === 'uz'){
+          $('#service_list').append(
+          '<div class="col-2">' +
+          '  <div style="width: 100px">' +
+          '    <div class="input-group mb-3">' +
+          '      <div class="input-group-prepend">' +
+          '        <span class="input-group-btn">' +
+          '           <button type="button" data-val=' + '\'' + val_str + '\'' + '" class="quantity-right-plus btn btn-success btn-number btn-sm"' +
+          '              data-type="plus" data-field="">' +
+          '              <span class="fas fa-plus"></span>' +
+          '           </button>' +
+          '        </span>' +
+          '      </div>' +
+          '      <input type="text" id="serviceid' + val.id + '" name="service_count" class="form-control form-control-sm" value="' + quantity + '"' +
+          '        min="0" max="100">' +
+          '      <div class="input-group-append">' +
+          '         <span class="input-group-btn">' +
+          '            <button type="button" data-val=' + '\'' + val_str + '\'' + '" class="quantity-left-minus btn btn-danger btn-number btn-sm"' +
+          '              data-type="minus" data-field="">' +
+          '              <span class="fas fa-minus"></span>' +
+          '            </button>' +
+          '         </span>' +
+          '      </div>' +
+          '    </div>' +
+          '  </div>' +
+          '</div>' +
+          '<div class="col-4">' + val.name_uz + ' <b>' + val.price.toLocaleString() + '</b></div>');
+        } else if (cur_lang === 'ru'){
+          $('#service_list').append(
+          '<div class="col-2">' +
+          '  <div style="width: 100px">' +
+          '    <div class="input-group mb-3">' +
+          '      <div class="input-group-prepend">' +
+          '        <span class="input-group-btn">' +
+          '           <button type="button" data-val=' + '\'' + val_str + '\'' + '" class="quantity-right-plus btn btn-success btn-number btn-sm"' +
+          '              data-type="plus" data-field="">' +
+          '              <span class="fas fa-plus"></span>' +
+          '           </button>' +
+          '        </span>' +
+          '      </div>' +
+          '      <input type="text" id="serviceid' + val.id + '" name="service_count" class="form-control form-control-sm" value="' + quantity + '"' +
+          '        min="0" max="100">' +
+          '      <div class="input-group-append">' +
+          '         <span class="input-group-btn">' +
+          '            <button type="button" data-val=' + '\'' + val_str + '\'' + '" class="quantity-left-minus btn btn-danger btn-number btn-sm"' +
+          '              data-type="minus" data-field="">' +
+          '              <span class="fas fa-minus"></span>' +
+          '            </button>' +
+          '         </span>' +
+          '      </div>' +
+          '    </div>' +
+          '  </div>' +
+          '</div>' +
+          '<div class="col-4">' + val.name_ru + ' <b>' + val.price.toLocaleString() + '</b></div>');
+        } else {
+          $('#service_list').append(
+          '<div class="col-2">' +
+          '  <div style="width: 100px">' +
+          '    <div class="input-group mb-3">' +
+          '      <div class="input-group-prepend">' +
+          '        <span class="input-group-btn">' +
+          '           <button type="button" data-val=' + '\'' + val_str + '\'' + '" class="quantity-right-plus btn btn-success btn-number btn-sm"' +
+          '              data-type="plus" data-field="">' +
+          '              <span class="fas fa-plus"></span>' +
+          '           </button>' +
+          '        </span>' +
+          '      </div>' +
+          '      <input type="text" id="serviceid' + val.id + '" name="service_count" class="form-control form-control-sm" value="' + quantity + '"' +
+          '        min="0" max="100">' +
+          '      <div class="input-group-append">' +
+          '         <span class="input-group-btn">' +
+          '            <button type="button" data-val=' + '\'' + val_str + '\'' + '" class="quantity-left-minus btn btn-danger btn-number btn-sm"' +
+          '              data-type="minus" data-field="">' +
+          '              <span class="fas fa-minus"></span>' +
+          '            </button>' +
+          '         </span>' +
+          '      </div>' +
+          '    </div>' +
+          '  </div>' +
+          '</div>' +
+          '<div class="col-4">' + val.name + ' <b>' + val.price.toLocaleString() + '</b></div>');
+        }
+
+      });
+    }
+
+    function fillCart() {
+      var part2 = "";
+      var element = "";
+      var total = 0;
+      $('#cart').empty();
+      $.each(cart, function (i, val) {
+          if (Object.keys(val).length > 0 && $.isNumeric(i)) {
+            var part1 = '<table class="table table-bordered">' +
+              '<thead>' +
+              '<tr>' +
+              '<tr>{% trans 'Tooth' %}: ' + i + '</tr>' +
+              '</tr>' +
+              '</thead><tbody>';
+            if (cur_lang === 'uz'){
+              $.each(val, function (i, obj) {
+                part2 = part2 + '<tr>' +
+                '<td>' + obj.name_uz + '</td>' +
+                '<td>x' + obj.quantity + '</td>' +
+                '<td>' + obj.quantity * obj.price + '</td>' +
+                '</tr>';
+              total = total + obj.quantity * obj.price;
+            });
+            } else if (cur_lang === 'ru'){
+              $.each(val, function (i, obj) {
+                part2 = part2 + '<tr>' +
+                '<td>' + obj.name_ru + '</td>' +
+                '<td>x' + obj.quantity + '</td>' +
+                '<td>' + obj.quantity * obj.price + '</td>' +
+                '</tr>';
+              total = total + obj.quantity * obj.price;
+            });
+            } else {
+              $.each(val, function (i, obj) {
+                part2 = part2 + '<tr>' +
+                '<td>' + obj.name + '</td>' +
+                '<td>x' + obj.quantity + '</td>' +
+                '<td>' + obj.quantity * obj.price + '</td>' +
+                '</tr>';
+              total = total + obj.quantity * obj.price;
+            });
+            }
+
+            element = part1 + part2 + '</tbody></table>';
+            part2 = "";
+            $('#cart').append(element);
+          }
+      });
+      cart.total = total;
+      cart.amount_paid = total;
+            var card_div = '<div class="card-body p-0">' +
+                '<table class="table table-striped">' +
+                   '<thead><tr><td colspan=2><b style="1.25rem">{% trans 'Total' %}: </b>' +
+                              '<span class="badge bg-primary" style="font-size: 1rem">' + total.toLocaleString() + '</span></td></tr></thead>' +
+                   '<tbody><tr><td style="display: inline-block;">' +
+                                  '<div class="select-editable">' +
+                                  '    <select onchange="discountSelectHandler(this)">' +
+                                  '        <option selected value="0">0</option>' +
+                                  '        <option value="5">5</option>' +
+                                  '        <option value="10">10</option>' +
+                                  '        <option value="25">25</option>' +
+                                  '        <option value="30">30</option>' +
+                                  '    </select>' +
+                                  '    <input type="text" name="discount" onkeyup="discountChangeHandler(this)" value="0" />' +
+              '</div>' +
+                                                      '</td>' +
+                              '<td><span id="after_discount" class="badge bg-primary" style="font-size: 1rem">' + total.toLocaleString() + '</span></td>' +
+                           '</tr>' +
+                           '<tr>' +
+                              '<td>{% trans 'Paid' %}:</td>' +
+                              '<td><input id="amount_paid" value="' + cart.amount_paid + '" onchange="paidamounthandler(this)" type="number" min="0" class="form-control" style="float: right; height: 1.6rem"></td>' +
+                           '</tr>' +
+                           '<tr><td colspan=2><textarea id="recommendations" class="form-control" placeholder="{% trans 'Recommendations' %}"></textarea></td></tr>' +
+                           '<tr><td colspan=2><button type="button" id="btnsave" class="btn btn-block bg-gradient-success btn-sm">{% trans 'SAVE' %}</button></td></tr>' +
+                   '</tbody>' +
+                '</table>' +
+              '</div>';
+            $('#cart').append(card_div);
+    }
+
+
+    function discountSelectHandler(e) {
+      e.nextElementSibling.value=e.value;
+      cart.discount = parseInt(e.value);
+      cart.amount = (cart.total - cart.total * parseInt(e.value)/100);
+      cart.amount_paid = (cart.total - cart.total * parseInt(e.value)/100);
+      $('#after_discount').html((cart.total - cart.total * parseInt(e.value)/100).toLocaleString());
+      $('#amount_paid').val((cart.total - cart.total * parseInt(e.value)/100));
+
+    }
+
+    function discountChangeHandler(e) {
+      cart.discount = parseInt(e.value);
+      cart.amount = (cart.total - cart.total * parseInt(e.value)/100);
+      $('#after_discount').html((cart.total - cart.total * parseInt(e.value)/100).toLocaleString());
+      cart.amount_paid = (cart.total - cart.total * parseInt(e.value)/100);
+      $('#amount_paid').val((cart.total - cart.total * parseInt(e.value)/100));
+    }
+    function closeModal() {
+      $('#modal-xl').modal('hide');
+    }
+
+  </script>
+
+{% endblock js %}

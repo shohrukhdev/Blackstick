@@ -1,0 +1,201 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %}{% trans 'Treatment' %}{% endblock %}
+{% block content %}
+  <head>
+  </head>
+
+<!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">{% trans 'Treatment info' %}</h3>
+              <div class="btn-group-xs" style="float: right">
+                <button id="saveFile" class="btn bg-gradient-indigo btn-sm"><i class="fa fa-paperclip" aria-hidden="true"></i> {% trans 'File' %}</button>
+                <button id="uploadFile" class="btn bg-gradient-indigo btn-sm"><i class="fa fa-paperclip" style="display: none" aria-hidden="true"></i> {% trans 'Save File' %}</button>
+                <button class="btn bg-gradient-info btn-sm" onclick="printData({{ treatment.reference_id }})">{% trans 'Print' %}</button>
+                <button class="btn bg-gradient-success btn-sm" onclick="backToTreatmentList('{{ treatment.patient.reference_id }}')">{% trans 'Back' %}</button>
+              </div>
+              <form action="{% url "upload_file" %}" method="post" id="fileForm" enctype="multipart/form-data" class="form-inline" style="float: right; display: none">
+                {% csrf_token %}
+                <input type="hidden" name="tr_ref_id" value="{{ treatment.reference_id }}">
+                <input id="fileName" name="file_name" type="text" placeholder="File name" required>
+                <input id="file" name="file" type="file" required>
+                </form>
+            </div>
+            <div id="appointment" class="card-body">
+              <h4 class="text-center">{{ treatment.doctor.clinic.name }}</h4>
+              <div class="d-flex justify-content-between">
+                  <div class="pull-left">Dr.{{ treatment.doctor.user.get_full_name }}</div>
+                  <div class="pull-right">{{ treatment.cr_on }}.  <i><b> ID:</b></i>{{ treatment.reference_id }}</div>
+              </div>
+
+
+              <table id="printable" class="table table-bordered table-hover">
+                <tbody>
+                  <tr>
+                    <td><b>{% trans 'Patient' %}</b></td>
+                    <td colspan="2">{{ treatment.patient.full_name }} ; {% trans 'Date birth' %}: {{ treatment.patient.date_birth }}</td>
+                  </tr>
+                  <tr>
+                    <td><b>{% trans 'Complaint' %}</b></td>
+                    <td colspan="2">{{ treatment.complaint }}</td>
+                  </tr>
+                  <tr>
+                    <td><b>{% trans 'Diagnosis' %}</b></td>
+                    <td colspan="2">{{ treatment.diagnosis }}</td>
+                  </tr>
+                {% regroup treatment.procedure_set.all by teeth as teeth_list %}
+                {% for t in teeth_list %}
+                  <tr>
+                    <td colspan="3"><b>{% trans 'Tooth' %} {{ t.grouper.code }}
+                      | {% trans 'States' %}:</b>
+                        {% for s in treatment.proceduretoothstate_set.all %}
+                          {% if s.teeth.code == t.grouper.code %}
+                            {% if LANG_CODE == 'uz' %}
+                              {{ s.tooth_state.name_uz }};
+                            {% endif %}
+                            {% if LANG_CODE == 'ru' %}
+                              {{ s.tooth_state.name_ru }};
+                            {% endif %}
+                            {% if LANG_CODE == 'en' %}
+                              {{ s.tooth_state.name }};
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">
+                    <table class="table table-bordered">
+                      {% for pd in t.list %}
+                        <tr>
+                          <td>{{ pd.service.name }}</td>
+                          <td>{{ pd.quantity }} x {{ pd.price }} {% trans 'sums' %}</td>
+                        </tr>
+                      {% endfor %}
+                      </table>
+                    </td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td><b>{% trans 'Recommendations' %}</b></td>
+                  <td colspan="2">{{ treatment.description }}</td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %}: {{ treatment.total_amount|localize }} {% trans 'sums' %}</td>
+                  <td>{% trans 'Discount' %}: {{ treatment.discount }}% ({{ treatment.get_actual_amount }} {% trans 'sums' %}) </td>
+                  <td>{% trans 'Paid' %}: {{ treatment.paid_amount }} {% trans 'sums' %}</td>
+                </tr>
+                <tr data-toggle="collapse" data-target="#files" class="accordion-toggle">
+                  <td colspan="3">{% trans 'Files' %}</td>
+                </tr>
+                <tr class="hiddenRow" id="files">
+                  <td colspan="3">
+                    <table class="table table-bordered">
+                      {% for f in treatment.file_treatment.all %}
+                        <tr>
+                          <td>{{ f.file_name }}</td>
+                          <td><a href="{{ f.file.url }}" target="_blank">{% trans 'Download' %}</a></td>
+                        </tr>
+                      {% endfor %}
+                    </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- MODAL FORM -->
+  <div class="modal fade" id="modal-lg" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">{% trans 'Add appointment' %}</h4>
+          <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" onclick="closeModal()" class="btn btn-default" data-dismiss="modal">{% trans 'Close' %}</button>
+          <button type="button" onclick="addEvent()" class="btn btn-primary">{% trans 'Add' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+
+    $(document).ready(function () {
+      $("#uploadFile").hide();
+    });
+    function printData(treatment_ref_id) {
+      window.open('{% url 'treatment_print' %}' + '?treatment_ref_id=' + treatment_ref_id, '_blank').focus();
+    }
+
+    function backToTreatmentList(patient_ref_id) {
+      location.href = '{% url 'patient_treatment_history' %}?patient_ref_id=' + patient_ref_id;
+    }
+    $("#saveFile").click(function () {
+      {#Show file form on file button clicked and show save button#}
+      if ($("#fileForm").css("display") === "none") {
+        $("#fileForm").show();
+        $("#saveFile").hide();
+        $("#uploadFile").show();
+      } else {
+        if ($("#fileName").val() === ""){
+          $("#fileName").addClass("highlight");
+          $("#fileName").focus()
+          $("#saveFile").hide();
+        $("#uploadFile").show();
+        } else if($("#file").val() === "") {
+          $("#file").addClass("highlight");
+          $("#file").focus()
+          $("#saveFile").hide();
+          $("#uploadFile").show();
+        }
+      }
+    })
+
+    $("#uploadFile").click(function (e){
+      if ($("#fileName").val() === "") {
+        $("#fileName").addClass("highlight");
+        $("#fileName").focus();
+       }
+      else {
+        var file = $("#file")[0].files[0];
+        var maxSize = 10 * 1024 * 1024; // 10mb
+        if (file.size < maxSize){
+          $("#fileForm").submit();
+        }
+        else {
+          e.preventDefault(); // Prevent form submission
+          alert('File size exceeds the limit 10 MB.');
+        }
+
+       }
+      }
+    );
+
+
+  </script>
+
+{% endblock %}
+

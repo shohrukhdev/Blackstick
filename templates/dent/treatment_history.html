@@ -1,0 +1,82 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %}{% trans 'Treatment history' %}{% endblock %}
+{% block content %}
+  <head>
+    <style>
+      .table tbody tr.highlight td {
+          background-color: #ddd;
+            }
+      .table tbody tr {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+<!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">{{ treatment_list.0.patient.full_name }}</h3>
+              <div class="btn-group-xs" style="float: right">
+                <button class="btn bg-gradient-info btn-sm" onclick="treatmentInfo()">
+                  <i class="fas fa-info"></i>
+                  {% trans 'More info' %}
+                </button>
+                <button class="btn bg-gradient-success btn-sm" onclick="window.location='{% url 'patient_list' %}?successSave=false'">{% trans 'Back' %}</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <table id="treatment_list" class="table table-bordered">
+                <thead>
+                  <th>{% trans 'Date' %}</th>
+                  <th>{% trans 'Complaint' %}</th>
+                  <th>{% trans 'Diagnosis' %}</th>
+                  <th>{% trans 'Price' %}</th>
+                  <th>{% trans 'Paid' %}</th>
+                </thead>
+                <tbody>
+                {% for t in treatment_list %}
+                  <tr {% if t.paid_amount < t.get_actual_amount %} class="table-warning" {% endif %}
+                      data-id="{{ t.reference_id }}">
+                    <td>{{ t.cr_on }}</td>
+                    <td>{{ t.complaint }}</td>
+                    <td>{{ t.diagnosis }}</td>
+                    <td>{{ t.get_actual_amount }}</td>
+                    <td>{{ t.paid_amount }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+    var cur_selected_id = null;
+    $(document).ready(function () {
+      cur_selected_id = null;
+    });
+    $('#treatment_list').on('click', 'tbody tr', function(event) {
+      $(this).addClass('highlight').siblings().removeClass('highlight');
+      cur_selected_id = $(this).attr("data-id");
+    });
+    function treatmentInfo() {
+     if (cur_selected_id !== null){
+       location.href = '{% url 'treatment_info' %}?treatment_ref_id=' + cur_selected_id;
+     }
+    }
+  </script>
+
+{% endblock %}
+

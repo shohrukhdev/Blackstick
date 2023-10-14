@@ -1,0 +1,131 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %} Patients {% endblock %}
+{% block content %}
+    {% get_current_language as LANG_CODE %}
+<div class="row" style="width: 100%; padding-top: 2px; margin: 0;">
+  <div class="col-sm-12">
+    <div id="buttonrow" style="display: inline-block">
+      <button class="btn btn-primary" onclick="addPatient()">{% trans 'Add' %}</button>
+      <button class="btn btn-primary act_btn" onclick="editPatient()">{% trans 'Edit' %}</button>
+      <button class="btn btn-warning act_btn" onclick="deletePatient()">{% trans 'Delete' %}</button>
+      <button class="btn btn-info act_btn" onclick="treatmentHistory()">
+        <i class="fas fa-list"></i> {% trans 'History' %}</button>
+      <button class="btn btn-success act_btn" onclick="addTreatement()">{% trans 'Add treatment' %}</button>
+      {% csrf_token %}
+    </div>
+    <div style="float: right">
+        <input type="text" class="form-control" id="custom_searchbox">
+    </div>
+  </div>
+  <div class="col-sm-12">
+    <table id="patient_table" class="table table-bordered table-hover dataTable dtr-inline" role="grid" style="width: 100%">
+      <thead>
+        <tr role="row">
+          <th>{% trans 'ID' %}</th>
+          <th>{% trans 'FULL NAME' %}</th>
+          <th>{% trans 'PHONE NUMBER' %}</th>
+          <th>{% trans 'DATE BIRTH' %}</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-autofill/js/dataTables.autoFill.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-colreorder/js/dataTables.colReorder.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-fixedheader/js/dataTables.fixedHeader.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-keytable/js/dataTables.keyTable.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-scroller/js/dataTables.scroller.min.js' %}"></script>
+  <script src="{% static 'plugins/datatables-select/js/dataTables.select.min.js' %}"></script>
+  <script>
+    var selected_row = null;
+    var table = null;
+    $(document).ready(function () {
+      if ({{ request.GET.successSave }}){
+        $(document).Toasts('create',{
+              title: 'Info',
+              body: 'Saved Successfully!',
+              autohide: true,
+              delay: 3000,
+              fade: true,
+              class: 'bg-success'
+            })
+      }
+      checkActBtn();
+      var obec = 5;
+      table = $('#patient_table').DataTable({
+        dom: '<"top"<\'row\'<\'col-md-8\'B><\'col-md-4\'f>>>rt<"bottom"<\'row\'<\'col-md-6\'i><\'col-md-6\'p>>>',
+        buttons: ['excel', 'print'],
+        scroller: true,
+        processing: true,
+        serverSide: true,
+        stateSave: true,
+        colReorder: true,
+        fixedHeader: true,
+        keys: true,
+        responsive: true,
+        scrollY: "70vh",
+        select: true,
+        ajax: "/api/patient?format=datatables",
+        columns: [
+          {"data": "reference_id"},
+          {"data": "full_name"},
+          {"data": "mobile_phone"},
+          {"data": "birth_date", "name": "date_birth"}
+        ]
+      });
+      table.buttons().container().appendTo($('#buttonrow'));
+      $("#custom_searchbox").keyup(function () {
+        table.search(this.value).draw();
+      });
+
+      table.on('select', function (e, dt, type, indexes) {
+        var data = table.rows(indexes).data();
+        selected_row = data[0];
+        checkActBtn();
+      });
+      table.on('deselect', function (e, dt, type, indexes) {
+        selected_row = null;
+        checkActBtn();
+      });
+    });
+      function checkActBtn() {
+      if (selected_row === null) {
+        $(".act_btn").attr("disabled", true);
+      } else {
+        $(".act_btn").attr("disabled", false);
+      }
+    }
+
+    function addPatient() {
+        window.location.href = '{% url "patient_add" %}'
+      }
+    function editPatient() {
+      window.location.href = '{% url "patient_edit" %}' + '?patient_ref_id=' + selected_row.reference_id
+    }
+    function addTreatement() {
+      window.location.href = '{% url "treatment" %}' + '?patient_ref_id=' + selected_row.reference_id
+    }
+    function deletePatient() {
+    }
+    function treatmentHistory() {
+      window.location.href = '{% url "patient_treatment_history" %}' + '?patient_ref_id=' + selected_row.reference_id
+    }
+  </script>
+  <style>
+    .dataTables_filter {
+      display: none;
+    }
+  </style>
+{% endblock %}

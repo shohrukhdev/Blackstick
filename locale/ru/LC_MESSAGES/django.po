@@ -1,0 +1,339 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-07-10 18:17+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: templates/dent/add_patient.html:14
+msgid "Add new patient"
+msgstr "Добавить нового пациента"
+
+#: templates/dent/add_patient.html:25 templates/dent/edit_patient.html:26
+#: templates/dent/treatement.html:363
+msgid "Full name"
+msgstr "Ф.И.О"
+
+#: templates/dent/add_patient.html:29 templates/dent/edit_patient.html:30
+msgid "Phone"
+msgstr "Телефон"
+
+#: templates/dent/add_patient.html:33 templates/dent/edit_patient.html:34
+msgid "Male/Female"
+msgstr "Пол"
+
+#: templates/dent/add_patient.html:35 templates/dent/edit_patient.html:36
+msgid "Male"
+msgstr "Мужчина"
+
+#: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:37
+msgid "Female"
+msgstr "Женский"
+
+#: templates/dent/add_patient.html:40 templates/dent/edit_patient.html:41
+#: templates/dent/treatment_info.html:42 templates/dent/treatment_print.html:63
+msgid "Date birth"
+msgstr "Дата рождения"
+
+#: templates/dent/add_patient.html:44 templates/dent/edit_patient.html:45
+msgid "Additional(address, phones, allergies ...)"
+msgstr "Дополнительно(адрес, телефоны, аллергии...)"
+
+#: templates/dent/add_patient.html:47 templates/dent/edit_patient.html:55
+msgid "Submit"
+msgstr "Cохранить"
+
+#: templates/dent/calendar.html:4 templates/dent/calendar_list.html:4
+#: templates/home.html:192
+msgid "Calendar"
+msgstr "Календар"
+
+#: templates/dent/calendar.html:23 templates/dent/calendar.html:69
+#: templates/dent/calendar_list.html:18 templates/dent/calendar_list.html:66
+#: templates/dent/treatment_info.html:123
+msgid "Add appointment"
+msgstr "Создать назначение"
+
+#: templates/dent/calendar.html:28
+msgid "List view"
+msgstr "Режим списка"
+
+#: templates/dent/calendar.html:77 templates/dent/calendar_list.html:47
+#: templates/dent/calendar_list.html:74 templates/dent/report.html:95
+#: templates/dent/treatment_info.html:41 templates/dent/treatment_print.html:62
+msgid "Patient"
+msgstr "Пациент"
+
+#: templates/dent/calendar.html:83 templates/dent/calendar_list.html:80
+msgid "Title"
+msgstr "Надпись"
+
+#: templates/dent/calendar.html:87 templates/dent/calendar.html:94
+#: templates/dent/calendar_list.html:84 templates/dent/calendar_list.html:91
+msgid "Start time"
+msgstr "Начало"
+
+#: templates/dent/calendar.html:92 templates/dent/calendar_list.html:89
+msgid "End time"
+msgstr "Завершение"
+
+#: templates/dent/calendar.html:97 templates/dent/calendar_list.html:94
+msgid "Background"
+msgstr "Фон"
+
+#: templates/dent/calendar.html:103 templates/dent/calendar.html:131
+#: templates/dent/calendar_list.html:100 templates/dent/treatment_info.html:131
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/dent/calendar.html:104 templates/dent/calendar_list.html:101
+#: templates/dent/patient_list.html:10 templates/dent/treatment_info.html:132
+msgid "Add"
+msgstr "Добавить"
+
+#: templates/dent/calendar.html:123 templates/dent/calendar_list.html:49
+msgid "Procedure"
+msgstr "Процедура"
+
+#: templates/dent/calendar.html:125 templates/dent/calendar_list.html:48
+msgid "Time"
+msgstr "Время"
+
+#: templates/dent/calendar.html:132 templates/dent/calendar_list.html:46
+msgid "Cancel"
+msgstr "Отменить"
+
+#: templates/dent/calendar_list.html:23
+msgid "Calendar view"
+msgstr "Режим календар"
+
+#: templates/dent/calendar_list.html:138
+msgid "Cancel appointment?"
+msgstr "Отменить назначение?"
+
+#: templates/dent/edit_patient.html:14
+msgid "Edit Patient Info"
+msgstr "Изменить информацию о пациенте"
+
+#: templates/dent/edit_patient.html:49 templates/dent/treatement.html:238
+msgid "State"
+msgstr "Cостояние"
+
+#: templates/dent/patient_list.html:11
+msgid "Edit"
+msgstr "Редактировать"
+
+#: templates/dent/patient_list.html:12
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/dent/patient_list.html:14
+msgid "History"
+msgstr "История"
+
+#: templates/dent/patient_list.html:15
+msgid "Add treatment"
+msgstr "Добавить лечение"
+
+#: templates/dent/patient_list.html:26
+msgid "ID"
+msgstr "ИД"
+
+#: templates/dent/patient_list.html:27
+msgid "FULL NAME"
+msgstr "Ф.И.О"
+
+#: templates/dent/patient_list.html:28
+msgid "PHONE NUMBER"
+msgstr "ТЕЛЕФОН"
+
+#: templates/dent/patient_list.html:29
+msgid "DATE BIRTH"
+msgstr "ДАТА РОЖДЕНИЯ"
+
+#: templates/dent/report.html:5
+msgid "Report"
+msgstr "Отчет"
+
+#: templates/dent/report.html:33
+msgid "Treatments done(current month)"
+msgstr "проведенных процедур (текущий месяц)"
+
+#: templates/dent/report.html:48
+msgid "Total received pay(current month)"
+msgstr "Общая сумма за текущий месяц"
+
+#: templates/dent/report.html:62
+msgid "Total debts of patients"
+msgstr "Общая задолженность пациентов"
+
+#: templates/dent/report.html:77
+msgid "From"
+msgstr "От"
+
+#: templates/dent/report.html:86
+msgid "To"
+msgstr "До"
+
+#: templates/dent/report.html:104
+msgid "Category"
+msgstr "Категория"
+
+#: templates/dent/report.html:113
+msgid "Filter"
+msgstr "Фильтр"
+
+#: templates/dent/report.html:121
+msgid "Number of services by category for period"
+msgstr "Количество услуг по категориям за период"
+
+#: templates/dent/treatement.html:93
+msgid "Dr."
+msgstr "Др."
+
+#: templates/dent/treatement.html:339
+msgid "Pt."
+msgstr "Пц"
+
+#: templates/dent/treatement.html:354
+msgid "Patient info"
+msgstr "Информация о пациенте"
+
+#: templates/dent/treatement.html:367
+msgid "Birth date"
+msgstr "Дата рождения"
+
+#: templates/dent/treatement.html:371
+msgid "Comments"
+msgstr "Комментарии"
+
+#: templates/dent/treatement.html:378 templates/dent/treatment_history.html:38
+#: templates/dent/treatment_info.html:45 templates/dent/treatment_print.html:66
+msgid "Complaint"
+msgstr "Жалоба"
+
+#: templates/dent/treatement.html:382 templates/dent/treatment_history.html:39
+#: templates/dent/treatment_info.html:49 templates/dent/treatment_print.html:70
+msgid "Diagnosis"
+msgstr "Диагноз"
+
+#: templates/dent/treatement.html:385
+msgid "Next"
+msgstr "Далее"
+
+#: templates/dent/treatement.html:697
+msgid "Tooth"
+msgstr "Зуб"
+
+#: templates/dent/treatement.html:738 templates/dent/treatment_info.html:90
+#: templates/dent/treatment_print.html:111
+msgid "Total"
+msgstr "Итог"
+
+#: templates/dent/treatement.html:755 templates/dent/treatment_history.html:41
+#: templates/dent/treatment_info.html:92
+#: templates/dent/treatment_print.html:113
+msgid "Paid"
+msgstr "Оплачен"
+
+#: templates/dent/treatement.html:758 templates/dent/treatment_info.html:86
+#: templates/dent/treatment_print.html:107
+msgid "Recommendations"
+msgstr "Рекомендации"
+
+#: templates/dent/treatement.html:759
+msgid "SAVE"
+msgstr "Сохранить"
+
+#: templates/dent/treatment_history.html:5
+msgid "Treatment history"
+msgstr "История лечения"
+
+#: templates/dent/treatment_history.html:29
+msgid "More info"
+msgstr "Больше информации"
+
+#: templates/dent/treatment_history.html:31
+#: templates/dent/treatment_info.html:21
+msgid "Back"
+msgstr "Назад"
+
+#: templates/dent/treatment_history.html:37
+msgid "Date"
+msgstr "Дата"
+
+#: templates/dent/treatment_history.html:40
+msgid "Price"
+msgstr "Цена"
+
+#: templates/dent/treatment_info.html:5
+msgid "Treatment"
+msgstr "Лечение"
+
+#: templates/dent/treatment_info.html:17
+msgid "Treatment info"
+msgstr "Информация о процедуре"
+
+#: templates/dent/treatment_info.html:20
+msgid "Print"
+msgstr "Распечатать"
+
+#: templates/dent/treatment_info.html:55 templates/dent/treatment_print.html:76
+msgid "Teeth"
+msgstr "Зубы"
+
+#: templates/dent/treatment_info.html:56 templates/dent/treatment_print.html:77
+msgid "States"
+msgstr "Cостояние"
+
+#: templates/dent/treatment_info.html:78 templates/dent/treatment_info.html:90
+#: templates/dent/treatment_info.html:91 templates/dent/treatment_info.html:92
+#: templates/dent/treatment_print.html:99
+#: templates/dent/treatment_print.html:111
+#: templates/dent/treatment_print.html:112
+#: templates/dent/treatment_print.html:113
+msgid "sum"
+msgstr "сумма"
+
+#: templates/dent/treatment_info.html:91
+#: templates/dent/treatment_print.html:112
+msgid "Discount"
+msgstr "Скидка"
+
+#: templates/dent/treatment_info.html:95
+msgid "Files"
+msgstr "Файлы"
+
+#: templates/dent/treatment_info.html:103
+msgid "Download"
+msgstr "Скачать"
+
+#: templates/home.html:17
+msgid "Home"
+msgstr "Главный"
+
+#: templates/home.html:20 templates/home.html:211
+msgid "Log Out"
+msgstr "Выйти"
+
+#: templates/home.html:201
+msgid "Patients"
+msgstr "Пациенты"
+
+#~ msgid "Search"
+#~ msgstr "Поиск"

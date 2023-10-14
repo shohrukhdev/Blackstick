@@ -1,0 +1,136 @@
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+<title>Print</title>
+{% block content %}
+      {% get_current_language as LANG_CODE %}
+  <head>
+    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bbootstrap 4 -->
+{#  <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">#}
+  <!-- iCheck -->
+  <link rel="stylesheet" href="{% static 'plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="{% static 'plugins/jqvmap/jqvmap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="{% static 'plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
+  <!-- Daterange picker -->
+{#  <link rel="stylesheet" href="{% static 'plugins/daterangepicker/daterangepicker.css' %}">#}
+  <!-- summernote -->
+  <link rel="stylesheet" href="{% static 'plugins/summernote/summernote-bs4.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-autofill/css/autoFill.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css'%}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-colreorder/css/colReorder.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-keytable/css/keyTable.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-scroller/css/scroller.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/datatables-select/css/select.bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+  <link rel="stylesheet" href="{% static 'plugins/jquery-datetimepicker/jquery.datetimepicker.css' %}" type="text/css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  </head>
+
+<!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card" style="padding: 40px">
+            <div id="appointment" class="card-body">
+              <h4 class="text-center">{{ treatment.doctor.clinic.name }}</h4>
+              <div class="d-flex justify-content-between">
+                  <div class="pull-left">Dr.{{ treatment.doctor.user.get_full_name }}</div>
+                  <div class="pull-right">{{ treatment.cr_on }}. <i><b> ID:</b></i>{{ treatment.reference_id }}</div>
+              </div>
+
+
+              <table id="printable" class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td><b>{% trans 'Patient' %}</b></td>
+                    <td colspan="2">{{ treatment.patient.full_name }} ; {% trans 'Date birth' %} {{ treatment.patient.date_birth }}</td>
+                  </tr>
+                  <tr>
+                    <td><b>{% trans 'Complaint' %}</b></td>
+                    <td colspan="2">{{ treatment.complaint }}</td>
+                  </tr>
+                  <tr>
+                    <td><b>{% trans 'Diagnosis' %}</b></td>
+                    <td colspan="2">{{ treatment.diagnosis }}</td>
+                  </tr>
+                {% regroup treatment.procedure_set.all by teeth as teeth_list %}
+                {% for t in teeth_list %}
+                  <tr>
+                    <td colspan="3"><b>{% trans 'Teeth' %} {{ t.grouper.code }}
+                      | {% trans 'States' %}:</b>
+                        {% for s in treatment.proceduretoothstate_set.all %}
+                          {% if s.teeth.code == t.grouper.code %}
+                            {% if LANG_CODE == 'uz' %}
+                              {{ s.tooth_state.name_uz }};
+                            {% endif %}
+                            {% if LANG_CODE == 'ru' %}
+                              {{ s.tooth_state.name_ru }};
+                            {% endif %}
+                            {% if LANG_CODE == 'en' %}
+                              {{ s.tooth_state.name }};
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="3">
+                    <table class="table table-bordered">
+                      {% for pd in t.list %}
+                        <tr>
+                          <td>{{ pd.service.name }}</td>
+                          <td>{{ pd.quantity }} x {{ pd.price }} {% trans 'sum' %}</td>
+                        </tr>
+                      {% endfor %}
+                      </table>
+                    </td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td><b>{% trans 'Recommendations' %}</b></td>
+                  <td colspan="2">{{ treatment.description }}</td>
+                </tr>
+                <tr>
+                  <td>{% trans 'Total' %}: {{ treatment.total_amount|localize }} {% trans 'sum' %}</td>
+                  <td>{% trans 'Discount' %}: {{ treatment.discount }}% ({{ treatment.get_actual_amount }} {% trans 'sum' %}) </td>
+                  <td>{% trans 'Paid' %}: {{ treatment.paid_amount }} {% trans 'sum' %}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+{% endblock %}
+{% block js %}
+  <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <script>
+
+    $(document).ready(function () {
+      window.print();
+    });
+  </script>
+
+{% endblock %}
+

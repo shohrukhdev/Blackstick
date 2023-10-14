@@ -1,0 +1,324 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %}{% trans 'Report' %}{% endblock %}
+{% block content %}
+
+{#  <div class="content-header">#}
+{#      <div class="container-fluid">#}
+{#        <div class="row mb-2">#}
+{#          <div class="col-sm-6">#}
+{#            <h1 class="m-0">{% trans 'Dashboard' %}</h1>#}
+{#          </div><!-- /.col -->#}
+{#          <div class="col-sm-6">#}
+{#            <ol class="breadcrumb float-sm-right">#}
+{#            </ol>#}
+{#          </div><!-- /.col -->#}
+{#        </div><!-- /.row -->#}
+{#      </div><!-- /.container-fluid -->#}
+{#    </div>#}
+  <!-- Main content -->
+  <section class="content" style="margin-top: 3px">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <!-- ./col -->
+          <div class="col-lg-4 col-12">
+            <!-- small box -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3 style="font-size: 40px">{{ patient_amount }}<sup style="font-size: 20px"></sup></h3>
+
+                <h4>{% trans 'Treatments done(current month)' %}</h4>
+              </div>
+              <div class="icon">
+                <i class="ion ion-person-add"></i>
+              </div>
+              <p class="small-box-footer"></p>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-4 col-12">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3 style="font-size: 40px">{{ patient_sum }}<sup style="font-size: 20px">UZS</sup></h3>
+
+                <h4>{% trans 'Total received pay(current month)' %}</h4>
+              </div>
+              <div class="icon">
+                <i class="fa fa-hand-holding-usd"></i>
+              </div>
+              <p class="small-box-footer"></p>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-4 col-12">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+              <div class="inner">
+                <h3 style="font-size: 40px">{{ patient_debt }}<sup style="font-size: 20px">UZS</sup></h3>
+                <h4>{% trans 'Total debts of patients' %}</h4>
+              </div>
+              <div class="icon">
+                <i class="fa fa-dollar-sign fa-flip"></i>
+              </div>
+              <a href="#" class="small-box-footer"></a>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-4 col-12">
+            <form method="post">
+                {% csrf_token %}
+              <div class="form-group">
+                  <label>{% trans 'From' %}:</label>
+                  <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                    <input type="text" class="form-control jdatepicker datetimepicker-input" data-target="#reservationdatetime" name="start_date" value="{{ start_date }}"/>
+                    <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker" >
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label>{% trans 'To' %}:</label>
+                <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                <input type="text" class="form-control jdatepicker" name="end_date" data-target="#reservationdatetime" value="{{ end_date }}"/>
+                <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+            </div>
+              </div>
+              <div class="form-group">
+                  <label>{% trans 'Patient' %}:</label>
+                  <select class="form-control select2" name="patient_id" style="width: 100%;">
+                      <option selected="selected" value="{{ patient.id }}">{{ patient.full_name }}</option>
+                      {% for patient in patients %}
+                        <option value="{{ patient.id }}">{{ patient.full_name }}</option>
+                      {% endfor %}
+              </select>
+            </div>
+              <div class="form-group">
+                <label>{% trans 'Category' %}:</label>
+                <select class="form-control select2" name="category_id" style="width: 100%;">
+                <option selected="selected" value="{{ category.id }}">{{ category.name }}</option>
+                {% for category in categories %}
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+              </select>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="form-control bg-primary" style="width: 100%;">{% trans 'Filter' %}</button>
+              </div>
+            </form>
+          </div>
+          <div class="col-lg-8 col-12" >
+            <div class="card" style="">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">{% trans 'Number of services by category for period' %}</h3>
+{#                  <a href="javascript:void(0);">{% trans 'View Report' %}</a>#}
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- /.d-flex -->
+
+                <div class="mb-4">
+                  <canvas id="myChart"></canvas>
+                </div>
+
+                <div class="d-flex flex-row justify-content-end">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+
+
+    </section>
+
+
+
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <!-- fullCalendar 2.2.5 -->
+  <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar/main.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar-daygrid/main.min.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar-timegrid/main.min.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar-interaction/main.min.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+  <script src="{% static 'plugins/fullcalendar/locales/ru.js' %}"></script>
+  <script src="{% static 'util.js' %}"></script>
+  <script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+  <!-- Page specific script -->
+  <script>
+    var labels = {{ labels|safe }};
+    var values = {{ values|safe }};
+
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Count',
+                data: values,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+  $(function () {
+
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' })
+    //Datemask2 mm/dd/yyyy
+    $('#datemask2').inputmask('mm/dd/yyyy', { 'placeholder': 'mm/dd/yyyy' })
+    //Money Euro
+    $('[data-mask]').inputmask()
+
+    //Date picker
+    $('#reservationdate').datetimepicker({
+        format: 'L'
+    });
+
+    //Date and time picker
+    $('#reservationdatetime').datetimepicker({ icons: { time: 'far fa-clock' } });
+
+    //Date range picker
+    $('#reservation').daterangepicker()
+    //Date range picker with time picker
+    $('#reservationtime').daterangepicker({
+      timePicker: true,
+      timePickerIncrement: 30,
+      locale: {
+        format: 'MM/DD/YYYY hh:mm A'
+      }
+    })
+    //Date range as a button
+    $('#daterange-btn').daterangepicker(
+      {
+        ranges   : {
+          'Today'       : [moment(), moment()],
+          'Yesterday'   : [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+          'Last 7 Days' : [moment().subtract(6, 'days'), moment()],
+          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+          'This Month'  : [moment().startOf('month'), moment().endOf('month')],
+          'Last Month'  : [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        startDate: moment().subtract(29, 'days'),
+        endDate  : moment()
+      },
+      function (start, end) {
+        $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
+      }
+    )
+
+    //Timepicker
+    $('#timepicker').datetimepicker({
+      format: 'LT'
+    })
+
+    //Bootstrap Duallistbox
+    $('.duallistbox').bootstrapDualListbox()
+
+    //Colorpicker
+    $('.my-colorpicker1').colorpicker()
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    })
+
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    })
+
+  })
+  // BS-Stepper Init
+  document.addEventListener('DOMContentLoaded', function () {
+    window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+  })
+
+  // DropzoneJS Demo Code Start
+  Dropzone.autoDiscover = false
+
+  // Get the template HTML and remove it from the doumenthe template HTML and remove it from the doument
+  var previewNode = document.querySelector("#template")
+  previewNode.id = ""
+  var previewTemplate = previewNode.parentNode.innerHTML
+  previewNode.parentNode.removeChild(previewNode)
+
+  var myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+    url: "/target-url", // Set the url
+    thumbnailWidth: 80,
+    thumbnailHeight: 80,
+    parallelUploads: 20,
+    previewTemplate: previewTemplate,
+    autoQueue: false, // Make sure the files aren't queued until manually added
+    previewsContainer: "#previews", // Define the container to display the previews
+    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+  })
+
+  myDropzone.on("addedfile", function(file) {
+    // Hookup the start button
+    file.previewElement.querySelector(".start").onclick = function() { myDropzone.enqueueFile(file) }
+  })
+
+  // Update the total progress bar
+  myDropzone.on("totaluploadprogress", function(progress) {
+    document.querySelector("#total-progress .progress-bar").style.width = progress + "%"
+  })
+
+  myDropzone.on("sending", function(file) {
+    // Show the total progress bar when upload starts
+    document.querySelector("#total-progress").style.opacity = "1"
+    // And disable the start button
+    file.previewElement.querySelector(".start").setAttribute("disabled", "disabled")
+  })
+
+  // Hide the total progress bar when nothing's uploading anymore
+  myDropzone.on("queuecomplete", function(progress) {
+    document.querySelector("#total-progress").style.opacity = "0"
+  })
+
+  // Setup the buttons for all transfers
+  // The "add files" button doesn't need to be setup because the config
+  // `clickable` has already been specified.
+  document.querySelector("#actions .start").onclick = function() {
+    myDropzone.enqueueFiles(myDropzone.getFilesWithStatus(Dropzone.ADDED))
+  }
+  document.querySelector("#actions .cancel").onclick = function() {
+    myDropzone.removeAllFiles(true)
+  }
+  // DropzoneJS Demo Code End
+</script>
+{% endblock %}
+
+

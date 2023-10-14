@@ -1,0 +1,104 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}Add Patient{% endblock %}
+{% block content %}
+{% get_current_language as LANG_CODE %}
+
+  <div class="container">
+    <div class="content">
+      <div class="row" style="padding-top: 5px">
+        <div class="col-md-8 col-sm-12 mx-auto">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">{% trans 'Edit Patient Info' %}</h3>
+              <div class="card-tools">
+                <a type="button" href="{% url 'patient_list' %}?successSave=false" class="btn btn-tool">
+                  <i class="fas fa-window-close"></i></a>
+              </div>
+            </div>
+            <form id="edit_patient" class="container pg-5">
+              <div class="card-body">
+                <input type="hidden" name="id" value="{{ patient.id }}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>{% trans 'Full name' %}</label>
+                    <input type="text" name="full_name" value="{{ patient.full_name }}" class="form-control" placeholder="Full name">
+                </div>
+                <div class="form-group">
+                    <label>{% trans 'Phone' %}</label>
+                    <input type="tel" name="mobile_phone" value="{{ patient.mobile_phone }}" class="form-control" placeholder="998991112233">
+                </div>
+                <div class="form-group">
+                    <label>{% trans 'Male/Female' %}</label>
+                    <select class="form-control" name="sex" required>
+                      <option value="M" {% if patient.sex == 'M' %}selected {% endif %}>{% trans 'Male' %}</option>
+                      <option value="F" {% if patient.sex == 'F' %}selected {% endif %}>{% trans 'Female' %}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{% trans 'Date birth' %}</label>
+                    <input type="text" name="date_birth" value="{{ patient.date_birth|date:'d.m.Y'}}" class="form-control jdatepicker" placeholder="dd.mm.yyyy">
+                </div>
+                <div class="form-group">
+                    <label>{% trans 'Additional(address, phones, allergies ...)' %}</label>
+                  <textarea type="text" name="comments" class="form-control" rows="3">{{ patient.comments }}</textarea>
+                </div>
+                <div class="form-group">
+                  <label>{% trans 'State' %}</label>
+                  <select class="form-control" name="state">
+                    <option value="A" {% if patient.state == 'A' %} selected {% endif %}>Active</option>
+                    <option value="P" {% if patient.state == 'P' %} selected {% endif %}>Passive</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-info float-right">{% trans 'Submit' %}</button>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+  $(document).ready(function () {
+
+  });
+
+
+  $("#edit_patient").submit(function (e) {
+      e.preventDefault();
+      var formData = $(this).serialize();
+      $.ajax({
+        type: 'POST',
+        url: '{% url 'patient_edit' %}',
+        data: formData,
+        success: function (response) {
+          console.log(response);
+          if (response.success === true){
+            $('#add_patient').trigger('reset');
+            window.location.href = '{% url "patient_list" %}' + '?successSave=true';
+          } else {
+            $(document).Toasts('create',{
+              title: 'Error',
+              body: response.error,
+              autohide: true,
+              delay: 3000,
+              fade: true,
+              class: 'bg-danger'
+            })
+          }
+        },
+        error: function (response) {
+          console.log(response);
+          alert(response.status + ' :: ' + response.responseText)
+        }
+      });
+    });
+  </script>
+
+{% endblock %}
