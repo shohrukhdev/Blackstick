@@ -183,4 +183,4 @@ LOGIN_REDIRECT_URL = "/home"
 
 MEDIA_URL = '/media/'
 
-django_heroku.settings(locals)
+django_heroku.settings(locals())
