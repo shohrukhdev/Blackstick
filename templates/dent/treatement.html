@@ -488,7 +488,6 @@
 ////////////////////   ON BTN SAVE  ///////////////////////////////
     $(document).on('click', '#btnsave', function () {
       cart.recommendations = $('#recommendations').val();
-      console.log(cart);
       $.ajax({
         type: "POST",
         url: "{% url 'treatement_save' %}",

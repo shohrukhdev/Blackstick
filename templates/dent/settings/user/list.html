@@ -1,0 +1,106 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %}{% trans 'Staff list' %}{% endblock %}
+{% block content %}
+  <style>
+    tbody tr:hover {border-bottom: 2px solid #317291; border-top: 2px solid #22668a
+    }
+    tbody tr {cursor: pointer}
+    .active_tr {
+        background-color: #61a9ea;
+    }
+</style>
+  <section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><b>{{ request.session.clinic }}</b> {% trans 'staff' %}</h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="btn-group float-right" role="group">
+          <button type="button" class="btn btn-success" onclick="window.location.href='{% url "add_new_staff" %}'">{% trans 'Add' %}</button>
+          <button id="edit_button" onclick="editStaff()" type="button" class="btn btn-primary">{% trans 'Edit' %}</button>
+          <button id="staff_categories" type="button" class="btn btn-warning">{% trans 'Categories' %}</button>
+          <button type="button" class="btn btn-danger" onclick="window.location.href='{% url "settings_window" %}'">{% trans 'Back' %}</button>
+        </div>
+      </div>
+    </div>
+{#    ======================= TABLE SECTION ========================#}
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <table id="staff_table" class="table">
+              <thead>
+                <tr>
+                  <th>{% trans 'ID' %}</th>
+                  <th>{% trans 'FULL NAME' %}</th>
+                  <th>{% trans 'EMAIL' %}</th>
+                  <th>{% trans 'ROLE' %}</th>
+                  <th>{% trans 'STATUS' %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for s in staff %}
+                <tr data-id="{{ s.user.id }}" data-staff-id="{{ s.id }}">
+                  <td>{{ s.user.id }}</td>
+                  <td>{{ s.get_full_name }}</td>
+                  <td>{{ s.user.email }}</td>
+                  <td>{{ s.role }}</td>
+                  <td>
+                    {% if s.status == 1 %}
+                    	<span class="badge bg-success">{% trans 'Active' %}</span>
+                    {% else %}
+                      <span class="badge bg-danger">{% trans 'Deactivated' %}</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+  var staff_id = null;
+  $(document).ready(function () {
+      $('#edit_button,#staff_categories').attr("disabled", "disabled");  
+      
+      $(document).on("click", "#staff_table tbody tr", (function (){
+        $(this).addClass('active_tr');
+        $(this).siblings().removeClass('active_tr');
+        user_id = $(this).attr("data-id");
+        staff_id = $(this).attr("data-staff-id");
+        $('#edit_button,#staff_categories').removeAttr("disabled");
+      }));
+
+      if ({{ request.GET.successSave }}) {
+          $(document).Toasts('create', {
+              title: 'Info',
+              body: 'Successful operation!',
+              autohide: true,
+              delay: 3000,
+              fade: true,
+              class: 'bg-success'
+          })
+      }
+  });
+  
+  function editStaff(){
+          window.location.href = '{% url "edit_staff" %}' + '?user_id=' + user_id
+      }
+      
+  function openStaffCategories(){
+      
+  }
+  </script>
+{% endblock %}

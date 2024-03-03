@@ -12,8 +12,8 @@ class RoleAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Stuff)
-class StuffAdmin(admin.ModelAdmin):
+@admin.register(Staff)
+class StaffAdmin(admin.ModelAdmin):
     pass
 
 

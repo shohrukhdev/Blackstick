@@ -1,0 +1,46 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Add new category' %}{% endblock %}
+{% block content %}
+{% get_current_language as LANG_CODE %}
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm12 mx-auto">
+        <div class="card card-success" style="margin-top: 10px">
+          <div class="card-header">
+            <h3 class="card-title">{% trans 'Add new category' %}</h3>
+            <div class="card-tools">
+              <a type="button" href="{% url 'staff_list' %}?successSave=false" class="btn btn-tool">
+                <i class="fas fa-window-close"></i>
+              </a>
+            </div>
+          </div>
+          <div class="card-body">
+            <form autocomplete="off" id="add_category" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <label>{% trans 'Category name (UZ)' %}</label>
+                <input type="text" name="name_uz" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Category name (RU)' %}</label>
+                <input type="text" name="name_ru" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Category name (EN)' %}</label>
+                <input type="text" name="email" class="form-control">
+              </div>
+            <button type="submit" class="btn btn-success float-right">{% trans 'Submit' %}</button>
+            {% if error_msg %}
+              <h6 style="color: red">{{ error_msg }}</h6>
+            {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

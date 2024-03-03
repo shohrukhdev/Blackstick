@@ -1,0 +1,78 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %}{% trans 'Settings' %}{% endblock %}
+{% block content %}
+  <div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0">{{ request.session.clinic }} {% trans 'settings' %}</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item">
+            <button type="button" class="btn btn-block btn-danger" onclick="window.location.href='{% url "home" %}'">
+              {% trans 'Back' %}
+            </button>
+          </li>
+        </ol>
+      </div>
+    </div>
+{#==============================  SETTINGS blocks =============================    #}
+    <div class="row">
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info" onclick="window.location.href='{% url "staff_list" %}?successSave=false'" style="cursor: pointer">
+          <div class="inner">
+              <h3>{% trans 'Users' %}</h3>
+              <p>{% trans 'Staff management' %}</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success" onclick="window.location.href='{% url "category_list" %}?successSave=false'" style="cursor: pointer">
+          <div class="inner">
+              <h3>{% trans 'Categories' %}</h3>
+              <p>{% trans 'Service category management' %}</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-sitemap"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+              <h3>{% trans 'Services' %}</h3>
+              <p>{% trans 'Price and availability management' %}</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-server"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-primary">
+          <div class="inner">
+              <h3>{% trans 'States' %}</h3>
+              <p>{% trans 'Tooth states when diagnosed' %}</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-server"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+{#==============================  SETTINGS blocks =============================    #}
+  </div>
+</div>
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+  </script>
+{% endblock %}

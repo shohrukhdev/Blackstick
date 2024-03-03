@@ -18,7 +18,7 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id',
-                  'stuff',
+                  'staff',
                   'patient_id',
                   'patient_name',
                   'patient_phone',

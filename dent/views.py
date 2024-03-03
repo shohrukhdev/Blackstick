@@ -10,28 +10,32 @@ import dent.services as service
 
 
 def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                stuff = service.get_stuff(user)
-                request.session['role'] = stuff.role.code
-                request.session['clinic'] = stuff.clinic.name
+                staff = service.get_staff(user)
+                request.session['role'] = staff.role.code
+                request.session['clinic'] = staff.clinic.name
+                request.session['clinic_id'] = staff.clinic.id
                 return HttpResponseRedirect("/home")
             else:
                 return HttpResponse("Your account is disabled")
         else:
-            return render(request, 'login.html', {"error": "Incorrect username or password"})
+            return render(
+                request,
+                template_name='login.html',
+                context={"error": "Incorrect username or password"}
+            )
     else:
         return render(request, 'login.html', {})
 
 
 @login_required
 def home(request):
-    print(request.POST)
     context = service.report_board(cur_user=request.user)
     context['labels'] = list(service.get_chart_service().keys())
     context['values'] = list(service.get_chart_service().values())
@@ -74,7 +78,7 @@ def debt_list(request):
 @login_required
 def add_event(request):
     response = {}
-    if request.is_ajax and request.method == 'POST':
+    if request.method == 'POST':
         response = service.add_event(request.POST, request.user)
     else:
         response['success'] = False
@@ -85,7 +89,7 @@ def add_event(request):
 @login_required
 def delete_event(request):
     response = {}
-    if request.is_ajax and request.method == 'POST':
+    if request.method == 'POST':
         response = service.delete_event(request.POST['event_id'])
         return JsonResponse(response, status=200)
     else:
@@ -102,7 +106,7 @@ def patient_add(request):
     response = {}
     if request.method == 'GET':
         return render(request, 'dent/add_patient.html')
-    elif request.method == 'POST' and request.is_ajax:
+    elif request.method == 'POST':
         response = service.add_patient(request.POST, request.user)
         return JsonResponse(response, status=200, safe=False)
     else:
@@ -140,7 +144,7 @@ def treatment(request):
 
 @login_required
 def save_treatment(request):
-    if request.is_ajax and request.method == 'POST':
+    if request.method == 'POST':
         data = json.loads(request.body)
         response = service.save_treatment(request.user, data)
         return JsonResponse(response, status=200, safe=False)
@@ -169,7 +173,7 @@ def patient_treatment_history(request):
 
 @login_required
 def event_edit(request):
-    if request.is_ajax and request.method == 'POST':
+    if request.method == 'POST':
         data = json.loads(request.body)
         response = service.edit_event(data)
         return JsonResponse(response, status=200, safe=False)

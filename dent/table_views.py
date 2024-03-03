@@ -8,8 +8,8 @@ class PatientViewSet(viewsets.ModelViewSet):
     serializer_class = PatientSerializer
 
     def get_queryset(self):
-        stuff = Stuff.objects.get(user=self.request.user)
-        return Patient.objects.filter(clinic=stuff.clinic)
+        staff = Staff.objects.get(user=self.request.user)
+        return Patient.objects.filter(clinic=staff.clinic)
 
 
 class DebtViewSet(viewsets.ModelViewSet):

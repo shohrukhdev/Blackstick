@@ -37,5 +37,6 @@ urlpatterns = [
     path('treatment/print', mainviews.treatment_print, name='treatment_print'),
     path('patient/treatment_history', mainviews.patient_treatment_history, name='patient_treatment_history'),
     path('calendar/event/edit', mainviews.event_edit, name='event_edit'),
-    path('treatment/file/upload', mainviews.upload_file, name='upload_file')
+    path('treatment/file/upload', mainviews.upload_file, name='upload_file'),
+    path('settings/', include('dent.settings.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

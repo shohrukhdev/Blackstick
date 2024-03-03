@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
+# import django_heroku
 import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # The `DYNO` env var is set on Heroku CI, but it's not a real Heroku app, so we have to
 # also explicitly exclude CI:
 # https://devcenter.heroku.com/articles/heroku-ci#immutable-environment-variables
-IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
+# IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 
 # Quick-start development settings - unsuitable for production
@@ -32,10 +32,12 @@ SECRET_KEY = 'django-insecure-gsp=j+#&wru%ay!)d2ys6nim&3aah^1%a#xtcy@k%*(w$63d#t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-if IS_HEROKU_APP:
-    ALLOWED_HOSTS = ["*"]
-else:
-    ALLOWED_HOSTS = []
+# if IS_HEROKU_APP:
+#     ALLOWED_HOSTS = ["*"]
+# else:
+#     ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -53,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -99,26 +102,33 @@ WSGI_APPLICATION = 'Blackstick.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if IS_HEROKU_APP:
-    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-    # automatically by Heroku when a database addon is attached to your Heroku app. See:
-    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
-    # https://github.com/jazzband/dj-database-url
-    DATABASES = {
-        "default": dj_database_url.config(
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        ),
+# if IS_HEROKU_APP:
+#     # In production on Heroku the database configuration is derived from the `DATABASE_URL`
+#     # environment variable by the dj-database-url package. `DATABASE_URL` will be set
+#     # automatically by Heroku when a database addon is attached to your Heroku app. See:
+#     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
+#     # https://github.com/jazzband/dj-database-url
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             conn_max_age=600,
+#             conn_health_checks=True,
+#             ssl_require=True,
+#         ),
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 
 # Password validation
@@ -168,10 +178,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"), '/static/'
-# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"), 'static'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -183,4 +193,4 @@ LOGIN_REDIRECT_URL = "/home"
 
 MEDIA_URL = '/media/'
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())

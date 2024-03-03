@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from hashid_field import HashidField, HashidAutoField
 
 
 
@@ -32,23 +31,33 @@ class Role(models.Model):
         return self.name
 
 
-class Stuff(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stuff_user')
-    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='stuff_clinic')
-    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='stuff_role')
+class Staff(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_user')
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='staff_clinic')
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='staff_role')
+    additional_info = models.TextField(null=True, blank=True)
     status = models.IntegerField(default=1)
     hire_date = models.DateField()
     cr_on = models.DateTimeField(auto_now_add=True)
     up_on = models.DateTimeField(auto_now=True)
-    cr_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stuff_crby', null=True)
-    up_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stuff_upby', null=True)
+    cr_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_crby', null=True)
+    up_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_upby', null=True)
 
     class Meta:
-        verbose_name = 'Stuff'
-        verbose_name_plural = 'Stuff'
+        verbose_name = 'Staff'
+        verbose_name_plural = 'Staff'
 
     def __str__(self):
         return self.user.username
+
+    @property
+    def get_full_name(self):
+        return f'{self.user.get_full_name()}'
+
+    @property
+    def get_role_code(self):
+        """Get role code for staff."""
+        return self.role.code
 
 
 class Patient(models.Model):
@@ -62,9 +71,9 @@ class Patient(models.Model):
     comments = models.TextField(null=True, blank=True)
     state = models.CharField(max_length=1)
     cr_on = models.DateTimeField(auto_now_add=True)
-    cr_by = models.ForeignKey(Stuff, on_delete=models.CASCADE, related_name='patient_crby')
+    cr_by = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='patient_crby')
     up_on = models.DateTimeField(auto_now=True)
-    up_by = models.ForeignKey(Stuff, on_delete=models.CASCADE, related_name='patient_upby')
+    up_by = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='patient_upby')
 
     class Meta:
         verbose_name = 'Patient'
@@ -76,10 +85,12 @@ class Patient(models.Model):
 
 
 class ServiceCategory(models.Model):
-    stuff = models.ForeignKey(Stuff, on_delete=models.CASCADE, related_name='category_stuff', null=True, blank=True)
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='category_clinic', null=True, blank=True)
     name = models.CharField(max_length=400, null=True, blank=True)
     name_uz = models.CharField(max_length=400, null=True, blank=True)
     name_ru = models.CharField(max_length=400, null=True, blank=True)
+    cr_on = models.DateTimeField(auto_now_add=True)
+    cr_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='category_crby')
 
     class Meta:
         verbose_name = 'Service Category'
@@ -89,8 +100,13 @@ class ServiceCategory(models.Model):
         return self.name
 
 
+class StaffServiceCategory(models.Model):
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='category_staff')
+    service_category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE)
+
+
 class Event(models.Model):
-    stuff = models.ForeignKey(Stuff, on_delete=models.CASCADE, related_name='event_stuff')
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='event_staff')
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='event_patient')
     service_category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=500, null=True, blank=True)
@@ -114,7 +130,7 @@ class Event(models.Model):
 
 class Service(models.Model):
     category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='service_category')
-    doctor = models.ForeignKey(Stuff, on_delete=models.CASCADE, related_name='service_doctor')
+    doctor = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='service_doctor')
     name = models.CharField(max_length=500, null=True, blank=True)
     name_uz = models.CharField(max_length=500, null=True, blank=True)
     name_ru = models.CharField(max_length=500, null=True, blank=True)
@@ -144,7 +160,7 @@ class Teeth(models.Model):
 
 class Treatment(models.Model):
     reference_id = models.CharField(max_length=128, null=True, blank=True, unique=True)
-    doctor = models.ForeignKey(Stuff, on_delete=models.CASCADE, related_name='procedure_doctor')
+    doctor = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='procedure_doctor')
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='procedure_patient')
     complaint = models.CharField(max_length=4000, null=True, blank=True)
     diagnosis = models.TextField(null=True, blank=True)

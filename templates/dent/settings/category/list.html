@@ -1,0 +1,90 @@
+{% extends "home.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %}{% trans 'Service categories' %}{% endblock %}
+{% block content %}
+  <style>
+    tbody tr:hover {border-bottom: 2px solid #317291; border-top: 2px solid #22668a
+    }
+    tbody tr {cursor: pointer}
+    .active_tr {
+        background-color: #61a9ea;
+    }
+</style>
+  <section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1><b>{{ request.session.clinic }}</b> {% trans 'categories' %}</h1>
+      </div>
+      <div class="col-sm-6">
+        <div class="btn-group float-right" role="group">
+          <button type="button" class="btn btn-success" onclick="window.location.href='{% url "category_add" %}'">{% trans 'Add' %}</button>
+          <button id="edit_button" onclick="editStaff()" type="button" class="btn btn-primary">{% trans 'Edit' %}</button>
+          <button type="button" class="btn btn-warning" onclick="window.location.href='{% url "settings_window" %}'">{% trans 'Back' %}</button>
+        </div>
+      </div>
+    </div>
+{#    ======================= TABLE SECTION ========================#}
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <table id="staff_table" class="table">
+              <thead>
+                <tr>
+                  <th>{% trans 'NAME UZ' %}</th>
+                  <th>{% trans 'NAME RU' %}</th>
+                  <th>{% trans 'NAME EN' %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for c in categories %}
+                <tr data-id="{{ c.id }}">
+                  <td>{{ c.name_uz }}</td>
+                  <td>{{ c.name_ru }}</td>
+                  <td>{{ c.name }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+  var staff_id = null;
+  $(document).ready(function () {
+      $('#edit_button').attr("disabled", "disabled");  
+      
+      $(document).on("click", "#staff_table tbody tr", (function (){
+        $(this).addClass('active_tr');
+        $(this).siblings().removeClass('active_tr');
+        staff_id = $(this).attr("data-id");
+        $('#edit_button').removeAttr("disabled");
+      }));
+
+      if ({{ request.GET.successSave }}) {
+          $(document).Toasts('create', {
+              title: 'Info',
+              body: 'Successful operation!',
+              autohide: true,
+              delay: 3000,
+              fade: true,
+              class: 'bg-success'
+          })
+      }
+  });
+  
+  function editStaff(){
+          window.location.href = '{% url "edit_staff" %}' + '?user_id=' + staff_id
+      }
+  </script>
+{% endblock %}
