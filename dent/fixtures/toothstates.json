@@ -1,0 +1,47 @@
+[
+{
+  "model": "dent.toothstate",
+  "pk": 1,
+  "fields": {
+    "name": "Caries|Tooth decat",
+    "name_uz": "Karies",
+    "name_ru": "Кариес"
+  }
+},
+{
+  "model": "dent.toothstate",
+  "pk": 2,
+  "fields": {
+    "name": "Prosthetic",
+    "name_uz": "Protez",
+    "name_ru": "Протез"
+  }
+},
+{
+  "model": "dent.toothstate",
+  "pk": 3,
+  "fields": {
+    "name": "Implant",
+    "name_uz": "Implant",
+    "name_ru": "Имплантат"
+  }
+},
+{
+  "model": "dent.toothstate",
+  "pk": 4,
+  "fields": {
+    "name": "Removed",
+    "name_uz": "Olib tashlangan",
+    "name_ru": "Удаленный"
+  }
+},
+{
+  "model": "dent.toothstate",
+  "pk": 5,
+  "fields": {
+    "name": "Injured",
+    "name_uz": "Jarohatlangan",
+    "name_ru": "Поврежденный"
+  }
+}
+]

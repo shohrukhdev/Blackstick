@@ -2,7 +2,7 @@ import traceback
 
 from django.core.exceptions import ValidationError
 
-from dent.models import Staff, Role, Clinic, ServiceCategory
+from dent.models import Staff, Role, Clinic, Category, ServiceStaff, Service
 from django.contrib.auth.models import User
 import datetime as dt
 
@@ -67,8 +67,12 @@ def get_staff(user_id, clinic_id):
 
 def get_clinic_categories(clinic_id):
     """Get clinic's all categories."""
-    categories = ServiceCategory.objects.filter(clinic_id=clinic_id)
+    categories = Category.objects.filter(clinic_id=clinic_id)
     return categories
+
+
+def get_category(category_id, clinic_id):
+    return Category.objects.get(id=category_id, clinic_id=clinic_id)
 
 
 def add_category(
@@ -80,7 +84,7 @@ def add_category(
 ):
     """Add new category."""
     clinic = Clinic.objects.get(id=clinic_id)
-    category = ServiceCategory.objects.create(
+    category = Category.objects.create(
         clinic=clinic,
         name_uz=name_uz,
         name_ru=name_ru,
@@ -89,3 +93,101 @@ def add_category(
     )
     return category
 
+
+def edit_category(
+        category_id,
+        clinic_id,
+        user_id,
+        name_uz,
+        name_ru,
+        name_en,
+):
+    """Edit category."""
+    category = Category.objects.filter(
+        id=category_id,
+        clinic_id=clinic_id
+    ).update(
+        name=name_en,
+        name_uz=name_uz,
+        name_ru=name_ru,
+    )
+
+
+def delete_category(category_id):
+    """Delete category."""
+    Category.objects.filter(id=category_id).update(
+        is_active=False
+    )
+
+
+############################  SERVICE SETTINGS ############################
+def get_staff_services(user_id):
+    """Get staff services."""
+    return ServiceStaff.objects.filter(staff__user_id=user_id)
+
+
+def get_staff_service(id, user_id):
+    """Get service from staff_service model."""
+    return ServiceStaff.objects.get(id=id, staff__user_id=user_id)
+
+
+def create_staff_service(
+        user_id,
+        category_id,
+        name,
+        name_uz,
+        name_ru,
+        description,
+        price
+):
+    """Create service and service_staff entry."""
+    staff = Staff.objects.get(user_id=user_id)
+    category = Category.objects.get(id=category_id)
+    if staff and category:
+        new_service = Service.objects.create(
+            category=category,
+            name=name,
+            name_uz=name_uz,
+            name_ru=name_ru,
+            description=description,
+            price=price
+        )
+        service_staff = ServiceStaff.objects.create(
+            service=new_service,
+            staff=staff
+        )
+        return service_staff
+
+
+def edit_staff_service(
+    user_id,
+    service_id,
+    category_id,
+    name,
+    name_uz,
+    name_ru,
+    description,
+    status,
+    price
+):
+    """Edit service staff details."""
+    category_obj = Category.objects.get(id=category_id)
+    service_staff_qs = ServiceStaff.objects.filter(
+        staff__user_id=user_id,
+        service_id=service_id
+    )
+    for service_staff in service_staff_qs:
+        service = service_staff.service
+        service.category = category_obj
+        service.name = name
+        service.name_uz = name_uz
+        service.name_ru = name_ru
+        service.description = description
+        service.status = status
+        service.price = price
+        service.save()
+
+
+############ TOOTH STATE #################################
+
+# def add_tooth_state()

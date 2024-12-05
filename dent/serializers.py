@@ -53,3 +53,9 @@ class DebtSerializer(serializers.ModelSerializer):
     class Meta:
         model = Treatment
         fields = '__all__'
+
+
+class StaffServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = '__all__'

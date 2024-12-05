@@ -22,7 +22,7 @@
     </div>
 {#==============================  SETTINGS blocks =============================    #}
     <div class="row">
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <div class="small-box bg-info" onclick="window.location.href='{% url "staff_list" %}?successSave=false'" style="cursor: pointer">
           <div class="inner">
               <h3>{% trans 'Users' %}</h3>
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-6">
+      <div class="col-lg-4 col-6">
         <div class="small-box bg-success" onclick="window.location.href='{% url "category_list" %}?successSave=false'" style="cursor: pointer">
           <div class="inner">
               <h3>{% trans 'Categories' %}</h3>
@@ -44,8 +44,8 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
+      <div class="col-lg-4 col-6">
+        <div class="small-box bg-warning" onclick="window.location.href='{% url "service_list" %}?successSave=false'" style="cursor: pointer">
           <div class="inner">
               <h3>{% trans 'Services' %}</h3>
               <p>{% trans 'Price and availability management' %}</p>
@@ -55,17 +55,19 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-6">
-        <div class="small-box bg-primary">
+      {% if request.user.staff_user.role.code == "OWN" %}
+      <div class="col-lg-4 col-6">
+        <div class="small-box bg-primary" style="cursor: pointer" onclick="window.location.href='{% url "clinic_details" %}?successSave=false'">
           <div class="inner">
-              <h3>{% trans 'States' %}</h3>
-              <p>{% trans 'Tooth states when diagnosed' %}</p>
+              <h3>{% trans 'Clinic details' %}</h3>
+              <p>{% trans 'Your clinic information' %}</p>
           </div>
           <div class="icon">
-            <i class="fas fa-server"></i>
+            <i class="fas fa-hospital"></i>
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
 {#==============================  SETTINGS blocks =============================    #}
   </div>

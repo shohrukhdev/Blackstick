@@ -9,6 +9,7 @@ class Clinic(models.Model):
     info = models.TextField()
     status = models.CharField(max_length=2, default='A')
     balance = models.IntegerField(default=1000)
+    currency = models.CharField(max_length=3, default='SOM')
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clinic_owner')
 
     class Meta:
@@ -32,7 +33,7 @@ class Role(models.Model):
 
 
 class Staff(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_user')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff_user')
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='staff_clinic')
     role = models.ForeignKey(Role, on_delete=models.CASCADE, related_name='staff_role')
     additional_info = models.TextField(null=True, blank=True)
@@ -84,11 +85,12 @@ class Patient(models.Model):
         return self.full_name
 
 
-class ServiceCategory(models.Model):
+class Category(models.Model):
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='category_clinic', null=True, blank=True)
     name = models.CharField(max_length=400, null=True, blank=True)
     name_uz = models.CharField(max_length=400, null=True, blank=True)
     name_ru = models.CharField(max_length=400, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
     cr_on = models.DateTimeField(auto_now_add=True)
     cr_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='category_crby')
 
@@ -100,15 +102,10 @@ class ServiceCategory(models.Model):
         return self.name
 
 
-class StaffServiceCategory(models.Model):
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='category_staff')
-    service_category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE)
-
-
 class Event(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='event_staff')
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='event_patient')
-    service_category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, null=True, blank=True)
+    service_category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=500, null=True, blank=True)
     description = models.CharField(max_length=4000, blank=True, null=True)
     start_time = models.DateTimeField()
@@ -129,8 +126,7 @@ class Event(models.Model):
 
 
 class Service(models.Model):
-    category = models.ForeignKey(ServiceCategory, on_delete=models.CASCADE, related_name='service_category')
-    doctor = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='service_doctor')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='service_category')
     name = models.CharField(max_length=500, null=True, blank=True)
     name_uz = models.CharField(max_length=500, null=True, blank=True)
     name_ru = models.CharField(max_length=500, null=True, blank=True)
@@ -144,6 +140,11 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ServiceStaff(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name='staffs_service')
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staffs_name')
 
 
 class Teeth(models.Model):
@@ -216,6 +217,9 @@ class ToothState(models.Model):
     name = models.CharField(max_length=500, null=True, blank=True)
     name_uz = models.CharField(max_length=500, null=True, blank=True)
     name_ru = models.CharField(max_length=500, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.name_uz} - {self.name_ru}"
 
 
 class ProcedureToothState(models.Model):

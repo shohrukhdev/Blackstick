@@ -1,0 +1,84 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Edit service' %}{% endblock %}
+{% block content %}
+{% get_current_language as LANG_CODE %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm12 mx-auto">
+        <div class="card card-success" style="margin-top: 10px">
+          <div class="card-header">
+            <h3 class="card-title">{% trans 'Edit service' %}</h3>
+            <div class="card-tools">
+              <a type="button" href="{% url 'service_list' %}?successSave=false" class="btn btn-tool">
+                <i class="fas fa-window-close"></i>
+              </a>
+            </div>
+          </div>
+          <div class="card-body">
+            <form autocomplete="off" id="add_service" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="service_id" value="{{ staff_service.service.id }}">
+              <div class="form-group">
+                <label>{% trans 'Service category' %}</label>
+                  <select class="form-control" name="category_id">
+                    {% for c in categories %}
+                    <option value="{{ c.id }}" 
+                      {% if c.id == staff_service.service.category.id %} selected {% endif %}>
+                    {% if LANG_CODE == 'uz' %} {{ c.name_uz }} {% endif %}
+                    {% if LANG_CODE == 'ru' %} {{ c.name_ru }} {% endif %}
+                    {% if LANG_CODE == 'en' %} {{ c.name }} {% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Service name (UZ)' %}</label>
+                <input type="text" name="name_uz" value="{{ staff_service.service.name_uz }}" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Service name (RU)' %}</label>
+                <input type="text" name="name_ru" value="{{ staff_service.service.name_ru }}" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Service name (EN)' %}</label>
+                <input type="text" name="name" value="{{ staff_service.service.name }}" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Description' %}</label>
+                <textarea class="form-control" name="description" required>{{ staff_service.service.description }}</textarea>
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Price' %}</label>
+                <div class="input-group">
+                  <input type="number" name="price" value="{{ staff_service.service.price }}" class="form-control" required>
+                  <div class="input-group-append">
+                    <span class="input-group-text">SOM</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Status' %}</label>
+                <select class="form-control" name="status">
+                  <option value="1" {% if staff_service.service.status == 1 %}
+                          selected {% endif %}>{% trans 'Enabled' %}
+                  </option>
+                  <option value="0" {% if staff_service.service.status == 0 %}
+                          selected {% endif %}>{% trans 'Disabled' %}
+                  </option>
+                </select>
+              </div>
+            <button type="submit" class="btn btn-success float-right">{% trans 'Submit' %}</button>
+            {% if error_msg %}
+              <h6 style="color: red">{{ error_msg }}</h6>
+            {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

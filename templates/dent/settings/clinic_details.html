@@ -1,0 +1,59 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans 'Clinic information' %}{% endblock %}
+{% block content %}
+{% get_current_language as LANG_CODE %}
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-sm12 mx-auto">
+        <div class="card card-success" style="margin-top: 10px">
+          <div class="card-header">
+            <h3 class="card-title">{% trans 'Clinic information' %}</h3>
+            <div class="card-tools">
+              <a type="button" href="{% url 'settings_window' %}?successSave=false" class="btn btn-tool">
+                <i class="fas fa-window-close"></i>
+              </a>
+            </div>
+          </div>
+          <div class="card-body">
+            <form autocomplete="off" id="edit_clinic" method="post">
+              <input type="hidden" name="clinic_id" value="{{ clinic.id }}">
+              {% csrf_token %}
+              <div class="form-group">
+                <label>{% trans 'Clinic name' %}</label>
+                <input type="text" value="{{ clinic.name }}" name="name" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Clinic address' %}</label>
+                <input type="text" value="{{ clinic.address }}" name="address" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Information' %}</label>
+                <textarea class="form-control" name="info">{{ clinic.info }}</textarea>
+              </div> 
+              <div class="form-group">
+                <label>{% trans 'Status' %}</label>
+                <input type="text" disabled name="status" {% if clinic.status == 'A' %} value="Active" {% else %} value="Disabled" {% endif %} class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Balance' %}</label>
+                <input type="text" disabled value="{{ clinic.balance }}" name="balance" class="form-control">
+              </div>
+              <div class="form-group">
+                <label>{% trans 'Currency' %}</label>
+                <input type="text" disabled value="{{ clinic.currency }}" name="currency" class="form-control">
+              </div>
+            <button type="submit" class="btn btn-success float-right">{% trans 'Save' %}</button>
+            {% if error_msg %}
+              <h6 style="color: red">{{ error_msg }}</h6>
+            {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

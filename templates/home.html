@@ -16,8 +16,8 @@
                 <li class="nav-item d-none d-sm-inline-block">
                     <a href="{% url 'home' %}" class="nav-link">{% trans "Home" %}</a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{% url 'logout' %}" class="nav-link">{% trans "Log Out" %}</a>
+                <li onclick="submitLogoutForm()" class="nav-item d-none d-sm-inline-block" style="cursor: pointer;">
+                    <a class="nav-link">{% trans "Log Out" %}</a>
                 </li>
             </ul>
 
@@ -60,6 +60,7 @@
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
+                      <i class="nav-icon fas fa-user-circle"></i>
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">{{ user.first_name }} {{ user.last_name }}</a>
@@ -109,7 +110,7 @@
                                 </p>
                             </a>
                         </li>
-                    
+                    {% if request.user.staff_user and request.user.staff_user.role and request.user.staff_user.role.code == "OWN" or request.user.staff_user.role.code == "DEN" %}
                         <li class="nav-item">
                             <a href="{% url 'settings_window' %}?successSave=false" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -118,9 +119,13 @@
                                 </p>
                             </a>
                         </li>
+                    {% endif %}
 
-                        <li class="nav-item">
-                            <a href="{% url 'logout' %}" class="nav-link">
+                        <li class="nav-item" onclick="submitLogoutForm()" style="cursor: pointer">
+                            <a class="nav-link">
+                                 <form id="logout-form" method="POST" action="{% url 'logout' %}" class="nav-link" style="display: none;">
+                                   {% csrf_token %}
+                                 </form>
                                 <i class="nav-icon fas fa-power-off"></i>
                                 <p>
                                     {% trans 'Log Out' %}
@@ -174,6 +179,9 @@
 
         function submitlang() {
             $('#setlangform').submit();
+        }
+        function submitLogoutForm(){
+            $('#logout-form').submit();
         }
     </script>
 

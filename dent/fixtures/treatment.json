@@ -1,0 +1,19 @@
+[
+{
+  "model": "dent.treatment",
+  "pk": 1,
+  "fields": {
+    "cr_on": "2024-02-14T17:45:15.183Z",
+    "reference_id": "101707932715",
+    "doctor": 1,
+    "patient": 1,
+    "complaint": "Tish ogryapti",
+    "diagnosis": "KAries ",
+    "description": "aksdkjaksjdhkjas",
+    "total_amount": 0,
+    "discount": 0,
+    "paid_amount": 0,
+    "cr_by": 1
+  }
+}
+]

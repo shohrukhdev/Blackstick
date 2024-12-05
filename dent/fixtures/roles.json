@@ -1,0 +1,26 @@
+[
+{
+  "model": "dent.role",
+  "pk": 1,
+  "fields": {
+    "name": "Owner",
+    "code": "OWN"
+  }
+},
+{
+  "model": "dent.role",
+  "pk": 2,
+  "fields": {
+    "name": "Dentist",
+    "code": "DEN"
+  }
+},
+{
+  "model": "dent.role",
+  "pk": 3,
+  "fields": {
+    "name": "Assistant",
+    "code": "AST"
+  }
+}
+]

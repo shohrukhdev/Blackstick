@@ -1,0 +1,258 @@
+[
+{
+  "model": "dent.teeth",
+  "pk": 1,
+  "fields": {
+    "name": "16-18-1",
+    "code": "16"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 2,
+  "fields": {
+    "name": "15-17-2",
+    "code": "15"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 3,
+  "fields": {
+    "name": "14-16-3",
+    "code": "14"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 4,
+  "fields": {
+    "name": "13-15-4",
+    "code": "13"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 5,
+  "fields": {
+    "name": "12-14-5",
+    "code": "12"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 6,
+  "fields": {
+    "name": "11-13-6",
+    "code": "11"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 7,
+  "fields": {
+    "name": "10-12-7",
+    "code": "10"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 8,
+  "fields": {
+    "name": "9-11-8",
+    "code": "9"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 9,
+  "fields": {
+    "name": "8-21-9",
+    "code": "8"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 10,
+  "fields": {
+    "name": "7-22-10",
+    "code": "7"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 11,
+  "fields": {
+    "name": "6-23-11",
+    "code": "6"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 12,
+  "fields": {
+    "name": "5-24-12",
+    "code": "5"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 13,
+  "fields": {
+    "name": "4-25-13",
+    "code": "4"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 14,
+  "fields": {
+    "name": "3-26-14",
+    "code": "3"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 15,
+  "fields": {
+    "name": "2-27-15",
+    "code": "2"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 16,
+  "fields": {
+    "name": "1-28-16",
+    "code": "1"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 17,
+  "fields": {
+    "name": "17-48-17",
+    "code": "17"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 18,
+  "fields": {
+    "name": "18-47-18",
+    "code": "18"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 19,
+  "fields": {
+    "name": "19-46-19",
+    "code": "19"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 20,
+  "fields": {
+    "name": "20-45-20",
+    "code": "20"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 21,
+  "fields": {
+    "name": "21-44-21",
+    "code": "21"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 22,
+  "fields": {
+    "name": "22-43-22",
+    "code": "22"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 23,
+  "fields": {
+    "name": "23-42-23",
+    "code": "23"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 24,
+  "fields": {
+    "name": "24-41-24",
+    "code": "24"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 25,
+  "fields": {
+    "name": "25-31-25",
+    "code": "25"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 26,
+  "fields": {
+    "name": "26-32-26",
+    "code": "26"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 27,
+  "fields": {
+    "name": "27-33-27",
+    "code": "27"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 28,
+  "fields": {
+    "name": "28-34-28",
+    "code": "28"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 29,
+  "fields": {
+    "name": "29-35-29",
+    "code": "29"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 30,
+  "fields": {
+    "name": "30-36-30",
+    "code": "30"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 31,
+  "fields": {
+    "name": "31-37-31",
+    "code": "31"
+  }
+},
+{
+  "model": "dent.teeth",
+  "pk": 32,
+  "fields": {
+    "name": "32-38-32",
+    "code": "32"
+  }
+}
+]

@@ -1,0 +1,483 @@
+[
+{
+  "model": "dent.service",
+  "pk": 1,
+  "fields": {
+    "category": 1,
+    "name": "Cleaning",
+    "name_uz": "Tozalash",
+    "name_ru": "Chistka",
+    "description": "asdbhasgdkjahs",
+    "status": 1,
+    "price": 10000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 2,
+  "fields": {
+    "category": 2,
+    "name": "Removal",
+    "name_uz": "Olibtashlash",
+    "name_ru": "Udaleniya",
+    "description": "asdajsdjhal",
+    "status": 1,
+    "price": 50000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 3,
+  "fields": {
+    "category": 1,
+    "name": "service_en updated",
+    "name_uz": "service_uz updated",
+    "name_ru": "service_ru updated",
+    "description": "Description from the beginning   with tabs\r\nsdfsdf         \r\n                \r\n                \r\n                \r\n                ",
+    "status": 1,
+    "price": 12002
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 4,
+  "fields": {
+    "category": 1,
+    "name": "serice 2",
+    "name_uz": "servie uz 2",
+    "name_ru": "service ru 2",
+    "description": "TEstg\r\n                ",
+    "status": 1,
+    "price": 1200
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 5,
+  "fields": {
+    "category": 3,
+    "name": "Status determination (examination)",
+    "name_uz": "Holatni aniqlashtrish(ko'rik)",
+    "name_ru": "Определение статуса (осмотр)",
+    "description": "Initial examination of the issue, determination of the status.",
+    "status": 1,
+    "price": 50000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 6,
+  "fields": {
+    "category": 3,
+    "name": "Consultation in therapy (up to 20 min.)",
+    "name_uz": "Konsultatsion terapiya(20 minutgcaha)",
+    "name_ru": "Консультация по терапии (до 20 мин.)",
+    "description": "Consultation in therapy ",
+    "status": 1,
+    "price": 50000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 7,
+  "fields": {
+    "category": 3,
+    "name": "X-ray",
+    "name_uz": "Rentgen qilish",
+    "name_ru": "Рентгеновский снимок",
+    "description": "X-ray capture for diagnosis",
+    "status": 1,
+    "price": 30000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 8,
+  "fields": {
+    "category": 4,
+    "name": "Cavity preparation",
+    "name_uz": "Plomba uchun bo'shliq tayyorlash",
+    "name_ru": "Формирование кариозной полости",
+    "description": "Cavity preparation for filling. Removing karies, old fillings and cleaning.",
+    "status": 1,
+    "price": 90000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 9,
+  "fields": {
+    "category": 4,
+    "name": "Temporary filling",
+    "name_uz": "Vaqticnhalik plomba",
+    "name_ru": "Временная пломба",
+    "description": "Temporary filling of one tooth",
+    "status": 1,
+    "price": 100000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 10,
+  "fields": {
+    "category": 4,
+    "name": "Cementing of one metal post",
+    "name_uz": "Metal shtift bilan to'ldirish",
+    "name_ru": "Цементирование одного металлического штифта",
+    "description": "Cement filling with one metal post",
+    "status": 1,
+    "price": 90000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 11,
+  "fields": {
+    "category": 4,
+    "name": "Biodentin filling",
+    "name_uz": "Biodentin plomba",
+    "name_ru": "Использование Biodentin",
+    "description": "Biodentindan foydalanib plomba qilish",
+    "status": 1,
+    "price": 180000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 12,
+  "fields": {
+    "category": 5,
+    "name": "Removal single root tooth",
+    "name_uz": "Olib tashlash (1 ildizli tish) ",
+    "name_ru": "Удаление однокорневого зуба",
+    "description": "Bir ildizli tishni olib taslash",
+    "status": 1,
+    "price": 150000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 13,
+  "fields": {
+    "category": 5,
+    "name": "Removal of multi-root tooth",
+    "name_uz": "Olib tashlash(ko'p ildizli tish)",
+    "name_ru": "Экстракция многокорневого зуба",
+    "description": "Ko'p ildizli tishni olib tashlash",
+    "status": 1,
+    "price": 200000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 14,
+  "fields": {
+    "category": 5,
+    "name": "Removal wisdom tooth",
+    "name_uz": "Olib tashlash (aql tish)",
+    "name_ru": "Экстракция зуба мудрости",
+    "description": "Aql tishni olib tashlash ",
+    "status": 1,
+    "price": 250000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 15,
+  "fields": {
+    "category": 5,
+    "name": "Extraction of a displaced or impacted tooth",
+    "name_uz": "Olib tashlash (zararlangan yoki qiyshaygan tish)",
+    "name_ru": "Экстракция смещенного или ретинированного зуба",
+    "description": "Zararlangan yoki qiyshaygan tishni olib tashlash",
+    "status": 1,
+    "price": 250000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 16,
+  "fields": {
+    "category": 5,
+    "name": "Removal of the implant",
+    "name_uz": "Implantni olib tashlash",
+    "name_ru": "Удаление импланта",
+    "description": "Implant ishni olib tashlash",
+    "status": 1,
+    "price": 300000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 17,
+  "fields": {
+    "category": 5,
+    "name": "Suturing",
+    "name_uz": "Tikish",
+    "name_ru": "Наложение швов",
+    "description": "Tikish",
+    "status": 1,
+    "price": 80000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 18,
+  "fields": {
+    "category": 5,
+    "name": "Repositioning of a tooth after injury",
+    "name_uz": "Travmadan keyingi repozitsiya",
+    "name_ru": "Репозиция зуба после травмы",
+    "description": "Jarohatlangan tishni qayta joylashtrish repozitsiya qilish",
+    "status": 1,
+    "price": 280000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 19,
+  "fields": {
+    "category": 6,
+    "name": "General anesthesia up to 1 hour",
+    "name_uz": "Umumiy anesteziya 1 soatgacha",
+    "name_ru": "Общая анестезия до 1 часа",
+    "description": "Umumiy anesteziya 1 soatgcha",
+    "status": 1,
+    "price": 50000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 20,
+  "fields": {
+    "category": 6,
+    "name": "Sedation up to 1 hour",
+    "name_uz": "Sedatsiya 1 soatgacha",
+    "name_ru": "Седация до 1 часа",
+    "description": "Sedatsiya 1 soatgcaha",
+    "status": 1,
+    "price": 60000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 21,
+  "fields": {
+    "category": 6,
+    "name": "Anesthesiologist consultation",
+    "name_uz": "Anestesiolog konsultatsiyasi",
+    "name_ru": "консультация анестезиолога",
+    "description": "Anestiosolog maslahatini olish",
+    "status": 1,
+    "price": 20000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 22,
+  "fields": {
+    "category": 7,
+    "name": "Tartar removal from all teeth",
+    "name_uz": "Toshlardan tozalash (barcha tishlarni)",
+    "name_ru": "Удаление зубного камня со всех зубов",
+    "description": "Hamma tishlarni toshlardan tozalash",
+    "status": 1,
+    "price": 120000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 23,
+  "fields": {
+    "category": 7,
+    "name": "Pigment removal from all teeth",
+    "name_uz": "Pigmentlardan tozalassh(hamma tishlarni)",
+    "name_ru": "Удаление пигмента со всех зубов",
+    "description": "Pigmentlardan tozalash",
+    "status": 1,
+    "price": 130000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 24,
+  "fields": {
+    "category": 7,
+    "name": "Professional implant hygiene",
+    "name_uz": "Implant gigiyenasi",
+    "name_ru": "Профессиональная гигиена импланта",
+    "description": "Implant professional gigiyenasi",
+    "status": 1,
+    "price": 150000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 25,
+  "fields": {
+    "category": 7,
+    "name": "Polishing one tooth",
+    "name_uz": "Polirovka (bitta tish)",
+    "name_ru": "Полировка одного зуба",
+    "description": "Bitta tishni polirovka qilish",
+    "status": 1,
+    "price": 20000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 26,
+  "fields": {
+    "category": 7,
+    "name": "Rinsing the gum pocket with antibacterial liquid",
+    "name_uz": "Milk oralarini antibakterial suyuqlik bilan yuvish",
+    "name_ru": "Промывание десневого кармана антибактериальной жидкостью",
+    "description": "Milk oralarini antibakterial suyuqlik bilan yuvish",
+    "status": 1,
+    "price": 120000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 27,
+  "fields": {
+    "category": 8,
+    "name": "Extracting the pin from the canal",
+    "name_uz": "Kanaldan shtiftni ajratib olish",
+    "name_ru": "Извлечение штифта из канала",
+    "description": "Tish kanalidan shtiftni ajratib olish",
+    "status": 1,
+    "price": 130000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 28,
+  "fields": {
+    "category": 8,
+    "name": "Removing a root tab from canal",
+    "name_uz": "Kanaldan tish ildizlarini olib tashlash",
+    "name_ru": "Удаление корневой вкладки из канала",
+    "description": "Kanaldan tish ildizlarini olib tashlash",
+    "status": 1,
+    "price": 140000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 29,
+  "fields": {
+    "category": 8,
+    "name": "Removal of pulp stone",
+    "name_uz": "Pulpa toshlardan tozalash",
+    "name_ru": "Удаление камня пульпы",
+    "description": "Pulpa toshlardan tozalash",
+    "status": 1,
+    "price": 95000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 30,
+  "fields": {
+    "category": 10,
+    "name": "Ordoline/Osmile basic relapse",
+    "name_uz": "Ordoline/Osmile basic relapse",
+    "name_ru": "Лечение рецидива",
+    "description": "Ordoline/Osmile basic relapse",
+    "status": 1,
+    "price": 400000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 31,
+  "fields": {
+    "category": 10,
+    "name": "Additional retaining mouthguard for a jaw",
+    "name_uz": "Qo'shimcha kappa o'rnatish",
+    "name_ru": "Дополнительная удерживающая каппа для одной челюсти",
+    "description": "Qo'shimcha kappa o'rnatish",
+    "status": 1,
+    "price": 250000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 32,
+  "fields": {
+    "category": 10,
+    "name": "Installation of an orthodontic implant",
+    "name_uz": "Ortodontik implant o'rnatish",
+    "name_ru": "Установка ортодонтического импланта",
+    "description": "Ortodontik implant o'rnatish",
+    "status": 1,
+    "price": 270000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 33,
+  "fields": {
+    "category": 10,
+    "name": "Orthodontic extrusion",
+    "name_uz": "Ortodontik ekstruziya",
+    "name_ru": "Ортодонтическая экструзия",
+    "description": "Ortodontik ekstruziya",
+    "status": 1,
+    "price": 180000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 34,
+  "fields": {
+    "category": 11,
+    "name": "Reception outside the queue",
+    "name_uz": "Navbatdan tashqari qabul",
+    "name_ru": "Прием вне очереди",
+    "description": "Navbatdan tashqari qabul",
+    "status": 1,
+    "price": 100000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 35,
+  "fields": {
+    "category": 11,
+    "name": "Individual call of an anesthesiologist",
+    "name_uz": "Anesteziolog individual chaqirish",
+    "name_ru": "Индивидуальный вызов анестезиолога",
+    "description": "Anesteziolog individual chaqirish",
+    "status": 1,
+    "price": 120000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 36,
+  "fields": {
+    "category": 3,
+    "name": "Individual call of a dental technician",
+    "name_uz": "Texnik mutaxassisni individual chaqirish",
+    "name_ru": "Индивидуальный вызов зубного техника",
+    "description": "Texnik mutaxassisni individual chaqirish",
+    "status": 1,
+    "price": 130000
+  }
+},
+{
+  "model": "dent.service",
+  "pk": 37,
+  "fields": {
+    "category": 11,
+    "name": "Individual doctor call from 24:00 to 8:00",
+    "name_uz": "Doxtorni individual chaqirish 24:00 va 8:00 orasida",
+    "name_ru": "Индивидуальный вызов врача с 24:00 до 8:00",
+    "description": "Doxtorni individual chaqirish 24:00 va 8:00 orasida",
+    "status": 1,
+    "price": 350000
+  }
+}
+]

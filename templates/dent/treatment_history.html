@@ -44,11 +44,11 @@
                 {% for t in treatment_list %}
                   <tr {% if t.paid_amount < t.get_actual_amount %} class="table-warning" {% endif %}
                       data-id="{{ t.reference_id }}">
-                    <td>{{ t.cr_on }}</td>
+                    <td>{{ t.cr_on|date:'d.m.Y H:i' }}</td>
                     <td>{{ t.complaint }}</td>
                     <td>{{ t.diagnosis }}</td>
-                    <td>{{ t.get_actual_amount }}</td>
-                    <td>{{ t.paid_amount }}</td>
+                    <td>{{ t.get_actual_amount|floatformat:"g" }}</td>
+                    <td>{{ t.paid_amount|floatformat:"g" }}</td>
                   </tr>
                 {% endfor %}
                 </tbody>

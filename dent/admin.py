@@ -52,8 +52,8 @@ class ServiceInline(admin.TabularInline):
     extra = 0
 
 
-@admin.register(ServiceCategory)
-class ServiceCategoryAdmin(admin.ModelAdmin):
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
     inlines = [ServiceInline]
 
 

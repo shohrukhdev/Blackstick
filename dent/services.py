@@ -64,14 +64,14 @@ def add_patient(form, cur_user):
         staff = Staff.objects.get(user=cur_user)
         date_birth = datetime.strptime(form['date_birth'], '%d.%m.%Y')
         new_patient = Patient.objects.create(clinic=staff.clinic,
-                               full_name=form['full_name'],
-                               mobile_phone=form['mobile_phone'],
-                               sex=form['sex'],
-                               date_birth=date_birth,
-                               comments=form['comments'],
-                               state='A',
-                               cr_by=staff,
-                               up_by=staff)
+                                             full_name=form['full_name'],
+                                             mobile_phone=form['mobile_phone'],
+                                             sex=form['sex'],
+                                             date_birth=date_birth,
+                                             comments=form['comments'],
+                                             state='A',
+                                             cr_by=staff,
+                                             up_by=staff)
         new_patient.reference_id = str(new_patient.id) + '0' + str(int(datetime.now().timestamp()))
         new_patient.save()
         response['success'] = True
@@ -129,21 +129,26 @@ def get_clinic_patients_json(cur_user):
     return patient_list
 
 
-def treatment_get_context(cur_user, patient_ref_id):
+def treatment_get_context(cur_user, patient_ref_id, clinic_id):
     staff = Staff.objects.get(user=cur_user)
     patient = Patient.objects.get(reference_id=patient_ref_id)
-    services = Service.objects.filter(doctor=staff, status=1).values()
-    categories = ServiceCategory.objects.filter(staff=staff)
+    services = Service.objects.filter(
+        staffs_service__staff=staff,
+        status=1
+    ).values('id', 'category', 'name', 'name_uz', 'name_ru', 'status', 'price')
+    categories = Category.objects.filter(clinic_id=clinic_id)
     tooth_states = ToothState.objects.all().values()
     teeth = Teeth.objects.all()
     json_ser = json.dumps(list(services), cls=DjangoJSONEncoder)
     json_states = json.dumps(list(tooth_states), cls=DjangoJSONEncoder)
-    context = {'doctor': staff,
-               'patient': patient,
-               'categories': categories,
-               'tooth_states': json_states,
-               'services': json_ser,
-               'teeth': teeth}
+    context = {
+        'doctor': staff,
+        'patient': patient,
+        'categories': categories,
+        'tooth_states': json_states,
+        'services': json_ser,
+        'teeth': teeth,
+    }
     return context
 
 
@@ -170,7 +175,7 @@ def save_treatment(cur_user, data):
         treatment.save()
         for i in data.keys():
             if i.isnumeric():  # IF TOOTH NUMBER
-                for s in data[i]:   # SERVICES FOR THAT TOOTH
+                for s in data[i]:  # SERVICES FOR THAT TOOTH
                     tooth = Teeth.objects.get(id=i)
                     service = Service.objects.get(id=s['id'])
                     procedure = Procedure.objects.create(treatment=treatment,
@@ -260,7 +265,7 @@ def get_chart_service(pk=None, cid=None, update=False):
 
 def report_board(cur_user, start=get_date(), end=get_date(is_today=True), update=False, pid='', c_id=''):
     staff = get_staff(cur_user)
-    categories = ServiceCategory.objects.filter(staff=staff)
+    categories = Category.objects.filter(clinic=staff.clinic)
     patients = Patient.objects.filter(clinic=staff.clinic)
     if update:
         start = datetime.strptime(start, "%d.%m.%Y")
@@ -274,7 +279,7 @@ def report_board(cur_user, start=get_date(), end=get_date(is_today=True), update
     patient_sum = 0
     patient_total_sum = 0
     patient_debt = 0
-    treatment = Treatment.objects.filter(cr_on__gte=start, cr_on__lte=end)
+    treatment = Treatment.objects.wfilter(cr_on__gte=start, cr_on__lte=end)
     treatment_all = Treatment.objects.all()
     if treatment.exists():
         for i in treatment:
@@ -299,4 +304,3 @@ def report_board(cur_user, start=get_date(), end=get_date(is_today=True), update
         category = categories.get(id=pid)
         context['category'] = category
     return context
-

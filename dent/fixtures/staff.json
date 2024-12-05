@@ -1,0 +1,82 @@
+[
+{
+  "model": "dent.staff",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "clinic": 1,
+    "role": 2,
+    "additional_info": "Updated",
+    "status": 1,
+    "hire_date": "2024-02-14",
+    "cr_on": "2024-02-14T17:29:20.429Z",
+    "up_on": "2024-02-25T13:44:11.600Z",
+    "cr_by": 1,
+    "up_by": 1
+  }
+},
+{
+  "model": "dent.staff",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "clinic": 1,
+    "role": 1,
+    "additional_info": "asdasdasd",
+    "status": 1,
+    "hire_date": "2024-02-22",
+    "cr_on": "2024-02-22T18:51:23.198Z",
+    "up_on": "2024-02-24T17:15:45.720Z",
+    "cr_by": 2,
+    "up_by": 2
+  }
+},
+{
+  "model": "dent.staff",
+  "pk": 3,
+  "fields": {
+    "user": 6,
+    "clinic": 1,
+    "role": 2,
+    "additional_info": "Dentist",
+    "status": 1,
+    "hire_date": "2024-02-24",
+    "cr_on": "2024-02-24T17:17:22.923Z",
+    "up_on": "2024-08-16T11:18:01.077Z",
+    "cr_by": 2,
+    "up_by": null
+  }
+},
+{
+  "model": "dent.staff",
+  "pk": 4,
+  "fields": {
+    "user": 7,
+    "clinic": 2,
+    "role": 1,
+    "additional_info": "Demo clinic owner",
+    "status": 1,
+    "hire_date": "2024-11-01",
+    "cr_on": "2024-11-01T18:41:36.330Z",
+    "up_on": "2024-11-01T18:41:36.330Z",
+    "cr_by": 2,
+    "up_by": 2
+  }
+},
+{
+  "model": "dent.staff",
+  "pk": 5,
+  "fields": {
+    "user": 8,
+    "clinic": 2,
+    "role": 2,
+    "additional_info": "Demo clinic dentist doctor",
+    "status": 1,
+    "hire_date": "2024-11-01",
+    "cr_on": "2024-11-01T18:42:36.840Z",
+    "up_on": "2024-11-01T18:42:36.840Z",
+    "cr_by": 2,
+    "up_by": 2
+  }
+}
+]

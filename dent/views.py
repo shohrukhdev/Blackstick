@@ -138,7 +138,11 @@ def get_patient_list_json(request):
 @login_required
 def treatment(request):
     if request.method == 'GET':
-        context = service.treatment_get_context(request.user, request.GET['patient_ref_id'])
+        context = service.treatment_get_context(
+            cur_user=request.user,
+            patient_ref_id=request.GET.get('patient_ref_id'),
+            clinic_id=request.session.get('clinic_id')
+        )
         return render(request, 'dent/treatement.html', context=context)
 
 

@@ -1,0 +1,92 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$BwDIhn6EuQ0JxxXqPc9iC0$op4e9uwAsXjH5J3X8bQelhT6P5mtDhxZaBubxJhId1Q=",
+    "last_login": "2024-04-02T18:26:04.741Z",
+    "is_superuser": true,
+    "username": "skimsanov",
+    "first_name": "Jack",
+    "last_name": "Sparrow",
+    "email": "shohrukhdev@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-02-14T17:23:01.985Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$3gQJXQjwoAlo1fcJ8zahiy$U7G8VRCG85DJRs3OmnGcW1KZYT652WboGHhLwDGgz/M=",
+    "last_login": "2024-11-12T08:41:01.541Z",
+    "is_superuser": true,
+    "username": "a",
+    "first_name": "Shokhrukh",
+    "last_name": "Kimsanov",
+    "email": "shohrukhdev@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-02-22T18:49:51Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "!DtBVrSFlV6QSytOgDM0fyeJPxdUQ5oGEUyqnjLlU",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "tkursits",
+    "first_name": "Toms",
+    "last_name": "Kursits",
+    "email": "tkursits@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-02-24T17:17:22.912Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$vWF6J0OLowD2OroRR9c5J8$9tw1TZ0/1uuDDAlyOm+J7arfz0B6sPRCsH3fayCoV6w=",
+    "last_login": "2024-11-12T08:37:35.406Z",
+    "is_superuser": false,
+    "username": "demo",
+    "first_name": "Fname",
+    "last_name": "Lname",
+    "email": "lname@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-11-01T18:23:22Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$870000$SrACxfjVQHchiByDCY4lSn$3v+pgs8J2AT8ptOmO0Kq0HK7JoUke9zvgvufstqkHn4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "demodoctor",
+    "first_name": "Raul",
+    "last_name": "Kosta",
+    "email": "rkosta@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-11-01T18:29:08Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

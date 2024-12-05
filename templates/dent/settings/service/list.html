@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load l10n %}
 {% load static %}
-{% block title %}{% trans 'Service categories' %}{% endblock %}
+{% block title %}{% trans 'Services' %}{% endblock %}
 {% block content %}
   <style>
     tbody tr:hover {border-bottom: 2px solid #317291; border-top: 2px solid #22668a
@@ -16,12 +16,12 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1><b>{{ request.session.clinic }}</b> {% trans 'categories' %}</h1>
+        <h1>Dr. {{ request.user.get_full_name }} {% trans 'services' %}</h1>
       </div>
       <div class="col-sm-6">
         <div class="btn-group float-right" role="group">
-          <button type="button" class="btn btn-success" onclick="window.location.href='{% url "category_add" %}'">{% trans 'Add' %}</button>
-          <button id="edit_button" onclick="editStaff()" type="button" class="btn btn-primary">{% trans 'Edit' %}</button>
+          <button type="button" class="btn btn-success" onclick="window.location.href='{% url "service_add" %}'">{% trans 'Add' %}</button>
+          <button id="edit_button" onclick="editService()" type="button" class="btn btn-primary">{% trans 'Edit' %}</button>
           <button type="button" class="btn btn-warning" onclick="window.location.href='{% url "settings_window" %}'">{% trans 'Back' %}</button>
         </div>
       </div>
@@ -31,20 +31,28 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <table id="category_table" class="table">
+            <table id="service_table" class="table">
               <thead>
                 <tr>
-                  <th>{% trans 'NAME UZ' %}</th>
-                  <th>{% trans 'NAME RU' %}</th>
-                  <th>{% trans 'NAME EN' %}</th>
+                  <th>{% trans 'NAME' %}</th>
+                  <th>{% translate 'NAME UZ' %}</th>
+                  <th>{% translate 'NAME RU' %}</th>
+                  <th>{% translate 'STATUS' %}</th>
                 </tr>
               </thead>
               <tbody>
-                {% for c in categories %}
-                <tr data-id="{{ c.id }}">
-                  <td>{{ c.name_uz }}</td>
-                  <td>{{ c.name_ru }}</td>
-                  <td>{{ c.name }}</td>
+                {% for s in staff_services %}
+                <tr data-id="{{ s.id }}">
+                  <td>{{ s.service.name }}</td>
+                  <td>{{ s.service.name_uz }}</td>
+                  <td>{{ s.service.name_ru }}</td>
+                  <td>
+                    {% if s.service.status == 1 %}
+                      Enabled
+                    {% else %}
+                      Disabled
+                    {% endif %}
+                  </td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -60,14 +68,14 @@
 {% block js %}
   {{ block.super }}
   <script>
-  var category_id = null;
+  var service_id = null;
   $(document).ready(function () {
-      $('#edit_button').attr("disabled", "disabled");  
-      
-      $(document).on("click", "#category_table tbody tr", (function (){
+      $('#edit_button').attr("disabled", "disabled");
+
+      $(document).on("click", "#service_table tbody tr", (function (){
         $(this).addClass('active_tr');
         $(this).siblings().removeClass('active_tr');
-        category_id = $(this).attr("data-id");
+        service_id = $(this).attr("data-id");
         $('#edit_button').removeAttr("disabled");
       }));
 
@@ -82,9 +90,9 @@
           })
       }
   });
-  
-  function editStaff(){
-          window.location.href = '{% url "category_edit" %}' + '?category_id=' + category_id
+
+  function editService(){
+          window.location.href = '{% url "service_edit" %}' + '?service_id=' + service_id
       }
   </script>
 {% endblock %}

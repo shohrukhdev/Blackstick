@@ -1,0 +1,28 @@
+[
+{
+  "model": "dent.clinic",
+  "pk": 1,
+  "fields": {
+    "name": "DemoDent",
+    "address": "Ropazu street 21-5, Riga",
+    "info": "Demo dental clinic info",
+    "status": "A",
+    "balance": 1000,
+    "currency": "SOM",
+    "owner": 1
+  }
+},
+{
+  "model": "dent.clinic",
+  "pk": 2,
+  "fields": {
+    "name": "DemoClinic",
+    "address": "Demo address street, 12 B",
+    "info": "This is the clinic for demonstration purposes. Everything related to the clininc is fakened.",
+    "status": "A",
+    "balance": 1000,
+    "currency": "SOM",
+    "owner": 7
+  }
+}
+]

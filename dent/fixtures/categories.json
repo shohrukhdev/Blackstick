@@ -1,0 +1,145 @@
+[
+{
+  "model": "dent.category",
+  "pk": 1,
+  "fields": {
+    "clinic": 1,
+    "name": "Hygien a",
+    "name_uz": "Gigiena a",
+    "name_ru": "Gigiyena a",
+    "is_active": true,
+    "cr_on": "2024-02-25T20:06:30.149Z",
+    "cr_by": 1
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 2,
+  "fields": {
+    "clinic": 1,
+    "name": "General",
+    "name_uz": "Umumiy davolash",
+    "name_ru": "Obchiy stamatologiya",
+    "is_active": true,
+    "cr_on": "2024-02-25T20:06:30.149Z",
+    "cr_by": 1
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 3,
+  "fields": {
+    "clinic": 2,
+    "name": "Examination",
+    "name_uz": "Tashxis qo'yish",
+    "name_ru": "Диагностика",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:52:16.491Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 4,
+  "fields": {
+    "clinic": 2,
+    "name": "Fillings",
+    "name_uz": "Plombalash",
+    "name_ru": "Пломбирование",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:52:52.384Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 5,
+  "fields": {
+    "clinic": 2,
+    "name": "Surgery",
+    "name_uz": "Jarrohlik",
+    "name_ru": "Хирургия",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:53:12.443Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 6,
+  "fields": {
+    "clinic": 2,
+    "name": "General Anesthesia/Sedation",
+    "name_uz": "Umumiy anestezia/og'riqsizlantrish",
+    "name_ru": "Общая анестезия/Седация",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:55:20.872Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 7,
+  "fields": {
+    "clinic": 2,
+    "name": "Hygiene",
+    "name_uz": "Gigiyena",
+    "name_ru": "Гигиена",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:55:55.550Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 8,
+  "fields": {
+    "clinic": 2,
+    "name": "Endodontics",
+    "name_uz": "Endodontiya",
+    "name_ru": "Эндодонтия",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:56:47.390Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 9,
+  "fields": {
+    "clinic": 2,
+    "name": "Whitening",
+    "name_uz": "Oqartirish",
+    "name_ru": "Отбеливание",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:57:59.817Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 10,
+  "fields": {
+    "clinic": 2,
+    "name": "Orthodontics",
+    "name_uz": "Ortodontiya",
+    "name_ru": "Ортодонтия",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:58:33.226Z",
+    "cr_by": 7
+  }
+},
+{
+  "model": "dent.category",
+  "pk": 11,
+  "fields": {
+    "clinic": 2,
+    "name": "VIP Services",
+    "name_uz": "VIP xizmatlar",
+    "name_ru": "VIP Услуги",
+    "is_active": true,
+    "cr_on": "2024-11-01T18:59:02.578Z",
+    "cr_by": 7
+  }
+}
+]

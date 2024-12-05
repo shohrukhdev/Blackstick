@@ -1,0 +1,40 @@
+[
+{
+  "model": "dent.patient",
+  "pk": 1,
+  "fields": {
+    "reference_id": "101707932047",
+    "clinic": 1,
+    "photo": "",
+    "full_name": "Sahobiddin Toxtanazarov",
+    "mobile_phone": "98798789789",
+    "sex": "M",
+    "date_birth": "2024-02-14",
+    "comments": "adsbjkashdjkhasjkhdsa",
+    "state": "A",
+    "cr_on": "2024-02-14T17:34:07.203Z",
+    "cr_by": 1,
+    "up_on": "2024-02-14T17:34:07.207Z",
+    "up_by": 1
+  }
+},
+{
+  "model": "dent.patient",
+  "pk": 2,
+  "fields": {
+    "reference_id": "201731139904",
+    "clinic": 2,
+    "photo": "",
+    "full_name": "Shokhrukh Kimsanov",
+    "mobile_phone": "+998999926602",
+    "sex": "M",
+    "date_birth": "1996-07-10",
+    "comments": "Address: Farg'ona viloyati.\r\nAllergiya: N/A",
+    "state": "A",
+    "cr_on": "2024-11-09T08:11:44.552Z",
+    "cr_by": 4,
+    "up_on": "2024-11-09T08:11:44.554Z",
+    "up_by": 4
+  }
+}
+]
