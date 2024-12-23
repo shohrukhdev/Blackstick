@@ -206,8 +206,12 @@ def get_treatment(treatment_ref_id):
     return context
 
 
-def get_patient_treatment_history(patient_ref_id):
-    treatments = Treatment.objects.filter(patient__reference_id=patient_ref_id)
+def get_patient_treatment_history(cur_user, patient_ref_id):
+    """Get only treatments made by the current doctor."""
+    treatments = Treatment.objects.filter(
+        patient__reference_id=patient_ref_id,
+        doctor__user=cur_user  # other doctor can't see others history
+    )
     context = {"treatment_list": treatments}
     return context
 
@@ -279,8 +283,16 @@ def report_board(cur_user, start=get_date(), end=get_date(is_today=True), update
     patient_sum = 0
     patient_total_sum = 0
     patient_debt = 0
-    treatment = Treatment.objects.wfilter(cr_on__gte=start, cr_on__lte=end)
-    treatment_all = Treatment.objects.all()
+    treatment = Treatment.objects.filter(
+        doctor=staff,
+        cr_on__gte=start,
+        cr_on__lte=end
+    )
+    treatment_all = Treatment.objects.filter(
+        doctor=staff,
+        cr_on__gte=start,
+        cr_on__lte=end
+    )
     if treatment.exists():
         for i in treatment:
             patient_sum += i.total_amount

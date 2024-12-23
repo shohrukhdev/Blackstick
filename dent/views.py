@@ -171,7 +171,10 @@ def treatment_print(request):
 @login_required
 def patient_treatment_history(request):
     if request.method == 'GET':
-        context = service.get_patient_treatment_history(request.GET['patient_ref_id'])
+        context = service.get_patient_treatment_history(
+            cur_user=request.user,
+            patient_ref_id=request.GET['patient_ref_id']
+        )
         return render(request, 'dent/treatment_history.html', context=context)
 
 

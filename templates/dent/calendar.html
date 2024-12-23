@@ -171,6 +171,7 @@
         headers: {'X-CSRFToken': getCookie('csrftoken')},
         success: function (response) {
           if (response.success == true) {
+              $('#patient_box').empty();
             $.each(response.data, function (key, val) {
               $('#patient_box').append('<option value="' + val.id + '">' + val.name + ' | ' + val.phone + '</option>');
 

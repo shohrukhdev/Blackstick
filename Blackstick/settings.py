@@ -9,10 +9,12 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+from dotenv import load_dotenv
 import os
 from pathlib import Path
-# import django_heroku
 import dj_database_url
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,14 +32,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gsp=j+#&wru%ay!)d2ys6nim&3aah^1%a#xtcy@k%*(w$63d#t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get('DEBUG', False))
 
-# if IS_HEROKU_APP:
-#     ALLOWED_HOSTS = ["*"]
-# else:
-#     ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
 
-ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:1337"]
+
 
 # Application definition
 
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'dent'
+    'dent',
 ]
 
 MIDDLEWARE = [
@@ -100,36 +100,23 @@ WSGI_APPLICATION = 'Blackstick.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# if IS_HEROKU_APP:
-#     # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-#     # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-#     # automatically by Heroku when a database addon is attached to your Heroku app. See:
-#     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
-#     # https://github.com/jazzband/dj-database-url
-#     DATABASES = {
-#         "default": dj_database_url.config(
-#             conn_max_age=600,
-#             conn_health_checks=True,
-#             ssl_require=True,
-#         ),
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
-# else:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': BASE_DIR / 'db.sqlite3',
-#         }
-#     }
+# }
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE"),
+        "NAME": os.environ.get("SQL_DATABASE"),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -178,7 +165,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), 'static'
 ]
@@ -192,5 +181,7 @@ LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = "/home"
 
 MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 # django_heroku.settings(locals())
