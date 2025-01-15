@@ -1,0 +1,12 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
