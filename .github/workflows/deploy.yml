@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" > dev.key
           chmod 600 dev.key
-          echo BE_IMAGE = "${{ env.IMAGE_REMOTE_URI }}:latest" >> .env
+          echo BE_IMAGE="${{ env.IMAGE_REMOTE_URI }}:latest" >> .env
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           scp -i dev.key -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           ssh -i dev.key -o StrictHostKeyChecking=no ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
