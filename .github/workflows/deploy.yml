@@ -39,7 +39,7 @@ jobs:
           chmod 600 dev.key
           cat dev.key
           echo "Imported the KEY"
-          scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml django_ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }}:./
+          scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml ec2-user@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           echo "Copied the yaml file"
           ssh -i dev.key -o StrictHostKeyChecking=no ec2-user@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
             echo "In SSH block"
