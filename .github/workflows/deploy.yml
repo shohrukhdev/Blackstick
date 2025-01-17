@@ -44,8 +44,8 @@ jobs:
             aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
             aws configure set region "us-east-1"
             aws configure set output "text"
-            echo "ECR Registry ${{ ECR_REGISTRY }}"
-            echo "Image URI ${{ IMAGE_REMOTE_URI }}"
+            echo "ECR Registry ${{ env.ECR_REGISTRY }}"
+            echo "Image URI ${{ env.IMAGE_REMOTE_URI }}"
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin "${{ env.ECR_REGISTRY }}"
             docker pull "${{ env.IMAGE_REMOTE_URI }}:latest"
           ENDSSH
