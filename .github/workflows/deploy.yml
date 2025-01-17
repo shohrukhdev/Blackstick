@@ -50,5 +50,7 @@ jobs:
             aws ecr get-login-password --region us-east-1 | docker login -u AWS --password-stdin ${{ env.ECR_REGISTRY }}
             docker pull ${{ env.IMAGE_REMOTE_URI }}:latest
             source .env
+            echo "Come to START"
             docker-compose -f docker-compose.prod.yml up -d
+            echo "Container STARTED"
           ENDSSH
