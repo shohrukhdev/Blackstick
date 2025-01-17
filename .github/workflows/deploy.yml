@@ -45,5 +45,5 @@ jobs:
             aws configure set region "us-east-1"
             aws configure set output "text"
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
-            docker pull ${{ env.IMAGE_REMOTE_URI }}:latest
+#            docker pull ${{ env.IMAGE_REMOTE_URI }}:latest
           ENDSSH
