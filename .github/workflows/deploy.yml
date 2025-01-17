@@ -37,8 +37,8 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" > dev.key
           chmod 600 dev.key
-          scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }}:./
-          ssh -i dev.key -o StrictHostKeyChecking=no django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
+          scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml 060795929717@${{ secrets.INSTANCE_IP_ADDRESS }}:./
+          ssh -i dev.key -o StrictHostKeyChecking=no 060795929717@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
             ls
             aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
             aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
