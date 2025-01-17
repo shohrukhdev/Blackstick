@@ -38,11 +38,11 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > dev.key
           chmod 600 dev.key
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }}:./
-          ssh -i dev.key -o StrictHostKeyChecking=no django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }} << 'ENDSSH'
+          ssh -i dev.key -o StrictHostKeyChecking=no django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
             ls
             aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
             aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
             aws configure set region "us-east-1"
             aws configure set output "text"
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
-          'ENDSSH'
+          ENDSSH
