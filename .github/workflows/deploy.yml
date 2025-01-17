@@ -35,7 +35,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_REMOTE_URI: ${{ steps.login-ecr.outputs.registry }}/django-ec2
         run:
-          echo "${{ secrets.SSH_KEY }}" < dev.key
+          echo "${{ secrets.SSH_KEY }}" > dev.key
           chmod 600 dev.key
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           ssh -i dev.key -o StrictHostKeyChecking=no django-ecr2-user@${{ secrets.INSTANCE_IP_ADDRESS }} << ENDSSH
