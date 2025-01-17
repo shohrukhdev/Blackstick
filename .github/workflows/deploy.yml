@@ -37,17 +37,18 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}" > dev.key
           chmod 600 dev.key
-          cat dev.key
-          echo "Imported the KEY"
+          echo BE_IMAGE = "${{ env.IMAGE_REMOTE_URI }}:latest" >> .env
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
-          echo "Copied the yaml file"
+          scp -i dev.key -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           ssh -i dev.key -o StrictHostKeyChecking=no ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
-            echo "In SSH block"
             ls
+            cat .env
             aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
             aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
             aws configure set region "us-east-1"
             aws configure set output "text"
             aws ecr get-login-password --region us-east-1 | docker login -u AWS --password-stdin ${{ env.ECR_REGISTRY }}
             docker pull ${{ env.IMAGE_REMOTE_URI }}:latest
+            source .env
+            docker-compose -f docker-compose.prod.yml up -d
           ENDSSH
