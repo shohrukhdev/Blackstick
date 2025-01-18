@@ -1,6 +1,8 @@
 services:
   web:
     container_name: ubuntu_web_1
+    env_file:
+      - .env
     image: "${BE_IMAGE}"
     ports:
       - "8000:8000"
