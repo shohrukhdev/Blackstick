@@ -1,6 +1,6 @@
 services:
   web:
-    build: .
+    container_name: web
     image: "${BE_IMAGE}"
     ports:
       - "8000:8000"
