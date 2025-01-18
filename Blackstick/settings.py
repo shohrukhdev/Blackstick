@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-gsp=j+#&wru%ay!)d2ys6nim&3aah^1%a#xtcy@k%*(w$63d#t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', False))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "*").split(" ")
+ALLOWED_HOSTS = ["51.20.0.174", "alphadent.store"]
 
 CSRF_TRUSTED_ORIGINS = ("https://alphadent.store", )
 
