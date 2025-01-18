@@ -1,8 +1,15 @@
 services:
   web:
-    container_name: u1_web
-    env_file: .env
-    ports:
-      - "8000:8050"
+    container_name: ubuntu_web_1
+    env_file:
+      - .env
     image: "${BE_IMAGE}"
-    command: gunicorn u1django.wsgi:application --bind 0.0.0.0:8050 --workers=1 --timeout=60
+    ports:
+      - "8000:8000"
+    command: gunicorn Blackstick.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+volumes:
+  static_volume:
+  media_volume:
