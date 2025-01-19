@@ -13,8 +13,8 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc
+RUN apk update && \
+    apk add --no-cache gcc musl-dev libffi-dev libpq-dev netcat-openbsd
 
 # lint
 RUN pip install --upgrade pip
@@ -37,8 +37,8 @@ FROM python:3.12-alpine
 # create directory for the app user
 RUN mkdir -p /home/app
 
-# create the app user
-RUN addgroup --system app && adduser --system --group app
+# Create the app user (using Alpine's syntax for adduser)
+RUN adduser -D -g '' app
 
 # create the appropriate directories
 ENV HOME=/home/app
@@ -48,8 +48,9 @@ RUN mkdir $APP_HOME/staticfiles
 RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
-# install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends netcat
+# Install dependencies using apk (Alpine's package manager)
+RUN apk update && apk add --no-cache netcat-openbsd
+
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
