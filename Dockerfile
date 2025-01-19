@@ -18,7 +18,7 @@ RUN apt-get update && \
 
 # lint
 RUN pip install --upgrade pip
-RUN pip install flake8==6.0.0
+RUN pip install flake8==7.1.1
 COPY .. /usr/src/app/
 RUN flake8 --ignore=E501,F401 .
 
