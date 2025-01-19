@@ -32,7 +32,7 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 #########
 
 # pull official base image
-FROM python:python:3.12-alpine
+FROM python:3.12-alpine
 
 # create directory for the app user
 RUN mkdir -p /home/app
