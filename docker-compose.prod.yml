@@ -10,3 +10,6 @@ services:
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
+volumes:
+  static_volume:
+  media_volume:
