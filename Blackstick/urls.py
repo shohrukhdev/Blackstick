@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('login/', mainviews.user_login, name='login'),
-    path('demo/login', mainviews.demo_user_login, name='demo_login'),
+    path('demo/login/', mainviews.demo_user_login, name='demo_login'),
 
     path('logout/', authview.LogoutView.as_view(template_name='logout.html'), name='logout'),
     path('', mainviews.home, name='home'),
