@@ -34,6 +34,31 @@ def user_login(request):
         return render(request, 'login.html', {})
 
 
+def demo_user_login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(username=username, password=password)
+        if user is not None and "demo" in username:
+            if user.is_active:
+                login(request, user)
+                staff = service.get_staff(user)
+                request.session['role'] = staff.role.code
+                request.session['clinic'] = staff.clinic.name
+                request.session['clinic_id'] = staff.clinic.id
+                return HttpResponseRedirect("/home")
+            else:
+                return HttpResponse("Your account is disabled")
+        else:
+            return render(
+                request,
+                template_name='demo_login.html',
+                context={"error": "Incorrect username or password"}
+            )
+    else:
+        return render(request, 'demo_login.html', {})
+
+
 @login_required
 def home(request):
     context = service.report_board(cur_user=request.user)
