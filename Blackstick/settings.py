@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
 
-ALLOWED_HOSTS = ["alphadent.store", "localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["alphadent.store", "localhost", "127.0.0.1", "0.0.0.0", "51.20.0.174"]
 
 CSRF_TRUSTED_ORIGINS = ("https://alphadent.store", )
 
