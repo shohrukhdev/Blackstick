@@ -2,6 +2,9 @@
 
 python manage.py migrate
 python manage.py collectstatic --no-input --clear
+python manage.py compilemessages -l en
+python manage.py compilemessages -l uz
+python manage.py compilemessages -l ru
 
 python manage.py loaddata users.json
 python manage.py loaddata roles.json
