@@ -43,6 +43,7 @@ jobs:
           echo DB_PASSWORD="${{ secrets.DB_PASSWORD }}" >> .env
           echo DB_HOST="${{ secrets.DB_HOST }}" >> .env
           echo DB_PORT="${{ secrets.DB_PORT }}" >> .env
+          echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           scp -i dev.key -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           ssh -i dev.key -o StrictHostKeyChecking=no ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
