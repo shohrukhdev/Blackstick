@@ -38,6 +38,11 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > dev.key
           chmod 600 dev.key
           echo BE_IMAGE="${{ env.IMAGE_REMOTE_URI }}:latest" >> .env
+          echo DB_NAME="${{ env.DB_NAME }}" >> .env
+          echo DB_USER="${{ env.DB_USER }}" >> .env
+          echo DB_PASSWORD="${{ env.PASSWORD }}" >> .env
+          echo DB_HOST="${{ env.DB_HOST }}" >> .env
+          echo DB_PORT="${{ env.DB_PORT }}" >> .env
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           scp -i dev.key -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           ssh -i dev.key -o StrictHostKeyChecking=no ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"

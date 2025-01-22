@@ -1,6 +1,20 @@
 #!/bin/sh
 
 python manage.py migrate
-#python manage.py collectstatic --no-input --clear
+python manage.py collectstatic --no-input --clear
+
+python manage.py loaddata users.json
+python manage.py loaddata roles.json
+python manage.py loaddata clinics.json
+python manage.py loaddata staff.json
+python manage.py loaddata patients.json
+python manage.py loaddata categories.json
+python manage.py loaddata procedures.json
+python manage.py loaddata proceduretoothstates.json
+python manage.py loaddata services.json
+python manage.py loaddata servicestaff.json
+python manage.py loaddata teeth.json
+python manage.py loaddata toothstates.json
+python manage.py loaddata treatment.json
 
 exec "$@"

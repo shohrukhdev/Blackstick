@@ -5,7 +5,7 @@
   "fields": {
     "password": "pbkdf2_sha256$600000$BwDIhn6EuQ0JxxXqPc9iC0$op4e9uwAsXjH5J3X8bQelhT6P5mtDhxZaBubxJhId1Q=",
     "last_login": "2024-04-02T18:26:04.741Z",
-    "is_superuser": true,
+    "is_superuser": false,
     "username": "skimsanov",
     "first_name": "Jack",
     "last_name": "Sparrow",
@@ -23,7 +23,7 @@
   "fields": {
     "password": "pbkdf2_sha256$870000$3gQJXQjwoAlo1fcJ8zahiy$U7G8VRCG85DJRs3OmnGcW1KZYT652WboGHhLwDGgz/M=",
     "last_login": "2024-11-12T08:41:01.541Z",
-    "is_superuser": true,
+    "is_superuser": false,
     "username": "a",
     "first_name": "Shokhrukh",
     "last_name": "Kimsanov",
