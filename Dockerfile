@@ -49,7 +49,7 @@ RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # Install dependencies using apk (Alpine's package manager)
-RUN apk update && apk add --no-cache netcat-openbsd
+RUN apk update && apk add --no-cache netcat-openbsd gettext
 
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
