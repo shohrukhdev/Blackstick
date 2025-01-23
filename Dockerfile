@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
 RUN apk update && \
-    apk add --no-cache gcc musl-dev libffi-dev libpq-dev netcat-openbsd
+    apk add --no-cache gcc musl-dev libffi-dev libpq-dev netcat-openbsd gettext
 
 # lint
 RUN pip install --upgrade pip
