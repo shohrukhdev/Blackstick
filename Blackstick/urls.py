@@ -17,6 +17,7 @@ router.register('eventlist', viewset=api_views.EventListViewSet, basename='Event
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include(router.urls)),
+    path('b/', include('booket.urls')),
     path('admin/', admin.site.urls),
     path('login/', mainviews.user_login, name='login'),
     path('demo/login/', mainviews.demo_user_login, name='demo_login'),
