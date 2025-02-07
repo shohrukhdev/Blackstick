@@ -1,9 +1,10 @@
+import traceback
 from lib2to3.fixes.fix_input import context
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from booket import services as sv
 
 from booket.models import Provider, Server
@@ -39,9 +40,36 @@ def user_login(request):
 def provider_main(request):
     if request.method == "GET":
         provider = sv.get_owners_provider(request.user)
-        service_types = sv.get_provider_service_types(provider)
         context_data = {
             "provider": provider,
-            "service_types": service_types,
         }
         return render(request, "booket/provider.html", context=context_data)
+
+
+@login_required
+def provider_edit(request):
+    if request.method == "GET":
+        try:
+            provider = sv.get_owners_provider(request.user)
+            context_data = {"provider": provider}
+        except Exception as e:
+            context_data = {
+                "success": False,
+                "error": traceback.format_exc()
+            }
+        return render(request, "booket/provider_edit.html", context=context_data)
+    elif request.method == "POST":
+        try:
+            provider = get_object_or_404(Provider, id=request.POST.get("provider_id"))
+            provider.name = request.POST.get("name")
+            provider.address = request.POST.get("address")
+            provider.city = request.POST.get("description")
+            provider.is_active = 'is_active' in request.POST  # Boolean check
+
+        except Exception as e:
+            context_data = {
+                "success": False,
+                "error": traceback.format_exc()
+            }
+
+

@@ -49,8 +49,6 @@ class ServiceType(models.Model):
     name = models.CharField(max_length=150, null=True, blank=True)
     name_uz = models.CharField(max_length=150, null=True, blank=True)
     name_ru = models.CharField(max_length=150, null=True, blank=True)
-    description = models.TextField(null=True, blank=True)
-    initial_price = models.IntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
 
@@ -81,6 +79,7 @@ class Service(models.Model):
 class ProviderServerService(models.Model):   # Services are performed by the servers of the provider
     provider_server = models.ForeignKey(ProviderServer, on_delete=models.CASCADE, null=True, blank=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
+    service_private_price = models.IntegerField(null=True, blank=True)
 
 
 def default_day_off():

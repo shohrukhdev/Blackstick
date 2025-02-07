@@ -83,6 +83,21 @@
   {% block content %}
     
   {% endblock %}
+  <!-- Toaster Container -->
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <!-- Toast -->
+        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Error</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                <!-- Error message will be inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
 <script>
   function submitUserLogoutForm(){
             $('#user-logout-form').submit();
@@ -104,6 +119,33 @@
       event.target.parentElement.classList.toggle('toggle-change');
     }
   })
+});
+        // custom.js
+document.addEventListener("DOMContentLoaded", function () {
+    // Parse query parameters
+    var success;
+    var errorMessage;
+
+    {% if success is False or success is True %}
+        success = "{{ success }}";
+        errorMessage = "{{ error }}";
+    {% endif %}
+    console.log("{{ success }}")
+    console.log(success)
+    console.log(errorMessage)
+    // Check if success is false and an error message exists
+    if (success === 'False' && errorMessage) {
+        // Get the toast element
+        const toastElement = document.getElementById('errorToast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // Set the error message
+        toastMessage.textContent = errorMessage;
+
+        // Initialize and show the toast
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    }
 });
 </script>
 {% endblock %}
