@@ -4,148 +4,169 @@
 {% block title %} Home {% endblock %}
 {% block container %}
   <style>
-  .profile-menu { 
-  .dropdown-menu{
-    right: 0;
-    left: unset;
-  }
-  .fa-fw{
-    margin-right: 10px;
-  }  
-}
-.toggle-change{
-    &::after {
-    border-top: 0;
-    border-bottom: .3em solid;
-    }
-} 
+      .profile-menu {
+          .dropdown-menu {
+              right: 0;
+              left: unset;
+          }
+
+          .fa-fw {
+              margin-right: 10px;
+          }
+      }
+
+      .toggle-change {
+          &::after {
+              border-top: 0;
+              border-bottom: .3em solid;
+          }
+      }
   </style>
   {% get_current_language as LANG_CODE %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">{{ request.user.server_user }}</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu"> 
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="fas fa-user"></i>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item">
-            <i class="fas fa-sliders-h fa-fw"></i>
-              <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="text" value="{{ redirect_to }}">
-                <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
-                  {% get_available_languages as LANGUAGES %}
-                  {% get_language_info_list for LANGUAGES as languages %}
-                  {% for language in languages %}
-                    <option class="form-control" value="{{ language.code }}"
-                      {% if language.code == LANG_CODE %} selected {% endif %}>
-                      {{ language.name_local }}
-                    </option>
-                  {% endfor %}
-                </select>
-              </form>
-            </a></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a></li>
-          </ul>
-        </li>
-     </ul>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">{{ request.user.server_user }}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              <i class="fas fa-user"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item">
+                <i class="fas fa-sliders-h fa-fw"></i>
+                <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="text" value="{{ redirect_to }}">
+                  <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                      <option class="form-control" value="{{ language.code }}"
+                        {% if language.code == LANG_CODE %} selected {% endif %}>
+                        {{ language.name_local }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </form>
+              </a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
-</nav>
-  
+  </nav>
+
   {% block content %}
-    
+
   {% endblock %}
   <!-- Toaster Container -->
-<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div aria-live="polite" aria-atomic="true" class="position-relative">
     <div class="toast-container position-fixed top-0 end-0 p-3">
-        <!-- Toast -->
-        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <strong class="me-auto">Error</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body" id="toastMessage">
-                <!-- Error message will be inserted here -->
-            </div>
+      <!-- Toast -->
+      <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto" id="toast-title">Error</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
+        <div class="toast-body" id="toastMessage">
+          <!-- Error message will be inserted here -->
+        </div>
+      </div>
     </div>
-</div>
-<script>
-  function submitUserLogoutForm(){
-            $('#user-logout-form').submit();
-        }
-        
-  var cur_lang = document.getElementById('cur_lang').value;
+  </div>
+  <script>
+      function submitUserLogoutForm() {
+          $('#user-logout-form').submit();
+      }
 
-        function submitlang() {
-            $('#setlangform').submit();
-        }
-        
-  document.querySelectorAll('.dropdown-toggle').forEach(item => {
-  item.addEventListener('click', event => {
- 
-    if(event.target.classList.contains('dropdown-toggle') ){
-      event.target.classList.toggle('toggle-change');
-    }
-    else if(event.target.parentElement.classList.contains('dropdown-toggle')){
-      event.target.parentElement.classList.toggle('toggle-change');
-    }
-  })
-});
-        // custom.js
-document.addEventListener("DOMContentLoaded", function () {
-    // Parse query parameters
-    var success;
-    var errorMessage;
+      var cur_lang = document.getElementById('cur_lang').value;
 
-    {% if success is False or success is True %}
-        success = "{{ success }}";
-        errorMessage = "{{ error }}";
-    {% endif %}
-    console.log("{{ success }}")
-    console.log(success)
-    console.log(errorMessage)
-    // Check if success is false and an error message exists
-    if (success === 'False' && errorMessage) {
-        // Get the toast element
-        const toastElement = document.getElementById('errorToast');
-        const toastMessage = document.getElementById('toastMessage');
+      function submitlang() {
+          $('#setlangform').submit();
+      }
 
-        // Set the error message
-        toastMessage.textContent = errorMessage;
+      document.querySelectorAll('.dropdown-toggle').forEach(item => {
+          item.addEventListener('click', event => {
 
-        // Initialize and show the toast
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
-    }
-});
-</script>
+              if (event.target.classList.contains('dropdown-toggle')) {
+                  event.target.classList.toggle('toggle-change');
+              } else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
+                  event.target.parentElement.classList.toggle('toggle-change');
+              }
+          })
+      });
+      // custom.js
+      document.addEventListener("DOMContentLoaded", function () {
+          // Parse query parameters
+          var success;
+          var errorMessage;
+
+          {% if success is False or success is True %}
+              success = "{{ success }}";
+              errorMessage = "{{ error }}";
+          {% endif %}
+          // Check if success is false and an error message exists
+          if (success === 'False' && errorMessage) {
+              // Get the toast element
+              const toastElement = document.getElementById('errorToast');
+              const toastMessage = document.getElementById('toastMessage');
+
+              // Set the error message
+              toastMessage.textContent = errorMessage;
+
+              // Initialize and show the toast
+              const toast = new bootstrap.Toast(toastElement);
+              toast.show();
+          } else if (success === 'True') {
+              // Get the toast element
+              const toastElement = document.getElementById('errorToast');
+              const toastMessage = document.getElementById('toastMessage');
+              const toastTitleElement = document.getElementById('toast-title');
+
+              // Set the error message
+              toastTitleElement.textContent = "Success!";
+              toastMessage.textContent = "Operation succeeded";
+
+              // Initialize and show the toast
+              const toast = new bootstrap.Toast(toastElement, {
+                  autohide: true,
+                  delay: 5000, // 5 sec
+              });
+              toast.show();
+          }
+      });
+  </script>
 {% endblock %}

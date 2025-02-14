@@ -1,0 +1,87 @@
+{% extends "booket/container.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
+{% block title %} {% trans "Specialist" %} {% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+      /* Custom CSS to center the card vertically and horizontally */
+      .container {
+          height: 95%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card-container {
+          width: 100%; /* Default width for mobile */
+          padding-top: 2%;
+      }
+
+      @media (min-width: 768px) {
+          .card-container {
+              width: 50%; /* Width for desktop and wider screens */
+          }
+
+          .card-form {
+              padding: 4%;
+          }
+      }
+  </style>
+
+  <div class="container">
+    <div class="card-container">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="window.location.href='{% url "b_provider_main" %}'"
+                  class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="mb-0">{% trans "Edit Specialist" %}</h5>
+        </div>
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="card-body">
+            <input type="hidden" name="id" value="{{ ps.id }}">
+            <div class="mb-3">
+              <label for="name" class="form-label">{% trans "Name" %}</label>
+              <input type="text" class="form-control" id="name" name="name" maxlength="255"
+                     value="{{ ps.server.user.get_full_name }}"
+                     disabled>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">{% trans "Phone" %}</label>
+              <input type="text" class="form-control" id="phone_number" name="phone_number" maxlength="13"
+                     value="{{ ps.server.phone_number }}"
+                     required>
+            </div>
+            <div class="mb-3">
+              <label for="info" class="form-label">{% trans "Info" %}</label>
+              <textarea type="text" class="form-control" id="info" name="info">{{ ps.server.info }}</textarea>
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">{% trans "Image" %}</label>
+              <input type="file" class="form-control" id="logo" name="image" value="{{ ps.server.image.name }}">
+              {% if ps.server.image %}
+                <img src="{{ ps.server.image.url }}" alt="{{ ps.server.image.name }}" width="100%">
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label for="logo" class="form-label">{% trans "Active" %}</label>
+              <select class="form-select" id="active" name="is_active">
+                <option value="True" {% if ps.server.is_active %}selected{% endif %}>{% trans "True" %}</option>
+                <option value="False" {% if not ps.server.is_active %}selected{% endif %}>{% trans "False" %}</option>
+              </select>
+            </div>
+          </div>
+          <!-- Card Footer (Buttons) -->
+          <div class="card-footer bg-light">
+            <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'"
+                    style="float: right">{% trans "Back" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

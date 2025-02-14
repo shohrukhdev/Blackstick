@@ -66,7 +66,7 @@
             </div>
             <div class="mb-3">
               <label for="address" class="form-label">{% trans "Image" %}</label>
-              <input type="file" class="form-control" id="image" name="image" value="{{ provider.logo.name }}">
+              <input type="file" class="form-control" id="logo" name="logo" value="{{ provider.logo.name }}">
               {% if provider.logo %}
                 <img src="{{ provider.logo.url }}" alt="{{ provider.logo.name }}" width="100%">
               {% endif %}
@@ -76,32 +76,12 @@
           <!-- Card Footer (Buttons) -->
           <div class="card-footer bg-light">
             <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
-            <button class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'" style="float: right">{% trans "Cancel" %}</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'" style="float: right">{% trans "Back" %}</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-  {#  <div class="d-flex align-items-center justify-content-center">#}
-  {#    <div class="row">#}
-  {#      <div class="col-md-10 col-sm-12">#}
-  {#        <div class="card" style="max-width: 600px">#}
-  {#          <div class="card-header">#}
-  {#            <h4 class="card-title">{% trans "Edit provider" %}</h4>#}
-  {#          </div>#}
-  {#          <div class="card-body">#}
-  {#            <form method="POST">#}
-  {#              {% csrf_token %}#}
-  {#              <div class="mb-3">#}
-  {#                <label class="form-label">{% trans "Name" %}</label>#}
-  {#                <input class="form-control" type="text" name="name" value="{{ provider.name }}">#}
-  {#              </div>#}
-  {#            </form>#}
-  {#          </div>#}
-  {#        </div>#}
-  {#      </div>#}
-  {#    </div>#}
-  {#  </div>#}
 
 {% endblock %}
 
