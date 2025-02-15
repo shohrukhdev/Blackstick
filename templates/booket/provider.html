@@ -30,7 +30,12 @@
       </div>
       <ul class="list-group list-group shadow">
         {% for pro_server in provider.providerserver_set.all %}
-          <li class="list-group-item">{{ pro_server.server }}
+          <li class="list-group-item">
+            <a {% if not pro_server.server.is_active %} style="opacity: 0.5" {% endif %}>{{ pro_server.server }}
+            {% if not pro_server.server.is_active %}
+              ({% trans 'Disabled' %})
+            {% endif %}
+            </a>
             <div style="float:right;">
               <button onclick="location.href='{% url 'b_server_edit' id=pro_server.id %}'" class="btn btn-warning btn-sm"  type="button">{% trans "Edit" %}</button>
             </div>
@@ -48,6 +53,7 @@
       <ul class="list-group shadow">
         {% for type in provider.service_type.all %}
           <li class="list-group-item"  style="float:left;">
+          <a {% if not type.is_active %} style="opacity: 0.5" {% endif %}>
             {% if LANG_CODE == "uz" %}
               {{ type.name_uz }}
             {% elif LANG_CODE == "ru" %}
@@ -55,8 +61,9 @@
             {% else %}
               {{ type.name }}
             {% endif %}
+          </a>
           <div style="float:right;">
-            <button class="btn btn-warning btn-sm" type="button">{% trans "Edit" %}</button>
+            <button onclick="location.href='{% url 'b_service_type_edit' id=type.id %}'" class="btn btn-warning btn-sm" type="button">{% trans "Edit" %}</button>
             <button class="btn btn-primary btn-sm" type="button">{% trans "Services" %}</button>
           </div>
           </li>

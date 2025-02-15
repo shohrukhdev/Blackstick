@@ -72,3 +72,15 @@ def service_type_add(request):
         if not context_data["success"]:
             return render(request, "booket/service_type.html", context=context_data)
         return HttpResponseRedirect('/b/provider/')
+
+
+@login_required
+def service_type_edit(request, id: int):
+    if request.method == "GET":
+        context_data = sv.get_service_type(id=id, user=request.user)
+        return render(request, "booket/service_type_edit.html", context=context_data)
+    elif request.method == "POST":
+        context_data = sv.edit_service_type(request)
+        if not context_data.get("success"):
+            return render(request, "booket/service_type_edit.html", context=context_data)
+        return HttpResponseRedirect('/b/provider/')

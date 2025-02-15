@@ -129,3 +129,53 @@ def add_service_type(request: HttpRequest) -> dict:
         }
         logger.error(traceback.format_exc())
     return context_data
+
+
+def get_service_type(id: int, user: User) -> dict:
+    """Get Service Type object for given id."""
+    try:
+        st = get_object_or_404(ServiceType, id=id)
+        if st.provider.owner == user:
+            context_data = {
+                "service_type": st,
+            }
+        else:
+            context_data = {
+                "success": False,
+                "error": f"You have no rights to modify service type {id}"
+            }
+    except Exception as e:
+        context_data = {
+            "success": False,
+            "error": str(e)
+        }
+        logger.error(traceback.format_exc())
+    return context_data
+
+
+def edit_service_type(request: HttpRequest) -> dict:
+    try:
+        st = get_object_or_404(ServiceType, id=request.POST.get("id"))
+        if st.provider.owner == request.user:
+            st.name = request.POST.get("name")
+            st.name_uz = request.POST.get("name_uz")
+            st.name_ru = request.POST.get("name_ru")
+            st.is_active = request.POST.get("is_active") == "True"
+            st.save()
+            context_data = {
+                "success": True,
+                "st": st,
+            }
+        else:
+            context_data = {
+                "success": False,
+                "error": f"You have no rights to modify service type {st.id}"
+            }
+    except Exception as e:
+        context_data = {
+            "success": False,
+            "error": str(e)
+        }
+        logger.error(traceback.format_exc())
+    return context_data
+

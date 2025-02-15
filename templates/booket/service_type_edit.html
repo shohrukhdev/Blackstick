@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
-{% block title %} {% trans "Add service type" %}{% endblock %}
+{% block title %} {% trans "Edit service type" %}{% endblock %}
 {% block content %}
   {% get_current_language as LANG_CODE %}
   <style>
@@ -35,28 +35,36 @@
         <!-- Card Header -->
         <div class="card-header bg-primary text-white">
           <button type="button" onclick="window.location.href='{% url "b_provider_main" %}'" class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
-          <h5 class="card-title mb-0">{% trans "Add service type" %}</h5>
+          <h5 class="card-title mb-0">{% trans "Edit service type" %}</h5>
         </div>
         <form class="form-group card-form" method="post">
           <!-- Card Body (Form) -->
           <div class="card-body">
             {% csrf_token %}
+            <input type="hidden" name="id" value="{{ service_type.id }}">
             <div class="mb-3">
               <label for="name_uz" class="form-label">{% trans "Name UZ" %}</label>
-              <input type="text" class="form-control" id="name_uz" name="name_uz" maxlength="255" required>
+              <input type="text" class="form-control" id="name_uz" name="name_uz" value="{{ service_type.name_uz }}" maxlength="255" required>
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">{% trans "Name EN" %}</label>
-              <input type="text" class="form-control" id="name" name="name" maxlength="255" required>
+              <input type="text" class="form-control" id="name" name="name" value="{{ service_type.name }}" maxlength="255" required>
             </div>
             <div class="mb-3">
               <label for="name_ru" class="form-label">{% trans "Name RU" %}</label>
-              <input type="text" class="form-control" id="name_ru" name="name_ru" maxlength="255"  required>
+              <input type="text" class="form-control" id="name_ru" name="name_ru" value="{{ service_type.name_ru }}" maxlength="255"  required>
+            </div>
+            <div class="mb-3">
+              <label for="logo" class="form-label">{% trans "Active" %}</label>
+              <select class="form-select" id="active" name="is_active">
+                <option value="True" {% if service_type.is_active %}selected{% endif %}>{% trans "True" %}</option>
+                <option value="False" {% if not service_type.is_active %}selected{% endif %}>{% trans "False" %}</option>
+              </select>
             </div>
 
           <!-- Card Footer (Buttons) -->
           <div class="card-footer bg-light">
-            <button type="submit" class="btn btn-primary">{% trans "Add" %}</button>
+            <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
             <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'" style="float: right">{% trans "Back" %}</button>
           </div>
         </form>
