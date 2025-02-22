@@ -84,3 +84,54 @@ def service_type_edit(request, id: int):
         if not context_data.get("success"):
             return render(request, "booket/service_type_edit.html", context=context_data)
         return HttpResponseRedirect('/b/provider/')
+
+
+@login_required
+def service_list(request, type_id: int):
+    if request.method == "GET":
+        context_data = sv.get_service_list_by_type(type_id=type_id, user=request.user)
+        return render(request, "booket/service_list.html", context=context_data)
+
+
+@login_required
+def service_add(request, type_id: int):
+    if request.method == "GET":
+        context_data = sv.get_service_type(id=type_id, user=request.user)
+        return render(request, "booket/service_add.html", context=context_data)
+    elif request.method == "POST":
+        result = sv.add_service(request)
+        if result.get("success") is False:
+            context_data = sv.get_service_type(id=type_id, user=request.user)
+            context_data["error"] = result.get("error")
+            return render(request, "booket/service_add.html", context=context_data)
+        sr = result["sr"]
+        return HttpResponseRedirect(f'/b/service/list/{sr.tip.id}')
+
+
+@login_required
+def service_edit(request, id: int):
+    if request.method == "GET":
+        context_data = sv.get_service(id=id, user=request.user)
+        return render(request, "booket/service_edit.html", context=context_data)
+    elif request.method == "POST":
+        result = sv.edit_service(request)
+        sr = result["service"]
+        if result.get("success") is False:
+            context_data = sv.get_service(id=id, user=request.user)
+            context_data["success"] = False
+            context_data["error"] = result.get("error")
+            return render(request, "booket/service_edit.html", context=context_data)
+        return HttpResponseRedirect(f'/b/service/list/{sr.tip.id}/')
+
+
+@login_required
+def server_services(request, server_id: int):
+    if request.method == "GET":
+        context_data = sv.get_server_services(user=request.user, p_server_id=server_id)
+        return render(request, "booket/server_service.html", context=context_data)
+    elif request.method == "POST":
+        result = sv.edit_server_service(request)
+        context_data = sv.get_server_services(user=request.user, p_server_id=server_id)
+        if result.get("success") is False:
+            context_data["error"] = result.get("error")
+        return HttpResponseRedirect(f'/b/server/{result.get("p_server_id")}/services/')

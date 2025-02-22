@@ -1,0 +1,89 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "Service add" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+      /* Custom CSS to center the card vertically and horizontally */
+      .container {
+          height: 95%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card-container {
+          width: 100%; /* Default width for mobile */
+          padding-top: 3%;
+      }
+
+      @media (min-width: 768px) {
+          .card-container {
+              width: 50%; /* Width for desktop and wider screens */
+          }
+
+          .card-form {
+              padding: 4%;
+          }
+      }
+  </style>
+  <div class="container">
+    <div class="card-container">
+      <div class="card shadow">
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="window.location.href='{% url "b_service_list" type_id=service_type.id %}'" class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="card-title mb-0">{% trans "Add new service for provider" %}</h5>
+        </div>
+        <form class="form-group card-form" method="post">
+          <!-- Card Body (Form) -->
+          <div class="card-body">
+            {% csrf_token %}
+            <input type="hidden" name="type_id" value="{{ service_type.id }}">
+            <div class="mb-3">
+              <label for="name_uz" class="form-label">{% trans "Service type" %}</label>
+              <input type="text" class="form-control" id="type" name="type" value="
+              {% if LANG_CODE == "uz" %}
+                  {{ service_type.name_uz }}
+                {% elif LANG_CODE == "ru" %}
+                  {{ service_type.name_ru }}
+                {% else %}
+                  {{ service_type.name }}
+                {% endif %}              
+              " disabled>
+            </div>
+            <div class="mb-3">
+              <label for="name_uz" class="form-label">{% trans "Name UZ" %}</label>
+              <input type="text" class="form-control" id="name_uz" name="name_uz" value="{{ name_uz|default:'' }}" maxlength="255" required>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">{% trans "Name EN" %}</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{ name|default:'' }}" maxlength="255" required>
+            </div>
+            <div class="mb-3">
+              <label for="name_ru" class="form-label">{% trans "Name RU" %}</label>
+              <input type="text" class="form-control" id="name_ru" value="{{ name_ru|default:'' }}" name="name_ru" maxlength="255"  required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">{% trans "Description" %}</label>
+              <textarea class="form-control" id="description" name="description" value="{{ description|default:'' }}" maxlength="255"></textarea>
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">{% trans "Base price" %}</label>
+              <input type="number" class="form-control" id="price" value="{{ price|default:'' }}" name="price" maxlength="128"  required>
+            </div>
+          </div>
+          <!-- Card Footer (Buttons) -->
+          <div class="card-footer bg-light">
+            <button type="submit" class="btn btn-primary">{% trans "Add" %}</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_service_list" type_id=service_type.id %}'" style="float: right">{% trans "Back" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

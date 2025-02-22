@@ -1,0 +1,109 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "Service edit" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+      /* Custom CSS to center the card vertically and horizontally */
+      .container {
+          height: 95%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card-container {
+          width: 100%; /* Default width for mobile */
+          padding-top: 3%;
+      }
+
+      @media (min-width: 768px) {
+          .card-container {
+              width: 50%; /* Width for desktop and wider screens */
+          }
+
+          .card-form {
+              padding: 4%;
+          }
+      }
+  </style>
+  <div class="container">
+    <div class="card-container">
+      <div class="card shadow">
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="location.href='{% url "b_service_list" type_id=service.tip.id %}'"
+                  class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="card-title mb-0">{% trans "Edit service for provider" %}</h5>
+        </div>
+        <form class="form-group card-form" method="post">
+          <!-- Card Body (Form) -->
+          <div class="card-body">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{ service.id }}">
+            <div class="mb-3">
+              <label for="name_uz" class="form-label">{% trans "Service type" %}</label>
+                <select class="form-select" id="service_type_id" name="service_type_id">
+                  {% for service_type in service_type_list %}
+                    <option {% if service_type.id == service.tip.id %} selected {% endif %} value="{{ service_type.id }}">
+                      {% if LANG_CODE == "uz" %}
+                        {{ service_type.name_uz }}
+                      {% elif LANG_CODE == "ru" %}
+                        {{ service_type.name_ru }}
+                      {% else %}
+                        {{ service_type.name }}
+                      {% endif %}
+                    </option>
+                  {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+              <label for="name_uz" class="form-label">{% trans "Name UZ" %}</label>
+              <input type="text" class="form-control" id="name_uz" name="name_uz" value="{{ service.name_uz }}"
+                     maxlength="255" required>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">{% trans "Name EN" %}</label>
+              <input type="text" class="form-control" id="name" name="name" value="{{ service.name }}" maxlength="255"
+                     required>
+            </div>
+            <div class="mb-3">
+              <label for="name_ru" class="form-label">{% trans "Name RU" %}</label>
+              <input type="text" class="form-control" id="name_ru" value="{{ service.name_ru }}" name="name_ru"
+                     maxlength="255" required>
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">{% trans "Description" %}</label>
+              <textarea class="form-control" id="description" name="description"
+                        maxlength="255">{{ service.description }}</textarea>
+            </div>
+            <div class="mb-3">
+              <label for="price" class="form-label">{% trans "Base price" %}</label>
+              <input type="number" class="form-control" id="price" value="{{ service.price }}" name="price"
+                     maxlength="128" required>
+            </div>
+            <div class="mb-3">
+            <label for="logo" class="form-label">{% trans "Active" %}</label>
+            <select class="form-select" id="active" name="is_active">
+              <option value="True" {% if service.is_active %}selected{% endif %}>{% trans "True" %}</option>
+              <option value="False" {% if not service.is_active %}selected{% endif %}>{% trans "False" %}</option>
+            </select>
+          </div>
+          </div>
+          
+          <!-- Card Footer (Buttons) -->
+          <div class="card-footer bg-light">
+            <button type="submit" class="btn btn-primary">{% trans "Add" %}</button>
+            <button type="button" class="btn btn-secondary"
+                    onclick="location.href='{% url "b_service_list" type_id=service.tip.id %}'"
+                    style="float: right">{% trans "Back" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

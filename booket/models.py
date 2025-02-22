@@ -64,7 +64,6 @@ class ProviderServer(models.Model):  # Provider can have many servers and server
 
 class Service(models.Model):
     tip = models.ForeignKey(ServiceType, on_delete=models.CASCADE)
-    server = models.ForeignKey(Server, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
     name_uz = models.CharField(max_length=255, null=True, blank=True)
     name_ru = models.CharField(max_length=255, null=True, blank=True)
@@ -80,6 +79,9 @@ class ProviderServerService(models.Model):   # Services are performed by the ser
     provider_server = models.ForeignKey(ProviderServer, on_delete=models.CASCADE, null=True, blank=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
     service_private_price = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        unique_together = (('provider_server', 'service'),)
 
 
 def default_day_off():
@@ -132,10 +134,3 @@ class AppointmentService(models.Model):
 
     def __str__(self):
         return f"{self.appointment} {self.service}"
-
-
-
-
-
-
-

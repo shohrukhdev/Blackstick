@@ -6,70 +6,84 @@
 {% block content %}
   {% get_current_language as LANG_CODE %}
   <style>
-  @media (max-width: 768px) {
-      .specialists-list {
-         margin-top: 5%; 
+      @media (max-width: 768px) {
+          .specialists-list {
+              margin-top: 5%;
+          }
       }
-  }
   </style>
-<div class="container">
-  <div class="row" style="margin-top:25px">
-    <div class="col-md-5 col-sm-12">
-      <div class="card shadow" style="">
-        <img class="card-img-top" src="{{ provider.logo.url }}" alt="Card image">
-        <div class="card-body">
-          <h4 class="card-title">{{ provider.name }}</h4>
-          <p class="card-text">{{ provider.description }}</p>
-          <a onclick="location.href='{% url 'b_provider_edit' %}'" class="btn btn-primary">{% trans "Edit" %}</a>
+  <div class="container">
+    <div class="row" style="margin-top:25px">
+      <div class="col-md-5 col-sm-12">
+        <div class="card shadow" style="">
+          <img class="card-img-top" src="{{ provider.logo.url }}" alt="Card image">
+          <div class="card-body">
+            <h4 class="card-title">{{ provider.name }}</h4>
+            <p class="card-text">{{ provider.description }}</p>
+            <a onclick="location.href='{% url 'b_provider_edit' %}'" class="btn btn-primary">{% trans "Edit" %}</a>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="col-md-7 col-sm-12 specialists-list">
-      <div>
-        <h4 style="display: inline-block">{% trans "Specialists:" %}</h4>
+      <div class="col-md-7 col-sm-12 specialists-list">
+        <div>
+          <h4 style="display: inline-block">{% trans "Specialists:" %}</h4>
+        </div>
+        <ul class="list-group list-group shadow">
+          {% for pro_server in provider.providerserver_set.all %}
+            <li class="list-group-item">
+              <a {% if not pro_server.server.is_active %} style="opacity: 0.5" {% endif %}>{{ pro_server.server }}
+                {% if not pro_server.server.is_active %}
+                  ({% trans 'Disabled' %})
+                {% endif %}
+              </a>
+              <div class="btn-group btn-group-sm" style="float:right">
+                <button onclick="location.href='{% url 'b_server_edit' id=pro_server.id %}'"
+                        class="btn btn-warning btn-sm" type="button">{% trans "Edit" %}</button>
+                <button onclick="location.href='{% url 'b_server_services' server_id=pro_server.id %}'"
+                  class="btn btn-primary btn-sm" type="button">{% trans "Services" %}
+                </button>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
       </div>
-      <ul class="list-group list-group shadow">
-        {% for pro_server in provider.providerserver_set.all %}
-          <li class="list-group-item">
-            <a {% if not pro_server.server.is_active %} style="opacity: 0.5" {% endif %}>{{ pro_server.server }}
-            {% if not pro_server.server.is_active %}
-              ({% trans 'Disabled' %})
-            {% endif %}
-            </a>
-            <div style="float:right;">
-              <button onclick="location.href='{% url 'b_server_edit' id=pro_server.id %}'" class="btn btn-warning btn-sm"  type="button">{% trans "Edit" %}</button>
-            </div>
-          </li>
-        {% endfor %}
-      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12" style="margin-top:25px">
+        <div>
+          <h4 style="display: inline-block">{% trans "Service types:" %}</h4>
+          <button onclick="location.href='{% url 'b_service_type_add' %}'" class="btn btn-success btn-sm"
+                  style="float: right">{% trans "Add" %}</button>
+        </div>
+        <ul class="list-group shadow">
+          {% for type in provider.service_type.all %}
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-6" style="float:left">
+                  <a {% if not type.is_active %} style="opacity: 0.5" {% endif %}>
+                    {% if LANG_CODE == "uz" %}
+                      {{ type.name_uz }}
+                    {% elif LANG_CODE == "ru" %}
+                      {{ type.name_ru }}
+                    {% else %}
+                      {{ type.name }}
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="col-6">
+                  <div class="btn-group btn-group-sm" style="float:right">
+                    <button onclick="location.href='{% url 'b_service_type_edit' id=type.id %}'"
+                            class="btn btn-warning btn-sm" type="button">{% trans "Edit" %}</button>
+                    <button onclick="location.href='{% url 'b_service_list' type_id=type.id %}'"
+                            class="btn btn-primary btn-sm" type="button">{% trans "Services" %}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12" style="margin-top:25px">
-      <div>
-        <h4 style="display: inline-block">{% trans "Service types:" %}</h4>
-        <button onclick="location.href='{% url 'b_service_type_add' %}'" class="btn btn-success btn-sm" style="float: right">{% trans "Add" %}</button>
-      </div>
-      <ul class="list-group shadow">
-        {% for type in provider.service_type.all %}
-          <li class="list-group-item"  style="float:left;">
-          <a {% if not type.is_active %} style="opacity: 0.5" {% endif %}>
-            {% if LANG_CODE == "uz" %}
-              {{ type.name_uz }}
-            {% elif LANG_CODE == "ru" %}
-              {{ type.name_ru }}
-            {% else %}
-              {{ type.name }}
-            {% endif %}
-          </a>
-          <div style="float:right;">
-            <button onclick="location.href='{% url 'b_service_type_edit' id=type.id %}'" class="btn btn-warning btn-sm" type="button">{% trans "Edit" %}</button>
-            <button class="btn btn-primary btn-sm" type="button">{% trans "Services" %}</button>
-          </div>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</div>
 {% endblock %}

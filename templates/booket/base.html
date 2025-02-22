@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap-reboot.min.css' %}">
   <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap-utilities.min.css' %}">
   <link rel="stylesheet" href="{% static 'node_modules/fa/css/all.min.css' %}">
+   <!-- One file includes all the Font Awesome Free icons and utilities -->
+  <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
 </head>
 <body>
   {% block container %}
@@ -25,6 +28,7 @@
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'node_modules/fa/js/all.min.js' %}"></script>
+    <script src="{% static 'fontawesomefree/js/all.min.js' %}"></script>
     <script src="{% static 'util.js' %}"></script>
 
 {% endblock %}

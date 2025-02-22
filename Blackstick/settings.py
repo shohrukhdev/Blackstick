@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'dent',
     'booket',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [
