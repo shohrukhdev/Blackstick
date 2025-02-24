@@ -19,8 +19,9 @@
           <img class="card-img-top" src="{{ provider.logo.url }}" alt="Card image">
           <div class="card-body">
             <h4 class="card-title">{{ provider.name }}</h4>
-            <p class="card-text">{{ provider.description }}</p>
+            <p class="card-text">{{ provider.description|safe }}</p>
             <a onclick="location.href='{% url 'b_provider_edit' %}'" class="btn btn-primary">{% trans "Edit" %}</a>
+            <a onclick="location.href='{% url 'b_provider_photos' %}'" class="btn btn-success">{% trans "Photos" %}</a>
           </div>
         </div>
       </div>
@@ -52,10 +53,10 @@
       <div class="col-md-12" style="margin-top:25px">
         <div>
           <h4 style="display: inline-block">{% trans "Service types:" %}</h4>
-          <button onclick="location.href='{% url 'b_service_type_add' %}'" class="btn btn-success btn-sm"
+          <button onclick="location.href='{% url 'b_service_type_add' %}'" class="btn btn-success btn-sm shadow"
                   style="float: right">{% trans "Add" %}</button>
         </div>
-        <ul class="list-group shadow">
+        <ul class="list-group shadow" style="margin-bottom: 20px;">
           {% for type in provider.service_type.all %}
             <li class="list-group-item">
               <div class="row">

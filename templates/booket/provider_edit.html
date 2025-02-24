@@ -34,10 +34,12 @@
       <div class="card shadow">
         <!-- Card Header -->
         <div class="card-header bg-primary text-white">
-          <button type="button" onclick="window.location.href='{% url "b_provider_main" %}'" class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <button type="button" onclick="window.location.href='{% url "b_provider_main" %}'"
+                  class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
           <h5 class="card-title mb-0">{% trans "Edit provider" %}</h5>
         </div>
-        <form class="form-group card-form" enctype="multipart/form-data" action="{% url 'b_provider_edit' %}" method="post">
+        <form class="form-group card-form" enctype="multipart/form-data" action="{% url 'b_provider_edit' %}"
+              method="post">
           <!-- Card Body (Form) -->
           <div class="card-body">
             {% csrf_token %}
@@ -76,12 +78,30 @@
           <!-- Card Footer (Buttons) -->
           <div class="card-footer bg-light">
             <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>
-            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'" style="float: right">{% trans "Back" %}</button>
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'"
+                    style="float: right">{% trans "Back" %}</button>
           </div>
         </form>
       </div>
     </div>
   </div>
-
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+      $(document).ready(function () {
+          $('#description').summernote({
+              toolbar: [
+                  // [groupName, [list of button]]
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['font', ['strikethrough',]],
+                  ['fontsize', ['fontsize', 'fontname']],
+                  ['color', ['color']],
+                  ['para', ['paragraph']],
+                  ['height', ['height']]
+              ]
+          });
+      });
+  </script>
 {% endblock %}
 

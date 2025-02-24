@@ -33,11 +33,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" aria-current="page" href="#">{% trans 'Dashboard' %}</a>
           </li>
+          {% if request.session.provider %}
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="{% url 'b_provider_main' %}">{% trans 'Provider' %}</a>
           </li>
+          {% endif %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                aria-expanded="false">
@@ -64,33 +66,42 @@
                 <i class="fas fa-sliders-h fa-fw"></i>
                 <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
                   {% csrf_token %}
-                  <input type="hidden" name="text" value="{{ redirect_to }}">
-                  <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
-                    {% get_available_languages as LANGUAGES %}
-                    {% get_language_info_list for LANGUAGES as languages %}
-                    {% for language in languages %}
-                      <option class="form-control" value="{{ language.code }}"
-                        {% if language.code == LANG_CODE %} selected {% endif %}>
-                        {{ language.name_local }}
-                      </option>
-                    {% endfor %}
-                  </select>
+                  <div class="input-group input-group-sm mb-3">
+                    <input type="hidden" name="text" value="{{ redirect_to }}">
+                    <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
+                      {% get_available_languages as LANGUAGES %}
+                      {% get_language_info_list for LANGUAGES as languages %}
+                      {% for language in languages %}
+                        <option class="form-control" value="{{ language.code }}"
+                          {% if language.code == LANG_CODE %} selected {% endif %}>
+                          {{ language.name_local }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
                 </form>
               </a></li>
               <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-fw"></i> Log Out</a></li>
+              <li>
+                <a class="dropdown-item">
+                  <form method="post" action="{% url 'b_logout' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-secondary" style="float: right">
+                      <i class="fas fa-sign-out-alt fa-fw"></i> Log Out
+                    </button>
+                  </form>
+                </a>
+              </li>
             </ul>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
   {% block content %}
-
   {% endblock %}
   <!-- Toaster Container -->
   <div aria-live="polite" aria-atomic="true" class="position-relative">

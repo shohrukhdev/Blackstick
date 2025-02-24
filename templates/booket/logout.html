@@ -1,8 +1,11 @@
 {% extends "booket/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% load static %}
 {% block title %}Log Out {% endblock %}
 {% block container %}
   <div class="row h-100 justify-content-center align-items-center" style="margin-top: 10%">
-    <div class="card bg-gradient-secondary">
+    <div class="card bg-gradient-secondary" style="width: 60%">
       <div class="card-header">
         <h3 class="card-title">You are signed out</h3>
         <div class="card-tools">
@@ -13,8 +16,8 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-        <button type="button" onclick="window.location.href='/b/login'" class="btn btn-block bg-gradient-info btn-lg">
-          Login Again
+        <button type="button" onclick="window.location.href='{% url 'b_login' %}'" class="btn btn-secondary btn-lg" style="width: 200px">
+          {% trans 'Login again' %}
         </button>
       </div>
       <!-- /.card-body -->
@@ -24,4 +27,17 @@
       <!-- /.card-footer -->
     </div>
   </div>
+  <script>
+    // Function to redirect after a delay
+        function redirectAfterDelay(url, delay) {
+            setTimeout(function() {
+                window.location.href = url;
+            }, delay);
+        }
+
+        // Call the function on page load
+        window.onload = function() {
+            redirectAfterDelay('{% url 'b_login' %}', 5000); // Redirect to 'https://example.com' after 5 seconds
+        };
+  </script>
 {% endblock %}

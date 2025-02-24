@@ -85,3 +85,21 @@
   </div>
 
 {% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+      $(document).ready(function () {
+          $('#info').summernote({
+              toolbar: [
+                  // [groupName, [list of button]]
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['font', ['strikethrough',]],
+                  ['fontsize', ['fontsize', 'fontname']],
+                  ['color', ['color']],
+                  ['para', ['paragraph']],
+                  ['height', ['height']]
+              ]
+          });
+      });
+  </script>
+{% endblock %}

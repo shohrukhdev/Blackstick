@@ -1,13 +1,11 @@
-import traceback
-from lib2to3.fixes.fix_input import context
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from booket import services as sv
+from booket.forms.provider_photo import ProviderPhotosFormSet
 
-from booket.models import Provider, Server
+from booket.models import Provider, Server, ProviderPhotos
 
 
 def user_login(request):
@@ -19,8 +17,10 @@ def user_login(request):
             if user.is_active:
                 login(request, user)
                 if Provider.is_user_owner(user):
+                    request.session['provider'] = True
                     return HttpResponseRedirect("/b/provider")
                 elif Server.is_user_server(user):
+                    request.session['server'] = True
                     return HttpResponseRedirect("/b/server")
                 else:
                     return HttpResponse("Your account is not a server nor owner")
@@ -135,3 +135,24 @@ def server_services(request, server_id: int):
         if result.get("success") is False:
             context_data["error"] = result.get("error")
         return HttpResponseRedirect(f'/b/server/{result.get("p_server_id")}/services/')
+
+
+@login_required
+def provider_photos(request):
+    provider = get_object_or_404(Provider, owner=request.user)
+    if request.method == 'POST':
+        formset = ProviderPhotosFormSet(request.POST, request.FILES, instance=provider)
+        if formset.is_valid():
+            formset.save()
+            return redirect('/b/provider/photo/')
+    else:
+        formset = ProviderPhotosFormSet(instance=provider)
+
+    # Fetch existing photos for the carousel
+    existing_photos = ProviderPhotos.objects.filter(provider=provider)
+
+    return render(request, 'booket/provider_photo.html', {
+        'provider': provider,
+        'formset': formset,
+        'existing_photos': existing_photos,
+    })

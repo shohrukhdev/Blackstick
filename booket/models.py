@@ -4,6 +4,7 @@ from django.db import models
 
 class Provider(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
+    identifier = models.CharField(max_length=255, unique=True)
     logo = models.ImageField(upload_to='logo', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
@@ -24,6 +25,11 @@ class Provider(models.Model):
         return Provider.objects.filter(owner=user).exists()
 
 
+class ProviderPhotos(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='photos', null=True, blank=True)
+
+
 class Server(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='server_user')
     image = models.ImageField(upload_to='server', null=True, blank=True)
@@ -39,6 +45,7 @@ class Server(models.Model):
         Returns True if the user is an owner, otherwise False.
         """
         return Server.objects.filter(user=user).exists()
+
 
     def __str__(self):
         return f"{self.user.get_full_name()}"

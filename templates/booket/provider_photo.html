@@ -1,0 +1,148 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% load widget_tweaks %}
+{% block title %} {% trans "Edit provider" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+      /* Custom CSS to center the card vertically and horizontally */
+      .container {
+          height: 95%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card-container {
+          width: 100%; /* Default width for mobile */
+          padding-top: 2%;
+      }
+
+      @media (min-width: 768px) {
+          .card-container {
+              width: 50%; /* Width for desktop and wider screens */
+          }
+
+          .card-form {
+              padding: 4%;
+          }
+      }
+  </style>
+  <div class="container">
+    <div class="card-container">
+      <div class="card shadow">
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="window.location.href='{% url "b_provider_main" %}'"
+                  class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="card-title mb-0">{% trans "Edit provider photos" %}</h5>
+        </div>
+        <div class="card-body">
+          <!-- Form for adding/editing photos -->
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            <ul class="list-unstyled">
+              {% for form in formset %}
+                <li class="mb-3 border-bottom pb-3 list-group-item">
+                  <!-- Render hidden fields (provider and id) -->
+                  {{ form.id }}
+                  {{ form.provider }}
+
+                  <!-- Render visible fields -->
+                  {% for field in form.visible_fields %}
+                    {% if field.name != 'DELETE' %}
+                      <div class="form-group form-group-sm">
+                        <label for="{{ field.id_for_label }}"
+                               class="form-label">{{ field.label }}(ID: {{ form.instance.id|default:"New" }})
+                        </label>
+                        {% render_field field class+="form-control form-control-sm" %}
+                        {% if field.help_text %}
+                          <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                          <div class="alert alert-danger">
+                            {{ field.errors }}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+
+                  <!-- Render the delete checkbox with a label -->
+                  <div class="form-check">
+                    {{ form.DELETE }}
+                    <label for="{{ form.DELETE.id_for_label }}" class="form-check-label">Delete this photo</label>
+                  </div>
+
+                  <!-- Display the existing photo filename -->
+                  {% if form.instance.photo %}
+                    <small class="text-muted">Current file: {{ form.instance.photo.name }}</small>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+
+            <button type="submit" class="btn btn-primary">Save Photos</button>
+          </form>
+
+          <hr>
+
+          <!-- Bootstrap 5 Carousel for existing photos -->
+          <div id="photoCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              {% for photo in existing_photos %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <img src="{{ photo.photo.url }}" class="d-block w-100" alt="Photo ID: {{ photo.id }}">
+                </div>
+              {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#photoCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#photoCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+        <!-- Card Footer (Buttons) -->
+        <div class="card-footer bg-light">
+          {#          <button type="submit" class="btn btn-primary">{% trans "Update" %}</button>#}
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url "b_provider_main" %}'"
+                  style="float: right">{% trans "Back" %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+      document.getElementById('photoForm').addEventListener('submit', function (event) {
+          const fileInputs = document.querySelectorAll('input[type="file"]');
+          let isValid = true;
+
+          fileInputs.forEach(input => {
+              if (input.files.length > 0) {
+                  const file = input.files[0];
+                  const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+
+                  if (file.size > maxSize) {
+                      alert(`File "${file.name}" exceeds the 2 MB size limit.`);
+                      isValid = false;
+                  }
+              }
+          });
+
+          if (!isValid) {
+              event.preventDefault(); // Prevent form submission
+          }
+      });
+  </script>
+{% endblock %}
+
