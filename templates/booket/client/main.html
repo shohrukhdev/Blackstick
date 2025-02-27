@@ -2,15 +2,206 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
+{% load humanize %}
 {% block title %} {% trans 'Main' %} {% endblock %}
 
 {% block content %}
+  <style>
+      @media (max-width: 768px) {
+          .container-main {
+              padding: 5px;
+          }
+          .card-person {
+              margin-bottom: 7px;
+          }
+      }
+
+      @media (min-width: 768px) {
+          .container-main {
+              padding: 30px;
+          }
+          .card-person {
+              margin: 25px;
+          }
+      }
+
+      .service-row {
+        cursor: pointer; /* Change cursor to pointer on hover */
+      }
+      .selected {
+        background-color: #c4bdbd; /* Light gray background for selected row */
+      }
+      .price {
+        font-size: 15px;
+      }
+      .popover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the shadow as needed */
+      }
+  </style>
   {% get_current_language as LANG_CODE %}
-  <div class="container">
+  <div class="container-fluid container-main">
     <div class="row">
-      <div class="col-12">
-        Main menu
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <!-- Carousel -->
+        <div id="caruso" class="carousel slide shadow" data-bs-ride="carousel">
+          <!-- The slideshow/carousel -->
+          <div class="carousel-inner">
+            {% for f in provider.providerphotos_set.all %}
+              <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+                <img class="d-block w-100 rounded" src="{{ f.photo.url }}" alt="{{ f.id }}">
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Left and right controls/icons -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <div class="container">
+          <h3 style="text-align: center; padding: 10px; text-shadow: 2px 2px 5px darkgrey">{{ provider.name }}</h3>
+          {{ provider.description|safe }}
+        </div>
+      </div>
+      <div class="container>" style="margin-top: 20px">
+        <div class="card shadow">
+          <div class="card-header">
+            <div class="card-title">
+              <h5 class="text-center">{% trans 'Services' %}</h5>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              {% for tip in provider.service_type.all %}
+                {% if tip.is_active == True %}
+                  {% if provider.service_type.all|length == 1 %}
+                    <div class="col-lg-12 col-md-6 col-sm-12 text-center">
+                  {% elif provider.service_type.all|length == 2 %}
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                  {% elif provider.service_type.all|length == 3 %}
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                  {% else %}
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                  {% endif %}
+                <table class="table table-sm table-hover thead-dark">
+                  <thead>
+                  <tr>
+                    {% if LANG_CODE == "uz" %}
+                      <th>{{ tip.name_uz }}</th>
+                    {% elif LANG_CODE == "ru" %}
+                      <th>{{ tip.name_ru }}</th>
+                    {% else %}
+                      <th>{{ tip.name }}</th>
+                    {% endif %}
+                    <th style="text-align: right;"></th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% for service in tip.service_set.all %}
+                    <!-- Service Row -->
+                    <tr class="service-row" data-service-id="{{ service.id }}">
+                        {% if LANG_CODE == "uz" %}
+                          <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name_uz }} <span><i class="price">( {{ service.price|intcomma }} dan)</i></span></td>
+                        {% elif LANG_CODE == "ru" %}
+                          <td><i class="fa-solid fa-caret-left fa-lg"></i>{{ service.name_ru }} <span><i class="price">( от {{ service.price|intcomma }})</i></span></td>
+                        {% else %}
+                          <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name }} <span><i class="price">(from {{ service.price|intcomma }})</i></span></td>
+                        {% endif %}
+                      <td style="text-align: right;">
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="{{ service.description|safe }}">
+                          <i class="fa-solid fa-circle-info"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+                {% endif %}
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="container-fluid" style="margin-top: 15px">
+    <div class="card shadow">
+      <div class="card-header">
+        <div class="card-title">
+          <h5 class="text-center">{% trans 'Specialists' %}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for ps in provider.providerserver_set.all %}
+              <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                <div class="card shadow card-person">
+                  <img class="card-img-top" src="{{ ps.server.image.url }}" alt="Card image" style="width:100%;">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ ps.server.user.get_full_name }}</h4>
+                    <div style="max-height: 2em !important; overflow: hidden; position: relative;" id="server-info-{{ forloop.counter }}">
+                        {{ ps.server.info|safe }}
+                    </div>
+                    <button class="btn btn-sm more-info" data-target="#server-info-{{ forloop.counter }}" style="display: block; text-align: center; width: 100%; background-color: darkgrey;">
+                      {% trans 'More' %}
+                      <i class="fa-solid fa-angles-down"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
       </div>
     </div>
   </div>
+{% endblock %}
+{% block js %}
+{{ block.super }}
+<script>
+// Initialize all popovers on the page
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+        var popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+    });
+$(document).ready(function() {
+    // Loop through all .more-info buttons
+    $(".more-info").each(function() {
+        var $button = $(this);  // The More/Less button
+        var $textContainer = $("#" + $button.data("target").substring(1)); // Get the text container based on the data-target attribute
+        
+        // Initially, set the height of the text container to 2em (show only part of the content)
+        var initialHeight = $textContainer[0].scrollHeight; // Full content height (scrollHeight gives the full content size)
+        var collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight); // Limit to 2 lines of text (adjust this value as needed)
+
+        // Set the initial height to 2em
+        $textContainer.css("max-height", collapsedHeight);
+
+        // Show "More" button if the content exceeds the collapsed height
+        if (initialHeight > collapsedHeight) {
+            $button.show(); // Show the "More" button
+        }
+
+        // Handle the "More" link click to show full content
+        $button.click(function(e) {
+            e.preventDefault(); // Prevent default button behavior
+
+            // Toggle between expanding and collapsing
+            if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
+                // Expand content and change button text
+                $textContainer.css("max-height", initialHeight); // Remove height limit and show full content
+                $button.html("{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>");
+            } else {
+                // Collapse content and change button text
+                $textContainer.css("max-height", collapsedHeight); // Limit the content to 2em
+                $button.html("{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>");
+            }
+        });
+    });
+});
+
+</script>
 {% endblock %}

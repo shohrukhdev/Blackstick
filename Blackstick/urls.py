@@ -4,6 +4,7 @@ from django.urls import path, include
 from rest_framework import routers
 
 from Blackstick import settings
+from booket import dashboard
 from dent import views as mainviews
 from django.contrib.auth import views as authview
 from dent import api_views, table_views
@@ -17,13 +18,13 @@ router.register('eventlist', viewset=api_views.EventListViewSet, basename='Event
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include(router.urls)),
-    path('b/', include('booket.urls')),
-    path('', include('booket.client.urls')),
     path('admin/', admin.site.urls),
     path('login/', mainviews.user_login, name='login'),
     path('demo/login/', mainviews.demo_user_login, name='demo_login'),
 
     path('logout/', authview.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('b/', include('booket.urls')),
+    path('dashboard/', include('booket.dashboard.urls')),
     path('', mainviews.home, name='home'),
     path('home/', mainviews.home),
     path('debt/list/', mainviews.debt_list, name='debt_list'),
@@ -43,4 +44,5 @@ urlpatterns = [
     path('calendar/event/edit', mainviews.event_edit, name='event_edit'),
     path('treatment/file/upload', mainviews.upload_file, name='upload_file'),
     path('settings/', include('dent.settings.urls')),
+    path('', include('booket.client.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
