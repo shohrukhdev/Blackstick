@@ -1,10 +1,194 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "Configs" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+  </style>
+  <div class="container">
+    <div class="card-container" style="margin-top: 20px;">
+      <div class="card shadow">
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="window.location.href='{% url "dashboard_main" %}'"
+                  class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="card-title mb-0">{% trans "My settings" %}</h5>
+        </div>
+        <div class="card-body">
+          <form method="post" class="form-group-sm">
+            {% csrf_token %}
+            <input type="hidden" name="p_server_id" value="{{ p_server.id }}"/>
+            <div class="row">
+              <div class=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="mb-3">
+                  <label class="form-label">{% trans "Provider" %}</label>
+                  <input type="text" class="form-control" name="provider" value="{{ p_server.provider.name }}" disabled>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">{% trans "First name" %}</label>
+                  <input type="text" class="form-control" name="first_name"
+                         value="{{ p_server.server.user.first_name }}" required>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">{% trans "Last name" %}</label>
+                  <input type="text" class="form-control" name="last_name" 
+                         value="{{ p_server.server.user.last_name }}" required>
+                </div>
+              </div>
+              <div class=" col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="mb-3">
+                  <label class="form-label">{% trans "Email address" %}</label>
+                  <input type="email" class="form-control" name="email" value="{{ p_server.server.user.email }}">
+                </div>
+                <div class="row">
+                  <div class=" col-6">
+                    <div class="mb-3">
+                      <label class="form-label">{% trans "Day starts on" %}</label>
+                      <input type="time" class="form-control" name="day_starts_on"
+                             value="{{ p_server.day_starts_on|time:'H:i' }}">
+                    </div>
+                  </div>
+                  <div class=" col-6">
+                    <div class="mb-3">
+                      <label class="form-label">{% trans "Day ends on" %}</label>
+                      <input type="time" class="form-control" name="day_ends_on"
+                             value="{{ p_server.day_ends_on|time:'H:i' }}">
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">{% trans "Off days" %}</label>
+                  <div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="mon" name="mon" value="yes" 
+                            {% if 1 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="mon">{% trans 'Mon' %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="tue" name="tue" value="yes"
+                        {% if 2 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="tue">{% trans 'Tue' %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="wed" name="wed" value="yes"
+                        {% if 3 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="wed">{% trans 'Wed' %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="thu" name="thu" value="yes"
+                        {% if 4 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="wed">{% trans 'Thu' %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="fri" name="fri" value="yes"
+                        {% if 5 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="wed">{% trans 'Fri' %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="fri" name="sat" value="yes"
+                        {% if 6 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="wed">{% trans 'Sat' %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="sun" name="sun" value="yes"
+                        {% if 7 in p_server.get_off_days %} checked {% endif %}>
+                      <label class="form-check-label" for="wed">{% trans 'Sun' %}</label>
+                    </div>
+                  <!-- Add more checkboxes as needed -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class=" col-12">
+                <button class="btn btn-primary" style="float: right; margin-right: 20px" type="submit">{% trans "Save" %}</button>
+              </div>
+            </div>
+          </form>
+          <div class="row" style="margin-top: 20px;">
+            <h4>{% trans 'Service settings' %}</h4>
+            {% for service_type in service_types %}
+              <li class="list-group-item shadow" style="padding: 8px">
+              <h6>
+                {% if LANG_CODE == "uz" %}
+                  {{ service_type.name_uz }}
+                {% elif LANG_CODE == "ru" %}
+                  {{ service_type.name_ru }}
+                {% else %}
+                  {{ service_type.name }}
+                {% endif %}
+              </h6>
 
-</body>
-</html>
+                  {% for service in service_type.service_set.all %}
+                      <div class="accordion" style="margin-bottom: 1px" id="accordionService_{{ service.id }}">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" style="padding: 8px;" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse_{{ service.id }}" aria-expanded="true"
+                                    aria-controls="collapse">
+                            <i class="fas fa-check-circle" style="font-size:19px; 
+                                 {% if service.assigned_service.0 %} color:green; {% else %} color: grey; {% endif %}
+                                 margin-right: 4px"></i>  
+                              {% if LANG_CODE == "uz" %}
+                                {{ service.name_uz }}
+                              {% elif LANG_CODE == "ru" %}
+                                {{ service.name_ru }}
+                              {% else %}
+                                {{ service.name }}
+                              {% endif %}
+                            </button>
+                          </h2>
+                          <div id="collapse_{{ service.id }}"
+                               class="accordion-collapse collapse"
+                               data-bs-parent="#accordionService_{{ service.id }}">
+                            <div class="accordion-body">
+                              <form id="form_{{ service.id }}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="provider_server_id" value="{{ p_server.id }}">
+                                <input type="hidden" name="service_type_id" value="{{ service_type.id }}">
+                                <input type="hidden" name="service_id" value="{{ service.id }}">
+                                <input type="hidden" name="p_s_service_id" value="{{ service.assigned_service.0.id }}"></input>
+                                <div class="row collapse" style="padding-top: 3px" id="collapse_{{ service.id }}">
+                                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="input-group mb-3 input-group-sm">
+                                      <span class="input-group-text">{% trans 'Base price' %}</span>
+                                      <input type="number" id="private_price" name="base_price" class="form-control"
+                                             value="{{ service.price }}" disabled>
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="input-group mb-3 input-group-sm">
+                                      <span class="input-group-text">{% trans 'Price' %}</span>
+                                      <input type="number" id="private_price" name="private_price" class="form-control"
+                                             value="{{ service.assigned_service.0.service_private_price }}">
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="form-check form-switch">
+                                      <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="checked"
+                                        {% if service.assigned_service.0 %} checked {% endif %}>
+                                      <label class="form-check-label"
+                                             for="is_active">{% trans 'Service active' %}</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <button class="btn btn-sm btn-secondary" type="submit" style="float: right">{% trans 'Save' %}</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  {% endfor %}
+              </li>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

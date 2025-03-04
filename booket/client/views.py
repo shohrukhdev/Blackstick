@@ -31,3 +31,7 @@ def main_page(request, identifier: str):
                 # If no close match or difference is more than 4 characters, return 404
                 return render(request, "404.html", status=404)
         return render(request, "booket/client/main.html", context={"provider": provider})
+
+
+def get_server_details(p_server_id: int):
+    pass

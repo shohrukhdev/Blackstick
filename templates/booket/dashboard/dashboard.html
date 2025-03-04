@@ -2,16 +2,24 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
-{% block title %} {% trans "Service add" %}{% endblock %}
+{% block title %} {% trans "Dashboard" %}{% endblock %}
 {% block content %}
   {% get_current_language as LANG_CODE %}
   <style>
   </style>
   <div class="container">
-    <button class="btn btn-primary btn-xs">
-      <i class="fa-solid fa-gear"></i>
-      {% trans 'My settings' %}
-    </button>
+    <div class="row">
+      <div class="col">
+        <div class="btn-group-xs">
+          <button onclick="location.href='{% url 'dashboard_config' %}'" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-gear"></i>
+            {% trans 'My settings' %}
+          </button>
+        </div>
+      </div>
+      
+    </div>
+
   </div>
 
 {% endblock %}

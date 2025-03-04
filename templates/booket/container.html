@@ -103,22 +103,32 @@
   </nav>
   {% block content %}
   {% endblock %}
-  <!-- Toaster Container -->
-  <div aria-live="polite" aria-atomic="true" class="position-relative">
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-      <!-- Toast -->
-      <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <strong class="me-auto" id="toast-title">Error</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+
+  <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+    <div id="toast-container">
+        {% for message in messages %}
+        <div class="toast align-items-center text-white bg-{{ message.tags }} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true"
+            {% if message.tags == "success" %}data-bs-autohide="true" data-bs-delay="3000"{% else %}data-bs-autohide="false"{% endif %}>
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message | safe }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
         </div>
-        <div class="toast-body" id="toastMessage">
-          <!-- Error message will be inserted here -->
-        </div>
-      </div>
+        {% endfor %}
     </div>
   </div>
   <script>
+  
+    document.addEventListener("DOMContentLoaded", function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl).show();
+        });
+    });
+  
+  
       function submitUserLogoutForm() {
           $('#user-logout-form').submit();
       }

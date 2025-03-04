@@ -130,7 +130,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_start', models.DateField(blank=True, null=True)),
                 ('date_end', models.DateField(blank=True, null=True)),
-                ('off_days', models.JSONField(blank=True, default=booket.models.default_day_off, null=True)),
+                ('off_days', models.JSONField(blank=True, default="{}", null=True)),
                 ('server', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='booket.server')),
                 ('service_provider', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='booket.provider')),
             ],

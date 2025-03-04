@@ -1,5 +1,13 @@
+import logging
+import random
+
 from django.contrib.auth.models import User
+from django.core.cache import cache
+from django.core.exceptions import ValidationError
 from django.db import models
+
+
+logger = logging.getLogger('booket')  # Use the app's logger
 
 
 class Provider(models.Model):
@@ -46,7 +54,6 @@ class Server(models.Model):
         """
         return Server.objects.filter(user=user).exists()
 
-
     def __str__(self):
         return f"{self.user.get_full_name()}"
 
@@ -64,9 +71,55 @@ class ProviderServer(models.Model):  # Provider can have many servers and server
     server = models.ForeignKey(Server, on_delete=models.CASCADE, null=True, blank=True)
     day_starts_on = models.TimeField(null=True, blank=True)
     day_ends_on = models.TimeField(null=True, blank=True)
+    # Store off days as a comma-separated string (e.g., "1,5" for Monday and Friday off)
+    off_days = models.CharField(max_length=100, blank=True, null=True)  # Blank means no off days by default
 
     def __str__(self):
         return f"{self.provider} {self.server}"
+
+    def get_off_days(self):
+        """
+        Convert the comma-separated string to a list of days that are off.
+        """
+        try:
+            if self.off_days:
+                # Try to split the string and convert to integers
+                off_days = [int(day) for day in self.off_days.split(',')]
+
+                # Validate that all days are between 1 and 7
+                if not all(1 <= day <= 7 for day in off_days):
+                    raise ValueError("Off days must be integers between 1 and 7.")
+
+                return off_days
+            return []
+        except ValueError as e:
+            error_message = f"Invalid off days format: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+        except Exception as e:
+            error_message = f"Error while parsing off days: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+
+    def set_off_days(self, off_days_list):
+        """
+        Set the off days by converting the list of days into a comma-separated string.
+        The list contains days as numbers (1 = Monday, 7 = Sunday).
+        """
+        try:
+            if not all(isinstance(day, int) and 1 <= day <= 7 for day in off_days_list):
+                raise ValueError("All off days must be integers between 1 and 7.")
+
+            # Convert the list of off days into a comma-separated string
+            self.off_days = ','.join(map(str, off_days_list))
+        except ValueError as e:
+            error_message = f"Invalid input for off days: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+        except Exception as e:
+            error_message = f"Error while setting off days: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
 
 
 class Service(models.Model):
@@ -86,31 +139,27 @@ class ProviderServerService(models.Model):   # Services are performed by the ser
     provider_server = models.ForeignKey(ProviderServer, on_delete=models.CASCADE, null=True, blank=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
     service_private_price = models.IntegerField(null=True, blank=True)
+    duration = models.IntegerField(default=60)  # Single service duration time default 30 minutes
 
     class Meta:
         unique_together = (('provider_server', 'service'),)
 
 
-def default_day_off():
-    return [6, 7]  # default day offs of the week
-
-
-class WeekSchedule(models.Model):
-    service_provider = models.ForeignKey(Provider, on_delete=models.CASCADE, null=True, blank=True)
-    server = models.ForeignKey(Server, on_delete=models.CASCADE, null=True, blank=True)
-    date_start = models.DateField(null=True, blank=True)
-    date_end = models.DateField(null=True, blank=True)
-    off_days = models.JSONField(default=default_day_off, null=True, blank=True)
-
-
 class Client(models.Model):
-    service_provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=13, null=True, blank=True)
     sex = models.CharField(max_length=10, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('full_name', 'phone_number', 'service_provider')
+        unique_together = ("full_name", "phone_number")
+
+
+class ProviderClient(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
 
 STATUSES = [
@@ -141,3 +190,32 @@ class AppointmentService(models.Model):
 
     def __str__(self):
         return f"{self.appointment} {self.service}"
+
+
+class OTPVerification(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True)
+    phone_number = models.CharField(max_length=13, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.otp_code:
+            self.otp_code = str(random.randint(100000, 999999))  # Generate 6-digit OTP
+        super().save(*args, **kwargs)
+
+    def send_otp(self):
+        if self.phone_number:
+            # Integrate SMS API here
+            pass
+        if self.email:
+            pass
+            # send_mail(
+            #     "Your Verification Code",
+            #     f"Your OTP code is {self.otp_code}",
+            #     "noreply@example.com",
+            #     [self.email],
+            #     fail_silently=False,
+            # )
+        cache.set(f"otp_{self.phone_number or self.email}", self.otp_code, timeout=300)  # Store OTP for 5 minutes
