@@ -44,6 +44,16 @@
       .popover {
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the shadow as needed */
       }
+
+      .service-checkbox {
+          float: right;
+          width: 20px;
+      }
+
+      .active-date {
+          color: yellow;
+          font-weight: bold;
+      }
   </style>
   {% get_current_language as LANG_CODE %}
   <div class="container-fluid container-main">
@@ -136,19 +146,28 @@
           <!-- Service Row -->
           <tr class="service-row" data-service-id="{{ service.id }}">
             {% if LANG_CODE == "uz" %}
-              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name_uz }} <span><i
-                class="price">( {{ service.price|intcomma }} dan)</i></span></td>
+              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name_uz }}
+                <i class="price">
+                  <span class="badge bg-primary rounded-pill">( {{ service.price|intcomma }} dan)</span>
+                </i>
+              </td>
             {% elif LANG_CODE == "ru" %}
-              <td><i class="fa-solid fa-caret-left fa-lg"></i>{{ service.name_ru }} <span><i
-                class="price">( от {{ service.price|intcomma }})</i></span></td>
+              <td><i class="fa-solid fa-caret-left fa-lg"></i>{{ service.name_ru }}
+                <i class="price">
+                  <span class="badge bg-primary rounded-pill">( от {{ service.price|intcomma }})</span>
+                </i>
+              </td>
             {% else %}
-              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name }} <span><i
-                class="price">(from {{ service.price|intcomma }})</i></span></td>
+              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name }}
+                <i class="price">
+                  <span class="badge bg-primary rounded-pill">(from {{ service.price|intcomma }})</span>
+                </i>
+              </td>
             {% endif %}
             <td style="text-align: right;">
               <button class="btn btn-primary btn-sm" data-bs-toggle="popover" data-bs-trigger="focus"
                       data-bs-content="{{ service.description|safe }}">
-                <i class="fa-solid fa-circle-info"></i>
+                <i class="fa-solid fa-arrow-circle-o-right"></i>
               </button>
             </td>
           </tr>
@@ -186,12 +205,11 @@
                       <i class="fa-solid fa-angles-down"></i>
                     </button>
                     <button class="btn btn-sm btn-primary shadow"
-                            onclick="selectServer('{{ ps.server.id }}')"
+                            onclick="selectServer('{{ ps.server.id }}', '{{ ps.server.user.first_name }}')"
                             style="width: 100%; text-align: center; margin-top: 3px;">
                       {% trans 'Book appointment' %}
                       <i class="fa-solid fa-calendar-check"></i>
                     </button>
-                    {{ ps.server.providerserverservice_set }}
                   </div>
                 </div>
               </div>
@@ -201,15 +219,251 @@
       </div>
     </div>
   </div>
+  <!-- The Modal -->
+  <div class="modal modal-lg fade" id="customModal" data-bs-keyboard="false" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Sp. <span id="server_name">Server Name</span></h5>
+        <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div id="service_list" class="serviceList">
+          <div class="row" id="service_row">
+          </div>
+        </div>
+        <div id="time_slots" class="timeSlot" style="display: none">
+          <div class="d-flex mb-3">
+            <div class="p-2 flex-grow-1 bg-primary">
+              <span style="float: left; color: white;">{% trans "Select date and time!" %}</span>
+              <span style="float: right; color: yellow;">{% trans "Estimated service time" %}:
+                <i class="fa-solid fa-clock"></i>
+                <span id="estimatedDuration">60</span>{% trans "min" %}
+              </span>
+            </div>
+          </div>
+          <div class="row" id="time_slot_row" style="width: 100%;">
+            <!-- Date Selection -->
+            <div class="col-12 text-center">
+              <div class="btn-group">
+                <button class="btn btn-warning btn-outline-primary" onclick="getDates('previous')" id="prevDate"
+                        style="width: 45px;">&lt;&lt;
+                </button>
+                <div id="dateList" class="btn-group">
+                  <button class="btn btn-outline-primary">DATE</button>
+                  <button class="btn btn-outline-primary">DATE2</button>
+
+                </div>
+                <button class="btn btn-warning btn-outline-primary" onclick="getDates('next')" id="nextDate"
+                        style="width: 45px;">&gt;&gt;
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Time Slot Selection -->
+          <div id="timeSlots" class="d-flex flex-wrap gap-2" style="margin-top: 15px;">
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-sm shadow serviceList" disabled id="nextBtn"
+                  onclick="transitionToTimeSlots()">{% trans 'Next' %}</button>
+          <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm shadow serviceList"
+                  data-bs-dismiss="modal">{% trans "Close" %}</button>
+
+          <button type="button" class="btn btn-success btn-sm shadow timeSlot"
+                  style="display: none;">{% trans 'Next' %}</button>
+          <button type="button" class="btn btn-warning btn-sm shadow timeSlot" style="display: none;"
+                  onclick="backToServices()">{% trans 'Back' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block js %}
   {{ block.super }}
   <script>
-      function selectServer(data){
-          console.log(data)
-      }
-  
+      var appointment = {}
+      appointment['services'] = []
+      var responseData = {}
+      var lastDate;
+      var firstDate;
       var cur_lang = document.getElementById('cur_lang').value;
+
+      function closeModal() {
+          $('#customModal').modal('hide');
+          appointment = {}
+          appointment['services'] = []
+          responseData = {}
+      }
+
+
+      /////////////////////// FETCH  NEXT PREVIOUS 5 days ///////////////////////////
+      function getDates(direction) {
+          if (direction === "next") {
+              date_param = modifyDate(lastDate, 1);
+          } else {
+              date_param = modifyDate(lastDate, -9);
+          }
+          let endpoint = "/provider-server/" + responseData.server_id + "/available-slots/?start_date=" + date_param;
+          $.ajax({
+              url: endpoint,
+              type: "GET",
+              dataType: "json",
+              headers: {'X-CSRFToken': getCookie('csrftoken')},
+              success: function (response) {
+                  renderDates(response.available_slots);
+              }
+
+          });
+      }
+
+      function calculateTotalDuration(services) {
+          let totalDuration = services.reduce((sum, service) => sum + service.duration, 0);
+          $("#estimatedDuration").text(totalDuration);
+      }
+
+      //////////////////////   GO TO THE TIME SLOT SELECTION ////////////////////////
+      function transitionToTimeSlots() {
+          calculateTotalDuration(appointment.services);
+
+          $('.serviceList').hide()
+          $('.timeSlot').show();
+      }
+
+      function backToServices() {
+          $('.timeSlot').hide()
+          $('.serviceList').show()
+      }
+
+      // Function to format the date
+      function formatDate(isoDate) {
+          let dateParts = isoDate.split('-');
+          return dateParts[2] + '-' + dateParts[1]; // DD-MM format
+      }
+
+      function renderDates(available_time_slots) {
+          $("#dateList").empty();
+          $("#timeSlots").empty();
+
+          $.each(available_time_slots, function (index, item) {
+              let dateBtn = $("<button>")
+                  .addClass("btn btn-outline-primary btn-sm")
+                  .text(formatDate(item.date))
+                  .on("click", function () {
+                      $("#dateList button").removeClass("btn-primary active-date");
+                      $(this).addClass("btn-primary active-date");
+                      renderTimeSlots(item.slots);
+                      appointment.date = item.date;
+                  });
+
+              if (index === 0) {
+                  dateBtn.addClass("btn-primary active-date");
+                  renderTimeSlots(item.slots);
+                  firstDate = item.date;
+              }
+              lastDate = item.date;
+              $("#dateList").append(dateBtn);
+          });
+      }
+
+      function renderTimeSlots(slots) {
+          $("#timeSlots").empty();
+
+          $.each(slots, function (index, time) {
+              let timeBtn = $("<button>")
+                  .addClass("btn btn-outline-secondary px-3 py-2 rounded-3 shadow")
+                  .text(time)
+                  .on("click", function () {
+                      $("#timeSlots button").removeClass("btn-primary active-date");
+                      $(this).addClass("btn-primary active-date");
+                      
+                      appointment.time = time;
+                  });
+
+              $("#timeSlots").append(timeBtn);
+          });
+      }
+
+
+      /////////////////////// FILL SERVICES ON SERVER SELECTED FOR BOOKING ////////////////////////////////
+      function fillServices(service_types, language_code) {
+          $('#service_row').empty();
+          $.each(service_types, function (index, service_type) {
+              // Choose the correct service type name based on language
+              let serviceTypeName = language_code === "uz" ? service_type.name_uz :
+                  language_code === "ru" ? service_type.name_ru :
+                      service_type.name;
+
+              // Create a table element
+              let table = `
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <table class="table table-sm table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>${serviceTypeName}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+              // Loop through services and create table rows
+              $.each(service_type.services, function (i, service) {
+                  let price = service.service_private_price !== null ? service.service_private_price : service.price;
+                  let serviceName = language_code === "uz" ? service.name_uz :
+                      language_code === "ru" ? service.name_ru :
+                          service.name;
+
+                  table += `
+                <tr>
+                    <td>${serviceName}
+                    <span class="badge bg-primary rounded-pill"><i>(${price.toLocaleString()})</i></span>
+                        <input type="checkbox" class="service-checkbox form-check"
+                               data-id="${service.id}"
+                               data-name="${serviceName}"
+                               data-price="${price}"
+                               data-duration="${service.duration}">
+                    </td>
+                </tr>
+            `;
+              });
+
+              // Close table tags
+              table += `
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+              // Append the table inside the modal body (service_row)
+              $('#service_row').append(table);
+          });
+
+      }
+
+      function selectServer(p_server_id, server_name) {
+          var endpoint = "/provider-server/" + p_server_id + "/";
+          var lang_code = $('#cur_lang').val();
+          $("#server_name").text(server_name);
+          $.ajax({
+              url: endpoint,
+              type: "GET",
+              dataType: "json",
+              headers: {'X-CSRFToken': getCookie('csrftoken')},
+              success: function (response) {
+                  responseData = response
+                  appointment.server_id = p_server_id;
+                  fillServices(services = response.service_types, language_code = lang_code);
+                  renderDates(responseData.available_time_slots);
+                  $('#customModal').modal('show');
+              }
+          })
+      }
 
       function submitlang() {
           $('#setlangform').submit();
@@ -220,7 +474,42 @@
           var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
           var popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
       });
+
+
+      function modifyDate(dateStr, days) {
+          let date = new Date(dateStr); // Convert YYYY-MM-DD to Date object
+          date.setDate(date.getDate() + days); // Add/Subtract days
+          let newDate = date.toISOString().split('T')[0]; // Format back to YYYY-MM-DD
+          return newDate;
+      }
+
+
       $(document).ready(function () {
+
+          // Use Event Delegation to Listen for Checkbox Changes
+          $(document).on('change', '.service-checkbox', function () {
+              $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+
+              let serviceId = $(this).data('id');
+              let price = $(this).data('price');
+              let duration = $(this).data('duration');
+              let serviceName = $(this).data('name');
+
+              if ($(this).is(':checked')) {
+                  // Add selected service
+                  appointment.services.push({
+                      service_id: serviceId,
+                      service_name: serviceName,
+                      price: price,
+                      duration: duration
+                  });
+              } else {
+                  // Remove unchecked service
+                  appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
+              }
+          });
+
+
           // Loop through all .more-info buttons
           $(".more-info").each(function () {
               var $button = $(this);  // The More/Less button

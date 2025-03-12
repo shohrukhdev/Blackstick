@@ -50,18 +50,18 @@ def add_new_staff(request, *args, **kwargs) -> HttpResponse:
     if request.method == "POST":
         try:
             new_user = service.create_user(
-                username=request.POST.get("username"),
-                password=request.POST.get("password"),
-                email=request.POST.get("email"),
-                first_name=request.POST.get("first_name"),
-                last_name=request.POST.get("last_name")
+                username=request.POST.get("username", ),
+                password=request.POST.get("password", ),
+                email=request.POST.get("email", ),
+                first_name=request.POST.get("first_name", ),
+                last_name=request.POST.get("last_name", )
             )
             try:
                 new_staff = service.create_staff(
                     user=new_user,
                     clinic_id=request.session["clinic_id"],
-                    role_code=request.POST.get("role_code"),
-                    additional_info=request.POST.get("additional_info"),
+                    role_code=request.POST.get("role_code", ),
+                    additional_info=request.POST.get("additional_info", ),
                     cur_user=request.user,
                     cur_user_role=request.session["role"]
                 )
@@ -79,7 +79,7 @@ def add_new_staff(request, *args, **kwargs) -> HttpResponse:
             roles = service.get_roles()
             error_msg = f"User creation error: {e}"
             if "UNIQUE constraint failed" in str(e):
-                error_msg = f"username {request.POST.get('username')} already exists!"
+                error_msg = f"username {request.POST.get('username', )} already exists!"
             context_data = {"roles": roles, "error_msg": error_msg}
             return render(
                 request=request,
@@ -106,14 +106,14 @@ def edit_staff(request, *args, **kwargs):
             context=context_data,
         )
     if request.method == "POST":
-        staff_id = request.POST.get("staff_id")
+        staff_id = request.POST.get("staff_id", )
         try:
             staff = Staff.objects.get(pk=staff_id)
             user = staff.user
-            user.first_name = request.POST.get("first_name")
-            user.last_name = request.POST.get("last_name")
-            user.email = request.POST.get("email")
-            role = Role.objects.get(code=request.POST.get("role_code"))
+            user.first_name = request.POST.get("first_name", )
+            user.last_name = request.POST.get("last_name", )
+            user.email = request.POST.get("email", )
+            role = Role.objects.get(code=request.POST.get("role_code", ))
             staff.user = user
             staff.role = role
             staff.additional_info = request.POST.get("additional_info")

@@ -13,7 +13,7 @@ def main_page(request, identifier: str):
         except Provider.DoesNotExist:
             # Check if identifiers are in the cache
             cache_key = "all_provider_identifiers"
-            all_identifiers = cache.get(cache_key)
+            all_identifiers = cache.get(cache_key, )
 
             # If not in cache, fetch from the database and store in cache
             if all_identifiers is None:
