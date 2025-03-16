@@ -10,12 +10,16 @@ from .serializers import ProviderServerSerializer, ClientSerializer
 from rest_framework.response import Response
 from datetime import datetime
 
+from ..utils import validate_signature
+
 
 class ProviderServerDetailView(generics.RetrieveAPIView):
     throttle_classes = [AnonRateThrottle]
     serializer_class = ProviderServerSerializer
 
     def get(self, request, p_server_id):
+        if not validate_signature(request):
+            return Response({"error": "Invalid request headers"}, status=400)
         try:
             provider_server = ProviderServer.objects.get(id=p_server_id)
             serializer = self.serializer_class(provider_server)
@@ -27,6 +31,8 @@ class ProviderServerDetailView(generics.RetrieveAPIView):
 class AvailableTimeSlotsView(APIView):
     throttle_classes = [AnonRateThrottle]
     def get(self, request, p_server_id):
+        if not validate_signature(request):
+            return Response({"error": "Invalid request headers"}, status=400)
         provider_server = ProviderServer.objects.filter(id=p_server_id).first()
         if not provider_server:
             return Response({"error": "Provider Server not found"}, status=404)
@@ -50,6 +56,8 @@ class ClientViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=["get"])
     def search(self, request):
+        if not validate_signature(request):
+            return Response({"error": "Invalid request headers"}, status=400)
         email = request.query_params.get("email")
         phone_number = request.query_params.get("phone_number")
 

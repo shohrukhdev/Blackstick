@@ -431,7 +431,7 @@
       var lastDate;
       var firstDate;
       var cur_lang = document.getElementById('cur_lang').value;
-      var signature = {{ signature }}
+      var signature = "{{ signature }}"
 
       $(document).ready(function () {
 
@@ -563,6 +563,10 @@
               headers: {'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature},
               success: function (response) {
                   renderDates(response.available_slots);
+              },
+              error: function (error) {
+                  console.log(error.responseJSON);
+                  showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
               }
 
           });
@@ -768,6 +772,10 @@
                   fillServices(services = response.service_types, language_code = lang_code);
                   renderDates(responseData.available_time_slots);
                   $('#customModal').modal('show');
+              },
+              error: function (error) {
+                  console.log(error.responseJSON);
+                  showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
               }
           })
       }
