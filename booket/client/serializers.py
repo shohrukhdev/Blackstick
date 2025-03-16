@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from rest_framework import serializers
 from collections import defaultdict
 from booket.models import ProviderServer, ProviderServerService, Service, ServiceType, \
-    Appointment  # Assuming ServiceType exists
+    Appointment, Client  # Assuming ServiceType exists
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -148,3 +148,10 @@ class ProviderServerSerializer(serializers.ModelSerializer):
             current_slot = slot_end
 
         return slots
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ["id", "full_name", "email", "phone_number", "sex", "date_of_birth", "created_at"]
+

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
-
+from django.db.models import UniqueConstraint, Q
 
 logger = logging.getLogger('booket')  # Use the app's logger
 
@@ -154,12 +154,38 @@ class Client(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("full_name", "phone_number")
+        """
+        Clients without an email or phone (optional fields).
+        If a client provides an email, it must be unique.
+        If a client provides a phone number, it must be unique.
+        The same full name can exist with different phone numbers or different emails.
+        """
+        constraints = [
+            UniqueConstraint(
+                fields=["full_name", "phone_number"],
+                name="unique_client_name_phone"
+            ),
+            UniqueConstraint(
+                fields=["email"],
+                name="unique_client_email",
+                condition=Q(email__isnull=False)
+            ),
+            UniqueConstraint(
+                fields=["phone_number"],
+                name="unique_client_phone",
+                condition=Q(phone_number__isnull=False)
+            )
+        ]
 
 
 class ProviderClient(models.Model):
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["provider", "client"], name="unique_provider_client")
+        ]
 
 
 STATUSES = [

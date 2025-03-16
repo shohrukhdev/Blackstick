@@ -1,13 +1,18 @@
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_protect
+from rest_framework import generics, viewsets
+from rest_framework.decorators import action
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
-from booket.models import ProviderServer
-from .serializers import ProviderServerSerializer
+from booket.models import ProviderServer, Client
+from .serializers import ProviderServerSerializer, ClientSerializer
 from rest_framework.response import Response
 from datetime import datetime
 
 
 class ProviderServerDetailView(generics.RetrieveAPIView):
+    throttle_classes = [AnonRateThrottle]
     serializer_class = ProviderServerSerializer
 
     def get(self, request, p_server_id):
@@ -20,6 +25,7 @@ class ProviderServerDetailView(generics.RetrieveAPIView):
 
 
 class AvailableTimeSlotsView(APIView):
+    throttle_classes = [AnonRateThrottle]
     def get(self, request, p_server_id):
         provider_server = ProviderServer.objects.filter(id=p_server_id).first()
         if not provider_server:
@@ -35,3 +41,24 @@ class AvailableTimeSlotsView(APIView):
         available_slots = serializer._calculate_available_slots(provider_server, start_date)
 
         return Response({"available_slots": available_slots})
+
+
+class ClientViewSet(viewsets.ReadOnlyModelViewSet):
+    throttle_classes = [AnonRateThrottle]
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+    @action(detail=False, methods=["get"])
+    def search(self, request):
+        email = request.query_params.get("email")
+        phone_number = request.query_params.get("phone_number")
+
+        if email:
+            client = get_object_or_404(Client, email=email)
+        elif phone_number:
+            client = get_object_or_404(Client, phone_number=phone_number)
+        else:
+            return Response({"error": "Provide either email or phone_number"}, status=400)
+
+        serializer = self.get_serializer(client)
+        return Response(serializer.data)

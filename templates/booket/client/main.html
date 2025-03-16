@@ -226,8 +226,10 @@
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h5 class="modal-title">Sp. <span id="server_name">Server Name</span></h5>
-        <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title">{% trans "Specialist" %} <i class="fa-solid fa-clipboard-user"></i> <span
+          id="server_name">Server Name</span></h5>
+        <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm btn-close"
+                data-bs-dismiss="modal"></button>
       </div>
 
       <!-- Modal body -->
@@ -268,18 +270,153 @@
           <div id="timeSlots" class="d-flex flex-wrap gap-2" style="margin-top: 15px;">
           </div>
         </div>
+        <!-- Confirmation panel -->
+        <div id="confirmation" class="confirmation" style="display: block;">
+          <div class="card shadow">
+            <div class="card-body">
+              <table class="table table-hover table-striped table-responsive">
+                <tbody>
+                <tr class="table-primary">
+                  <td>{% trans "Time" %}</td>
+                  <td id="appointmentDateTime">
+                    <i class="fa-solid fa-clock"></i><b><span id="appointmentTime"></span></b>
+                    <span id="appointmentDate"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-center"><b><i
+                    class="fa-solid fa-list-ul"></i> {% trans "Selected services" %}
+                  </b></td>
+                </tr>
+                </tbody>
+                <tbody id="selectedServiceList">
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <span style="float: left">Service name</span> <span style="float: right"><i
+                        class="fa-solid fa-money-bills"></i> 120,000</span>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <span>estimated duration</span> <span style="float: right"><i
+                        class="fa-solid fa-hourglass-half"></i> 60 {% trans 'minutes' %}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        Service name 2<i class="fa-solid fa-money-bills"></i> 100,000
+                      </div>
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        Estimated duration <i class="fa-solid fa-hourglass-half"></i> 60 minut
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot id="tableFooter" style="display: none;">
+                <tr class="table-dark">
+                  <td><i class="fa-solid fa-money-check-dollar fa-fade"></i> {% trans "Total" %}: <span id="totalSum"> 230,000</span>
+                  </td>
+                  <td><i class="fa-solid fa-clock fa-spin"></i> {% trans "Estimated duration" %}: <span
+                    id="totalDuration"> 130 </span>{% trans "minutes" %}
+                  </td>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="card shadow">
+            <div class="card-body text-center d-flex justify-content-center">
+              <form id="clientConfirmationForm">
+                {% csrf_token %}
+                <input type="hidden" name="provider_id" value="{{ provider.id }}">
+                <h6>{% trans "Confirm the appointment by" %}</h6>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="confirmation_method" id="phoneRadio"
+                         value="phone" checked>
+                  <label class="form-check-label" for="phoneRadio">{% trans "Phone number" %}</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="confirmation_method" id="emailRadio"
+                         value="email">
+                  <label class="form-check-label" for="emailRadio">{% trans "Email" %}</label>
+                </div>
+                <div id="emailInput" class="mb-3 mt-3" style="max-width: 350px; display: none;">
+                  <label for="email" class="form-label" style="float: left;">{% trans "Email" %}:</label>
+                  <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+                </div>
+                <div id="phoneInput" class="mb-3 mt-3" style="max-width: 350px;">
+                  <label for="email" class="form-label" style="float: left;">{% trans "Phone" %}:</label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">+998</span>
+                    <input type="text" class="form-control form-control-sm" id="phone" name="phone" required>
+                  </div>
+                </div>
+                <div class="client_info_input" style="display: none;">
+                  <div class="mb-3 mt-3" style="max-width: 350px;">
+                    <label for="full_name" class="form-label" style="float: left;">{% trans "Full name" %}:</label>
+                    <input type="text" class="form-control form-control-sm" id="full_name" name="full_name">
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-6">
+                      <label for="dob" class="form-label">{% trans "Date of birth" %}:</label>
+                      <input type="date" class="form-control form-control-sm" id="dob" name="dob">
+                    </div>
+                    <div class="col-6">
+                      <label for="sex" class="form-label">{% trans "Gender" %}:</label>
+                      <select class="form-select form-select-sm" id="sex" name="sex">
+                        <option value="male">{% trans "Male" %}</option>
+                        <option value="female">{% trans "Female" %}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <!-- Confirmation Button -->
+                <div class="mb-3">
+                  <div class="form-group">
+                    <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" required>
+                    <label class="form-check-label" for="agree"><span style="color: red">* </span><a href="#">{% trans "Agree to terms of use" %}</a></label>
+                  </div>
+                  <button type="button" disabled class="btn btn-success">{% trans "Confirm" %}</button>
+                </div>
+                <!-- Confirmation Code Input -->
+                <div style="display: none;" class="confirmation_code_input">
+                  <div class="mb-3">
+                    <label for="confirmation_code" class="form-label">{% trans "Confirmation Code" %}:</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="confirmation_code" name="confirmation_code"
+                             placeholder="Enter Code">
+                      <button class="btn btn-secondary" id="resendBtn" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
         <!-- Modal footer -->
         <div class="modal-footer">
+
           <button type="button" class="btn btn-primary btn-sm shadow serviceList" disabled id="nextBtn"
                   onclick="transitionToTimeSlots()">{% trans 'Next' %}</button>
           <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm shadow serviceList"
                   data-bs-dismiss="modal">{% trans "Close" %}</button>
 
-          <button type="button" class="btn btn-success btn-sm shadow timeSlot"
-                  style="display: none;">{% trans 'Next' %}</button>
+
+          <button id="nextBtn2" type="button" class="btn btn-success btn-sm shadow timeSlot"
+                  onclick="transitionToConfirmation()" style="display: none;" disabled>{% trans 'Next' %}</button>
           <button type="button" class="btn btn-warning btn-sm shadow timeSlot" style="display: none;"
                   onclick="backToServices()">{% trans 'Back' %}</button>
+
+          <button type="button" class="btn btn-danger btn-sm shadow confirmation"
+                  onclick="transitionToTimeSlots()" style="display: none;">{% trans 'Back' %}</button>
+
         </div>
       </div>
     </div>
@@ -294,12 +431,120 @@
       var lastDate;
       var firstDate;
       var cur_lang = document.getElementById('cur_lang').value;
+      var signature = {{ signature }}
+
+      $(document).ready(function () {
+
+          // Initialize Bootstrap popovers globally
+          $('[data-bs-toggle="popover"]').popover();
+
+          // Use Event Delegation to Listen for Checkbox Changes
+          $(document).on('change', '.service-checkbox', function () {
+              $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+
+              let serviceId = $(this).data('id');
+              let price = $(this).data('price');
+              let duration = $(this).data('duration');
+              let serviceName = $(this).data('name');
+
+              if ($(this).is(':checked')) {
+                  // Add selected service
+                  appointment.services.push({
+                      service_id: serviceId,
+                      service_name: serviceName,
+                      price: price,
+                      duration: duration
+                  });
+              } else {
+                  // Remove unchecked service
+                  appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
+              }
+          });
+
+
+          // Loop through all .more-info buttons
+          $(".more-info").each(function () {
+              var $button = $(this);  // The More/Less button
+              var $textContainer = $("#" + $button.data("target").substring(1)); // Get the text container based on the data-target attribute
+
+              // Initially, set the height of the text container to 2em (show only part of the content)
+              var initialHeight = $textContainer[0].scrollHeight; // Full content height (scrollHeight gives the full content size)
+              var collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight); // Limit to 2 lines of text (adjust this value as needed)
+
+              // Set the initial height to 2em
+              $textContainer.css("max-height", collapsedHeight);
+
+              // Show "More" button if the content exceeds the collapsed height
+              if (initialHeight > collapsedHeight) {
+                  $button.show(); // Show the "More" button
+              }
+
+              // Handle the "More" link click to show full content
+              $button.click(function (e) {
+                  e.preventDefault(); // Prevent default button behavior
+
+                  // Toggle between expanding and collapsing
+                  if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
+                      // Expand content and change button text
+                      $textContainer.css("max-height", initialHeight); // Remove height limit and show full content
+                      $button.html("{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>");
+                  } else {
+                      // Collapse content and change button text
+                      $textContainer.css("max-height", collapsedHeight); // Limit the content to 2em
+                      $button.html("{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>");
+                  }
+              });
+          });
+
+/////////////////  Confirmation Method select ////////////////////////
+          $('input[name="confirmation_method"]').change(function () {
+              if ($('#phoneRadio').is(':checked')) {
+                  $('#phoneInput').show();
+                  $('#emailInput').hide();
+              } else if ($('#emailRadio').is(':checked')) {
+                  $('#phoneInput').hide();
+                  $('#emailInput').show();
+              }
+          });
+      });
+
 
       function closeModal() {
           $('#customModal').modal('hide');
           appointment = {}
           appointment['services'] = []
           responseData = {}
+      }
+
+      //////////////////// GO TO CONFIRMATION Panel ////////////////////////
+      function transitionToConfirmation() {
+          console.log(appointment)
+          $('#appointmentTime').text(" " + appointment.time);
+          $('#appointmentDate').text("  " + formatDatetoDMY(appointment.date) + " ");
+
+          $('#selectedServiceList').empty()
+          $.each(appointment.services, function (index, service) {
+              let trow = `<tr><td colspan="2"><div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                              <span style="float: left">${service.service_name}</span>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                              <span><i class="fa-solid fa-money-bills"></i> ${service.price.toLocaleString()} sum</span>
+                              <span style="float: right"><i class="fa-solid fa-hourglass-half"></i> ${service.duration} minut</span>
+                            </div>
+                          </div></td></tr>`
+              $('#selectedServiceList').append(trow);
+          });
+
+          if (appointment.services.length > 1) {
+              $('#totalDuration').text(calculateTotalDuration(appointment.services));
+              $('#totalSum').text(calculateTotalSum(appointment.services).toLocaleString());
+
+              $('#tableFooter').show();
+          }
+
+          $('.timeSlot').hide()
+          $('.confirmation').show()
       }
 
 
@@ -315,7 +560,7 @@
               url: endpoint,
               type: "GET",
               dataType: "json",
-              headers: {'X-CSRFToken': getCookie('csrftoken')},
+              headers: {'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature},
               success: function (response) {
                   renderDates(response.available_slots);
               }
@@ -326,13 +571,19 @@
       function calculateTotalDuration(services) {
           let totalDuration = services.reduce((sum, service) => sum + service.duration, 0);
           $("#estimatedDuration").text(totalDuration);
+          return totalDuration;
+      }
+
+      function calculateTotalSum(services) {
+          return services.reduce((sum, service) => sum + service.price, 0);
       }
 
       //////////////////////   GO TO THE TIME SLOT SELECTION ////////////////////////
       function transitionToTimeSlots() {
           calculateTotalDuration(appointment.services);
 
-          $('.serviceList').hide()
+          $('.serviceList').hide();
+          $('.confirmation').hide();
           $('.timeSlot').show();
       }
 
@@ -347,6 +598,16 @@
           return dateParts[2] + '-' + dateParts[1]; // DD-MM format
       }
 
+      function formatDatetoDMY(inputDate) {
+          let date = new Date(inputDate); // Convert string to Date object
+
+          let day = String(date.getDate()).padStart(2, '0'); // Get day with leading zero
+          let month = String(date.getMonth() + 1).padStart(2, '0'); // Get month (0-based index)
+          let year = date.getFullYear(); // Get full year
+
+          return `${day}.${month}.${year}`; // Format as dd.mm.yyyy
+      }
+
       function renderDates(available_time_slots) {
           $("#dateList").empty();
           $("#timeSlots").empty();
@@ -358,13 +619,14 @@
                   .on("click", function () {
                       $("#dateList button").removeClass("btn-primary active-date");
                       $(this).addClass("btn-primary active-date");
-                      renderTimeSlots(item.slots);
                       appointment.date = item.date;
+                      renderTimeSlots(item.slots);
                   });
 
               if (index === 0) {
                   dateBtn.addClass("btn-primary active-date");
                   renderTimeSlots(item.slots);
+                  appointment.date = item.date;
                   firstDate = item.date;
               }
               lastDate = item.date;
@@ -381,13 +643,58 @@
                   .text(time)
                   .on("click", function () {
                       $("#timeSlots button").removeClass("btn-primary active-date");
-                      $(this).addClass("btn-primary active-date");
-                      
-                      appointment.time = time;
+                      let totalDuration = calculateTotalDuration(appointment.services);
+                      let available = isSlotAvailable(time, totalDuration, slots);
+                      if (available) {
+                          $(this).addClass("btn-primary active-date");
+                          appointment.time = time;
+                          $('#nextBtn2').prop('disabled', false);
+                      } else {
+                          $('#nextBtn2').prop('disabled', true);
+                          if (cur_lang === "uz") {
+                              popoverMessage = "Umumiy xizmatlar davomiyligi <b>" + totalDuration +
+                                  "</b> minut tanlangan vaqt <b>" + time + "</b> dan keyingi vaqt oraligi'ida mavjud emas. Iltimos boshqa vaqtni tanlang!."
+                          } else if (cur_lang === "ru") {
+                              popoverMessage = "Общая продолжительность услуги <b>" + totalDuration + "</b> минут не может быть выделена в промежуток времени с <b>" + time + "</b>. Пожалуйста, выберите другое время."
+                          } else {
+                              popoverMessage = "Total service duration <b>" + totalDuration +
+                                  "</b> minutes cannot be allocated to timeframe from <b>" + time + "</b>. Please choose another slot."
+                          }
+
+                          // Hide all popovers before showing a new one
+                          $('[data-bs-toggle="popover"]').popover("hide"); // Hides all active popovers
+                          // Destroy existing popover before setting a new one
+                          $(this).popover("dispose").popover({
+                              content: popoverMessage, // Dynamic content
+                              html: true,
+                              placement: "top"
+                          }).popover("show");
+
+                          // Hide popover automatically after 5 seconds
+                          setTimeout(() => {
+                              $(this).popover("hide");
+                          }, 4000);
+                      }
+
                   });
 
               $("#timeSlots").append(timeBtn);
           });
+      }
+
+      function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
+          let startTime = moment(selectedTime, "HH:mm");  // Convert start time to Moment.js
+          let endTime = startTime.clone().add(totalDuration, "minutes"); // Calculate end time
+          let requiredSlots = [];
+
+          // Generate the required time slots
+          while (startTime.isBefore(endTime)) {
+              requiredSlots.push(startTime.format("HH:mm"));  // Add to required slots
+              startTime.add(30, "minutes");  // Move to next 30-min slot
+          }
+
+          // Check if all required slots exist in availableSlots
+          return requiredSlots.every(slot => availableSlots.includes(slot));
       }
 
 
@@ -454,7 +761,7 @@
               url: endpoint,
               type: "GET",
               dataType: "json",
-              headers: {'X-CSRFToken': getCookie('csrftoken')},
+              headers: {'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature},
               success: function (response) {
                   responseData = response
                   appointment.server_id = p_server_id;
@@ -482,68 +789,7 @@
           let newDate = date.toISOString().split('T')[0]; // Format back to YYYY-MM-DD
           return newDate;
       }
-
-
-      $(document).ready(function () {
-
-          // Use Event Delegation to Listen for Checkbox Changes
-          $(document).on('change', '.service-checkbox', function () {
-              $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
-
-              let serviceId = $(this).data('id');
-              let price = $(this).data('price');
-              let duration = $(this).data('duration');
-              let serviceName = $(this).data('name');
-
-              if ($(this).is(':checked')) {
-                  // Add selected service
-                  appointment.services.push({
-                      service_id: serviceId,
-                      service_name: serviceName,
-                      price: price,
-                      duration: duration
-                  });
-              } else {
-                  // Remove unchecked service
-                  appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
-              }
-          });
-
-
-          // Loop through all .more-info buttons
-          $(".more-info").each(function () {
-              var $button = $(this);  // The More/Less button
-              var $textContainer = $("#" + $button.data("target").substring(1)); // Get the text container based on the data-target attribute
-
-              // Initially, set the height of the text container to 2em (show only part of the content)
-              var initialHeight = $textContainer[0].scrollHeight; // Full content height (scrollHeight gives the full content size)
-              var collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight); // Limit to 2 lines of text (adjust this value as needed)
-
-              // Set the initial height to 2em
-              $textContainer.css("max-height", collapsedHeight);
-
-              // Show "More" button if the content exceeds the collapsed height
-              if (initialHeight > collapsedHeight) {
-                  $button.show(); // Show the "More" button
-              }
-
-              // Handle the "More" link click to show full content
-              $button.click(function (e) {
-                  e.preventDefault(); // Prevent default button behavior
-
-                  // Toggle between expanding and collapsing
-                  if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
-                      // Expand content and change button text
-                      $textContainer.css("max-height", initialHeight); // Remove height limit and show full content
-                      $button.html("{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>");
-                  } else {
-                      // Collapse content and change button text
-                      $textContainer.css("max-height", collapsedHeight); // Limit the content to 2em
-                      $button.html("{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>");
-                  }
-              });
-          });
-      });
+      
 
   </script>
 {% endblock %}
