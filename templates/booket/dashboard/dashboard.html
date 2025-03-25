@@ -4,23 +4,303 @@
 {% load l10n %}
 {% block title %} {% trans "Dashboard" %}{% endblock %}
 {% block content %}
-  {% get_current_language as LANG_CODE %}
   <style>
+  .fc-event.post-event {
+    background-color: #989797; /* Example: Light gray background */
+    opacity: 0.7; /* Example: Slightly transparent */
+    border-color: #999; /* Example: Darker gray border */
+}
+  .fc-event-main {
+      cursor: pointer;
+      box-shadow: 2px 2px 1px darkgrey;
+  }
   </style>
+  <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
+  <script src="{% static 'fc/dist/index.global.min.js' %}"></script>
+  <script src="{% static 'fc/packages/core/locales-all.global.min.js' %}"></script>
+  {% get_current_language as LANG_CODE %}
   <div class="container">
     <div class="row">
-      <div class="col">
-        <div class="btn-group-xs">
-          <button onclick="location.href='{% url 'dashboard_config' %}'" class="btn btn-primary btn-sm">
-            <i class="fa-solid fa-gear"></i>
-            {% trans 'My settings' %}
-          </button>
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="card bg-primary text-white shadow" style="margin-top: 5px;">
+          <div class="card-header">{% trans 'Upcoming appointment' %}</div>
+          <div class="card-body">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <span><i class="fa-solid fa-clock fa-spin"></i> {% trans 'Time' %}: </span>
+                <span
+                  style="float:right;"><b>{{ appointment.start_datetime|time:"H:i" }} - {{ appointment.end_datetime|time:"H:i" }}</b> {{ appointment.end_datetime|date:"d.m.y" }}</span>
+              </li>
+              <li class="list-group-item">
+                <span><i class="fa-solid fa-user"></i> {% trans 'Client' %}:</span> <span
+                style="float:right;">{{ appointment.client.full_name }}</span>
+              </li>
+              {% if appointment.client.phone_number %}
+                <li class="list-group-item">
+                  <span><i class="fa-solid fa-mobile-retro"></i> {% trans 'Phone' %}:</span> <span
+                  style="float:right;">{{ appointment.client.phone_number }}</span>
+                </li>
+              {% endif %}
+              {% if appointment.client.email %}
+                <li class="list-group-item">
+                <span><i class="fa-solid fa-envelope"></i> {% trans 'Email' %}</span>
+                <span style="float: right;">{{ appointment.client.email }}</span>
+              {% endif %}
+              <ul class="list-group">
+                {% for s in appointment.appointmentservice_set.all %}
+                  <li class="list-group-item">
+                      <span>
+                        {% if LANG_CODE == 'uz' %}
+                          {{ s.service.name_uz }}
+                        {% elif LANG_CODE == 'ru' %}
+                          {{ s.service.name_ru }}
+                        {% else %}
+                          {{ s.service.name }}
+                        {% endif %}
+                      </span>
+                  </li>
+                {% endfor %}
+              </ul>
+              {% if appointment.comment %}
+                <li class="list-group-item">
+                  <span><i class="fa-solid fa-circle-info fa-beat-fade"></i></span>
+                  <span>{{ appointment.comment }}</span>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
       </div>
-      
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="card bg-success text-white shadow" style="margin-top: 5px;">
+          <div class="card-header">{% trans 'Today' %}</div>
+          <div class="card-body">
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-success">
+                <span>{% trans 'Completed' %}</span>
+                <h1 style="float: right;">{{ today_completed_appointments_count }}</h1>
+              </li>
+              <li class="list-group-item list-group-item-primary">
+                <span>{% trans 'All appointments' %}</span>
+                <h1 style="float: right; padding: 2px; margin: 0;">{{ today_appointments_count }}</h1>
+              </li>
+              <li class="list-group-item list-group-item-warning">
+                <span>{% trans 'No-show appointments' %}</span>
+                <h1 style="float: right; padding: 0; margin: 0;">{{ today_no_show_appointments_count }}</h1>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="card bg-info text-white shadow" style="margin-top: 5px;">
+          <div class="card-header">{% trans 'Reminder' %}
+            <button style="float:right;" class="btn btn-warning btn-sm" type="button"><i
+              class="fa-solid fa-pen-to-square"></i></button>
+          </div>
+          <div class="card-body">
+            {% if memo %}
+              {{ memo|safe }}
+            {% endif %}
+          </div>
+        </div>
+      </div>
     </div>
-
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card shadow" style="padding: 10px; margin-top: 10px;">
+          <div id="calendar">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <!-- The Modal -->
+<div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><i class="fa-solid fa-user"></i> <span id="client_name"></span></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body" id="modal-body">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-primary">
+            <i class="fa-solid fa-clock"></i>
+            <span id="timeframe"> 12:00 - 13:00</span>
+            <span id="event_date" style="float: right">24.03.2025</span>
+          </li>
+          <li class="list-group-item list-group-item-primary client-phone" style="display: none;">
+            <i class="fa-solid fa-phone"></i>
+            <span>{% trans 'Phone' %}:</span>
+            <span id="client_phone" style="float: right">Phone</span>
+          </li>
+          <li class="list-group-item list-group-item-primary client-email" style="display: none;">
+            <i class="fa-solid fa-square-envelope"></i>
+            <span>{% trans 'Email' %}:</span>
+            <span id="client_email" style="float: right">Email</span>
+          </li>
+        </ul>
+        <ul class="list-group" id="event_services">
+        </ul>
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-info event-comment" style="display: none;">
+            <i class="fa-solid fa-circle-info fa-beat"></i> <span id="event_comments"> Comments </span>
+          </li>
+          <li class="list-group-item list-group-item-warning">
+            <span>{% trans 'Status' %}:</span>
+            <span id="event_status" style="float: right">Confirmed</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+  
+
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+  <script>
+  var calendar;
+  var lang_code = $(`#cur_lang`).val();
+  var dayStartsAt = "{{ appointment.server.providerserver_set.first.day_starts_on|date:'H:i' }}"
+
+   $(document).ready(function () {
+          activateNavItem('dashboard-nav-link');
+          drawCalendar();
+      });
+
+  function drawCalendar() {
+      var Calendar = FullCalendar.Calendar;
+      var calendarEl = document.getElementById('calendar');
+      var today = new Date().toISOString().slice(0, 10)
+      var initialView = 'timeGridWeek'
+      var defaultHeaderToolBar = {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'timeGridDay,timeGridWeek,timeGridFourDays,dayGridMonth,listMonth' // user can switch between the two
+      }
+
+      var mobileHeaderToolBar = {
+          left: 'prev,next',
+          right: 'timeGridDay,timeGridFourDays,dayGridMonth,listMonth' // user can switch between the two
+      }
+      console.log(dayStartsAt)
+      if (isItMobile()) {
+          defaultHeaderToolBar = mobileHeaderToolBar;
+          initialView = 'timeGridFourDays'
+      }
+      console.log(defaultHeaderToolBar);
+      calendar = new Calendar(calendarEl, {
+          plugins: [],
+          initialView: initialView,
+          initialDate: today,
+          firstDay: 1,
+          themeSystem: 'bootstrap5',
+          headerToolbar: defaultHeaderToolBar,
+          views: {
+              timeGridFourDays: {
+                  type: 'timeGrid',
+                  duration: {days: 3},
+                  buttonText: '3 days'
+              },
+              listMonth: {
+              type: 'listMonth',
+              eventDidMount: function (info) {
+                  const event = info.event;
+                  const element = info.el;
+                  const now = new Date();
+                  const eventEnd = event.end;
+                  if (eventEnd && eventEnd < now) {
+                      // Hide the entire row (including the date)
+                      element.style.display = 'none';
+                      $('.fc-day-past').hide();
+                  }
+              }
+          }
+          },
+          locale: lang_code,
+          scrollTime: dayStartsAt,
+          events: '/dashboard/api/appointments/',
+          eventDidMount: function (info){
+              const event = info.event;
+              const element = info.el;
+              const now = new Date();
+              const eventEnd = event.end;
+              if (eventEnd && eventEnd < now) {
+                element.classList.add('post-event');
+              }
+          },
+          eventClick: function (info) {
+              console.log(info.event)
+              var apptmt = JSON.parse(JSON.stringify(info.event.extendedProps));
+              apptmt.client_full_name = info.event.title;
+              apptmt.id = info.event._def.publicId;
+              apptmt.start_datetime = info.event.startStr;
+              apptmt.end_datetime = info.event.endStr;
+              console.log(apptmt.start_datetime);
+              showEvent(apptmt);
+          },
+      });
+      calendar.render();
+      }
+  
+
+  function isItMobile() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  function formatDate(strDate) {
+    /// receives in format "2025-03-24T14:30:00+05:00" returns "24.03.2025"
+    let date = new Date(strDate);
+
+    let day = date.getDate().toString().padStart(2, "0");
+    let month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    let year = date.getFullYear();
+
+    return `${day}.${month}.${year}`;
+}
+  function showEvent(appointment) {
+      $('.client-phone').hide();
+      $('.client-email').hide();
+      $('.event-comment').hide();
+      console.log(appointment);
+      $(`#client_name`).text(appointment.client_full_name);
+      $('#timeframe').text("" + appointment.start_datetime.slice(11, 16) + " - " + appointment.end_datetime.slice(11, 16) + "");
+      $('#event_date').text(formatDate(appointment.end_datetime.slice(0, 10)));
+      if (appointment.client_phone){
+          $('#client_phone').text(appointment.client_phone);
+          $('.client-phone').show();
+      }
+      if (appointment.client_email){
+          $('#client_email').text(appointment.client_email);
+          $('.client-email').show()
+      }
+      if (appointment.comment) {
+          $('#event_comments').text(appointment.comment);
+          $('.event-comment').show();
+      }
+      $('#event_services').empty();
+      $.each(appointment.services, function (index, service){
+          let trow = `<li class="list-group-item list-group-item-secondary">${service.name} <span class="badge rounded-pill bg-primary"><i>${service.price.toLocaleString()}</i></span></li>`;
+          $('#event_services').append(trow);
+      });
+
+      $('#myModal').modal('show');
+  }
+
+  </script>
 
 {% endblock %}
 

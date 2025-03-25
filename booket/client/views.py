@@ -8,7 +8,7 @@ from difflib import get_close_matches
 from django.views.decorators.csrf import csrf_protect
 
 from booket.models import Provider, Client
-from booket.utils import generate_signature, validate_signature
+from booket.utils import generate_signature, valid_signature
 
 
 def main_page(request, identifier: str):
@@ -43,31 +43,4 @@ def get_server_details(p_server_id: int):
     pass
 
 
-def get_client_data(request):
-    """Get client data to check if it exists."""
-    response = {}
-    if request.method == "GET" and validate_signature(request):
-        phone_number = request.GET.get("phone_number")
-        email = request.GET.get("email")
-        try:
-            if phone_number:
-                client = Client.objects.get(phone_number=phone_number)
-            elif email:
-                client = Client.objects.get(email=email)
-            else:
-                raise ValidationError("Not a valid phone or email")
-            response["success"] = True
-            response["client_id"] = client.id
-            response["client_email"] = client.email
-            response["client_phone"] = client.phone_number
-            response["client_full_name"] = client.full_name
-            response["client_sex"] = client.sex
 
-            return JsonResponse(response)
-        except Client.DoesNotExist:
-            response["success"] = False
-            response["error"] = "Client does not exist"
-        except Exception as e:
-            response["success"] = False
-            response["error"] = str(e)
-        return JsonResponse(response)

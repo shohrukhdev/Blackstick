@@ -21,7 +21,7 @@ def generate_signature(provider_id: int) -> str:
     return encrypted_data.decode()
 
 
-def validate_signature(request: HttpRequest, expiry_seconds: int = 600) -> bool:
+def valid_signature(request: HttpRequest, expiry_seconds: int = 600) -> bool:
     """
     Extracts X-Signature from headers, decrypts, and validates it.
     """
@@ -43,3 +43,25 @@ def validate_signature(request: HttpRequest, expiry_seconds: int = 600) -> bool:
     except Exception:
         logger.error(f"X-Signature malformed. request: {request.META}")
         return False  # Decryption failed (tampered or expired)
+
+
+def mask_email(email):
+    """Masks an email address, showing only the first character and domain."""
+    if not email:
+        return ""
+    parts = email.split("@")
+    if len(parts) != 2:
+        return email  # Return original if not a valid email
+    local_part = parts[0]
+    domain = parts[1]
+    masked_local = local_part[0] + "*" * (len(local_part) - 1) if len(local_part) > 1 else local_part
+    return f"{masked_local}@{domain}"
+
+
+def mask_phone_number(phone_number):
+    """Masks a phone number, showing only the first and last two digits."""
+    if not phone_number:
+        return ""
+    if len(phone_number) < 4:
+        return phone_number  # Return original if too short
+    return phone_number[0] + "*" * (len(phone_number) - 3) + phone_number[-2:]

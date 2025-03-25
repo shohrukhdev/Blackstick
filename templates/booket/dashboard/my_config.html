@@ -190,5 +190,12 @@
       </div>
     </div>
   </div>
-
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+<script>
+  $(document).ready(function () {
+      activateNavItem("my_config");
+  });
+</script>
 {% endblock %}

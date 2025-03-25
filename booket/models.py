@@ -42,6 +42,7 @@ class Server(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='server_user')
     image = models.ImageField(upload_to='server', null=True, blank=True)
     phone_number = models.CharField(max_length=255, null=True, blank=True)
+    memo = models.TextField(null=True, blank=True)
     info = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -152,6 +153,10 @@ class Client(models.Model):
     sex = models.CharField(max_length=10, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    comments = models.TextField(null=True, blank=True)
+    language_code = models.CharField(max_length=3, null=True, blank=True)
 
     class Meta:
         """
@@ -164,11 +169,6 @@ class Client(models.Model):
             UniqueConstraint(
                 fields=["full_name", "phone_number"],
                 name="unique_client_name_phone"
-            ),
-            UniqueConstraint(
-                fields=["email"],
-                name="unique_client_email",
-                condition=Q(email__isnull=False)
             ),
             UniqueConstraint(
                 fields=["phone_number"],
@@ -189,10 +189,13 @@ class ProviderClient(models.Model):
 
 
 STATUSES = [
+    ("NEW", "NEW"),
+    ("CONFIRMED", "CONFIRMED"),  # confirmed by OTP verification
     ("PENDING", "PENDING"),  # waiting for a provider to confirm
-    ("CONFIRMED", "CONFIRMED"),  # confirmed by the provider
+    ("ACCEPTED", "ACCEPTED"),  # accepted by the provider
     ("CANCELLED", "CANCELLED"),  # cancelled by the provider or client
     ("REJECTED", "REJECTED"),  # rejected by the provider
+    ("NO_SHOW", "NO_SHOW"),  # client did not show up
     ("COMPLETED", "COMPLETED"),  # completed
 ]
 
@@ -203,8 +206,9 @@ class Appointment(models.Model):
     start_datetime = models.DateTimeField(null=True, blank=True)
     end_datetime = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=12, choices=STATUSES, null=True, blank=True)
-    title = models.CharField(max_length=255, null=True, blank=True)
+
     comment = models.TextField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.client} {self.server} {self.start_datetime} -- {self.end_datetime}"
@@ -219,9 +223,10 @@ class AppointmentService(models.Model):
 
 
 class OTPVerification(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True)
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True)
     phone_number = models.CharField(max_length=13, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
+    verification_method = models.CharField(max_length=1, null=True, blank=True)
     otp_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(default=False)

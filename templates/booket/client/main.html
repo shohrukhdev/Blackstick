@@ -252,7 +252,7 @@
             <!-- Date Selection -->
             <div class="col-12 text-center">
               <div class="btn-group">
-                <button class="btn btn-warning btn-outline-primary" onclick="getDates('previous')" id="prevDate"
+                <button class="btn btn-warning btn-outline-primary" type="button" onclick="getDates('previous')" id="prevDate"
                         style="width: 45px;">&lt;&lt;
                 </button>
                 <div id="dateList" class="btn-group">
@@ -260,7 +260,7 @@
                   <button class="btn btn-outline-primary">DATE2</button>
 
                 </div>
-                <button class="btn btn-warning btn-outline-primary" onclick="getDates('next')" id="nextDate"
+                <button class="btn btn-warning btn-outline-primary" type="button" onclick="getDates('next')" id="nextDate"
                         style="width: 45px;">&gt;&gt;
                 </button>
               </div>
@@ -271,7 +271,7 @@
           </div>
         </div>
         <!-- Confirmation panel -->
-        <div id="confirmation" class="confirmation" style="display: block;">
+        <div id="confirmation" class="confirmation" style="display: none;">
           <div class="card shadow">
             <div class="card-body">
               <table class="table table-hover table-striped table-responsive">
@@ -317,7 +317,7 @@
                   </td>
                 </tr>
                 </tbody>
-                <tfoot id="tableFooter" style="display: none;">
+                <tfoot id="tableFooter" class="tfooter" style="display: none;">
                 <tr class="table-dark">
                   <td><i class="fa-solid fa-money-check-dollar fa-fade"></i> {% trans "Total" %}: <span id="totalSum"> 230,000</span>
                   </td>
@@ -329,20 +329,24 @@
               </table>
             </div>
           </div>
-          <div class="card shadow">
+          <div class="card shadow" id="confirmationWindow">
             <div class="card-body text-center d-flex justify-content-center">
+              <div class="confirmationSuccess" style="display: none;">
+                <i class="fa-solid fa-circle-check fa-beat fa-lg" style="color: green; width: 50px; height: 50px; margin-bottom: 20px"></i>
+                <h6>{% trans "Your appointment confirmed successfully! Please be on time. If you want to cancel or change appointment please use the link from the SMS or contact the provider." %}</h6>
+              </div>
               <form id="clientConfirmationForm">
                 {% csrf_token %}
-                <input type="hidden" name="provider_id" value="{{ provider.id }}">
+                <input type="hidden" id="provider_id" name="provider_id" value="{{ provider.id }}">
                 <h6>{% trans "Confirm the appointment by" %}</h6>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="confirmation_method" id="phoneRadio"
-                         value="phone" checked>
+                         value="p" checked>
                   <label class="form-check-label" for="phoneRadio">{% trans "Phone number" %}</label>
                 </div>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="confirmation_method" id="emailRadio"
-                         value="email">
+                         value="e">
                   <label class="form-check-label" for="emailRadio">{% trans "Email" %}</label>
                 </div>
                 <div id="emailInput" class="mb-3 mt-3" style="max-width: 350px; display: none;">
@@ -350,16 +354,23 @@
                   <input type="email" class="form-control form-control-sm" id="email" name="email" required>
                 </div>
                 <div id="phoneInput" class="mb-3 mt-3" style="max-width: 350px;">
-                  <label for="email" class="form-label" style="float: left;">{% trans "Phone" %}:</label>
+                  <label for="phone" class="form-label" style="float: left;">{% trans "Phone" %}:</label>
                   <div class="input-group input-group-sm">
                     <span class="input-group-text">+998</span>
-                    <input type="text" class="form-control form-control-sm" id="phone" name="phone" required>
+                    <input type="number" class="form-control form-control-sm" maxlength="9" id="phone" name="phone" required>
                   </div>
+                </div>
+                <div id="clientFound" class="text-center" style="display:none;">
+                  <h6>{% trans "Client information exists." %}</h6>
+                </div>
+                <div id="clientNotFound" class="text-center" style="display:none;">
+                  <h6>{% trans "Enter client information." %}</h6>
                 </div>
                 <div class="client_info_input" style="display: none;">
                   <div class="mb-3 mt-3" style="max-width: 350px;">
                     <label for="full_name" class="form-label" style="float: left;">{% trans "Full name" %}:</label>
                     <input type="text" class="form-control form-control-sm" id="full_name" name="full_name">
+                    <input type="hidden" id="client_id" name="client_id">
                   </div>
                   <div class="row mt-2">
                     <div class="col-6">
@@ -369,29 +380,35 @@
                     <div class="col-6">
                       <label for="sex" class="form-label">{% trans "Gender" %}:</label>
                       <select class="form-select form-select-sm" id="sex" name="sex">
-                        <option value="male">{% trans "Male" %}</option>
-                        <option value="female">{% trans "Female" %}</option>
+                        <option value="m">{% trans "Male" %}</option>
+                        <option value="f">{% trans "Female" %}</option>
                       </select>
                     </div>
                   </div>
+                  <div id="comments" class="mb-3 mt-3" style="max-width: 350px;">
+                    <label for="comments" class="form-label" style="float: left;">{% trans "Comments(optional)" %}:</label>
+                    <textarea class="form-control form-control-sm" id="commentary" name="comments"></textarea>
+                  </div>
                 </div>
                 <!-- Confirmation Button -->
-                <div class="mb-3">
+                <div class="mb-3" style="margin-top: 12px;">
                   <div class="form-group">
                     <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" required>
                     <label class="form-check-label" for="agree"><span style="color: red">* </span><a href="#">{% trans "Agree to terms of use" %}</a></label>
                   </div>
-                  <button type="button" disabled class="btn btn-success">{% trans "Confirm" %}</button>
+                  <button type="button" disabled class="btn btn-success" onclick="sendToConfirm()" id="confirmBtn">{% trans "Confirm" %}</button>
                 </div>
+              </form>
+              <form id="confirmationCodeInput" style="display: none">
                 <!-- Confirmation Code Input -->
-                <div style="display: none;" class="confirmation_code_input">
-                  <div class="mb-3">
-                    <label for="confirmation_code" class="form-label">{% trans "Confirmation Code" %}:</label>
+                <div style="display: block;" class="confirmation_code_input">
+                  <div class="input-group mb-3 text-center" style="max-width: 350px;">
+                    <label for="confirmation_code" class="form-label">{% trans "Confirmation code was sent to" %}: <span id="confirmation_destination">sd***fv@gmail.com</span></label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="confirmation_code" name="confirmation_code"
+                      <input type="text" class="form-control" id="otp_code" name="otp_code"
                              placeholder="Enter Code">
-                      <button class="btn btn-secondary" id="resendBtn" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)
-                      </button>
+                      <button class="btn btn-success shadow" type="button" onclick="confirmOTP()" id="otpConfirmBtn" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)</button>
+                      <button class="btn btn-primary shadow" id="resendBtn" type="button" style="display: none;">{% trans "Resend" %}</button>
                     </div>
                   </div>
                 </div>
@@ -405,7 +422,7 @@
 
           <button type="button" class="btn btn-primary btn-sm shadow serviceList" disabled id="nextBtn"
                   onclick="transitionToTimeSlots()">{% trans 'Next' %}</button>
-          <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm shadow serviceList"
+          <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm shadow serviceList confirmationSuccess"
                   data-bs-dismiss="modal">{% trans "Close" %}</button>
 
 
@@ -414,7 +431,7 @@
           <button type="button" class="btn btn-warning btn-sm shadow timeSlot" style="display: none;"
                   onclick="backToServices()">{% trans 'Back' %}</button>
 
-          <button type="button" class="btn btn-danger btn-sm shadow confirmation"
+          <button type="button" id="backToTimeSlots" class="btn btn-danger btn-sm shadow confirmation"
                   onclick="transitionToTimeSlots()" style="display: none;">{% trans 'Back' %}</button>
 
         </div>
@@ -424,380 +441,624 @@
 {% endblock %}
 {% block js %}
   {{ block.super }}
-  <script>
-      var appointment = {}
-      appointment['services'] = []
-      var responseData = {}
-      var lastDate;
-      var firstDate;
-      var cur_lang = document.getElementById('cur_lang').value;
-      var signature = "{{ signature }}"
+<script>
+    // Global variables for managing appointment data and related operations
+    const appointment = { services: [] };
+    let responseData = {};
+    let lastDate;
+    let firstDate;
+    const cur_lang = document.getElementById('cur_lang').value;
+    const signature = "{{ signature }}";
+    const LOCALE_FORMAT = {
+        uz: "YYYY-MM-DD",
+        ru: "YYYY-MM-DD",
+        en: "YYYY-MM-DD",
+    }
+    // Utility function to show error or success messages
+    function showToast(message, type = "info") {
+        // Define Bootstrap toast classes for different types
+        const toastClasses = {
+            success: "bg-success text-white",
+            error: "bg-danger text-white",
+            info: "bg-primary text-white",
+            warning: "bg-warning text-dark"
+        };
 
-      $(document).ready(function () {
+        // Remove existing toasts to prevent stacking issues
+        $(".toast-container .toast").remove();
 
-          // Initialize Bootstrap popovers globally
-          $('[data-bs-toggle="popover"]').popover();
+        // Create the toast dynamically
+        const toastHTML = `
+    <div class="toast align-items-center ${toastClasses[type] || toastClasses.info} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          ${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>`;
 
-          // Use Event Delegation to Listen for Checkbox Changes
-          $(document).on('change', '.service-checkbox', function () {
-              $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+        // Append the toast container if not already present
+        if ($(".toast-container").length === 0) {
+            $("body").append('<div class="toast-container position-fixed top-0 end-0 p-3"></div>');
+        }
 
-              let serviceId = $(this).data('id');
-              let price = $(this).data('price');
-              let duration = $(this).data('duration');
-              let serviceName = $(this).data('name');
+        // Append the toast inside the container
+        $(".toast-container").append(toastHTML);
 
-              if ($(this).is(':checked')) {
-                  // Add selected service
-                  appointment.services.push({
-                      service_id: serviceId,
-                      service_name: serviceName,
-                      price: price,
-                      duration: duration
-                  });
-              } else {
-                  // Remove unchecked service
-                  appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
-              }
-          });
+        // Initialize and show the toast
+        var toastElement = $(".toast").last();
+        var toast = new bootstrap.Toast(toastElement[0]);
+        toast.show();
+    }
+    $(document).ready(function () {
+        // Initialize Bootstrap popovers globally
+        $('[data-bs-toggle="popover"]').popover();
 
+        // Event Delegation: Handle Service Checkbox Changes
+        $(document).on('change', '.service-checkbox', handleServiceCheckboxChange);
 
-          // Loop through all .more-info buttons
-          $(".more-info").each(function () {
-              var $button = $(this);  // The More/Less button
-              var $textContainer = $("#" + $button.data("target").substring(1)); // Get the text container based on the data-target attribute
+        // Handle "More Info" Button Clicks
+        $(".more-info").each(handleMoreInfoButtonClick);
 
-              // Initially, set the height of the text container to 2em (show only part of the content)
-              var initialHeight = $textContainer[0].scrollHeight; // Full content height (scrollHeight gives the full content size)
-              var collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight); // Limit to 2 lines of text (adjust this value as needed)
+        // Confirmation Method Select
+        $('input[name="confirmation_method"]').change(handleConfirmationMethodChange);
+        
+        // Add listeners for phone and email inputs
+        $('#phone').on('input', checkPhoneInput);
+        $('#email').on('input', checkEmailInput);
+        
+        // Enable/disable "Confirm" button based on form validity
+        $('#full_name, #dob, #sex, #agree').on('input change', checkConfirmButton);
+        
+        // Enable/disable "Confirm" button based on OTP input
+        $('#otp_code').on('input', checkOTPConfirmButton);
+        
+    });
 
-              // Set the initial height to 2em
-              $textContainer.css("max-height", collapsedHeight);
+    // Function to handle changes in service checkboxes
+    function handleServiceCheckboxChange() {
+        $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+        const serviceId = $(this).data('id');
+        const price = $(this).data('price');
+        const duration = $(this).data('duration');
+        const serviceName = $(this).data('name');
 
-              // Show "More" button if the content exceeds the collapsed height
-              if (initialHeight > collapsedHeight) {
-                  $button.show(); // Show the "More" button
-              }
+        if ($(this).is(':checked')) {
+            appointment.services.push({ service_id: serviceId, service_name: serviceName, price: price, duration: duration });
+        } else {
+            appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
+        }
+    }
 
-              // Handle the "More" link click to show full content
-              $button.click(function (e) {
-                  e.preventDefault(); // Prevent default button behavior
+    // Function to handle clicks on the "More Info" button
+    function handleMoreInfoButtonClick() {
+        const $button = $(this);
+        const $textContainer = $("#" + $button.data("target").substring(1));
+        const initialHeight = $textContainer[0].scrollHeight;
+        const collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight);
 
-                  // Toggle between expanding and collapsing
-                  if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
-                      // Expand content and change button text
-                      $textContainer.css("max-height", initialHeight); // Remove height limit and show full content
-                      $button.html("{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>");
-                  } else {
-                      // Collapse content and change button text
-                      $textContainer.css("max-height", collapsedHeight); // Limit the content to 2em
-                      $button.html("{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>");
-                  }
-              });
-          });
+        $textContainer.css("max-height", collapsedHeight);
 
-/////////////////  Confirmation Method select ////////////////////////
-          $('input[name="confirmation_method"]').change(function () {
-              if ($('#phoneRadio').is(':checked')) {
-                  $('#phoneInput').show();
-                  $('#emailInput').hide();
-              } else if ($('#emailRadio').is(':checked')) {
-                  $('#phoneInput').hide();
-                  $('#emailInput').show();
-              }
-          });
-      });
+        if (initialHeight > collapsedHeight) {
+            $button.show();
+        }
 
+        $button.click(function (e) {
+            e.preventDefault();
+            if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
+                $textContainer.css("max-height", initialHeight);
+                $button.html(`{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>`);
+            } else {
+                $textContainer.css("max-height", collapsedHeight);
+                $button.html(`{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>`);
+            }
+        });
+    }
 
-      function closeModal() {
-          $('#customModal').modal('hide');
-          appointment = {}
-          appointment['services'] = []
-          responseData = {}
-      }
+    // Function to handle changes in confirmation method (phone/email)
+    function handleConfirmationMethodChange() {
+        $('#phoneInput').toggle($('#phoneRadio').is(':checked'));
+        $('#emailInput').toggle($('#emailRadio').is(':checked'));
+        
+        // Clear input fields and hide client_info_input
+        if ($('#phoneRadio').is(':checked')) {
+            $('#email').val('');
+        } else {
+            $('#phone').val('');
+        }
+        // Clear common fields
+        $('#full_name').val('');
+        $('#dob').val('');
+        $('#sex').val('');
+        $('.client_info_input').hide();
+    }
 
-      //////////////////// GO TO CONFIRMATION Panel ////////////////////////
-      function transitionToConfirmation() {
-          console.log(appointment)
-          $('#appointmentTime').text(" " + appointment.time);
-          $('#appointmentDate').text("  " + formatDatetoDMY(appointment.date) + " ");
+    // Function to close the modal and reset data
+    function closeModal() {
+        $('#customModal').modal('hide');
+        resetAppointmentData();
+        resetOTPInput();
+    }
 
-          $('#selectedServiceList').empty()
-          $.each(appointment.services, function (index, service) {
-              let trow = `<tr><td colspan="2"><div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                              <span style="float: left">${service.service_name}</span>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                              <span><i class="fa-solid fa-money-bills"></i> ${service.price.toLocaleString()} sum</span>
-                              <span style="float: right"><i class="fa-solid fa-hourglass-half"></i> ${service.duration} minut</span>
-                            </div>
-                          </div></td></tr>`
-              $('#selectedServiceList').append(trow);
-          });
+    // Utility function to reset appointment and response data
+    function resetAppointmentData() {
+        appointment.services = [];
+        responseData = {};
+    }
 
-          if (appointment.services.length > 1) {
-              $('#totalDuration').text(calculateTotalDuration(appointment.services));
-              $('#totalSum').text(calculateTotalSum(appointment.services).toLocaleString());
+    // Function to format a date from ISO to DD-MM format
+    function formatDate(isoDate) {
+        const dateParts = isoDate.split('-');
+        return `${dateParts[2]}-${dateParts[1]}`; // DD-MM format
+    }
 
-              $('#tableFooter').show();
-          }
+    // Function to format a date from ISO to DD.MM.YYYY
+    function formatDatetoDMY(isoDate) {
+        const date = new Date(isoDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+    }
 
-          $('.timeSlot').hide()
-          $('.confirmation').show()
-      }
+    // Function to handle the transition to the confirmation panel
+    function transitionToConfirmation() {
+        $('.confirmationSuccess').hide()
+        $('#confirmationCodeInput').hide()
+        $('#appointmentTime').text(" " + appointment.time);
+        $('#appointmentDate').text("  " + formatDatetoDMY(appointment.date) + " ");
+        resetOTPInput();
+        $('#selectedServiceList').empty();
+        $.each(appointment.services, function (index, service) {
+            const trow = `<tr><td colspan="2"><div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <span style="float: left">${service.service_name}</span>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <span><i class="fa-solid fa-money-bills"></i> ${service.price.toLocaleString()} sum</span>
+                            <span style="float: right"><i class="fa-solid fa-hourglass-half"></i> ${service.duration} minut</span>
+                          </div>
+                        </div></td></tr>`;
+            $('#selectedServiceList').append(trow);
+        });
 
+        if (appointment.services.length > 1) {
+            $('#totalDuration').text(calculateTotalDuration(appointment.services));
+            $('#totalSum').text(calculateTotalSum(appointment.services).toLocaleString());
+            $('#tableFooter').show();
+        }
+        
+        $('.timeSlot').hide();
+        $('#clientConfirmationForm').show()
+        $('.confirmation').show();
+    }
 
-      /////////////////////// FETCH  NEXT PREVIOUS 5 days ///////////////////////////
-      function getDates(direction) {
-          if (direction === "next") {
-              date_param = modifyDate(lastDate, 1);
-          } else {
-              date_param = modifyDate(lastDate, -9);
-          }
-          let endpoint = "/provider-server/" + responseData.server_id + "/available-slots/?start_date=" + date_param;
-          $.ajax({
-              url: endpoint,
-              type: "GET",
-              dataType: "json",
-              headers: {'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature},
-              success: function (response) {
-                  renderDates(response.available_slots);
-              },
-              error: function (error) {
-                  console.log(error.responseJSON);
-                  showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
-              }
+    // Function to calculate the total duration of selected services
+    function calculateTotalDuration(services) {
+        const totalDuration = services.reduce((sum, service) => sum + service.duration, 0);
+        $("#estimatedDuration").text(totalDuration);
+        return totalDuration;
+    }
 
-          });
-      }
+    // Function to calculate the total sum of prices for selected services
+    function calculateTotalSum(services) {
+        return services.reduce((sum, service) => sum + service.price, 0);
+    }
 
-      function calculateTotalDuration(services) {
-          let totalDuration = services.reduce((sum, service) => sum + service.duration, 0);
-          $("#estimatedDuration").text(totalDuration);
-          return totalDuration;
-      }
+    // Function to fetch available dates based on direction (next/previous)
+    function getDates(direction) {
+        const date_param = modifyDate(lastDate, direction === "next" ? 1 : -9);
+        const endpoint = `/provider-server/${responseData.server_id}/available-slots/?start_date=${date_param}`;
+        $.ajax({
+            url: endpoint,
+            type: "GET",
+            dataType: "json",
+            headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
+            success: function (response){
+                console.log(response)
+                renderDates(response.available_slots)
+            },
+            error: function (error){ 
+                handleAjaxError(error) 
+            }   
+        });
+    }
 
-      function calculateTotalSum(services) {
-          return services.reduce((sum, service) => sum + service.price, 0);
-      }
+    // Function to handle the transition to the time slot selection
+    function transitionToTimeSlots() {
+        calculateTotalDuration(appointment.services);
+        $('.serviceList').hide();
+        $('.confirmation').hide();
+        $('.timeSlot').show();
+    }
 
-      //////////////////////   GO TO THE TIME SLOT SELECTION ////////////////////////
-      function transitionToTimeSlots() {
-          calculateTotalDuration(appointment.services);
+    // Function to go back from time slots to services
+    function backToServices() {
+        resetOTPInput()
+        $('.timeSlot').hide();
+        $('.serviceList').show();
+    }
 
-          $('.serviceList').hide();
-          $('.confirmation').hide();
-          $('.timeSlot').show();
-      }
+    // Function to render available dates
+    function renderDates(available_time_slots) {
+        $("#dateList").empty();
+        $("#timeSlots").empty();
 
-      function backToServices() {
-          $('.timeSlot').hide()
-          $('.serviceList').show()
-      }
+        $.each(available_time_slots, function (index, item) {
+            const dateBtn = $("<button>")
+                .addClass("btn btn-outline-primary btn-sm")
+                .text(formatDate(item.date))
+                .on("click", function () {
+                    $("#dateList button").removeClass("btn-primary active-date");
+                    $(this).addClass("btn-primary active-date");
+                    appointment.date = item.date;
+                    renderTimeSlots(item.slots);
+                });
 
-      // Function to format the date
-      function formatDate(isoDate) {
-          let dateParts = isoDate.split('-');
-          return dateParts[2] + '-' + dateParts[1]; // DD-MM format
-      }
+            if (index === 0) {
+                dateBtn.addClass("btn-primary active-date");
+                renderTimeSlots(item.slots);
+                appointment.date = item.date;
+                firstDate = item.date;
+            }
+            lastDate = item.date;
+            $("#dateList").append(dateBtn);
+        });
+    }
 
-      function formatDatetoDMY(inputDate) {
-          let date = new Date(inputDate); // Convert string to Date object
+    // Function to render available time slots
+    function renderTimeSlots(slots) {
+        $("#timeSlots").empty();
 
-          let day = String(date.getDate()).padStart(2, '0'); // Get day with leading zero
-          let month = String(date.getMonth() + 1).padStart(2, '0'); // Get month (0-based index)
-          let year = date.getFullYear(); // Get full year
+        $.each(slots, function (index, time) {
+            const timeBtn = $("<button>")
+                .addClass("btn btn-outline-secondary px-3 py-2 rounded-3 shadow")
+                .text(time)
+                .on("click", function () {
+                    $("#timeSlots button").removeClass("btn-primary active-date");
+                    const totalDuration = calculateTotalDuration(appointment.services);
+                    const available = isSlotAvailable(time, totalDuration, slots);
+                    if (available) {
+                        $(this).addClass("btn-primary active-date");
+                        appointment.time = time;
+                        $('#nextBtn2').prop('disabled', false);
+                    } else {
+                        $('#nextBtn2').prop('disabled', true);
+                        let popoverMessage = "";
+                        if (cur_lang === "uz") {
+                            popoverMessage = "Umumiy xizmatlar davomiyligi <b>" + totalDuration +
+                                "</b> minut tanlangan vaqt <b>" + time + "</b> dan keyingi vaqt oraligi'ida mavjud emas. Iltimos boshqa vaqtni tanlang!."
+                        } else if (cur_lang === "ru") {
+                            popoverMessage = "Общая продолжительность услуги <b>" + totalDuration + "</b> минут не может быть выделена в промежуток времени с <b>" + time + "</b>. Пожалуйста, выберите другое время."
+                        } else {
+                            popoverMessage = "Total service duration <b>" + totalDuration +
+                                "</b> minutes cannot be allocated to timeframe from <b>" + time + "</b>. Please choose another slot."
+                        }
 
-          return `${day}.${month}.${year}`; // Format as dd.mm.yyyy
-      }
+                        // Hide all popovers before showing a new one
+                        $('[data-bs-toggle="popover"]').popover("hide"); // Hides all active popovers
+                        // Destroy existing popover before setting a new one
+                        $(this).popover("dispose").popover({
+                            content: popoverMessage, // Dynamic content
+                            html: true,
+                            placement: "top"
+                        }).popover("show");
 
-      function renderDates(available_time_slots) {
-          $("#dateList").empty();
-          $("#timeSlots").empty();
+                        // Hide popover automatically after 5 seconds
+                        setTimeout(() => {
+                            $(this).popover("hide");
+                        }, 4000);
+                    }
 
-          $.each(available_time_slots, function (index, item) {
-              let dateBtn = $("<button>")
-                  .addClass("btn btn-outline-primary btn-sm")
-                  .text(formatDate(item.date))
-                  .on("click", function () {
-                      $("#dateList button").removeClass("btn-primary active-date");
-                      $(this).addClass("btn-primary active-date");
-                      appointment.date = item.date;
-                      renderTimeSlots(item.slots);
-                  });
+                });
 
-              if (index === 0) {
-                  dateBtn.addClass("btn-primary active-date");
-                  renderTimeSlots(item.slots);
-                  appointment.date = item.date;
-                  firstDate = item.date;
-              }
-              lastDate = item.date;
-              $("#dateList").append(dateBtn);
-          });
-      }
+            $("#timeSlots").append(timeBtn);
+        });
+    }
 
-      function renderTimeSlots(slots) {
-          $("#timeSlots").empty();
+    // Function to check if a time slot is available
+    function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
+        const startTime = moment(selectedTime, "HH:mm");
+        const endTime = startTime.clone().add(totalDuration, "minutes");
+        const requiredSlots = [];
 
-          $.each(slots, function (index, time) {
-              let timeBtn = $("<button>")
-                  .addClass("btn btn-outline-secondary px-3 py-2 rounded-3 shadow")
-                  .text(time)
-                  .on("click", function () {
-                      $("#timeSlots button").removeClass("btn-primary active-date");
-                      let totalDuration = calculateTotalDuration(appointment.services);
-                      let available = isSlotAvailable(time, totalDuration, slots);
-                      if (available) {
-                          $(this).addClass("btn-primary active-date");
-                          appointment.time = time;
-                          $('#nextBtn2').prop('disabled', false);
-                      } else {
-                          $('#nextBtn2').prop('disabled', true);
-                          if (cur_lang === "uz") {
-                              popoverMessage = "Umumiy xizmatlar davomiyligi <b>" + totalDuration +
-                                  "</b> minut tanlangan vaqt <b>" + time + "</b> dan keyingi vaqt oraligi'ida mavjud emas. Iltimos boshqa vaqtni tanlang!."
-                          } else if (cur_lang === "ru") {
-                              popoverMessage = "Общая продолжительность услуги <b>" + totalDuration + "</b> минут не может быть выделена в промежуток времени с <b>" + time + "</b>. Пожалуйста, выберите другое время."
-                          } else {
-                              popoverMessage = "Total service duration <b>" + totalDuration +
-                                  "</b> minutes cannot be allocated to timeframe from <b>" + time + "</b>. Please choose another slot."
-                          }
+        let tempTime = startTime.clone();
+        while (tempTime.isBefore(endTime)) {
+            requiredSlots.push(tempTime.format("HH:mm"));
+            tempTime.add(30, "minutes");
+        }
 
-                          // Hide all popovers before showing a new one
-                          $('[data-bs-toggle="popover"]').popover("hide"); // Hides all active popovers
-                          // Destroy existing popover before setting a new one
-                          $(this).popover("dispose").popover({
-                              content: popoverMessage, // Dynamic content
-                              html: true,
-                              placement: "top"
-                          }).popover("show");
+        return requiredSlots.every(slot => availableSlots.includes(slot));
+    }
 
-                          // Hide popover automatically after 5 seconds
-                          setTimeout(() => {
-                              $(this).popover("hide");
-                          }, 4000);
-                      }
+    // Function to fill services based on selected server and language
+    function fillServices(service_types, language_code) {
+        $('#service_row').empty();
+        $.each(service_types, function (index, service_type) {
+            const serviceTypeName = language_code === "uz" ? service_type.name_uz :
+                language_code === "ru" ? service_type.name_ru :
+                    service_type.name;
+            let table = `
+          <div class="col-lg-6 col-md-12 col-sm-12">
+              <table class="table table-sm table-hover">
+                  <thead class="table-dark">
+                      <tr>
+                          <th>${serviceTypeName}</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+      `;
 
-                  });
+            $.each(service_type.services, function (i, service) {
+                const price = service.service_private_price !== null ? service.service_private_price : service.price;
+                const serviceName = language_code === "uz" ? service.name_uz :
+                    language_code === "ru" ? service.name_ru :
+                        service.name;
 
-              $("#timeSlots").append(timeBtn);
-          });
-      }
+                table += `
+              <tr>
+                  <td>${serviceName}
+                  <span class="badge bg-primary rounded-pill"><i>(${price.toLocaleString()})</i></span>
+                      <input type="checkbox" class="service-checkbox form-check"
+                             data-id="${service.id}"
+                             data-name="${serviceName}"
+                             data-price="${price}"
+                             data-duration="${service.duration}">
+                  </td>
+              </tr>
+          `;
+            });
 
-      function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
-          let startTime = moment(selectedTime, "HH:mm");  // Convert start time to Moment.js
-          let endTime = startTime.clone().add(totalDuration, "minutes"); // Calculate end time
-          let requiredSlots = [];
+            table += `
+                  </tbody>
+              </table>
+          </div>
+      `;
 
-          // Generate the required time slots
-          while (startTime.isBefore(endTime)) {
-              requiredSlots.push(startTime.format("HH:mm"));  // Add to required slots
-              startTime.add(30, "minutes");  // Move to next 30-min slot
-          }
+            $('#service_row').append(table);
+        });
+    }
 
-          // Check if all required slots exist in availableSlots
-          return requiredSlots.every(slot => availableSlots.includes(slot));
-      }
+    // Function to select a server and fetch related data
+    function selectServer(p_server_id, server_name) {
+        resetOTPInput();
+        resetAppointmentData();
+        clearClientInfoInput();
+        $('.timeSlot .confirmation .tfooter .confirmationSuccess .client_info_input .confirmationCodeInput').hide();
+        $('#resendBtn #clientFound').hide()
+        $('.serviceList').show();
+        $('.confirmation').hide();
+        $('.timeSlot').hide();
+        const endpoint = `/provider-server/${p_server_id}/`;
+        const lang_code = $('#cur_lang').val();
+        $("#server_name").text(server_name);
+        $.ajax({
+            url: endpoint,
+            type: "GET",
+            dataType: "json",
+            headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
+            success: function (response) {
+                responseData = response;
+                appointment.server_id = p_server_id;
+                fillServices(response.service_types, lang_code);
+                renderDates(response.available_time_slots);
+                $('#customModal').modal('show');
+                console.log(response)
+            },
+            error: function (error) {
+                handleAjaxError(error)
+            }
+        });
+    }
 
+    // Function to submit the language change form
+    function submitlang() {
+        $('#setlangform').submit();
+    }
 
-      /////////////////////// FILL SERVICES ON SERVER SELECTED FOR BOOKING ////////////////////////////////
-      function fillServices(service_types, language_code) {
-          $('#service_row').empty();
-          $.each(service_types, function (index, service_type) {
-              // Choose the correct service type name based on language
-              let serviceTypeName = language_code === "uz" ? service_type.name_uz :
-                  language_code === "ru" ? service_type.name_ru :
-                      service_type.name;
+    // Function to modify date for next/previous date fetching
+    function modifyDate(dateStr, days) {
+        const date = new Date(dateStr);
+        date.setDate(date.getDate() + days);
+        return date.toISOString().split('T')[0];
+    }
+    
+        // API search method
+    function searchClient(search_data) {
+        const signature = "{{ signature }}";
+        $.ajax({
+            url: '/client/search/',
+            type: 'GET',
+            data: search_data,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            success: function (response) {
+                if (response.success) {
+                    //fill form inputs
+                    $('#full_name').val(response.client_full_name)
+                    $('#dob').val(response.client_dob)
+                    $('#sex').val(response.client_sex)
+                    $('#client_id').val(response.client_id)
+                    //show client info block
+                    $('#clientNotFound').hide()
+                    $('#clientFound').show()
+                    $('.client_info_input').show();
+                    
+                }
+            },
+            error: function (error) {
+                console.log(error.responseText)
+                $('#full_name').val("")
+                $('#dob').val("")
+                $('#sex').val("")
+                $('#client_id').val("")
+                $('#clientNotFound').show()
+                $('#clientFound').hide()
+                $('.client_info_input').show();
+            }
+        });
+    }
+    
+     // Check if the phone input is valid
+    function checkPhoneInput() {
+        const phoneValue = $(this).val();
+        if (phoneValue.length > 8) {
+            searchClient({phone_number: phoneValue});
+        } else {
+            $('.client_info_input').hide();
+        }
+    }
 
-              // Create a table element
-              let table = `
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <table class="table table-sm table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>${serviceTypeName}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-        `;
+    // Check if the email input is valid
+    function checkEmailInput() {
+        const emailValue = $(this).val();
+        if (isValidEmail(emailValue)) {
+            searchClient({email: emailValue});
+        } else {
+            $('.client_info_input').hide();
+        }
+    }
+    // Helper function to validate email
+    function isValidEmail(email) {
+        // Basic email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    // Function to check and enable/disable the "Confirm" button
+    function checkConfirmButton() {
+        const fullNameValue = $('#full_name').val();
+        const dobValue = $('#dob').val();
+        const sexValue = $('#sex').val();
+        const agreeChecked = $('#agree').is(':checked');
 
-              // Loop through services and create table rows
-              $.each(service_type.services, function (i, service) {
-                  let price = service.service_private_price !== null ? service.service_private_price : service.price;
-                  let serviceName = language_code === "uz" ? service.name_uz :
-                      language_code === "ru" ? service.name_ru :
-                          service.name;
-
-                  table += `
-                <tr>
-                    <td>${serviceName}
-                    <span class="badge bg-primary rounded-pill"><i>(${price.toLocaleString()})</i></span>
-                        <input type="checkbox" class="service-checkbox form-check"
-                               data-id="${service.id}"
-                               data-name="${serviceName}"
-                               data-price="${price}"
-                               data-duration="${service.duration}">
-                    </td>
-                </tr>
-            `;
-              });
-
-              // Close table tags
-              table += `
-                    </tbody>
-                </table>
-            </div>
-        `;
-
-              // Append the table inside the modal body (service_row)
-              $('#service_row').append(table);
-          });
-
-      }
-
-      function selectServer(p_server_id, server_name) {
-          var endpoint = "/provider-server/" + p_server_id + "/";
-          var lang_code = $('#cur_lang').val();
-          $("#server_name").text(server_name);
-          $.ajax({
-              url: endpoint,
-              type: "GET",
-              dataType: "json",
-              headers: {'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature},
-              success: function (response) {
-                  responseData = response
-                  appointment.server_id = p_server_id;
-                  fillServices(services = response.service_types, language_code = lang_code);
-                  renderDates(responseData.available_time_slots);
-                  $('#customModal').modal('show');
-              },
-              error: function (error) {
-                  console.log(error.responseJSON);
-                  showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
-              }
-          })
-      }
-
-      function submitlang() {
-          $('#setlangform').submit();
-      }
-
-      // Initialize all popovers on the page
-      document.addEventListener('DOMContentLoaded', function () {
-          var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-          var popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-      });
-
-
-      function modifyDate(dateStr, days) {
-          let date = new Date(dateStr); // Convert YYYY-MM-DD to Date object
-          date.setDate(date.getDate() + days); // Add/Subtract days
-          let newDate = date.toISOString().split('T')[0]; // Format back to YYYY-MM-DD
-          return newDate;
-      }
-      
-
-  </script>
+        if (fullNameValue && dobValue && sexValue && agreeChecked) {
+            $('#confirmBtn').prop('disabled', false);
+        } else {
+            $('#confirmBtn').prop('disabled', true);
+        }
+    }
+    function sendToConfirm(){
+        
+        appointment.comments = $('#commentary').val()
+        appointment.provider_id = $('#provider_id').val()
+        appointment.language_code = cur_lang;
+        appointment.client = {
+            client_id: $('#client_id').val(),
+            full_name: $('#full_name').val(),
+            dob: $('#dob').val(),
+            sex: $('#sex').val(),
+            confirmation_method: $("input[name='confirmation_method']:checked").val(),
+            phone_number: $('#phone').val(),
+            email: $('#email').val()
+        };
+        console.log(appointment)
+        $.ajax({
+            url: '/client/appointment/create/',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            type: 'POST',
+            data: JSON.stringify(appointment),
+            contentType: 'application/json',
+            success: function (response){
+                console.log(response)
+                if (response.confirmation_method === "p"){
+                    $('#confirmation_destination').text(response.masked_phone_number)
+                } else {
+                    $('#confirmation_destination').text(response.masked_email)
+                }
+                appointment.otp_id = response.otp_id
+                startTimer()
+                
+                $('#clientConfirmationForm').hide()
+                $('#confirmationCodeInput').show()
+            },
+            error: function (error) {
+                handleAjaxError(error)
+            }
+            
+            
+        })
+    }
+let timerInterval    
+    function startTimer() {
+        let timer = 60;
+        $('#timer').text(timer);
+        $('#otpConfirmBtn').prop('disabled', true);
+        $('#resendBtn').hide();
+        $('#otpConfirmBtn').show();
+        timerInterval = setInterval(() => {
+            timer--;
+            $('#timer').text(timer);
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                $('#otpConfirmBtn').hide();
+                $('#resendBtn').show();
+            }
+        }, 1000);
+    }
+    
+    // Function to check and enable/disable the "Confirm" button
+    function checkOTPConfirmButton() {
+        const otpCodeValue = $('#otp_code').val();
+        if (otpCodeValue) {
+            $('#otpConfirmBtn').prop('disabled', false);
+        } else {
+            $('#otpConfirmBtn').prop('disabled', true);
+        }
+    }
+    
+    function confirmOTP(){
+        let otp_code = $('#otp_code').val()
+        $.ajax({
+            url: '/client/appointment/confirm/',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            type: 'POST',
+            data: JSON.stringify({"otp_id": appointment.otp_id, "otp_code": otp_code}),
+            contentType: 'application/json',
+            success: function (response){
+                console.log(response)
+                $('#clientConfirmationForm').hide()
+                $('#confirmationCodeInput').hide()
+                $('#backToTimeSlots').hide()
+                $('.confirmationSuccess').show()
+            },
+            error: function (error) {
+                handleAjaxError(error);
+            }
+        })
+        console.log(appointment.otp_id)
+        resetOTPInput()
+    }
+    
+    function handleAjaxError(error){
+        if (error.responseText.includes("Invalid request headers")){
+            location.reload();
+        }
+        showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
+    }
+    
+    function resetOTPInput(){
+        clearInterval(timerInterval); // Stop the timer
+        $('#otp_code').val(''); // Clear the OTP input   
+         $('#otpConfirmBtn').prop('disabled', true);
+    }
+    
+    function clearClientInfoInput(){
+        $('#clientConfirmationForm').trigger('reset');
+        $('#clientFound').hide();
+        $('#clientNotFound').hide();
+        $('.client_info_input').hide();
+    }
+    
+    
+</script>
 {% endblock %}

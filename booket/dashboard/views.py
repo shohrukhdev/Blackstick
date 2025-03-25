@@ -1,4 +1,6 @@
 import traceback
+from datetime import timedelta
+from turtledemo.penrose import start
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -6,14 +8,65 @@ from django.contrib.auth.models import User
 from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import timezone
 
-from booket.models import ProviderServer, logger, ServiceType, Service, ProviderServerService
+from booket.models import ProviderServer, logger, ServiceType, Service, ProviderServerService, Appointment
 
 
 @login_required
 def dashboard(request):
     if request.method == "GET":
-        return render(request, "booket/dashboard/dashboard.html")
+        try:
+            # Get the current user's server
+            server = request.user.server_user
+
+            # Get the next upcoming appointment
+            next_appointment = Appointment.objects.filter(
+                server=server,
+                status__in=["CONFIRMED", "ACCEPTED"],
+                start_datetime__gte=timezone.now()
+            ).order_by('start_datetime').first()
+
+            # Get the number of appointments for today
+            today_start = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+            today_end = today_start + timedelta(days=1)
+
+            today_appointments_count = Appointment.objects.filter(
+                server=server,
+                status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO-SHOW"],
+                start_datetime__gte=today_start,
+                start_datetime__lt=today_end
+            ).count()
+
+            # Get the number of completed appointments for today
+            today_completed_appointments_count = Appointment.objects.filter(
+                server=server,
+                start_datetime__gte=today_start,
+                start_datetime__lt=today_end,
+                status="COMPLETED"
+            ).count()
+
+            # no-show appointments
+            no_show_appointments_count = Appointment.objects.filter(
+                server=server,
+                status="NO_SHOW",
+                start_datetime__gte=today_start,
+                start_datetime__lt=today_end
+            ).count()
+
+            context_data = {
+                "appointment": next_appointment,
+                "today_no_show_appointments_count": no_show_appointments_count,
+                "today_appointments_count": today_appointments_count,
+                "today_completed_appointments_count": today_completed_appointments_count,
+                "memo": server.memo
+            }
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            context_data = {
+                "error": str(e)
+            }
+        return render(request, "booket/dashboard/dashboard.html", context=context_data)
 
 
 @login_required

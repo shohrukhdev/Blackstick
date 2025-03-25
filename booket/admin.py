@@ -5,7 +5,7 @@ from booket.models import (
     Client,
     Appointment,
     AppointmentService,
-    ProviderServer, ProviderServerService, ServiceType
+    ProviderServer, ProviderServerService, ServiceType, OTPVerification
 )
 
 
@@ -54,6 +54,11 @@ class ServiceTypeAdmin(admin.ModelAdmin):
 
 @admin.register(Server)
 class ServerAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(OTPVerification)
+class OTPVerificationAdmin(admin.ModelAdmin):
     pass
 
 

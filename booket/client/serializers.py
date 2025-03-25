@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+from django.utils import timezone
 from rest_framework import serializers
 from collections import defaultdict
 from booket.models import ProviderServer, ProviderServerService, Service, ServiceType, \
@@ -136,12 +137,16 @@ class ProviderServerSerializer(serializers.ModelSerializer):
 
         slots = []
         current_slot = datetime.combine(date, start_time)
+        current_slot = timezone.make_aware(current_slot)
 
         while current_slot.time() < end_time:
             slot_end = current_slot + timedelta(minutes=slot_duration)
 
             # Check if the slot is already booked
-            is_booked = any(start <= current_slot < end for start, end in booked_appointments)
+            is_booked = any(
+                start <= current_slot < end
+                for start, end in booked_appointments
+            )
             if not is_booked:
                 slots.append(current_slot.strftime("%H:%M"))
 
