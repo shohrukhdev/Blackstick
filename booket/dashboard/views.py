@@ -15,6 +15,20 @@ from booket.models import ProviderServer, logger, ServiceType, Service, Provider
 
 @login_required
 def dashboard(request):
+    if request.method == "POST":
+        try:
+            server = request.user.server_user
+            memo = request.POST.get("memo")
+            server.memo = memo
+            server.save()
+            messages.success(request, "Memo updated successfully.")
+        except Exception as e:
+            logger.error(traceback.format_exc())
+            messages.error(request, f"Error updating memo: {str(e)}")
+
+            # Redirect to the same page to prevent form resubmission
+        return redirect(reverse("dashboard_main"))
+
     if request.method == "GET":
         try:
             # Get the current user's server
