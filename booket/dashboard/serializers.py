@@ -58,3 +58,34 @@ class AppointmentSerializer(serializers.ModelSerializer):
     def get_title(self, obj):
         return f"{obj.client.full_name}"
 
+
+class AppointmentDtSerializer(serializers.ModelSerializer):
+    client_name = serializers.CharField(source="client.full_name", read_only=True)
+    client_phone = serializers.CharField(source="client.phone_number", read_only=True)
+    client_email = serializers.CharField(source="client.email", read_only=True)
+    apptmt_date = serializers.DateTimeField(format="%d.%m.%Y", source="start_datetime", read_only=True)
+    start_time = serializers.DateTimeField(format="%H:%M", source="start_datetime", read_only=True)
+    end_time = serializers.DateTimeField(format="%H:%M", source="end_datetime", read_only=True)
+    status = serializers.CharField(read_only=True)
+    comment = serializers.CharField(read_only=True)
+    time_slot = serializers.SerializerMethodField()
+    services = AppointmentServiceSerializer(many=True, read_only=True, source="appointmentservice_set")
+
+    class Meta:
+        model = Appointment
+        fields = [
+            "id",
+            "client_name",
+            "client_email",
+            "client_phone",
+            "apptmt_date",
+            "start_time",
+            "end_time",
+            "time_slot",
+            "status",
+            "comment",
+            "services"
+        ]
+
+    def get_time_slot(self, obj):
+        return f"{obj.start_datetime.strftime('%H:%M')} - {obj.end_datetime.strftime('%H:%M')}"

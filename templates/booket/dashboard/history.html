@@ -1,0 +1,125 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "History" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
+  <div class="container-fluid">
+    <div class="row" style="margin-top: 10px">
+      <div class="col-md-12">
+        <div class="card shadow">
+          <div class="card-body">
+            <table id="appointments_table" class="table table-bordered table-striped table-hover">
+              <thead>
+              <tr role="row" class="table-dark">
+                <th></th>
+                <th>{% trans 'ID' %}</th>
+                <th>{% trans 'CLIENT' %}</th>
+                <th>{% trans 'DATE' %}</th>
+                <th>{% trans 'TIME' %}</th>
+                <th>{% trans 'STATUS' %}</th>
+              </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static 'dt/datatables.min.js' %}" type="text/javascript"></script>
+  <script>
+  
+      $(document).ready(function () {
+          activateNavItem('history-nav-link');
+
+          let table = $('#appointments_table').DataTable({
+              layout: {
+                  topStart: {
+                      buttons: ['copy', 'print',
+                          {
+                              text: 'Statistics',
+                              action: function (e, dt, node, config) {
+                                  location.href='#'
+                              }
+                          }
+                      ],
+                  },
+                  topEnd: {
+                      search: 'search',
+                  },
+                  bottomStart: {
+                      pageLength: 'pageLength', 
+                      info: 'info',
+                  },
+                  bottomEnd: {
+                      paging: 'paging',
+                  },
+              },
+              select: true,
+              processing: true,
+              serverSide: true,
+              stateSave: true,
+              colReorder: true,
+              fixedHeader: true,
+              keys: true,
+              responsive: true,
+              ajax: "/dashboard/api/dt_appointments?format=datatables",
+              columns: [
+                  {
+                    className: 'dt-control',
+                    orderable: false,
+                    data: null,
+                    defaultContent: ''
+                  },
+                  {"data": "id", "name": "id"},
+                  {"data": "client_name", "name": "client.full_name"},
+                  {"data": "apptmt_date", "name": "start_datetime"},
+                  {"data": "time_slot", orderable: false, searchable: false},
+                  {"data": "status", "name": "status"},
+                  {"data": "comment", visible: false},
+                  {"data": "client_email", visible: false},
+                  {"data": "client_phone", visible: false},
+                  {"data": "services", visible: false},
+              ],
+          });
+          
+          // Add event listener for opening and closing details
+          $('#appointments_table tbody').on('click', 'td.dt-control', function () {
+              var tr = $(this).closest('tr');
+              var row = table.row(tr);
+
+              if (row.child.isShown()) {
+                  // This row is already open - close it
+                  row.child.hide();
+              } else {
+                  // Open this row
+                  row.child(expand(row.data())).show();
+              }
+          });
+          
+      });
+      
+      function expand(data){ 
+          let ul = '<ul class="list-group">'
+              + '<li class="list-group-item">Tel: ' + data.client_phone + '</li>' 
+              + '<li class="list-group-item">Email: ' + data.client_email + '</li>'
+              + '<li class="list-group-item">Comment: ' + (data.comment || '') + '</li>'; // Handle null comment
+
+          $.each(data.services, function (index, service) {
+              ul += '<li class="list-group-item">' + service.name + '</li>'; // Corrected: ul += and removed </i>
+          });
+
+          ul += '</ul>'; // Added closing </ul>
+
+          return ul;
+      }
+          
+  </script>
+{% endblock %}

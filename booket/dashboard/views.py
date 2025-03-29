@@ -195,3 +195,8 @@ def configs(request):
                     "p_server": p_server,
                 }
             return render(request, "booket/dashboard/my_config.html", context=context_data)
+
+
+@login_required
+def history(request):
+    return render(request, "booket/dashboard/history.html")

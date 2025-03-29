@@ -35,6 +35,9 @@
           <li class="nav-item">
             <a id="dashboard-nav-link" class="nav-link" aria-current="page" href="{% url 'dashboard_main' %}">{% trans 'Dashboard' %}</a>
           </li>
+          <li class="nav-item">
+            <a id="history-nav-link" class="nav-link" href="{% url 'dashboard_history' %}">{% trans 'History' %}</a>
+          </li>
           {% if request.session.provider %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'b_provider_main' %}">{% trans 'Provider' %}</a>
