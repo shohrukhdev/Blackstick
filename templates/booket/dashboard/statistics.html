@@ -1,0 +1,191 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "Statistics" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <div class="container-fluid">
+    <div class="row" style="margin-top: 10px">
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div class="input-group mb-3">
+          <span class="input-group-text">{% trans 'From' %}:</span>
+          <input type="date" class="form-control" id="start_date" value="{{ start_date | date:'Y-m-d' }}">
+          <span class="input-group-text">{% trans 'To' %}:</span>
+          <input type="date" class="form-control" id="end_date" value="{{ end_date | date:'Y-m-d' }}">
+          <button class="btn btn-primary" onclick="reloadData()" type="button"><i
+            class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+        <div style="float: right">
+          <button class="btn btn-danger"
+                  onclick='location.href="{% url 'dashboard_history' %}"'>{% trans 'Back' %}</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <h3>{% trans "Top 5 Clients (Completed Appointments)" %}</h3>
+        <table class="table table-bordered">
+          <thead>
+          <tr class="table-success">
+            <th>{% trans "Client Name" %}</th>
+            <th>{% trans "Completed Appointments" %}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for client in top_completed_clients %}
+            <tr>
+              <td>{{ client.client__full_name }}</td>
+              <td>{{ client.count }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-lg-6">
+        <h3>{% trans "Top 5 Clients (No-Show Appointments)" %}</h3>
+        <table class="table table-bordered">
+          <thead>
+          <tr class="table-danger">
+            <th>{% trans "Client Name" %}</th>
+            <th>{% trans "No-Show Appointments" %}</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for client in top_no_show_clients %}
+            <tr>
+              <td>{{ client.client__full_name }}</td>
+              <td>{{ client.count }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row justify-content-center d-flex align-items-center">
+      <h3 class="text-center">{% trans "Appointment Statistics" %}</h3>
+      <div class="col-lg-10 col-md-10 col-sm-21 col-xs-12">
+        <canvas id="appointmentLineChart"></canvas>
+      </div>
+    </div>
+
+    <div class="row justify-content-center d-flex align-items-center">
+      <h3 class="text-center">{% trans "Service Distribution" %}</h3>
+      <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+        <canvas id="servicePieChart"></canvas>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="{% static 'chartjs/package/dist/chart.umd.js' %}"></script>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const ctx = document.getElementById('appointmentLineChart').getContext('2d');
+          const pieCtx = document.getElementById('servicePieChart').getContext('2d');
+
+          const labels = {{ labels|safe }};
+          const completedCounts = {{ completed_counts|safe }};
+          const rejectedCounts = {{ rejected_counts|safe }};
+          const noShowCounts = {{ no_show_counts|safe }};
+          const cancelledCounts = {{ cancelled_counts|safe }}
+          const serviceLabels = {{ service_labels|safe }};
+          const serviceData = {{ service_data|safe }};
+
+
+          new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: labels,
+                  datasets: [
+                      {
+                          label: 'Completed',
+                          data: completedCounts,
+                          borderColor: 'green',
+                          backgroundColor: 'rgba(0, 128, 0, 0.2)',
+                      },
+                      {
+                          label: 'Rejected',
+                          data: rejectedCounts,
+                          borderColor: 'red',
+                          backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                      },
+                      {
+                          label: 'No Show',
+                          data: noShowCounts,
+                          borderColor: 'orange',
+                          backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                      },
+                      {
+                          label: 'Cancelled',
+                          data: cancelledCounts,
+                          borderColor: 'blue',
+                          backgroundColor: 'rgba(255, 165, 0, 0.2)',
+                      }
+                  ]
+              },
+              options: {
+                  responsive: true,
+                  scales: {
+                      x: {
+                          title: {
+                              display: true,
+                              text: 'Date'
+                          }
+                      },
+                      y: {
+                          title: {
+                              display: true,
+                              text: 'Count'
+                          },
+                          beginAtZero: true
+                      }
+                  }
+              }
+          });
+
+          // Pie Chart (New)
+          new Chart(pieCtx, {
+              type: 'pie',
+              data: {
+                  labels: serviceLabels,
+                  datasets: [{
+                      data: serviceData,
+                      hoverOffset: 5
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  plugins: {
+                      tooltip: {
+                          callbacks: {
+                              label: function (tooltipItem) {
+                                  let total = serviceData.reduce((sum, val) => sum + val, 0);
+                                  let value = serviceData[tooltipItem.dataIndex];
+                                  let percentage = ((value / total) * 100).toFixed(2) + "%";
+                                  return `${serviceLabels[tooltipItem.dataIndex]}: ${value} (${percentage})`;
+                              }
+                          }
+                      }
+                  }
+              }
+          });
+      });
+
+      function reloadData() {
+          const start_date = $('input[id="start_date"]').val()
+          const end_date = $('input[id="end_date"]').val()
+          let url = new URL(window.location.href);
+          url.searchParams.set('start_date', start_date);
+          url.searchParams.set('end_date', end_date);
+          window.location.href = url.toString();
+      }
+
+  </script>
+{% endblock %}

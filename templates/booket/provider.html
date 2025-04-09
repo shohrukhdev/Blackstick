@@ -86,4 +86,13 @@
       </div>
     </div>
   </div>
+  {% block js %}
+    {{ block.super }}
+  <script>
+    $(document).ready(function () {
+      activateNavItem('provider-settings-nav-link');
+  });
+
+    {% endblock %}
+  </script>
 {% endblock %}

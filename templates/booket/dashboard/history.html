@@ -35,7 +35,7 @@
   {{ block.super }}
   <script src="{% static 'dt/datatables.min.js' %}" type="text/javascript"></script>
   <script>
-  
+
       $(document).ready(function () {
           activateNavItem('history-nav-link');
 
@@ -46,7 +46,7 @@
                           {
                               text: 'Statistics',
                               action: function (e, dt, node, config) {
-                                  location.href='#'
+                                  location.href='{% url 'dashboard_statistics' %}'
                               }
                           }
                       ],
@@ -55,7 +55,7 @@
                       search: 'search',
                   },
                   bottomStart: {
-                      pageLength: 'pageLength', 
+                      pageLength: 'pageLength',
                       info: 'info',
                   },
                   bottomEnd: {
@@ -83,13 +83,13 @@
                   {"data": "apptmt_date", "name": "start_datetime"},
                   {"data": "time_slot", orderable: false, searchable: false},
                   {"data": "status", "name": "status"},
-                  {"data": "comment", visible: false},
-                  {"data": "client_email", visible: false},
-                  {"data": "client_phone", visible: false},
-                  {"data": "services", visible: false},
+                  {"data": "comment", visible: false, searchable: false},
+                  {"data": "client_email", visible: false, name: "client.email"},
+                  {"data": "client_phone", visible: false, name: "client.phone_number"},
+                  {"data": "services", visible: false, searchable: false},
               ],
           });
-          
+
           // Add event listener for opening and closing details
           $('#appointments_table tbody').on('click', 'td.dt-control', function () {
               var tr = $(this).closest('tr');
@@ -103,12 +103,12 @@
                   row.child(expand(row.data())).show();
               }
           });
-          
+
       });
-      
-      function expand(data){ 
+
+      function expand(data){
           let ul = '<ul class="list-group">'
-              + '<li class="list-group-item">Tel: ' + data.client_phone + '</li>' 
+              + '<li class="list-group-item">Tel: ' + data.client_phone + '</li>'
               + '<li class="list-group-item">Email: ' + data.client_email + '</li>'
               + '<li class="list-group-item">Comment: ' + (data.comment || '') + '</li>'; // Handle null comment
 
@@ -120,6 +120,6 @@
 
           return ul;
       }
-          
+
   </script>
 {% endblock %}

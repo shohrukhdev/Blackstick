@@ -18,10 +18,10 @@ def user_login(request):
                 login(request, user)
                 if Provider.is_user_owner(user):
                     request.session['provider'] = True
-                    return HttpResponseRedirect("/b/provider")
+                    return HttpResponseRedirect("/dashboard/provider/main")
                 elif Server.is_user_server(user):
                     request.session['server'] = True
-                    return HttpResponseRedirect("/b/server")
+                    return HttpResponseRedirect("/dashboard/main")
                 else:
                     return HttpResponse("Your account is not a server nor owner")
             else:

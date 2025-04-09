@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from booket.models import AppointmentService, Appointment
+from booket.models import AppointmentService, Appointment, Server
 
 
 class AppointmentServiceSerializer(serializers.ModelSerializer):
@@ -30,6 +30,18 @@ class AppointmentServiceSerializer(serializers.ModelSerializer):
         return obj.service.providerserverservice_set.first().service.price
 
 
+class ServerSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Server
+        fields = ["id", "user", "full_name"]
+
+    def get_full_name(self, obj):
+        return obj.user.get_full_name()
+
+
+
 class AppointmentSerializer(serializers.ModelSerializer):
     start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", source="start_datetime", read_only=True)
     end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", source="end_datetime", read_only=True)
@@ -39,6 +51,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     client_email = serializers.CharField(source="client.email", read_only=True)
     status = serializers.CharField(read_only=True)
     services = AppointmentServiceSerializer(many=True, read_only=True, source="appointmentservice_set")
+    server = ServerSerializer(many=False, read_only=True)
 
     class Meta:
         model = Appointment
@@ -52,7 +65,8 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "client_email",
             "services",
             "comment",
-            "status"
+            "status",
+            "server"
         ]
 
     def get_title(self, obj):

@@ -40,8 +40,15 @@
           </li>
           {% if request.session.provider %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'b_provider_main' %}">{% trans 'Provider' %}</a>
+            <a id="provider-dashboard-nav-link" class="nav-link" href="{% url 'provider_dashboard_main' %}">{% trans 'Provider dashboard' %}</a>
           </li>
+          <li class="nav-item">
+            <a id="provider-history-nav-link" class="nav-link" href="{% url 'provider_history' %}">{% trans 'Provider history' %}</a>
+          </li>
+          <li class="nav-item">
+            <a id="provider-settings-nav-link" class="nav-link" href="{% url 'b_provider_main' %}">{% trans 'Provider Settings' %}</a>
+          </li>
+          
           {% endif %}
           <div class="server_bar">
             <li class="nav-item">
@@ -49,20 +56,7 @@
             </li>
           </div>
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false">
-              Dropdown
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
+
         </ul>
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
           <li class="nav-item dropdown">

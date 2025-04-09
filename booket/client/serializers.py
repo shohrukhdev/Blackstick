@@ -132,7 +132,8 @@ class ProviderServerSerializer(serializers.ModelSerializer):
 
         booked_appointments = Appointment.objects.filter(
             server=obj.server,
-            start_datetime__date=date
+            start_datetime__date=date,
+            status__in=["ACCEPTED", "CONFIRMED", "PENDING"]
         ).values_list("start_datetime", "end_datetime")
 
         slots = []

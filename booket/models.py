@@ -206,7 +206,6 @@ class Appointment(models.Model):
     start_datetime = models.DateTimeField(null=True, blank=True)
     end_datetime = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=12, choices=STATUSES, null=True, blank=True)
-
     comment = models.TextField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
