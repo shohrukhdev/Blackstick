@@ -1,6 +1,5 @@
 import json
-
-from django.db import IntegrityError, transaction
+from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, viewsets, status
@@ -9,8 +8,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
-from booket.models import ProviderServer, Client, logger, Provider, ProviderClient, AppointmentService, Appointment, \
-    Service, OTPVerification
+from booket.models import (
+    ProviderServer, Client, logger, Provider, ProviderClient,
+    AppointmentService, Appointment, Service, OTPVerification)
 from .serializers import ProviderServerSerializer, ClientSerializer
 from rest_framework.response import Response
 from datetime import datetime
@@ -45,9 +45,7 @@ class AvailableTimeSlotsView(APIView):
             return Response({"error": "Provider Server not found"}, status=404)
         start_date = request.GET.get('start_date')
         if (
-            start_date
-            and
-            datetime.strptime(str(start_date), "%Y-%m-%d").date() < datetime.today().date()
+            start_date and datetime.strptime(str(start_date), "%Y-%m-%d").date() < datetime.today().date()
         ):
             start_date = datetime.today().date()
         serializer = ProviderServerSerializer()

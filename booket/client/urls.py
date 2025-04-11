@@ -1,7 +1,7 @@
 from django.urls import path
 from booket.client import views
 from booket.client import api_views as api_view
-from booket.client.api_views import ProviderServerDetailView, AvailableTimeSlotsView, ClientViewSet
+from booket.client.api_views import ProviderServerDetailView, AvailableTimeSlotsView
 
 urlpatterns = [
     path('<str:identifier>/', views.main_page, name='main_page'),

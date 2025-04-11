@@ -41,7 +41,6 @@ class ServerSerializer(serializers.ModelSerializer):
         return obj.user.get_full_name()
 
 
-
 class AppointmentSerializer(serializers.ModelSerializer):
     start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", source="start_datetime", read_only=True)
     end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", source="end_datetime", read_only=True)

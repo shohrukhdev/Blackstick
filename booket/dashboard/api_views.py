@@ -1,9 +1,7 @@
 import logging
 import traceback
 from datetime import datetime
-from pickle import FALSE
 from urllib.parse import unquote
-
 from django.utils import timezone
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -60,7 +58,6 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
     @action(detail=True, methods=['post'])
     def update_appointment(self, request, pk=None):
         appointment = self.get_object()
-        server = request.user.server_user
         try:
             action_type = request.data.get('action_type')
 
@@ -113,7 +110,6 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
             if request.data.get('server_id'):
                 server = Server.objects.get(pk=request.data.get('server_id'))
 
-
             # Validate the required fields
             if not start_date_str or not end_date_str:
                 return Response({'error': 'start_date and end_date are required.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -136,9 +132,10 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
             if ps.day_starts_on and ps.day_ends_on:
                 start_time = start_date.time()
                 if not (ps.day_starts_on <= start_time < ps.day_ends_on):
-                    return Response({
-                                        'error': f'Appointment time must be within the server\'s working hours ({ps.day_starts_on} - {ps.day_ends_on}).'},
-                                    status=status.HTTP_400_BAD_REQUEST)
+                    return Response(
+                        {'error': f'Appointment time must be within the server\'s working hours ({ps.day_starts_on} - {ps.day_ends_on}).'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
 
             # Check for overlapping appointments
             overlapping_appointments = Appointment.objects.filter(
@@ -152,7 +149,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                                 status=status.HTTP_400_BAD_REQUEST)
 
             # Create the appointment
-            appointment = Appointment.objects.create(
+            Appointment.objects.create(
                 server=server,
                 client=guest_client,
                 start_datetime=start_date,

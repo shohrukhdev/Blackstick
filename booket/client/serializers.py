@@ -123,8 +123,6 @@ class ProviderServerSerializer(serializers.ModelSerializer):
         end_time = obj.day_ends_on
         slot_duration = 30  # Default to 30 minutes
 
-        # Get current time if checking today's slots
-        now = datetime.now().time()
         if date == datetime.today().date():
             # Round current time to the next half-hour mark
             next_half_hour = (datetime.now() + timedelta(minutes=(30 - datetime.now().minute % 30))).time()
@@ -160,4 +158,3 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = ["id", "full_name", "email", "phone_number", "sex", "date_of_birth", "created_at"]
-

@@ -2,8 +2,6 @@ import json
 import traceback
 from collections import defaultdict
 from datetime import timedelta, datetime
-from lib2to3.fixes.fix_input import context
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -11,9 +9,10 @@ from django.db.models import Prefetch, Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
-
-from booket.models import ProviderServer, logger, ServiceType, Service, ProviderServerService, Appointment, STATUSES, \
+from booket.models import (
+    ProviderServer, logger, ServiceType, Service, ProviderServerService, Appointment,
     AppointmentService, Provider
+)
 
 
 @login_required
@@ -142,7 +141,7 @@ def configs(request):
                         tip=sr_type,
                     )
                     private_price = request.POST.get("private_price")
-                    if private_price == 0 or private_price is "":
+                    if private_price == 0 or private_price == "":
                         private_price = None
                     provider_server_service, is_created = ProviderServerService.objects.update_or_create(
                         provider_server=p_s_server,
@@ -152,7 +151,7 @@ def configs(request):
                         }
                     )
                 messages.success(request, "Service settings updated successfully.")
-                return redirect(reverse(f"dashboard_config"))
+                return redirect(reverse("dashboard_config"))
             except Exception as e:
                 logger.error(traceback.format_exc())
                 messages.error(request, f"Error updating service settings: {str(e)}")
@@ -190,7 +189,7 @@ def configs(request):
                 p_server.save()
                 user.save()
                 messages.success(request, "Settings updated successfully.")
-                return redirect(reverse(f"dashboard_config"))  # Redirect to an appropriate page after saving
+                return redirect(reverse("dashboard_config"))  # Redirect to an appropriate page after saving
             except Exception as e:
                 logger.error(traceback.format_exc())
                 messages.error(request, f"Error updating settings: {str(e)}")
@@ -430,4 +429,3 @@ def provider_statistics(request):
             "server_data": json.dumps(server_data),
         }
         return render(request, "booket/dashboard/provider_statistics.html", context=context_data)
-

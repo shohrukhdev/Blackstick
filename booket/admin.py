@@ -62,15 +62,6 @@ class OTPVerificationAdmin(admin.ModelAdmin):
     pass
 
 
-# @admin.register(Provider)
-# class ProviderAdmin(admin.ModelAdmin):
-#     pass
-
-
-
-
-
-
 # Register models
 admin.site.register(Provider, ProviderServerAdmin)
 # admin.site.register(ProviderServer, ProviderServerServiceAdmin)

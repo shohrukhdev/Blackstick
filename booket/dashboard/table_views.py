@@ -1,7 +1,5 @@
-from django.template.context_processors import request
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-
 from booket.dashboard.serializers import AppointmentDtSerializer
 from booket.models import Appointment, Provider
 

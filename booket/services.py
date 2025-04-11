@@ -1,14 +1,10 @@
 import traceback
-
 from django.db.models import Prefetch
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
-from rest_framework.fields import empty
-
-from booket.models import Provider, ServiceType, Server, ProviderServer, ProviderServerService
+from booket.models import Provider, ServiceType, ProviderServer, ProviderServerService
 from django.contrib.auth.models import User
 import logging
-
 from booket.models import Service
 
 logger = logging.getLogger(__name__)
@@ -322,7 +318,7 @@ def edit_server_service(request: HttpRequest) -> dict:
                 tip=sr_type,
             )
             private_price = request.POST.get("private_price")
-            if private_price == 0 or private_price is "":
+            if private_price == 0 or private_price == "":
                 private_price = None
             provider_server_service, is_created = ProviderServerService.objects.update_or_create(
                 provider_server=p_s_server,
