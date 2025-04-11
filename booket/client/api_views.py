@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from datetime import datetime
 from django.utils import timezone
 
-from ..utils import valid_signature, mask_email, mask_phone_number
+from ..utils import valid_signature, mask_email, mask_phone_number, is_demo_provider
 
 
 class ProviderServerDetailView(generics.RetrieveAPIView):
@@ -185,7 +185,6 @@ def create_appointment_send_otp(request):
                 verification_method=client_data["confirmation_method"]
             )
             otp.send_otp()
-            logger.info(f"OTP code: {otp.otp_code}")  # Log OTP code for debugging
             masked_email = mask_email(client.email)
             masked_phone_number = mask_phone_number(client.phone_number)
             response_data = {
@@ -195,7 +194,11 @@ def create_appointment_send_otp(request):
                 "masked_email": masked_email,
                 "masked_phone_number": masked_phone_number,
                 "otp_id": otp.id,
+                "is_demo": False
             }
+            if is_demo_provider(provider.identifier):
+                response_data["otp_code"] = otp.otp_code
+                response_data["is_demo"] = True
             return Response(response_data, status=status.HTTP_201_CREATED)
 
     except json.JSONDecodeError as e:
@@ -224,7 +227,7 @@ def confirmOTP(request):
         if otp:
             otp.is_verified = True
             appointment = otp.appointment
-            appointment.status = "ACCEPTED"
+            appointment.status = "CONFIRMED"
             appointment.save()
             otp.save()
             return Response({"success": True, "message": "OTP verified successfully"}, status=status.HTTP_200_OK)

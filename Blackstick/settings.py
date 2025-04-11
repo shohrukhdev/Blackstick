@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'dent',
     'booket',
     'fontawesomefree',
+    'django_apscheduler'
 ]
 
 MIDDLEWARE = [

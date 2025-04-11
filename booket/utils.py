@@ -1,11 +1,15 @@
 import logging
+from datetime import timedelta
 
 from cryptography.fernet import Fernet
 import time
 
 from django.http import HttpRequest
+from django.utils import timezone
 
 from Blackstick.settings import FERNET_KEY
+from booket.constants import DEMO_PROVIDERS
+from booket.models import Appointment
 
 logger = logging.getLogger(__name__)
 cipher = Fernet(FERNET_KEY)
@@ -65,3 +69,38 @@ def mask_phone_number(phone_number):
     if len(phone_number) < 4:
         return phone_number  # Return original if too short
     return phone_number[0] + "*" * (len(phone_number) - 3) + phone_number[-2:]
+
+
+def complete_old_appointments(days_back: int = 0):
+    """Mark old appointments as COMPLETED."""
+    now = timezone.now()
+    today = now.date()
+
+    if days_back > 0:
+        created_after = today - timedelta(days=days_back)
+    else:
+        created_after = today
+
+    statuses_to_check = ["CONFIRMED", "PENDING", "ACCEPTED"]
+
+    try:
+        appointments = Appointment.objects.filter(
+            created_on__date__gte=created_after,
+            created_on__date__lte=today,
+            status__in=statuses_to_check,
+            end_datetime__lt=now
+        )
+
+        updated_count = appointments.update(status="COMPLETED")
+
+        logger.info(f"[Appointment Completion Task] ✅ Updated {updated_count} appointment(s) to COMPLETED.")
+        return updated_count
+
+    except Exception as e:
+        logger.error(f"[Appointment Completion Task] ❌ Error while updating appointments: {str(e)}", exc_info=True)
+        return 0
+
+
+def is_demo_provider(provider_identifier: str):
+    """Check if the provider is a demo provider."""
+    return provider_identifier in DEMO_PROVIDERS

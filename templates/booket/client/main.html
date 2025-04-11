@@ -955,7 +955,6 @@
             phone_number: $('#phone').val(),
             email: $('#email').val()
         };
-        console.log(appointment)
         $.ajax({
             url: '/client/appointment/create/',
             headers: {
@@ -966,11 +965,13 @@
             data: JSON.stringify(appointment),
             contentType: 'application/json',
             success: function (response){
-                console.log(response)
                 if (response.confirmation_method === "p"){
                     $('#confirmation_destination').text(response.masked_phone_number)
                 } else {
                     $('#confirmation_destination').text(response.masked_email)
+                }
+                if (response.is_demo) {
+                    showToast("OTP Code:" + response.otp_code + " was sent to client.", "info")   
                 }
                 appointment.otp_id = response.otp_id
                 startTimer()

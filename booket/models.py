@@ -212,6 +212,11 @@ class Appointment(models.Model):
     def __str__(self):
         return f"{self.client} {self.server} {self.start_datetime} -- {self.end_datetime}"
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["status", "end_datetime", "created_on"]),
+        ]
+
 
 class AppointmentService(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True)
