@@ -1,0 +1,126 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "Server services" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+      /* Custom CSS to center the card vertically and horizontally */
+      .container {
+          height: 95%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card-container {
+          width: 100%; /* Default width for mobile */
+          padding-top: 3%;
+      }
+
+      @media (min-width: 768px) {
+          .card-container {
+              width: 50%; /* Width for desktop and wider screens */
+          }
+
+          .card-form {
+              padding: 4%;
+          }
+      }
+  </style>
+  <div class="container">
+    <div class="card-container">
+      <div class="card shadow">
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="location.href='{% url "b_provider_main" %}'"
+                  class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="card-title mb-0">{% trans "Edit service for provider" %}</h5>
+        </div>
+        <!-- Card Body (Form) -->
+        <div class="card-body">
+          <ul class="list-group">
+            {% for service_type in service_types %}
+              <li class="list-group-item shadow" style="padding: 8px">
+              <h6>
+                {% if LANG_CODE == "uz" %}
+                  {{ service_type.name_uz }}
+                {% elif LANG_CODE == "ru" %}
+                  {{ service_type.name_ru }}
+                {% else %}
+                  {{ service_type.name }}
+                {% endif %}
+              </h6>
+
+                  {% for service in service_type.service_set.all %}
+                      <div class="accordion" style="margin-bottom: 1px" id="accordionService_{{ service.id }}">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" style="padding: 8px;" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse_{{ service.id }}" aria-expanded="true"
+                                    aria-controls="collapse">
+                            <i class="fas fa-check-circle" style="font-size:19px; 
+                                 {% if service.assigned_service.0 %} color:green; {% else %} color: grey; {% endif %}
+                                 margin-right: 4px"></i>  
+                              {% if LANG_CODE == "uz" %}
+                                {{ service.name_uz }}
+                              {% elif LANG_CODE == "ru" %}
+                                {{ service.name_ru }}
+                              {% else %}
+                                {{ service.name }}
+                              {% endif %}
+                            </button>
+                          </h2>
+                          <div id="collapse_{{ service.id }}"
+                               class="accordion-collapse collapse"
+                               data-bs-parent="#accordionService_{{ service.id }}">
+                            <div class="accordion-body">
+                              <form id="form_{{ service.id }}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="provider_server_id" value="{{ p_server_id }}">
+                                <input type="hidden" name="service_type_id" value="{{ service_type.id }}">
+                                <input type="hidden" name="service_id" value="{{ service.id }}">
+                                <input type="hidden" name="p_s_service_id" value="{{ service.assigned_service.0.id }}"></input>
+                                <div class="row collapse" style="padding-top: 3px" id="collapse_{{ service.id }}">
+                                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="input-group mb-3 input-group-sm">
+                                      <span class="input-group-text">{% trans 'Base price' %}</span>
+                                      <input type="number" id="private_price" name="base_price" class="form-control"
+                                             value="{{ service.price }}" disabled>
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="input-group mb-3 input-group-sm">
+                                      <span class="input-group-text">{% trans 'Price' %}</span>
+                                      <input type="number" id="private_price" name="private_price" class="form-control"
+                                             value="{{ service.assigned_service.0.service_private_price }}">
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="form-check form-switch">
+                                      <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="checked"
+                                        {% if service.assigned_service.0 %} checked {% endif %}>
+                                      <label class="form-check-label"
+                                             for="is_active">{% trans 'Service active' %}</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <button class="btn btn-sm btn-secondary" type="submit" style="float: right">{% trans 'Save' %}</button>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  {% endfor %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

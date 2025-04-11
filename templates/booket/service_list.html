@@ -1,0 +1,76 @@
+{% extends "booket/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} {% trans "Services" %}{% endblock %}
+{% block content %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+      /* Custom CSS to center the card vertically and horizontally */
+      .container {
+          height: 95%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .card-container {
+          width: 100%; /* Default width for mobile */
+          padding-top: 2%;
+      }
+      @media (max-width: 767.98px) {
+      .hide-on-mobile {
+        display: none;
+      }
+}
+  </style>
+  <div class="container">
+    <div class="card-container">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <button type="button" onclick="window.location.href='{% url "b_provider_main" %}'" class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
+          <h5 class="card-title mb-0">
+            {% if LANG_CODE == "uz" %}
+                  {{ service_type.name_uz }}
+                {% elif LANG_CODE == "ru" %}
+                  {{ service_type.name_ru }}
+                {% else %}
+                  {{ service_type.name }}
+                {% endif %}
+            {% trans 'services' %}</h5>
+        </div>
+        <div class="card-body">
+        <div style="padding-bottom: 4px">
+          <button onclick="location.href='{% url 'b_service_add' type_id=service_type.id %}'" class="btn btn-success">{% trans 'Add' %}</button>
+        </div>
+          <table class="table table-responsive table-bordered table-hover">
+            <thead>
+              <tr>
+                <th {% if not LANG_CODE == "uz" %} class="hide-on-mobile" {% endif %}>{% trans 'Name UZ' %}</th>
+                <th {% if not LANG_CODE == "ru" %} class="hide-on-mobile" {% endif %} >{% trans 'Name RU' %}</th>
+                <th {% if not LANG_CODE == "en" %} class="hide-on-mobile" {% endif %} >{% trans 'Name EN' %}</th>
+                <th class="hide-on-mobile">{% trans 'Description' %}</th>
+                <th class="hide-on-mobile">{% trans 'Price' %}</th>
+                <th style="width: 1%; white-space: nowrap">{% trans 'Action' %}</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for service in service_list %}
+              <tr {% if not service.is_active %} style="opacity: 0.5" {% endif %}>
+                <td {% if not LANG_CODE == "uz" %} class="hide-on-mobile" {% endif %}>{{ service.name_uz }}</td>
+                <td {% if not LANG_CODE == "ru" %} class="hide-on-mobile" {% endif %}>{{ service.name_ru }}</td>
+                <td {% if not LANG_CODE == "en" %} class="hide-on-mobile" {% endif %}>{{ service.name }}</td>
+                <td class="hide-on-mobile">{{ service.description }}</td>
+                <td class="hide-on-mobile">{{ service.price }}</td>
+                <td><button onclick="location.href='{% url 'b_service_edit' id=service.id %}'" class="btn btn-warning btn-sm">{% trans 'Edit' %}</button></td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

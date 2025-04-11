@@ -196,10 +196,8 @@
         data: {},
         headers: {'X-CSRFToken': getCookie('csrftoken')},
         success: function (response) {
-          console.log(response);
           $('#event_list').empty();
           $.each(response, function (key, val) {
-            console.log(val);
             $('#event_list').append('<tr><td><button type="button" onclick="cancelEvent(' + val.id + ')" class="btn btn-block bg-gradient-danger btn-sm"><i class="fa fa-trash"></i></button></td>' +
                                         '<td>' + val.patient_name + ' <b>|</b> ' + val.patient_phone + '</td>' +
                                         '<td>' + val.start_format + '<b> <i class="fa fa-minus" aria-hidden="true"></i> </b>' + val.end_format.substring(11, 16) + '</td>' +

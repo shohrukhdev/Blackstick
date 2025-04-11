@@ -1,9 +1,11 @@
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import path, include
 from rest_framework import routers
 
 from Blackstick import settings
+from booket import dashboard
 from dent import views as mainviews
 from django.contrib.auth import views as authview
 from dent import api_views, table_views
@@ -22,6 +24,8 @@ urlpatterns = [
     path('demo/login/', mainviews.demo_user_login, name='demo_login'),
 
     path('logout/', authview.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('b/', include('booket.urls')),
+    path('dashboard/', include('booket.dashboard.urls')),
     path('', mainviews.home, name='home'),
     path('home/', mainviews.home),
     path('debt/list/', mainviews.debt_list, name='debt_list'),
@@ -41,4 +45,5 @@ urlpatterns = [
     path('calendar/event/edit', mainviews.event_edit, name='event_edit'),
     path('treatment/file/upload', mainviews.upload_file, name='upload_file'),
     path('settings/', include('dent.settings.urls')),
+    path('', include('booket.client.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

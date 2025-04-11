@@ -1,0 +1,87 @@
+{% extends "booket/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} Login {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block container %}
+  {% get_current_language as LANG_CODE %}
+  <style>
+        body {
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 50px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .login-container .form-control {
+            width: 100%;  /* Ensure input fields are full width */
+        }
+        @media (max-width: 576px) {
+            .login-container {
+                max-width: 100%;  /* Full width on small screens */
+            }
+        }
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .login-container .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
+  <form id="setlangform" style="float: right; margin: 3px" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="text" value="{{ redirect_to }}">
+        <select class="form-control" style="" id="cur_lang" name="language" onchange="submitlang()">
+          {% get_available_languages as LANGUAGES %}
+          {% get_language_info_list for LANGUAGES as languages %}
+          {% for language in languages %}
+            <option class="form-control" value="{{ language.code }}"
+              {% if language.code == LANG_CODE %} selected {% endif %}>
+              {{ language.name_local }}
+            </option>
+          {% endfor %}
+        </select>
+      </form>
+<div class="container d-flex justify-content-center align-items-center h-75">
+    <div class="login-container">
+        <h2>{% trans 'Login' %}</h2>
+        <form id="login-form" action="{% url 'b_login' %}" method="post">
+          {% csrf_token %}
+
+            <!-- Username input -->
+            <div class="form-group">
+                <label for="username">{% trans 'Username' %}</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="username" required>
+            </div>
+            <!-- Password input -->
+            <div class="form-group">
+                <label for="password">{% trans 'Password' %}</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="password" required>
+            </div>
+            <!-- Login button -->
+            <button type="submit" class="btn btn-primary w-100">{% trans 'Login' %}</button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+$(document).ready(function () {
+        if ("{{ error }}"){
+          alert("{{ error }}");
+        }
+    });
+
+var cur_lang = document.getElementById('cur_lang').value;
+
+        function submitlang() {
+            $('#setlangform').submit();
+        }
+</script>
+{% endblock %}

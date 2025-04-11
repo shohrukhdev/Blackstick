@@ -1,0 +1,208 @@
+{% extends "booket/base.html" %}
+{% load i18n %}
+{% load l10n %}
+{% block title %} Home {% endblock %}
+{% block container %}
+  <style>
+      .profile-menu {
+          .dropdown-menu {
+              right: 0;
+              left: unset;
+          }
+
+          .fa-fw {
+              margin-right: 10px;
+          }
+      }
+
+      .toggle-change {
+          &::after {
+              border-top: 0;
+              border-bottom: .3em solid;
+          }
+      }
+  </style>
+  {% get_current_language as LANG_CODE %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">{{ request.user.server_user }}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a id="dashboard-nav-link" class="nav-link" aria-current="page" href="{% url 'dashboard_main' %}">{% trans 'Dashboard' %}</a>
+          </li>
+          <li class="nav-item">
+            <a id="history-nav-link" class="nav-link" href="{% url 'dashboard_history' %}">{% trans 'History' %}</a>
+          </li>
+          {% if request.session.provider %}
+          <li class="nav-item">
+            <a id="provider-dashboard-nav-link" class="nav-link" href="{% url 'provider_dashboard_main' %}">{% trans 'Provider dashboard' %}</a>
+          </li>
+          <li class="nav-item">
+            <a id="provider-history-nav-link" class="nav-link" href="{% url 'provider_history' %}">{% trans 'Provider history' %}</a>
+          </li>
+          <li class="nav-item">
+            <a id="provider-settings-nav-link" class="nav-link" href="{% url 'b_provider_main' %}">{% trans 'Provider Settings' %}</a>
+          </li>
+          
+          {% endif %}
+          <div class="server_bar">
+            <li class="nav-item">
+              <a id="my_config" class="nav-link" href="{% url 'dashboard_config' %}"><i class="fa-solid fa-gear"></i> {% trans 'My settings' %}</a>
+            </li>
+          </div>
+
+
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              <i class="fas fa-user"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item">
+                <i class="fas fa-sliders-h fa-fw"></i>
+                <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
+                  {% csrf_token %}
+                  <div class="input-group input-group-sm mb-3">
+                    <input type="hidden" name="text" value="{{ redirect_to }}">
+                    <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
+                      {% get_available_languages as LANGUAGES %}
+                      {% get_language_info_list for LANGUAGES as languages %}
+                      {% for language in languages %}
+                        <option class="form-control" value="{{ language.code }}"
+                          {% if language.code == LANG_CODE %} selected {% endif %}>
+                          {{ language.name_local }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </form>
+              </a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item">
+                  <form method="post" action="{% url 'b_logout' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-sm btn-secondary" style="float: right">
+                      <i class="fas fa-sign-out-alt fa-fw"></i> Log Out
+                    </button>
+                  </form>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% block content %}
+  {% endblock %}
+
+  <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+    <div id="toast-container">
+        {% for message in messages %}
+        <div class="toast align-items-center text-white bg-{{ message.tags }} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true"
+            {% if message.tags == "success" %}data-bs-autohide="true" data-bs-delay="3000"{% else %}data-bs-autohide="false"{% endif %}>
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message | safe }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+  <script>
+  
+    document.addEventListener("DOMContentLoaded", function () {
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function (toastEl) {
+            return new bootstrap.Toast(toastEl).show();
+        });
+    });
+  
+  
+      function submitUserLogoutForm() {
+          $('#user-logout-form').submit();
+      }
+
+      var cur_lang = document.getElementById('cur_lang').value;
+
+      function submitlang() {
+          $('#setlangform').submit();
+      }
+
+      document.querySelectorAll('.dropdown-toggle').forEach(item => {
+          item.addEventListener('click', event => {
+
+              if (event.target.classList.contains('dropdown-toggle')) {
+                  event.target.classList.toggle('toggle-change');
+              } else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
+                  event.target.parentElement.classList.toggle('toggle-change');
+              }
+          })
+      });
+      // custom.js
+      document.addEventListener("DOMContentLoaded", function () {
+          // Parse query parameters
+          var success;
+          var errorMessage;
+
+          {% if success is False or success is True %}
+              success = "{{ success }}";
+              errorMessage = "{{ error }}";
+          {% endif %}
+          // Check if success is false and an error message exists
+          if (success === 'False' && errorMessage) {
+              // Get the toast element
+              const toastElement = document.getElementById('errorToast');
+              const toastMessage = document.getElementById('toastMessage');
+
+              // Set the error message
+              toastMessage.textContent = errorMessage;
+
+              // Initialize and show the toast
+              const toast = new bootstrap.Toast(toastElement);
+              toast.show();
+          } else if (success === 'True') {
+              // Get the toast element
+              const toastElement = document.getElementById('errorToast');
+              const toastMessage = document.getElementById('toastMessage');
+              const toastTitleElement = document.getElementById('toast-title');
+
+              // Set the error message
+              toastTitleElement.textContent = "Success!";
+              toastMessage.textContent = "Operation succeeded";
+
+              // Initialize and show the toast
+              const toast = new bootstrap.Toast(toastElement, {
+                  autohide: true,
+                  delay: 5000, // 5 sec
+              });
+              toast.show();
+          }
+      });
+      function activateNavItem(itemId) {
+        // Remove 'active' class and 'aria-current' attribute from all nav items
+        $('.nav-link').removeClass('active').removeAttr('aria-current');
+
+        // Add 'active' class and 'aria-current="page"' attribute to the specified item
+        const $navItem = $(`#${itemId}`);
+        if ($navItem.length) {
+            $navItem.addClass('active').attr('aria-current', 'page');
+        } else {
+            console.log(`Element with ID '${itemId}' not found.`);
+        }
+    }
+  </script>
+{% endblock %}

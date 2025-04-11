@@ -1,0 +1,1065 @@
+{% extends "booket/client/container.html" %}
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% load humanize %}
+{% block title %} {% trans 'Main' %} {% endblock %}
+
+{% block content %}
+  <style>
+      @media (max-width: 768px) {
+          .container-main {
+              padding: 5px;
+          }
+
+          .card-person {
+              margin-bottom: 7px;
+          }
+      }
+
+      @media (min-width: 768px) {
+          .container-main {
+              padding-bottom: 30px;
+              padding-left: 30px;
+              padding-right: 30px;
+          }
+
+          .card-person {
+              margin: 25px;
+          }
+      }
+
+      .service-row {
+          cursor: pointer; /* Change cursor to pointer on hover */
+      }
+
+      .selected {
+          background-color: #c4bdbd; /* Light gray background for selected row */
+      }
+
+      .price {
+          font-size: 15px;
+      }
+
+      .popover {
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the shadow as needed */
+      }
+
+      .service-checkbox {
+          float: right;
+          width: 20px;
+      }
+
+      .active-date {
+          color: yellow;
+          font-weight: bold;
+      }
+  </style>
+  {% get_current_language as LANG_CODE %}
+  <div class="container-fluid container-main">
+  <div class="row">
+    <div class="col-12">
+      <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">{% trans "Language:" %}</span>
+          </div>
+          <input type="hidden" name="text" value="{{ redirect_to }}">
+          <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
+            {% get_available_languages as LANGUAGES %}
+            {% get_language_info_list for LANGUAGES as languages %}
+            {% for language in languages %}
+              <option class="form-control" value="{{ language.code }}"
+                {% if language.code == LANG_CODE %} selected {% endif %}>
+                {{ language.name_local }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+  <div class="col-lg-6 col-md-12 col-sm-12">
+    <!-- Carousel -->
+    <div id="caruso" class="carousel slide shadow" data-bs-ride="carousel">
+      <!-- The slideshow/carousel -->
+      <div class="carousel-inner">
+        {% for f in provider.providerphotos_set.all %}
+          <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
+            <img class="d-block w-100 rounded" src="{{ f.photo.url }}" alt="{{ f.id }}">
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Left and right controls/icons -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+  <div class="col-lg-6 col-md-12 col-sm-12">
+    <div class="container">
+      <h3 style="text-align: center; padding: 10px; text-shadow: 2px 2px 5px darkgrey">{{ provider.name }}</h3>
+      {{ provider.description|safe }}
+    </div>
+  </div>
+  <div class="container>" style="margin-top: 20px">
+  <div class="card shadow">
+  <div class="card-header">
+    <div class="card-title">
+      <h5 class="text-center">{% trans 'Services' %}</h5>
+    </div>
+  </div>
+  <div class="card-body">
+  <div class="row">
+    {% for tip in provider.service_type.all %}
+      {% if tip.is_active == True %}
+        {% if provider.service_type.all|length == 1 %}
+          <div class="col-lg-12 col-md-6 col-sm-12 text-center">
+        {% elif provider.service_type.all|length == 2 %}
+          <div class="col-lg-6 col-md-6 col-sm-12">
+        {% elif provider.service_type.all|length == 3 %}
+          <div class="col-lg-4 col-md-6 col-sm-12">
+        {% else %}
+          <div class="col-lg-3 col-md-6 col-sm-12">
+        {% endif %}
+      <table class="table table-sm table-hover thead-dark">
+        <thead>
+        <tr>
+          {% if LANG_CODE == "uz" %}
+            <th>{{ tip.name_uz }}</th>
+          {% elif LANG_CODE == "ru" %}
+            <th>{{ tip.name_ru }}</th>
+          {% else %}
+            <th>{{ tip.name }}</th>
+          {% endif %}
+          <th style="text-align: right;"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for service in tip.service_set.all %}
+          <!-- Service Row -->
+          <tr class="service-row" data-service-id="{{ service.id }}">
+            {% if LANG_CODE == "uz" %}
+              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name_uz }}
+                <i class="price">
+                  <span class="badge bg-primary rounded-pill">( {{ service.price|intcomma }} dan)</span>
+                </i>
+              </td>
+            {% elif LANG_CODE == "ru" %}
+              <td><i class="fa-solid fa-caret-left fa-lg"></i>{{ service.name_ru }}
+                <i class="price">
+                  <span class="badge bg-primary rounded-pill">( от {{ service.price|intcomma }})</span>
+                </i>
+              </td>
+            {% else %}
+              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name }}
+                <i class="price">
+                  <span class="badge bg-primary rounded-pill">(from {{ service.price|intcomma }})</span>
+                </i>
+              </td>
+            {% endif %}
+            <td style="text-align: right;">
+              <button class="btn btn-outline-primary btn-sm" data-bs-toggle="popover" data-bs-trigger="focus"
+                      data-bs-content="{{ service.description|safe }}">
+                <i class="fa-solid fa-circle-info"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      </div>
+      {% endif %}
+    {% endfor %}
+    </div>
+    </div>
+    </div>
+  </div>
+  <div class="container-fluid" style="margin-top: 15px">
+    <div class="card shadow">
+      <div class="card-header">
+        <div class="card-title">
+          <h5 class="text-center">{% trans 'Specialists' %}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for ps in provider.providerserver_set.all %}
+              <div class="col-lg-3 col-md-6 col-sm-12 text-center">
+                <div class="card shadow card-person">
+                  <img class="card-img-top" src="{{ ps.server.image.url }}" alt="Card image" style="width:100%;">
+                  <div class="card-body">
+                    <h4 class="card-title">{{ ps.server.user.get_full_name }}</h4>
+                    <div style="max-height: 2em !important; overflow: hidden; position: relative;"
+                         id="server-info-{{ forloop.counter }}">
+                      {{ ps.server.info|safe }}
+                    </div>
+                    <button class="btn btn-sm more-info shadow" data-target="#server-info-{{ forloop.counter }}"
+                            style="display: block; text-align: center; width: 100%; background-color: darkgrey;">
+                      {% trans 'More' %}
+                      <i class="fa-solid fa-angles-down"></i>
+                    </button>
+                    <button class="btn btn-sm btn-primary shadow"
+                            onclick="selectServer('{{ ps.server.id }}', '{{ ps.server.user.first_name }}')"
+                            style="width: 100%; text-align: center; margin-top: 3px;">
+                      {% trans 'Book appointment' %}
+                      <i class="fa-solid fa-calendar-check"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal modal-lg fade" id="customModal" data-bs-keyboard="false" data-bs-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">{% trans "Specialist" %} <i class="fa-solid fa-clipboard-user"></i> <span
+          id="server_name">Server Name</span></h5>
+        <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm btn-close"
+                data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div id="service_list" class="serviceList">
+          <div class="row" id="service_row">
+          </div>
+        </div>
+        <div id="time_slots" class="timeSlot" style="display: none">
+          <div class="d-flex mb-3">
+            <div class="p-2 flex-grow-1 bg-primary">
+              <span style="float: left; color: white;">{% trans "Select date and time!" %}</span>
+              <span style="float: right; color: yellow;">{% trans "Estimated service time" %}:
+                <i class="fa-solid fa-clock"></i>
+                <span id="estimatedDuration">60</span>{% trans "min" %}
+              </span>
+            </div>
+          </div>
+          <div class="row" id="time_slot_row" style="width: 100%;">
+            <!-- Date Selection -->
+            <div class="col-12 text-center">
+              <div class="btn-group">
+                <button class="btn btn-warning btn-outline-primary" type="button" onclick="getDates('previous')" id="prevDate"
+                        style="width: 45px;">&lt;&lt;
+                </button>
+                <div id="dateList" class="btn-group">
+                  <button class="btn btn-outline-primary">DATE</button>
+                  <button class="btn btn-outline-primary">DATE2</button>
+
+                </div>
+                <button class="btn btn-warning btn-outline-primary" type="button" onclick="getDates('next')" id="nextDate"
+                        style="width: 45px;">&gt;&gt;
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Time Slot Selection -->
+          <div id="timeSlots" class="d-flex flex-wrap gap-2" style="margin-top: 15px;">
+          </div>
+        </div>
+        <!-- Confirmation panel -->
+        <div id="confirmation" class="confirmation" style="display: none;">
+          <div class="card shadow">
+            <div class="card-body">
+              <table class="table table-hover table-striped table-responsive">
+                <tbody>
+                <tr class="table-primary">
+                  <td>{% trans "Time" %}</td>
+                  <td id="appointmentDateTime">
+                    <i class="fa-solid fa-clock"></i><b><span id="appointmentTime"></span></b>
+                    <span id="appointmentDate"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="text-center"><b><i
+                    class="fa-solid fa-list-ul"></i> {% trans "Selected services" %}
+                  </b></td>
+                </tr>
+                </tbody>
+                <tbody id="selectedServiceList">
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <span style="float: left">Service name</span> <span style="float: right"><i
+                        class="fa-solid fa-money-bills"></i> 120,000</span>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <span>estimated duration</span> <span style="float: right"><i
+                        class="fa-solid fa-hourglass-half"></i> 60 {% trans 'minutes' %}</span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <div class="row">
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        Service name 2<i class="fa-solid fa-money-bills"></i> 100,000
+                      </div>
+                      <div class="col-lg-3 col-md-6 col-sm-12">
+                        Estimated duration <i class="fa-solid fa-hourglass-half"></i> 60 minut
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot id="tableFooter" class="tfooter" style="display: none;">
+                <tr class="table-dark">
+                  <td><i class="fa-solid fa-money-check-dollar fa-fade"></i> {% trans "Total" %}: <span id="totalSum"> 230,000</span>
+                  </td>
+                  <td><i class="fa-solid fa-clock fa-spin"></i> {% trans "Estimated duration" %}: <span
+                    id="totalDuration"> 130 </span>{% trans "minutes" %}
+                  </td>
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="card shadow" id="confirmationWindow">
+            <div class="card-body text-center d-flex justify-content-center">
+              <div class="confirmationSuccess" style="display: none;">
+                <i class="fa-solid fa-circle-check fa-beat fa-lg" style="color: green; width: 50px; height: 50px; margin-bottom: 20px"></i>
+                <h6>{% trans "Your appointment confirmed successfully! Please be on time. If you want to cancel or change appointment please use the link from the SMS or contact the provider." %}</h6>
+              </div>
+              <form id="clientConfirmationForm">
+                {% csrf_token %}
+                <input type="hidden" id="provider_id" name="provider_id" value="{{ provider.id }}">
+                <h6>{% trans "Confirm the appointment by" %}</h6>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="confirmation_method" id="phoneRadio"
+                         value="p" checked>
+                  <label class="form-check-label" for="phoneRadio">{% trans "Phone number" %}</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="confirmation_method" id="emailRadio"
+                         value="e">
+                  <label class="form-check-label" for="emailRadio">{% trans "Email" %}</label>
+                </div>
+                <div id="emailInput" class="mb-3 mt-3" style="max-width: 350px; display: none;">
+                  <label for="email" class="form-label" style="float: left;">{% trans "Email" %}:</label>
+                  <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+                </div>
+                <div id="phoneInput" class="mb-3 mt-3" style="max-width: 350px;">
+                  <label for="phone" class="form-label" style="float: left;">{% trans "Phone" %}:</label>
+                  <div class="input-group input-group-sm">
+                    <span class="input-group-text">+998</span>
+                    <input type="number" class="form-control form-control-sm" maxlength="9" id="phone" name="phone" required>
+                  </div>
+                </div>
+                <div id="clientFound" class="text-center" style="display:none;">
+                  <h6>{% trans "Client information exists." %}</h6>
+                </div>
+                <div id="clientNotFound" class="text-center" style="display:none;">
+                  <h6>{% trans "Enter client information." %}</h6>
+                </div>
+                <div class="client_info_input" style="display: none;">
+                  <div class="mb-3 mt-3" style="max-width: 350px;">
+                    <label for="full_name" class="form-label" style="float: left;">{% trans "Full name" %}:</label>
+                    <input type="text" class="form-control form-control-sm" id="full_name" name="full_name">
+                    <input type="hidden" id="client_id" name="client_id">
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-6">
+                      <label for="dob" class="form-label">{% trans "Date of birth" %}:</label>
+                      <input type="date" class="form-control form-control-sm" id="dob" name="dob">
+                    </div>
+                    <div class="col-6">
+                      <label for="sex" class="form-label">{% trans "Gender" %}:</label>
+                      <select class="form-select form-select-sm" id="sex" name="sex">
+                        <option value="m">{% trans "Male" %}</option>
+                        <option value="f">{% trans "Female" %}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div id="comments" class="mb-3 mt-3" style="max-width: 350px;">
+                    <label for="comments" class="form-label" style="float: left;">{% trans "Comments(optional)" %}:</label>
+                    <textarea class="form-control form-control-sm" id="commentary" name="comments"></textarea>
+                  </div>
+                </div>
+                <!-- Confirmation Button -->
+                <div class="mb-3" style="margin-top: 12px;">
+                  <div class="form-group">
+                    <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" required>
+                    <label class="form-check-label" for="agree"><span style="color: red">* </span><a href="#">{% trans "Agree to terms of use" %}</a></label>
+                  </div>
+                  <button type="button" disabled class="btn btn-success" onclick="sendToConfirm()" id="confirmBtn">{% trans "Confirm" %}</button>
+                </div>
+              </form>
+              <form id="confirmationCodeInput" style="display: none">
+                <!-- Confirmation Code Input -->
+                <div style="display: block;" class="confirmation_code_input">
+                  <div class="input-group mb-3 text-center" style="max-width: 350px;">
+                    <label for="confirmation_code" class="form-label">{% trans "Confirmation code was sent to" %}: <span id="confirmation_destination">sd***fv@gmail.com</span></label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="otp_code" name="otp_code"
+                             placeholder="Enter Code">
+                      <button class="btn btn-success shadow" type="button" onclick="confirmOTP()" id="otpConfirmBtn" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)</button>
+                      <button class="btn btn-primary shadow" id="resendBtn" type="button" style="display: none;">{% trans "Resend" %}</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary btn-sm shadow serviceList" disabled id="nextBtn"
+                  onclick="transitionToTimeSlots()">{% trans 'Next' %}</button>
+          <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm shadow serviceList confirmationSuccess"
+                  data-bs-dismiss="modal">{% trans "Close" %}</button>
+
+
+          <button id="nextBtn2" type="button" class="btn btn-success btn-sm shadow timeSlot"
+                  onclick="transitionToConfirmation()" style="display: none;" disabled>{% trans 'Next' %}</button>
+          <button type="button" class="btn btn-warning btn-sm shadow timeSlot" style="display: none;"
+                  onclick="backToServices()">{% trans 'Back' %}</button>
+
+          <button type="button" id="backToTimeSlots" class="btn btn-danger btn-sm shadow confirmation"
+                  onclick="transitionToTimeSlots()" style="display: none;">{% trans 'Back' %}</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+  {{ block.super }}
+<script>
+    // Global variables for managing appointment data and related operations
+    const appointment = { services: [] };
+    let responseData = {};
+    let lastDate;
+    let firstDate;
+    const cur_lang = document.getElementById('cur_lang').value;
+    const signature = "{{ signature }}";
+    const LOCALE_FORMAT = {
+        uz: "YYYY-MM-DD",
+        ru: "YYYY-MM-DD",
+        en: "YYYY-MM-DD",
+    }
+    // Utility function to show error or success messages
+    function showToast(message, type = "info") {
+        // Define Bootstrap toast classes for different types
+        const toastClasses = {
+            success: "bg-success text-white",
+            error: "bg-danger text-white",
+            info: "bg-primary text-white",
+            warning: "bg-warning text-dark"
+        };
+
+        // Remove existing toasts to prevent stacking issues
+        $(".toast-container .toast").remove();
+
+        // Create the toast dynamically
+        const toastHTML = `
+    <div class="toast align-items-center ${toastClasses[type] || toastClasses.info} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          ${message}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>`;
+
+        // Append the toast container if not already present
+        if ($(".toast-container").length === 0) {
+            $("body").append('<div class="toast-container position-fixed top-0 end-0 p-3"></div>');
+        }
+
+        // Append the toast inside the container
+        $(".toast-container").append(toastHTML);
+
+        // Initialize and show the toast
+        var toastElement = $(".toast").last();
+        var toast = new bootstrap.Toast(toastElement[0]);
+        toast.show();
+    }
+    $(document).ready(function () {
+        // Initialize Bootstrap popovers globally
+        $('[data-bs-toggle="popover"]').popover();
+
+        // Event Delegation: Handle Service Checkbox Changes
+        $(document).on('change', '.service-checkbox', handleServiceCheckboxChange);
+
+        // Handle "More Info" Button Clicks
+        $(".more-info").each(handleMoreInfoButtonClick);
+
+        // Confirmation Method Select
+        $('input[name="confirmation_method"]').change(handleConfirmationMethodChange);
+        
+        // Add listeners for phone and email inputs
+        $('#phone').on('input', checkPhoneInput);
+        $('#email').on('input', checkEmailInput);
+        
+        // Enable/disable "Confirm" button based on form validity
+        $('#full_name, #dob, #sex, #agree').on('input change', checkConfirmButton);
+        
+        // Enable/disable "Confirm" button based on OTP input
+        $('#otp_code').on('input', checkOTPConfirmButton);
+        
+    });
+
+    // Function to handle changes in service checkboxes
+    function handleServiceCheckboxChange() {
+        $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+        const serviceId = $(this).data('id');
+        const price = $(this).data('price');
+        const duration = $(this).data('duration');
+        const serviceName = $(this).data('name');
+
+        if ($(this).is(':checked')) {
+            appointment.services.push({ service_id: serviceId, service_name: serviceName, price: price, duration: duration });
+        } else {
+            appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
+        }
+    }
+
+    // Function to handle clicks on the "More Info" button
+    function handleMoreInfoButtonClick() {
+        const $button = $(this);
+        const $textContainer = $("#" + $button.data("target").substring(1));
+        const initialHeight = $textContainer[0].scrollHeight;
+        const collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight);
+
+        $textContainer.css("max-height", collapsedHeight);
+
+        if (initialHeight > collapsedHeight) {
+            $button.show();
+        }
+
+        $button.click(function (e) {
+            e.preventDefault();
+            if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
+                $textContainer.css("max-height", initialHeight);
+                $button.html(`{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>`);
+            } else {
+                $textContainer.css("max-height", collapsedHeight);
+                $button.html(`{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>`);
+            }
+        });
+    }
+
+    // Function to handle changes in confirmation method (phone/email)
+    function handleConfirmationMethodChange() {
+        $('#phoneInput').toggle($('#phoneRadio').is(':checked'));
+        $('#emailInput').toggle($('#emailRadio').is(':checked'));
+        
+        // Clear input fields and hide client_info_input
+        if ($('#phoneRadio').is(':checked')) {
+            $('#email').val('');
+        } else {
+            $('#phone').val('');
+        }
+        // Clear common fields
+        $('#full_name').val('');
+        $('#dob').val('');
+        $('#sex').val('');
+        $('.client_info_input').hide();
+    }
+
+    // Function to close the modal and reset data
+    function closeModal() {
+        $('#customModal').modal('hide');
+        resetAppointmentData();
+        resetOTPInput();
+    }
+
+    // Utility function to reset appointment and response data
+    function resetAppointmentData() {
+        appointment.services = [];
+        responseData = {};
+    }
+
+    // Function to format a date from ISO to DD-MM format
+    function formatDate(isoDate) {
+        const dateParts = isoDate.split('-');
+        return `${dateParts[2]}-${dateParts[1]}`; // DD-MM format
+    }
+
+    // Function to format a date from ISO to DD.MM.YYYY
+    function formatDatetoDMY(isoDate) {
+        const date = new Date(isoDate);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
+    }
+
+    // Function to handle the transition to the confirmation panel
+    function transitionToConfirmation() {
+        $('.confirmationSuccess').hide()
+        $('#confirmationCodeInput').hide()
+        $('#appointmentTime').text(" " + appointment.time);
+        $('#appointmentDate').text("  " + formatDatetoDMY(appointment.date) + " ");
+        resetOTPInput();
+        $('#selectedServiceList').empty();
+        $.each(appointment.services, function (index, service) {
+            const trow = `<tr><td colspan="2"><div class="row">
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <span style="float: left">${service.service_name}</span>
+                          </div>
+                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <span><i class="fa-solid fa-money-bills"></i> ${service.price.toLocaleString()} sum</span>
+                            <span style="float: right"><i class="fa-solid fa-hourglass-half"></i> ${service.duration} minut</span>
+                          </div>
+                        </div></td></tr>`;
+            $('#selectedServiceList').append(trow);
+        });
+
+        if (appointment.services.length > 1) {
+            $('#totalDuration').text(calculateTotalDuration(appointment.services));
+            $('#totalSum').text(calculateTotalSum(appointment.services).toLocaleString());
+            $('#tableFooter').show();
+        }
+        
+        $('.timeSlot').hide();
+        $('#clientConfirmationForm').show()
+        $('.confirmation').show();
+    }
+
+    // Function to calculate the total duration of selected services
+    function calculateTotalDuration(services) {
+        const totalDuration = services.reduce((sum, service) => sum + service.duration, 0);
+        $("#estimatedDuration").text(totalDuration);
+        return totalDuration;
+    }
+
+    // Function to calculate the total sum of prices for selected services
+    function calculateTotalSum(services) {
+        return services.reduce((sum, service) => sum + service.price, 0);
+    }
+
+    // Function to fetch available dates based on direction (next/previous)
+    function getDates(direction) {
+        const date_param = modifyDate(lastDate, direction === "next" ? 1 : -9);
+        const endpoint = `/provider-server/${responseData.server_id}/available-slots/?start_date=${date_param}`;
+        $.ajax({
+            url: endpoint,
+            type: "GET",
+            dataType: "json",
+            headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
+            success: function (response){
+                console.log(response)
+                renderDates(response.available_slots)
+            },
+            error: function (error){ 
+                handleAjaxError(error) 
+            }   
+        });
+    }
+
+    // Function to handle the transition to the time slot selection
+    function transitionToTimeSlots() {
+        calculateTotalDuration(appointment.services);
+        $('.serviceList').hide();
+        $('.confirmation').hide();
+        $('.timeSlot').show();
+    }
+
+    // Function to go back from time slots to services
+    function backToServices() {
+        resetOTPInput()
+        $('.timeSlot').hide();
+        $('.serviceList').show();
+    }
+
+    // Function to render available dates
+    function renderDates(available_time_slots) {
+        $("#dateList").empty();
+        $("#timeSlots").empty();
+
+        $.each(available_time_slots, function (index, item) {
+            const dateBtn = $("<button>")
+                .addClass("btn btn-outline-primary btn-sm")
+                .text(formatDate(item.date))
+                .on("click", function () {
+                    $("#dateList button").removeClass("btn-primary active-date");
+                    $(this).addClass("btn-primary active-date");
+                    appointment.date = item.date;
+                    renderTimeSlots(item.slots);
+                });
+
+            if (index === 0) {
+                dateBtn.addClass("btn-primary active-date");
+                renderTimeSlots(item.slots);
+                appointment.date = item.date;
+                firstDate = item.date;
+            }
+            lastDate = item.date;
+            $("#dateList").append(dateBtn);
+        });
+    }
+
+    // Function to render available time slots
+    function renderTimeSlots(slots) {
+        $("#timeSlots").empty();
+
+        $.each(slots, function (index, time) {
+            const timeBtn = $("<button>")
+                .addClass("btn btn-outline-secondary px-3 py-2 rounded-3 shadow")
+                .text(time)
+                .on("click", function () {
+                    $("#timeSlots button").removeClass("btn-primary active-date");
+                    const totalDuration = calculateTotalDuration(appointment.services);
+                    const available = isSlotAvailable(time, totalDuration, slots);
+                    if (available) {
+                        $(this).addClass("btn-primary active-date");
+                        appointment.time = time;
+                        $('#nextBtn2').prop('disabled', false);
+                    } else {
+                        $('#nextBtn2').prop('disabled', true);
+                        let popoverMessage = "";
+                        if (cur_lang === "uz") {
+                            popoverMessage = "Umumiy xizmatlar davomiyligi <b>" + totalDuration +
+                                "</b> minut tanlangan vaqt <b>" + time + "</b> dan keyingi vaqt oraligi'ida mavjud emas. Iltimos boshqa vaqtni tanlang!."
+                        } else if (cur_lang === "ru") {
+                            popoverMessage = "Общая продолжительность услуги <b>" + totalDuration + "</b> минут не может быть выделена в промежуток времени с <b>" + time + "</b>. Пожалуйста, выберите другое время."
+                        } else {
+                            popoverMessage = "Total service duration <b>" + totalDuration +
+                                "</b> minutes cannot be allocated to timeframe from <b>" + time + "</b>. Please choose another slot."
+                        }
+
+                        // Hide all popovers before showing a new one
+                        $('[data-bs-toggle="popover"]').popover("hide"); // Hides all active popovers
+                        // Destroy existing popover before setting a new one
+                        $(this).popover("dispose").popover({
+                            content: popoverMessage, // Dynamic content
+                            html: true,
+                            placement: "top"
+                        }).popover("show");
+
+                        // Hide popover automatically after 5 seconds
+                        setTimeout(() => {
+                            $(this).popover("hide");
+                        }, 4000);
+                    }
+
+                });
+
+            $("#timeSlots").append(timeBtn);
+        });
+    }
+
+    // Function to check if a time slot is available
+    function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
+        const startTime = moment(selectedTime, "HH:mm");
+        const endTime = startTime.clone().add(totalDuration, "minutes");
+        const requiredSlots = [];
+
+        let tempTime = startTime.clone();
+        while (tempTime.isBefore(endTime)) {
+            requiredSlots.push(tempTime.format("HH:mm"));
+            tempTime.add(30, "minutes");
+        }
+
+        return requiredSlots.every(slot => availableSlots.includes(slot));
+    }
+
+    // Function to fill services based on selected server and language
+    function fillServices(service_types, language_code) {
+        $('#service_row').empty();
+        $.each(service_types, function (index, service_type) {
+            const serviceTypeName = language_code === "uz" ? service_type.name_uz :
+                language_code === "ru" ? service_type.name_ru :
+                    service_type.name;
+            let table = `
+          <div class="col-lg-6 col-md-12 col-sm-12">
+              <table class="table table-sm table-hover">
+                  <thead class="table-dark">
+                      <tr>
+                          <th>${serviceTypeName}</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+      `;
+
+            $.each(service_type.services, function (i, service) {
+                const price = service.service_private_price !== null ? service.service_private_price : service.price;
+                const serviceName = language_code === "uz" ? service.name_uz :
+                    language_code === "ru" ? service.name_ru :
+                        service.name;
+
+                table += `
+              <tr>
+                  <td>${serviceName}
+                  <span class="badge bg-primary rounded-pill"><i>(${price.toLocaleString()})</i></span>
+                      <input type="checkbox" class="service-checkbox form-check"
+                             data-id="${service.id}"
+                             data-name="${serviceName}"
+                             data-price="${price}"
+                             data-duration="${service.duration}">
+                  </td>
+              </tr>
+          `;
+            });
+
+            table += `
+                  </tbody>
+              </table>
+          </div>
+      `;
+
+            $('#service_row').append(table);
+        });
+    }
+
+    // Function to select a server and fetch related data
+    function selectServer(p_server_id, server_name) {
+        resetOTPInput();
+        resetAppointmentData();
+        clearClientInfoInput();
+        $('.timeSlot .confirmation .tfooter .confirmationSuccess .client_info_input .confirmationCodeInput').hide();
+        $('#resendBtn #clientFound').hide()
+        $('.serviceList').show();
+        $('.confirmation').hide();
+        $('.timeSlot').hide();
+        const endpoint = `/provider-server/${p_server_id}/`;
+        const lang_code = $('#cur_lang').val();
+        $("#server_name").text(server_name);
+        $.ajax({
+            url: endpoint,
+            type: "GET",
+            dataType: "json",
+            headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
+            success: function (response) {
+                responseData = response;
+                appointment.server_id = p_server_id;
+                fillServices(response.service_types, lang_code);
+                renderDates(response.available_time_slots);
+                $('#customModal').modal('show');
+                console.log(response)
+            },
+            error: function (error) {
+                handleAjaxError(error)
+            }
+        });
+    }
+
+    // Function to submit the language change form
+    function submitlang() {
+        $('#setlangform').submit();
+    }
+
+    // Function to modify date for next/previous date fetching
+    function modifyDate(dateStr, days) {
+        const date = new Date(dateStr);
+        date.setDate(date.getDate() + days);
+        return date.toISOString().split('T')[0];
+    }
+    
+        // API search method
+    function searchClient(search_data) {
+        const signature = "{{ signature }}";
+        $.ajax({
+            url: '/client/search/',
+            type: 'GET',
+            data: search_data,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            success: function (response) {
+                if (response.success) {
+                    //fill form inputs
+                    $('#full_name').val(response.client_full_name)
+                    $('#dob').val(response.client_dob)
+                    $('#sex').val(response.client_sex)
+                    $('#client_id').val(response.client_id)
+                    //show client info block
+                    $('#clientNotFound').hide()
+                    $('#clientFound').show()
+                    $('.client_info_input').show();
+                    
+                }
+            },
+            error: function (error) {
+                console.log(error.responseText)
+                $('#full_name').val("")
+                $('#dob').val("")
+                $('#sex').val("")
+                $('#client_id').val("")
+                $('#clientNotFound').show()
+                $('#clientFound').hide()
+                $('.client_info_input').show();
+            }
+        });
+    }
+    
+     // Check if the phone input is valid
+    function checkPhoneInput() {
+        const phoneValue = $(this).val();
+        if (phoneValue.length > 8) {
+            searchClient({phone_number: phoneValue});
+        } else {
+            $('.client_info_input').hide();
+        }
+    }
+
+    // Check if the email input is valid
+    function checkEmailInput() {
+        const emailValue = $(this).val();
+        if (isValidEmail(emailValue)) {
+            searchClient({email: emailValue});
+        } else {
+            $('.client_info_input').hide();
+        }
+    }
+    // Helper function to validate email
+    function isValidEmail(email) {
+        // Basic email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    // Function to check and enable/disable the "Confirm" button
+    function checkConfirmButton() {
+        const fullNameValue = $('#full_name').val();
+        const dobValue = $('#dob').val();
+        const sexValue = $('#sex').val();
+        const agreeChecked = $('#agree').is(':checked');
+
+        if (fullNameValue && dobValue && sexValue && agreeChecked) {
+            $('#confirmBtn').prop('disabled', false);
+        } else {
+            $('#confirmBtn').prop('disabled', true);
+        }
+    }
+    function sendToConfirm(){
+        
+        appointment.comments = $('#commentary').val()
+        appointment.provider_id = $('#provider_id').val()
+        appointment.language_code = cur_lang;
+        appointment.client = {
+            client_id: $('#client_id').val(),
+            full_name: $('#full_name').val(),
+            dob: $('#dob').val(),
+            sex: $('#sex').val(),
+            confirmation_method: $("input[name='confirmation_method']:checked").val(),
+            phone_number: $('#phone').val(),
+            email: $('#email').val()
+        };
+        $.ajax({
+            url: '/client/appointment/create/',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            type: 'POST',
+            data: JSON.stringify(appointment),
+            contentType: 'application/json',
+            success: function (response){
+                if (response.confirmation_method === "p"){
+                    $('#confirmation_destination').text(response.masked_phone_number)
+                } else {
+                    $('#confirmation_destination').text(response.masked_email)
+                }
+                if (response.is_demo) {
+                    showToast("OTP Code:" + response.otp_code + " was sent to client.", "info")   
+                }
+                appointment.otp_id = response.otp_id
+                startTimer()
+                
+                $('#clientConfirmationForm').hide()
+                $('#confirmationCodeInput').show()
+            },
+            error: function (error) {
+                handleAjaxError(error)
+            }
+            
+            
+        })
+    }
+let timerInterval    
+    function startTimer() {
+        let timer = 60;
+        $('#timer').text(timer);
+        $('#otpConfirmBtn').prop('disabled', true);
+        $('#resendBtn').hide();
+        $('#otpConfirmBtn').show();
+        timerInterval = setInterval(() => {
+            timer--;
+            $('#timer').text(timer);
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                $('#otpConfirmBtn').hide();
+                $('#resendBtn').show();
+            }
+        }, 1000);
+    }
+    
+    // Function to check and enable/disable the "Confirm" button
+    function checkOTPConfirmButton() {
+        const otpCodeValue = $('#otp_code').val();
+        if (otpCodeValue) {
+            $('#otpConfirmBtn').prop('disabled', false);
+        } else {
+            $('#otpConfirmBtn').prop('disabled', true);
+        }
+    }
+    
+    function confirmOTP(){
+        let otp_code = $('#otp_code').val()
+        $.ajax({
+            url: '/client/appointment/confirm/',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            type: 'POST',
+            data: JSON.stringify({"otp_id": appointment.otp_id, "otp_code": otp_code}),
+            contentType: 'application/json',
+            success: function (response){
+                console.log(response)
+                $('#clientConfirmationForm').hide()
+                $('#confirmationCodeInput').hide()
+                $('#backToTimeSlots').hide()
+                $('.confirmationSuccess').show()
+            },
+            error: function (error) {
+                handleAjaxError(error);
+            }
+        })
+        console.log(appointment.otp_id)
+        resetOTPInput()
+    }
+    
+    function handleAjaxError(error){
+        if (error.responseText.includes("Invalid request headers")){
+            location.reload();
+        }
+        showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
+    }
+    
+    function resetOTPInput(){
+        clearInterval(timerInterval); // Stop the timer
+        $('#otp_code').val(''); // Clear the OTP input   
+         $('#otpConfirmBtn').prop('disabled', true);
+    }
+    
+    function clearClientInfoInput(){
+        $('#clientConfirmationForm').trigger('reset');
+        $('#clientFound').hide();
+        $('#clientNotFound').hide();
+        $('.client_info_input').hide();
+    }
+    
+    
+</script>
+{% endblock %}

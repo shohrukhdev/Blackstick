@@ -1,0 +1,256 @@
+import logging
+import random
+
+from django.contrib.auth.models import User
+from django.core.cache import cache
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.db.models import UniqueConstraint, Q
+
+logger = logging.getLogger('booket')  # Use the app's logger
+
+
+class Provider(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    identifier = models.CharField(max_length=255, unique=True)
+    logo = models.ImageField(upload_to='logo', null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    has_many_servers = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def is_user_owner(user):
+        """
+        Check if the given user is the owner of any Provider.
+        Returns True if the user is an owner, otherwise False.
+        """
+        return Provider.objects.filter(owner=user).exists()
+
+
+class ProviderPhotos(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='photos', null=True, blank=True)
+
+
+class Server(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='server_user')
+    image = models.ImageField(upload_to='server', null=True, blank=True)
+    phone_number = models.CharField(max_length=255, null=True, blank=True)
+    memo = models.TextField(null=True, blank=True)
+    info = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    @staticmethod
+    def is_user_server(user):
+        """
+        Check if the given user is the owner of any Provider.
+        Returns True if the user is an owner, otherwise False.
+        """
+        return Server.objects.filter(user=user).exists()
+
+    def __str__(self):
+        return f"{self.user.get_full_name()}"
+
+
+class ServiceType(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE, related_name='service_type')
+    name = models.CharField(max_length=150, null=True, blank=True)
+    name_uz = models.CharField(max_length=150, null=True, blank=True)
+    name_ru = models.CharField(max_length=150, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+
+class ProviderServer(models.Model):  # Provider can have many servers and server can work for multiple providers
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    server = models.ForeignKey(Server, on_delete=models.CASCADE, null=True, blank=True)
+    day_starts_on = models.TimeField(null=True, blank=True)
+    day_ends_on = models.TimeField(null=True, blank=True)
+    # Store off days as a comma-separated string (e.g., "1,5" for Monday and Friday off)
+    off_days = models.CharField(max_length=100, blank=True, null=True)  # Blank means no off days by default
+
+    def __str__(self):
+        return f"{self.provider} {self.server}"
+
+    def get_off_days(self):
+        """
+        Convert the comma-separated string to a list of days that are off.
+        """
+        try:
+            if self.off_days:
+                # Try to split the string and convert to integers
+                off_days = [int(day) for day in self.off_days.split(',')]
+
+                # Validate that all days are between 1 and 7
+                if not all(1 <= day <= 7 for day in off_days):
+                    raise ValueError("Off days must be integers between 1 and 7.")
+
+                return off_days
+            return []
+        except ValueError as e:
+            error_message = f"Invalid off days format: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+        except Exception as e:
+            error_message = f"Error while parsing off days: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+
+    def set_off_days(self, off_days_list):
+        """
+        Set the off days by converting the list of days into a comma-separated string.
+        The list contains days as numbers (1 = Monday, 7 = Sunday).
+        """
+        try:
+            if not all(isinstance(day, int) and 1 <= day <= 7 for day in off_days_list):
+                raise ValueError("All off days must be integers between 1 and 7.")
+
+            # Convert the list of off days into a comma-separated string
+            self.off_days = ','.join(map(str, off_days_list))
+        except ValueError as e:
+            error_message = f"Invalid input for off days: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+        except Exception as e:
+            error_message = f"Error while setting off days: {str(e)}"
+            logger.error(error_message, exc_info=True)  # Log the error with traceback
+            raise ValidationError(error_message)
+
+
+class Service(models.Model):
+    tip = models.ForeignKey(ServiceType, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    name_uz = models.CharField(max_length=255, null=True, blank=True)
+    name_ru = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.name_uz
+
+
+class ProviderServerService(models.Model):   # Services are performed by the servers of the provider
+    provider_server = models.ForeignKey(ProviderServer, on_delete=models.CASCADE, null=True, blank=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
+    service_private_price = models.IntegerField(null=True, blank=True)
+    duration = models.IntegerField(default=60)  # Single service duration time default 30 minutes
+
+    class Meta:
+        unique_together = (('provider_server', 'service'),)
+
+
+class Client(models.Model):
+    full_name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    phone_number = models.CharField(max_length=13, null=True, blank=True)
+    sex = models.CharField(max_length=10, null=True, blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    comments = models.TextField(null=True, blank=True)
+    language_code = models.CharField(max_length=3, null=True, blank=True)
+
+    class Meta:
+        """
+        Clients without an email or phone (optional fields).
+        If a client provides an email, it must be unique.
+        If a client provides a phone number, it must be unique.
+        The same full name can exist with different phone numbers or different emails.
+        """
+        constraints = [
+            UniqueConstraint(
+                fields=["full_name", "phone_number"],
+                name="unique_client_name_phone"
+            ),
+            UniqueConstraint(
+                fields=["phone_number"],
+                name="unique_client_phone",
+                condition=Q(phone_number__isnull=False)
+            )
+        ]
+
+
+class ProviderClient(models.Model):
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["provider", "client"], name="unique_provider_client")
+        ]
+
+
+STATUSES = [
+    ("NEW", "NEW"),
+    ("CONFIRMED", "CONFIRMED"),  # confirmed by OTP verification
+    ("PENDING", "PENDING"),  # waiting for a provider to confirm
+    ("ACCEPTED", "ACCEPTED"),  # accepted by the provider
+    ("CANCELLED", "CANCELLED"),  # cancelled by the provider or client
+    ("REJECTED", "REJECTED"),  # rejected by the provider
+    ("NO_SHOW", "NO_SHOW"),  # client did not show up
+    ("COMPLETED", "COMPLETED"),  # completed
+]
+
+
+class Appointment(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE, null=True, blank=True)
+    server = models.ForeignKey(Server, on_delete=models.CASCADE)
+    start_datetime = models.DateTimeField(null=True, blank=True)
+    end_datetime = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=12, choices=STATUSES, null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
+    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.client} {self.server} {self.start_datetime} -- {self.end_datetime}"
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["status", "end_datetime", "created_on"]),
+        ]
+
+
+class AppointmentService(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.appointment} {self.service}"
+
+
+class OTPVerification(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, null=True, blank=True)
+    phone_number = models.CharField(max_length=13, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    verification_method = models.CharField(max_length=1, null=True, blank=True)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_verified = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.otp_code:
+            self.otp_code = str(random.randint(100000, 999999))  # Generate 6-digit OTP
+        super().save(*args, **kwargs)
+
+    def send_otp(self):
+        if self.phone_number:
+            # Integrate SMS API here
+            pass
+        if self.email:
+            pass
+            # send_mail(
+            #     "Your Verification Code",
+            #     f"Your OTP code is {self.otp_code}",
+            #     "noreply@example.com",
+            #     [self.email],
+            #     fail_silently=False,
+            # )
+        cache.set(f"otp_{self.phone_number or self.email}", self.otp_code, timeout=300)  # Store OTP for 5 minutes

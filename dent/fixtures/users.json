@@ -55,24 +55,6 @@
 },
 {
   "model": "auth.user",
-  "pk": 7,
-  "fields": {
-    "password": "pbkdf2_sha256$870000$vWF6J0OLowD2OroRR9c5J8$9tw1TZ0/1uuDDAlyOm+J7arfz0B6sPRCsH3fayCoV6w=",
-    "last_login": "2024-11-12T08:37:35.406Z",
-    "is_superuser": false,
-    "username": "demo",
-    "first_name": "Fname",
-    "last_name": "Lname",
-    "email": "lname@gmail.com",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2024-11-01T18:23:22Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "auth.user",
   "pk": 8,
   "fields": {
     "password": "pbkdf2_sha256$870000$SrACxfjVQHchiByDCY4lSn$3v+pgs8J2AT8ptOmO0Kq0HK7JoUke9zvgvufstqkHn4=",
