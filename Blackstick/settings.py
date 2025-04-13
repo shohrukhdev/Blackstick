@@ -86,15 +86,27 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 15,
 }
 
+# CACHES dictionary which contains caching configurations.
 CACHES = {
+    # a cache alias or name. In this case, we use "default" as the alias.
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379",  # Use the Redis service name from docker-compose
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        # Here, we're using the in-memory cache backend.
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+
+        # LOCATION parameter gives a unique name or identifier to this cache instance.
+        "LOCATION": "unique-snowflake",
     }
 }
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://localhost:6379",  # Use the Redis service name from docker-compose
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'info',

@@ -67,6 +67,8 @@ COPY .. $APP_HOME
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
 
+RUN python manage.py collectstatic --no-input --clear
+
 # change to the app user
 USER app
 
