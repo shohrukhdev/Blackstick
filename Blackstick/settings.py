@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', "_jwm)q97gydh7ci3^)o#2nuisyp_1cb0#*y)h
 FERNET_KEY = os.environ.get('FERNET_KEY', "c3lKF6mRQmIvtT1fgv27vJAHIwmx-T3u1SYhgb-pR7k=")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', False))
+DEBUG = bool(os.environ.get('DEBUG', True))
 
 ALLOWED_HOSTS = ["alphadent.store", "localhost", "127.0.0.1", "0.0.0.0", "51.20.0.174"]
 
