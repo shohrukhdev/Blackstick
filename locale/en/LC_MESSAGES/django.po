@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-10 18:17+0000\n"
+"POT-Creation-Date: 2025-04-13 09:38+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,52 +18,767 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: templates/booket/client/main.html:6
+msgid "Main"
+msgstr ""
+
+#: templates/booket/client/main.html:66
+msgid "Language:"
+msgstr ""
+
+#: templates/booket/client/main.html:115 templates/booket/provider.html:43
+#: templates/booket/provider.html:78 templates/booket/service_list.html:5
+#: templates/dent/settings/main.html:50
+#: templates/dent/settings/service/list.html:5
+msgid "Services"
+msgstr ""
+
+#: templates/booket/client/main.html:188
+msgid "Specialists"
+msgstr ""
+
+#: templates/booket/client/main.html:204 templates/booket/client/main.html:554
+msgid "More"
+msgstr ""
+
+#: templates/booket/client/main.html:210
+msgid "Book appointment"
+msgstr ""
+
+#: templates/booket/client/main.html:229 templates/booket/server_edit.html:5
+msgid "Specialist"
+msgstr ""
+
+#: templates/booket/client/main.html:244
+msgid "Select date and time!"
+msgstr ""
+
+#: templates/booket/client/main.html:245
+msgid "Estimated service time"
+msgstr ""
+
+#: templates/booket/client/main.html:247
+msgid "min"
+msgstr ""
+
+#: templates/booket/client/main.html:280
+#: templates/booket/dashboard/dashboard.html:43
+#: templates/dent/calendar.html:125 templates/dent/calendar_list.html:48
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2529
+msgid "Time"
+msgstr ""
+
+#: templates/booket/client/main.html:288
+msgid "Selected services"
+msgstr ""
+
+#: templates/booket/client/main.html:302 templates/booket/client/main.html:325
+msgid "minutes"
+msgstr ""
+
+#: templates/booket/client/main.html:322
+#: templates/booket/dashboard/provider_statistics.html:70
+#: templates/dent/treatement.html:733 templates/dent/treatment_info.html:99
+#: templates/dent/treatment_print.html:111
+msgid "Total"
+msgstr ""
+
+#: templates/booket/client/main.html:324
+msgid "Estimated duration"
+msgstr ""
+
+#: templates/booket/client/main.html:336
+msgid ""
+"Your appointment confirmed successfully! Please be on time. If you want to "
+"cancel or change appointment please use the link from the SMS or contact the "
+"provider."
+msgstr ""
+
+#: templates/booket/client/main.html:341
+msgid "Confirm the appointment by"
+msgstr ""
+
+#: templates/booket/client/main.html:345
+msgid "Phone number"
+msgstr ""
+
+#: templates/booket/client/main.html:350 templates/booket/client/main.html:353
+#: templates/booket/dashboard/dashboard.html:59
+#: templates/booket/dashboard/dashboard.html:160
+#: templates/booket/dashboard/provider_dashboard.html:67
+#: templates/dent/settings/user/add.html:32
+#: templates/dent/settings/user/edit.html:32
+msgid "Email"
+msgstr ""
+
+#: templates/booket/client/main.html:357
+#: templates/booket/dashboard/dashboard.html:53
+#: templates/booket/dashboard/dashboard.html:155
+#: templates/booket/dashboard/provider_dashboard.html:62
+#: templates/booket/server_edit.html:52 templates/dent/add_patient.html:30
+#: templates/dent/edit_patient.html:30
+msgid "Phone"
+msgstr ""
+
+#: templates/booket/client/main.html:364
+msgid "Client information exists."
+msgstr ""
+
+#: templates/booket/client/main.html:367
+msgid "Enter client information."
+msgstr ""
+
+#: templates/booket/client/main.html:371 templates/dent/add_patient.html:26
+#: templates/dent/edit_patient.html:26 templates/dent/treatement.html:358
+msgid "Full name"
+msgstr ""
+
+#: templates/booket/client/main.html:377
+msgid "Date of birth"
+msgstr ""
+
+#: templates/booket/client/main.html:381
+msgid "Gender"
+msgstr ""
+
+#: templates/booket/client/main.html:383 templates/dent/add_patient.html:36
+#: templates/dent/edit_patient.html:36
+msgid "Male"
+msgstr ""
+
+#: templates/booket/client/main.html:384 templates/dent/add_patient.html:37
+#: templates/dent/edit_patient.html:37
+msgid "Female"
+msgstr ""
+
+#: templates/booket/client/main.html:389
+msgid "Comments(optional)"
+msgstr ""
+
+#: templates/booket/client/main.html:397
+msgid "Agree to terms of use"
+msgstr ""
+
+#: templates/booket/client/main.html:399 templates/booket/client/main.html:410
+msgid "Confirm"
+msgstr ""
+
+#: templates/booket/client/main.html:406
+msgid "Confirmation code was sent to"
+msgstr ""
+
+#: templates/booket/client/main.html:411
+msgid "Resend"
+msgstr ""
+
+#: templates/booket/client/main.html:424 templates/booket/client/main.html:430
+#: templates/dent/treatement.html:380
+msgid "Next"
+msgstr ""
+
+#: templates/booket/client/main.html:426
+#: templates/booket/dashboard/dashboard.html:226
+#: templates/booket/dashboard/dashboard.html:272
+#: templates/booket/dashboard/provider_dashboard.html:133
+#: templates/booket/dashboard/provider_dashboard.html:182
+#: templates/dent/calendar.html:103 templates/dent/calendar.html:131
+#: templates/dent/calendar_list.html:100 templates/dent/treatment_info.html:140
+msgid "Close"
+msgstr ""
+
+#: templates/booket/client/main.html:432 templates/booket/client/main.html:435
+#: templates/booket/dashboard/dashboard.html:202
+#: templates/booket/dashboard/dashboard.html:208
+#: templates/booket/dashboard/dashboard.html:214
+#: templates/booket/dashboard/provider_dashboard.html:109
+#: templates/booket/dashboard/provider_dashboard.html:115
+#: templates/booket/dashboard/provider_dashboard.html:121
+#: templates/booket/dashboard/provider_statistics.html:23
+#: templates/booket/dashboard/statistics.html:23
+#: templates/booket/provider_edit.html:82
+#: templates/booket/provider_photo.html:117
+#: templates/booket/server_edit.html:80 templates/booket/service_add.html:81
+#: templates/booket/service_edit.html:101 templates/booket/service_type.html:60
+#: templates/booket/service_type_edit.html:68
+#: templates/dent/settings/category/list.html:25
+#: templates/dent/settings/main.html:17
+#: templates/dent/settings/service/list.html:25
+#: templates/dent/settings/tooth_state/list.html:25
+#: templates/dent/settings/user/list.html:26
+#: templates/dent/treatment_history.html:31
+#: templates/dent/treatment_info.html:22
+msgid "Back"
+msgstr ""
+
+#: templates/booket/client/main.html:551
+msgid "Less"
+msgstr ""
+
+#: templates/booket/container.html:36
+#: templates/booket/dashboard/dashboard.html:5
+msgid "Dashboard"
+msgstr ""
+
+#: templates/booket/container.html:39 templates/booket/dashboard/history.html:5
+#: templates/booket/dashboard/provider_history.html:5
+#: templates/dent/patient_list.html:14
+msgid "History"
+msgstr ""
+
+#: templates/booket/container.html:43
+msgid "Provider dashboard"
+msgstr ""
+
+#: templates/booket/container.html:46
+msgid "Provider history"
+msgstr ""
+
+#: templates/booket/container.html:49
+msgid "Provider Settings"
+msgstr ""
+
+#: templates/booket/container.html:55
+#: templates/booket/dashboard/my_config.html:17
+msgid "My settings"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:37
+msgid "Upcoming appointment"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:48
+#: templates/booket/dashboard/dashboard.html:254
+#: templates/booket/dashboard/provider_dashboard.html:164
+msgid "Client"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:90
+msgid "Today"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:94
+msgid "Completed"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:98
+msgid "All appointments"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:102
+msgid "No-show appointments"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:111
+msgid "Reminder"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:117
+#: templates/booket/dashboard/dashboard.html:270
+#: templates/booket/dashboard/my_config.html:106
+#: templates/booket/dashboard/my_config.html:177
+#: templates/booket/dashboard/provider_dashboard.html:180
+#: templates/booket/server_service.html:109
+#: templates/dent/settings/clinic_details.html:48
+msgid "Save"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:168
+#: templates/booket/dashboard/provider_dashboard.html:75
+#: templates/dent/settings/clinic_details.html:37
+#: templates/dent/settings/service/edit.html:63
+#: templates/dent/settings/user/edit.html:44
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:159
+msgid "Status"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:179
+#: templates/booket/dashboard/provider_dashboard.html:86
+msgid "Make sure client has informed about the update!"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:181
+#: templates/booket/dashboard/provider_dashboard.html:88
+msgid "New time"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:187
+#: templates/booket/dashboard/provider_dashboard.html:94
+msgid "CANCEL THE APPOINTMENT?"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:188
+#: templates/booket/dashboard/provider_dashboard.html:95
+msgid "Inform client about cancellation!"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:191
+#: templates/booket/dashboard/provider_dashboard.html:98
+msgid "Client didn't come for no reason?"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:200
+#: templates/booket/dashboard/provider_dashboard.html:107
+#: templates/booket/provider_edit.html:80 templates/booket/server_edit.html:78
+#: templates/booket/service_type_edit.html:67
+msgid "Update"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:206
+#: templates/booket/dashboard/dashboard.html:212
+#: templates/booket/dashboard/provider_dashboard.html:113
+#: templates/booket/dashboard/provider_dashboard.html:119
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:801
+msgid "Yes"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:218
+#: templates/booket/dashboard/provider_dashboard.html:125
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:463
+msgid "Change"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:220
+#: templates/booket/dashboard/provider_dashboard.html:127
+#: templates/dent/calendar.html:132 templates/dent/calendar_list.html:46
+msgid "Cancel"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:222
+#: templates/booket/dashboard/provider_dashboard.html:129
+msgid "No-show"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:248
+#: templates/booket/dashboard/provider_dashboard.html:155
+msgid "Server"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:255
+#: templates/booket/dashboard/provider_dashboard.html:165
+msgid "Guest"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:258
+#: templates/booket/dashboard/provider_dashboard.html:168
+msgid "Starts at"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:262
+#: templates/booket/dashboard/provider_dashboard.html:172
+msgid "Ends at"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:266
+#: templates/booket/dashboard/provider_dashboard.html:176
+msgid "Comment"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:367
+#: templates/booket/dashboard/provider_dashboard.html:229
+msgid "Create"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:18
+#: templates/booket/dashboard/provider_history.html:18
+#: templates/dent/patient_list.html:26
+#: templates/dent/settings/user/list.html:38
+msgid "ID"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:19
+#: templates/booket/dashboard/provider_history.html:19
+msgid "CLIENT"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:20
+#: templates/booket/dashboard/provider_history.html:20
+msgid "DATE"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:21
+#: templates/booket/dashboard/provider_history.html:21
+msgid "TIME"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:22
+#: templates/booket/dashboard/provider_history.html:22
+#: templates/dent/settings/service/list.html:40
+#: templates/dent/settings/user/list.html:42
+msgid "STATUS"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:5
+msgid "Configs"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:26
+#: templates/booket/provider.html:5
+msgid "Provider"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:30
+#: templates/dent/settings/user/add.html:24
+#: templates/dent/settings/user/edit.html:24
+msgid "First name"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:35
+#: templates/dent/settings/user/add.html:28
+#: templates/dent/settings/user/edit.html:28
+msgid "Last name"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:42
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1915
+msgid "Email address"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:48
+msgid "Day starts on"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:55
+msgid "Day ends on"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:62
+msgid "Off days"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:67
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:72
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:77
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:82
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:87
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:92
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:21
+msgid "Sat"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:97
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:111
+msgid "Service settings"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:156
+#: templates/booket/server_service.html:88 templates/booket/service_add.html:74
+#: templates/booket/service_edit.html:83
+msgid "Base price"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:163
+#: templates/booket/server_service.html:95
+#: templates/booket/service_list.html:53
+#: templates/dent/settings/service/add.html:52
+#: templates/dent/settings/service/edit.html:54
+#: templates/dent/treatment_history.html:40
+msgid "Price"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:173
+#: templates/booket/server_service.html:105
+msgid "Service active"
+msgstr ""
+
+#: templates/booket/dashboard/provider_dashboard.html:5
+msgid "Provider Dashboard"
+msgstr ""
+
+#: templates/booket/dashboard/provider_dashboard.html:505
+msgid "Please select a server."
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:5
+msgid "Provider Statistics"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:12
+#: templates/booket/dashboard/statistics.html:12 templates/dent/report.html:63
+msgid "From"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:14
+#: templates/booket/dashboard/statistics.html:14 templates/dent/report.html:72
+msgid "To"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:29
+#: templates/booket/dashboard/statistics.html:29
+msgid "Top 5 Clients (Completed Appointments)"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:33
+#: templates/booket/dashboard/provider_statistics.html:53
+#: templates/booket/dashboard/statistics.html:33
+#: templates/booket/dashboard/statistics.html:53
+msgid "Client Name"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:34
+#: templates/booket/dashboard/statistics.html:34
+msgid "Completed Appointments"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:49
+#: templates/booket/dashboard/statistics.html:49
+msgid "Top 5 Clients (No-Show Appointments)"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:54
+#: templates/booket/dashboard/statistics.html:54
+msgid "No-Show Appointments"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:70
+#: templates/booket/dashboard/statistics.html:70
+msgid "Appointment Statistics"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:77
+#: templates/booket/dashboard/statistics.html:77
+msgid "Service Distribution"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:84
+msgid "Completed Appointments per Server"
+msgstr ""
+
+#: templates/booket/dashboard/statistics.html:5
+msgid "Statistics"
+msgstr ""
+
+#: templates/booket/login.html:54 templates/booket/login.html:69
+msgid "Login"
+msgstr ""
+
+#: templates/booket/login.html:60 templates/dent/settings/user/add.html:36
+msgid "Username"
+msgstr ""
+
+#: templates/booket/login.html:65
+msgid "Password"
+msgstr ""
+
+#: templates/booket/logout.html:20
+msgid "Login again"
+msgstr ""
+
+#: templates/booket/provider.html:22 templates/booket/provider.html:41
+#: templates/booket/provider.html:76 templates/booket/service_list.html:65
+#: templates/dent/patient_list.html:11
+#: templates/dent/settings/category/list.html:24
+#: templates/dent/settings/service/list.html:24
+#: templates/dent/settings/tooth_state/list.html:24
+#: templates/dent/settings/user/list.html:24
+msgid "Edit"
+msgstr ""
+
+#: templates/booket/provider.html:23
+msgid "Photos"
+msgstr ""
+
+#: templates/booket/provider.html:29
+msgid "Specialists:"
+msgstr ""
+
+#: templates/booket/provider.html:36
+#: templates/dent/settings/service/edit.html:69
+msgid "Disabled"
+msgstr ""
+
+#: templates/booket/provider.html:54
+msgid "Service types:"
+msgstr ""
+
+#: templates/booket/provider.html:56 templates/booket/service_add.html:80
+#: templates/booket/service_edit.html:98 templates/booket/service_list.html:44
+#: templates/booket/service_type.html:59 templates/dent/calendar.html:104
+#: templates/dent/calendar_list.html:101 templates/dent/patient_list.html:10
+#: templates/dent/settings/category/list.html:23
+#: templates/dent/settings/service/list.html:23
+#: templates/dent/settings/tooth_state/list.html:23
+#: templates/dent/settings/user/list.html:23
+#: templates/dent/treatment_info.html:141
+msgid "Add"
+msgstr ""
+
+#: templates/booket/provider_edit.html:5 templates/booket/provider_edit.html:39
+#: templates/booket/provider_photo.html:6
+msgid "Edit provider"
+msgstr ""
+
+#: templates/booket/provider_edit.html:48 templates/booket/server_edit.html:46
+msgid "Name"
+msgstr ""
+
+#: templates/booket/provider_edit.html:53
+msgid "Address"
+msgstr ""
+
+#: templates/booket/provider_edit.html:58 templates/booket/service_add.html:70
+#: templates/booket/service_edit.html:78 templates/booket/service_list.html:52
+#: templates/dent/settings/service/add.html:48
+#: templates/dent/settings/service/edit.html:50
+msgid "Description"
+msgstr ""
+
+#: templates/booket/provider_edit.html:63 templates/booket/server_edit.html:69
+#: templates/booket/service_edit.html:88
+#: templates/booket/service_type_edit.html:58
+#: templates/dent/settings/user/edit.html:46
+#: templates/dent/settings/user/list.html:54
+msgid "Active"
+msgstr ""
+
+#: templates/booket/provider_edit.html:65 templates/booket/server_edit.html:71
+#: templates/booket/service_edit.html:90
+#: templates/booket/service_type_edit.html:60
+msgid "True"
+msgstr ""
+
+#: templates/booket/provider_edit.html:66 templates/booket/server_edit.html:72
+#: templates/booket/service_edit.html:91
+#: templates/booket/service_type_edit.html:61
+msgid "False"
+msgstr ""
+
+#: templates/booket/provider_edit.html:70 templates/booket/server_edit.html:62
+#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
+msgid "Image"
+msgstr ""
+
+#: templates/booket/provider_photo.html:40
+msgid "Edit provider photos"
+msgstr ""
+
+#: templates/booket/server_edit.html:39
+msgid "Edit Specialist"
+msgstr ""
+
+#: templates/booket/server_edit.html:58
+msgid "Info"
+msgstr ""
+
+#: templates/booket/server_service.html:5
+msgid "Server services"
+msgstr ""
+
+#: templates/booket/server_service.html:39
+#: templates/booket/service_edit.html:39
+msgid "Edit service for provider"
+msgstr ""
+
+#: templates/booket/service_add.html:5
+msgid "Service add"
+msgstr ""
+
+#: templates/booket/service_add.html:38
+msgid "Add new service for provider"
+msgstr ""
+
+#: templates/booket/service_add.html:46 templates/booket/service_edit.html:47
+msgid "Service type"
+msgstr ""
+
+#: templates/booket/service_add.html:58 templates/booket/service_edit.html:63
+#: templates/booket/service_list.html:49 templates/booket/service_type.html:45
+#: templates/booket/service_type_edit.html:46
+msgid "Name UZ"
+msgstr ""
+
+#: templates/booket/service_add.html:62 templates/booket/service_edit.html:68
+#: templates/booket/service_list.html:51 templates/booket/service_type.html:49
+#: templates/booket/service_type_edit.html:50
+msgid "Name EN"
+msgstr ""
+
+#: templates/booket/service_add.html:66 templates/booket/service_edit.html:73
+#: templates/booket/service_list.html:50 templates/booket/service_type.html:53
+#: templates/booket/service_type_edit.html:54
+msgid "Name RU"
+msgstr ""
+
+#: templates/booket/service_edit.html:5
+msgid "Service edit"
+msgstr ""
+
+#: templates/booket/service_list.html:40
+#: templates/dent/settings/service/list.html:19
+msgid "services"
+msgstr ""
+
+#: templates/booket/service_list.html:54
+msgid "Action"
+msgstr ""
+
+#: templates/booket/service_type.html:5 templates/booket/service_type.html:38
+msgid "Add service type"
+msgstr ""
+
+#: templates/booket/service_type_edit.html:5
+#: templates/booket/service_type_edit.html:38
+msgid "Edit service type"
+msgstr ""
+
 #: templates/dent/add_patient.html:14
 msgid "Add new patient"
 msgstr ""
 
-#: templates/dent/add_patient.html:25 templates/dent/edit_patient.html:26
-#: templates/dent/treatement.html:363
-msgid "Full name"
-msgstr ""
-
-#: templates/dent/add_patient.html:29 templates/dent/edit_patient.html:30
-msgid "Phone"
-msgstr ""
-
-#: templates/dent/add_patient.html:33 templates/dent/edit_patient.html:34
+#: templates/dent/add_patient.html:34 templates/dent/edit_patient.html:34
 msgid "Male/Female"
 msgstr ""
 
-#: templates/dent/add_patient.html:35 templates/dent/edit_patient.html:36
-msgid "Male"
-msgstr ""
-
-#: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:37
-msgid "Female"
-msgstr ""
-
-#: templates/dent/add_patient.html:40 templates/dent/edit_patient.html:41
-#: templates/dent/treatment_info.html:42 templates/dent/treatment_print.html:63
+#: templates/dent/add_patient.html:41 templates/dent/edit_patient.html:41
+#: templates/dent/treatment_info.html:43 templates/dent/treatment_print.html:63
 msgid "Date birth"
 msgstr ""
 
-#: templates/dent/add_patient.html:44 templates/dent/edit_patient.html:45
+#: templates/dent/add_patient.html:45 templates/dent/edit_patient.html:45
 msgid "Additional(address, phones, allergies ...)"
 msgstr ""
 
-#: templates/dent/add_patient.html:47 templates/dent/edit_patient.html:55
+#: templates/dent/add_patient.html:48 templates/dent/edit_patient.html:55
+#: templates/dent/settings/category/add.html:35
+#: templates/dent/settings/category/edit.html:36
+#: templates/dent/settings/service/add.html:60
+#: templates/dent/settings/service/edit.html:73
+#: templates/dent/settings/user/add.html:52
+#: templates/dent/settings/user/edit.html:54
 msgid "Submit"
 msgstr ""
 
 #: templates/dent/calendar.html:4 templates/dent/calendar_list.html:4
-#: templates/home.html:192
+#: templates/home.html:101
 msgid "Calendar"
 msgstr ""
 
 #: templates/dent/calendar.html:23 templates/dent/calendar.html:69
 #: templates/dent/calendar_list.html:18 templates/dent/calendar_list.html:66
-#: templates/dent/treatment_info.html:123
+#: templates/dent/treatment_info.html:132
 msgid "Add appointment"
 msgstr ""
 
@@ -72,8 +787,8 @@ msgid "List view"
 msgstr ""
 
 #: templates/dent/calendar.html:77 templates/dent/calendar_list.html:47
-#: templates/dent/calendar_list.html:74 templates/dent/report.html:95
-#: templates/dent/treatment_info.html:41 templates/dent/treatment_print.html:62
+#: templates/dent/calendar_list.html:74 templates/dent/report.html:81
+#: templates/dent/treatment_info.html:42 templates/dent/treatment_print.html:62
 msgid "Patient"
 msgstr ""
 
@@ -94,26 +809,8 @@ msgstr ""
 msgid "Background"
 msgstr ""
 
-#: templates/dent/calendar.html:103 templates/dent/calendar.html:131
-#: templates/dent/calendar_list.html:100 templates/dent/treatment_info.html:131
-msgid "Close"
-msgstr ""
-
-#: templates/dent/calendar.html:104 templates/dent/calendar_list.html:101
-#: templates/dent/patient_list.html:10 templates/dent/treatment_info.html:132
-msgid "Add"
-msgstr ""
-
 #: templates/dent/calendar.html:123 templates/dent/calendar_list.html:49
 msgid "Procedure"
-msgstr ""
-
-#: templates/dent/calendar.html:125 templates/dent/calendar_list.html:48
-msgid "Time"
-msgstr ""
-
-#: templates/dent/calendar.html:132 templates/dent/calendar_list.html:46
-msgid "Cancel"
 msgstr ""
 
 #: templates/dent/calendar_list.html:23
@@ -128,31 +825,22 @@ msgstr ""
 msgid "Edit Patient Info"
 msgstr ""
 
-#: templates/dent/edit_patient.html:49 templates/dent/treatement.html:238
+#: templates/dent/edit_patient.html:49 templates/dent/treatement.html:233
 msgid "State"
 msgstr ""
 
-#: templates/dent/patient_list.html:11
-msgid "Edit"
-msgstr ""
-
 #: templates/dent/patient_list.html:12
+#: templates/dent/settings/user/list.html:25
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:499
 msgid "Delete"
-msgstr ""
-
-#: templates/dent/patient_list.html:14
-msgid "History"
 msgstr ""
 
 #: templates/dent/patient_list.html:15
 msgid "Add treatment"
 msgstr ""
 
-#: templates/dent/patient_list.html:26
-msgid "ID"
-msgstr ""
-
 #: templates/dent/patient_list.html:27
+#: templates/dent/settings/user/list.html:39
 msgid "FULL NAME"
 msgstr ""
 
@@ -168,93 +856,273 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: templates/dent/report.html:33
+#: templates/dent/report.html:19
 msgid "Treatments done(current month)"
 msgstr ""
 
-#: templates/dent/report.html:48
+#: templates/dent/report.html:34
 msgid "Total received pay(current month)"
 msgstr ""
 
-#: templates/dent/report.html:62
+#: templates/dent/report.html:48
 msgid "Total debts of patients"
 msgstr ""
 
-#: templates/dent/report.html:77
-msgid "From"
-msgstr ""
-
-#: templates/dent/report.html:86
-msgid "To"
-msgstr ""
-
-#: templates/dent/report.html:104
+#: templates/dent/report.html:90
 msgid "Category"
 msgstr ""
 
-#: templates/dent/report.html:113
+#: templates/dent/report.html:99
 msgid "Filter"
 msgstr ""
 
-#: templates/dent/report.html:121
+#: templates/dent/report.html:107
 msgid "Number of services by category for period"
 msgstr ""
 
-#: templates/dent/treatement.html:93
+#: templates/dent/settings/category/add.html:4
+#: templates/dent/settings/category/add.html:13
+msgid "Add new category"
+msgstr ""
+
+#: templates/dent/settings/category/add.html:24
+#: templates/dent/settings/category/edit.html:25
+msgid "Category name (UZ)"
+msgstr ""
+
+#: templates/dent/settings/category/add.html:28
+#: templates/dent/settings/category/edit.html:29
+msgid "Category name (RU)"
+msgstr ""
+
+#: templates/dent/settings/category/add.html:32
+#: templates/dent/settings/category/edit.html:33
+msgid "Category name (EN)"
+msgstr ""
+
+#: templates/dent/settings/category/edit.html:4
+#: templates/dent/settings/category/edit.html:13
+msgid "Edit category"
+msgstr ""
+
+#: templates/dent/settings/category/list.html:5
+msgid "Service categories"
+msgstr ""
+
+#: templates/dent/settings/category/list.html:19
+msgid "categories"
+msgstr ""
+
+#: templates/dent/settings/category/list.html:37
+#: templates/dent/settings/service/list.html:38
+#: templates/dent/settings/tooth_state/list.html:37
+msgid "NAME UZ"
+msgstr ""
+
+#: templates/dent/settings/category/list.html:38
+#: templates/dent/settings/service/list.html:39
+msgid "NAME RU"
+msgstr ""
+
+#: templates/dent/settings/category/list.html:39
+msgid "NAME EN"
+msgstr ""
+
+#: templates/dent/settings/clinic_details.html:4
+#: templates/dent/settings/clinic_details.html:13
+msgid "Clinic information"
+msgstr ""
+
+#: templates/dent/settings/clinic_details.html:25
+msgid "Clinic name"
+msgstr ""
+
+#: templates/dent/settings/clinic_details.html:29
+msgid "Clinic address"
+msgstr ""
+
+#: templates/dent/settings/clinic_details.html:33
+msgid "Information"
+msgstr ""
+
+#: templates/dent/settings/clinic_details.html:41
+msgid "Balance"
+msgstr ""
+
+#: templates/dent/settings/clinic_details.html:45
+msgid "Currency"
+msgstr ""
+
+#: templates/dent/settings/main.html:5 templates/home.html:118
+msgid "Settings"
+msgstr ""
+
+#: templates/dent/settings/main.html:11
+msgid "settings"
+msgstr ""
+
+#: templates/dent/settings/main.html:28
+msgid "Users"
+msgstr ""
+
+#: templates/dent/settings/main.html:29
+msgid "Staff management"
+msgstr ""
+
+#: templates/dent/settings/main.html:39
+msgid "Categories"
+msgstr ""
+
+#: templates/dent/settings/main.html:40
+msgid "Service category management"
+msgstr ""
+
+#: templates/dent/settings/main.html:51
+msgid "Price and availability management"
+msgstr ""
+
+#: templates/dent/settings/main.html:62
+msgid "Clinic details"
+msgstr ""
+
+#: templates/dent/settings/main.html:63
+msgid "Your clinic information"
+msgstr ""
+
+#: templates/dent/settings/service/add.html:4
+#: templates/dent/settings/service/add.html:13
+msgid "Add new service"
+msgstr ""
+
+#: templates/dent/settings/service/add.html:24
+#: templates/dent/settings/service/edit.html:25
+msgid "Service category"
+msgstr ""
+
+#: templates/dent/settings/service/add.html:36
+#: templates/dent/settings/service/edit.html:38
+msgid "Service name (UZ)"
+msgstr ""
+
+#: templates/dent/settings/service/add.html:40
+#: templates/dent/settings/service/edit.html:42
+msgid "Service name (RU)"
+msgstr ""
+
+#: templates/dent/settings/service/add.html:44
+#: templates/dent/settings/service/edit.html:46
+msgid "Service name (EN)"
+msgstr ""
+
+#: templates/dent/settings/service/edit.html:4
+#: templates/dent/settings/service/edit.html:13
+msgid "Edit service"
+msgstr ""
+
+#: templates/dent/settings/service/edit.html:66
+msgid "Enabled"
+msgstr ""
+
+#: templates/dent/settings/service/list.html:37
+msgid "NAME"
+msgstr ""
+
+#: templates/dent/settings/tooth_state/list.html:5
+msgid "Tooth state"
+msgstr ""
+
+#: templates/dent/settings/tooth_state/list.html:19
+msgid "tooth states"
+msgstr ""
+
+#: templates/dent/settings/user/add.html:13
+msgid "Add new staff"
+msgstr ""
+
+#: templates/dent/settings/user/add.html:40
+#: templates/dent/settings/user/edit.html:36
+msgid "Role"
+msgstr ""
+
+#: templates/dent/settings/user/add.html:48
+#: templates/dent/settings/user/edit.html:51
+msgid "Additional info (address, phone, date of birth, etc)"
+msgstr ""
+
+#: templates/dent/settings/user/edit.html:12
+msgid "Edit staff info"
+msgstr ""
+
+#: templates/dent/settings/user/edit.html:47
+msgid "Passive"
+msgstr ""
+
+#: templates/dent/settings/user/list.html:5
+msgid "Staff list"
+msgstr ""
+
+#: templates/dent/settings/user/list.html:19
+msgid "staff"
+msgstr ""
+
+#: templates/dent/settings/user/list.html:40
+msgid "EMAIL"
+msgstr ""
+
+#: templates/dent/settings/user/list.html:41
+msgid "ROLE"
+msgstr ""
+
+#: templates/dent/settings/user/list.html:56
+msgid "Deactivated"
+msgstr ""
+
+#: templates/dent/treatement.html:88
 msgid "Dr."
 msgstr ""
 
-#: templates/dent/treatement.html:339
+#: templates/dent/treatement.html:334
 msgid "Pt."
 msgstr ""
 
-#: templates/dent/treatement.html:354
+#: templates/dent/treatement.html:349
 msgid "Patient info"
 msgstr ""
 
-#: templates/dent/treatement.html:367
+#: templates/dent/treatement.html:362
 msgid "Birth date"
 msgstr ""
 
-#: templates/dent/treatement.html:371
+#: templates/dent/treatement.html:366
 msgid "Comments"
 msgstr ""
 
-#: templates/dent/treatement.html:378 templates/dent/treatment_history.html:38
-#: templates/dent/treatment_info.html:45 templates/dent/treatment_print.html:66
+#: templates/dent/treatement.html:373 templates/dent/treatment_history.html:38
+#: templates/dent/treatment_info.html:46 templates/dent/treatment_print.html:66
 msgid "Complaint"
 msgstr ""
 
-#: templates/dent/treatement.html:382 templates/dent/treatment_history.html:39
-#: templates/dent/treatment_info.html:49 templates/dent/treatment_print.html:70
+#: templates/dent/treatement.html:377 templates/dent/treatment_history.html:39
+#: templates/dent/treatment_info.html:50 templates/dent/treatment_print.html:70
 msgid "Diagnosis"
 msgstr ""
 
-#: templates/dent/treatement.html:385
-msgid "Next"
-msgstr ""
-
-#: templates/dent/treatement.html:697
+#: templates/dent/treatement.html:692 templates/dent/treatment_info.html:56
 msgid "Tooth"
 msgstr ""
 
-#: templates/dent/treatement.html:738 templates/dent/treatment_info.html:90
-#: templates/dent/treatment_print.html:111
-msgid "Total"
-msgstr ""
-
-#: templates/dent/treatement.html:755 templates/dent/treatment_history.html:41
-#: templates/dent/treatment_info.html:92
+#: templates/dent/treatement.html:750 templates/dent/treatment_history.html:41
+#: templates/dent/treatment_info.html:101
 #: templates/dent/treatment_print.html:113
 msgid "Paid"
 msgstr ""
 
-#: templates/dent/treatement.html:758 templates/dent/treatment_info.html:86
+#: templates/dent/treatement.html:753 templates/dent/treatment_info.html:95
 #: templates/dent/treatment_print.html:107
 msgid "Recommendations"
 msgstr ""
 
-#: templates/dent/treatement.html:759
+#: templates/dent/treatement.html:754
 msgid "SAVE"
 msgstr ""
 
@@ -266,17 +1134,9 @@ msgstr ""
 msgid "More info"
 msgstr ""
 
-#: templates/dent/treatment_history.html:31
-#: templates/dent/treatment_info.html:21
-msgid "Back"
-msgstr ""
-
 #: templates/dent/treatment_history.html:37
+#: templates/dent/treatment_info.html:35
 msgid "Date"
-msgstr ""
-
-#: templates/dent/treatment_history.html:40
-msgid "Price"
 msgstr ""
 
 #: templates/dent/treatment_info.html:5
@@ -287,20 +1147,49 @@ msgstr ""
 msgid "Treatment info"
 msgstr ""
 
+#: templates/dent/treatment_info.html:19
+#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:244
+msgid "File"
+msgstr ""
+
 #: templates/dent/treatment_info.html:20
+msgid "Save File"
+msgstr ""
+
+#: templates/dent/treatment_info.html:21
 msgid "Print"
 msgstr ""
 
-#: templates/dent/treatment_info.html:55 templates/dent/treatment_print.html:76
-msgid "Teeth"
-msgstr ""
-
-#: templates/dent/treatment_info.html:56 templates/dent/treatment_print.html:77
+#: templates/dent/treatment_info.html:57 templates/dent/treatment_print.html:77
 msgid "States"
 msgstr ""
 
-#: templates/dent/treatment_info.html:78 templates/dent/treatment_info.html:90
-#: templates/dent/treatment_info.html:91 templates/dent/treatment_info.html:92
+#: templates/dent/treatment_info.html:87
+msgid "som"
+msgstr ""
+
+#: templates/dent/treatment_info.html:99 templates/dent/treatment_info.html:100
+#: templates/dent/treatment_info.html:101
+msgid "sums"
+msgstr ""
+
+#: templates/dent/treatment_info.html:100
+#: templates/dent/treatment_print.html:112
+msgid "Discount"
+msgstr ""
+
+#: templates/dent/treatment_info.html:104
+msgid "Files"
+msgstr ""
+
+#: templates/dent/treatment_info.html:112
+msgid "Download"
+msgstr ""
+
+#: templates/dent/treatment_print.html:76
+msgid "Teeth"
+msgstr ""
+
 #: templates/dent/treatment_print.html:99
 #: templates/dent/treatment_print.html:111
 #: templates/dent/treatment_print.html:112
@@ -308,27 +1197,1271 @@ msgstr ""
 msgid "sum"
 msgstr ""
 
-#: templates/dent/treatment_info.html:91
-#: templates/dent/treatment_print.html:112
-msgid "Discount"
-msgstr ""
-
-#: templates/dent/treatment_info.html:95
-msgid "Files"
-msgstr ""
-
-#: templates/dent/treatment_info.html:103
-msgid "Download"
-msgstr ""
-
 #: templates/home.html:17
 msgid "Home"
 msgstr ""
 
-#: templates/home.html:20 templates/home.html:211
+#: templates/home.html:20 templates/home.html:131
 msgid "Log Out"
 msgstr ""
 
-#: templates/home.html:201
+#: templates/home.html:109
 msgid "Patients"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/bitfield/admin.py:48
+msgid "All"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
+msgid "Messages"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/contrib/sitemaps/apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/contrib/staticfiles/apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/contrib/syndication/apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:30
+msgid "…"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:32
+msgid "That page number is not an integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:33
+msgid "That page number is less than 1"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:34
+msgid "That page contains no results"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:70
+msgid "Enter a valid domain name."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:152
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:768
+msgid "Enter a valid URL."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:213
+msgid "Enter a valid integer."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:224
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: venv/lib/python3.12/site-packages/django/core/validators.py:307
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:315
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:327
+#: venv/lib/python3.12/site-packages/django/core/validators.py:336
+#: venv/lib/python3.12/site-packages/django/core/validators.py:350
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2215
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:329
+msgid "IPv4"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:338
+#: venv/lib/python3.12/site-packages/django/utils/ipv6.py:30
+msgid "IPv6"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:352
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:393
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:399
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:434
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:443
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:452
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:459
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:509
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:532
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:359
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:398
+msgid "Enter a number."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:534
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:539
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:544
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:615
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:677
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/base.py:1571
+#: venv/lib/python3.12/site-packages/django/forms/models.py:908
+msgid "and"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/base.py:1573
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1156
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1157
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1159
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1209
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1211
+msgid "String (unlimited)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1320
+msgid "Comma-separated integers"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1421
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1425
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1560
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1429
+msgid "Date (without time)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1556
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1564
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1569
+msgid "Date (with time)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1696
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1698
+msgid "Decimal number"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1859
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1863
+msgid "Duration"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1940
+msgid "File path"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2018
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2020
+msgid "Floating point number"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2060
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2062
+msgid "Integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2158
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2175
+msgid "Small integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2183
+msgid "IPv4 address"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2214
+msgid "IP address"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2305
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2306
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2308
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2359
+msgid "Positive big integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2374
+msgid "Positive integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2389
+msgid "Positive small integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2405
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2441
+msgid "Text"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2521
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2525
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2637
+msgid "URL"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2661
+msgid "Raw binary data"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2726
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2728
+msgid "Universally unique identifier"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:24
+msgid "A JSON object"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:932
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:934
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1228
+msgid "One-to-one relationship"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1285
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1287
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1335
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: venv/lib/python3.12/site-packages/django/forms/boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:95
+msgid "This field is required."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:308
+msgid "Enter a whole number."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:479
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1260
+msgid "Enter a valid date."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:502
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1261
+msgid "Enter a valid time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:529
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:563
+msgid "Enter a valid duration."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:564
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:633
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:634
+msgid "No file was submitted."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:635
+msgid "The submitted file is empty."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:637
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:642
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:710
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:882
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:968
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:970
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1089
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1090
+msgid "Enter a complete value."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1329
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1359
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: venv/lib/python3.12/site-packages/django/forms/forms.py:94
+msgid ":"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/forms.py:230
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:70
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:484
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:901
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1450
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/utils.py:227
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:461
+msgid "Clear"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:462
+msgid "Currently"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:800
+msgid "Unknown"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:802
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:903
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:81
+msgid "AM"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:25
+msgid "January"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:26
+msgid "February"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:27
+msgid "March"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:28
+msgid "April"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:29
+msgid "May"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:30
+msgid "June"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:31
+msgid "July"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:32
+msgid "August"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:33
+msgid "September"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:34
+msgid "October"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:35
+msgid "November"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:36
+msgid "December"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:39
+msgid "jan"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:40
+msgid "feb"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:41
+msgid "mar"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:42
+msgid "apr"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:43
+msgid "may"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:44
+msgid "jun"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:45
+msgid "jul"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:46
+msgid "aug"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:47
+msgid "sep"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:48
+msgid "oct"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:49
+msgid "nov"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:50
+msgid "dec"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/text.py:75
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/text.py:286
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: venv/lib/python3.12/site-packages/django/utils/text.py:305
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:135
+msgid ", "
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:64
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:115
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:349
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:380
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:652
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:692
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/list.py:169
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/static.py:68
+#: venv/lib/python3.12/site-packages/django/views/templates/directory_index.html:8
+#: venv/lib/python3.12/site-packages/django/views/templates/directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:7
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:217
+msgid "Django Documentation"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:62
+msgid "Average Duration (sec)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:81
+msgid "Could not find job {} in the database! Skipping execution..."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:105
+msgid ""
+"Maximum runtime of {} seconds exceeded! Not all jobs could be completed "
+"successfully. Pending jobs: {}"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:124
+msgid "Executed job '{}'!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:132
+msgid "Run the selected django jobs"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:160
+msgid "Duration (sec)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:18
+msgid "Unique id for this job."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:26
+msgid "Date and time at which this job is scheduled to be executed next."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:72
+msgid "Unique ID for this job execution."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:78
+msgid "The job that this execution relates to."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:86
+msgid "The current status of this job execution."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:91
+msgid "Date and time at which this job was executed."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:101
+msgid "Total run time of this job (in seconds)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:109
+msgid "Timestamp at which this job was finished."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:116
+msgid "Details of exception that occurred during job execution (if any)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:123
+msgid "Traceback of exception that occurred during job execution (if any)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/field.py:25
+#, python-format
+msgid "'%(value)s' value must be a positive integer or a valid Hashids string."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/field.py:26
+#, python-format
+msgid "'%(value)s' value must be a valid Hashids string."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/rest.py:24
+msgid "value must be a positive integer or a valid Hashids string."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/rest.py:25
+#, python-brace-format
+msgid "'{value}' value must be a valid Hashids string."
 msgstr ""

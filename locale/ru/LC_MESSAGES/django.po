@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-23 11:48+0300\n"
+"POT-Creation-Date: 2025-04-13 09:38+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,30 +20,823 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
+#: templates/booket/client/main.html:6
+msgid "Main"
+msgstr ""
+
+#: templates/booket/client/main.html:66
+msgid "Language:"
+msgstr ""
+
+#: templates/booket/client/main.html:115 templates/booket/provider.html:43
+#: templates/booket/provider.html:78 templates/booket/service_list.html:5
+#: templates/dent/settings/main.html:50
+#: templates/dent/settings/service/list.html:5
+msgid "Services"
+msgstr "Услуги"
+
+#: templates/booket/client/main.html:188
+msgid "Specialists"
+msgstr ""
+
+#: templates/booket/client/main.html:204 templates/booket/client/main.html:554
+#, fuzzy
+#| msgid "More info"
+msgid "More"
+msgstr "Больше информации"
+
+#: templates/booket/client/main.html:210
+#, fuzzy
+#| msgid "Add appointment"
+msgid "Book appointment"
+msgstr "Создать назначение"
+
+#: templates/booket/client/main.html:229 templates/booket/server_edit.html:5
+#, fuzzy
+#| msgid "Staff list"
+msgid "Specialist"
+msgstr "Кадровый состав"
+
+#: templates/booket/client/main.html:244
+msgid "Select date and time!"
+msgstr ""
+
+#: templates/booket/client/main.html:245
+#, fuzzy
+#| msgid "Edit service"
+msgid "Estimated service time"
+msgstr "Редактировать услугу"
+
+#: templates/booket/client/main.html:247
+msgid "min"
+msgstr ""
+
+#: templates/booket/client/main.html:280
+#: templates/booket/dashboard/dashboard.html:43
+#: templates/dent/calendar.html:125 templates/dent/calendar_list.html:48
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2529
+msgid "Time"
+msgstr "Время"
+
+#: templates/booket/client/main.html:288
+#, fuzzy
+#| msgid "services"
+msgid "Selected services"
+msgstr "услуги"
+
+#: templates/booket/client/main.html:302 templates/booket/client/main.html:325
+msgid "minutes"
+msgstr ""
+
+#: templates/booket/client/main.html:322
+#: templates/booket/dashboard/provider_statistics.html:70
+#: templates/dent/treatement.html:733 templates/dent/treatment_info.html:99
+#: templates/dent/treatment_print.html:111
+msgid "Total"
+msgstr "Итог"
+
+#: templates/booket/client/main.html:324
+msgid "Estimated duration"
+msgstr ""
+
+#: templates/booket/client/main.html:336
+msgid ""
+"Your appointment confirmed successfully! Please be on time. If you want to "
+"cancel or change appointment please use the link from the SMS or contact the "
+"provider."
+msgstr ""
+
+#: templates/booket/client/main.html:341
+#, fuzzy
+#| msgid "Cancel appointment?"
+msgid "Confirm the appointment by"
+msgstr "Отменить назначение?"
+
+#: templates/booket/client/main.html:345
+msgid "Phone number"
+msgstr ""
+
+#: templates/booket/client/main.html:350 templates/booket/client/main.html:353
+#: templates/booket/dashboard/dashboard.html:59
+#: templates/booket/dashboard/dashboard.html:160
+#: templates/booket/dashboard/provider_dashboard.html:67
+#: templates/dent/settings/user/add.html:32
+#: templates/dent/settings/user/edit.html:32
+msgid "Email"
+msgstr "E-мейл"
+
+#: templates/booket/client/main.html:357
+#: templates/booket/dashboard/dashboard.html:53
+#: templates/booket/dashboard/dashboard.html:155
+#: templates/booket/dashboard/provider_dashboard.html:62
+#: templates/booket/server_edit.html:52 templates/dent/add_patient.html:30
+#: templates/dent/edit_patient.html:30
+msgid "Phone"
+msgstr "Телефон"
+
+#: templates/booket/client/main.html:364
+#, fuzzy
+#| msgid "Clinic information"
+msgid "Client information exists."
+msgstr "Информация о клинике"
+
+#: templates/booket/client/main.html:367
+#, fuzzy
+#| msgid "Your clinic information"
+msgid "Enter client information."
+msgstr "Информация о вашей клинике"
+
+#: templates/booket/client/main.html:371 templates/dent/add_patient.html:26
+#: templates/dent/edit_patient.html:26 templates/dent/treatement.html:358
+msgid "Full name"
+msgstr "Ф.И.О"
+
+#: templates/booket/client/main.html:377
+#, fuzzy
+#| msgid "Date birth"
+msgid "Date of birth"
+msgstr "Дата рождения"
+
+#: templates/booket/client/main.html:381
+msgid "Gender"
+msgstr ""
+
+#: templates/booket/client/main.html:383 templates/dent/add_patient.html:36
+#: templates/dent/edit_patient.html:36
+msgid "Male"
+msgstr "Мужчина"
+
+#: templates/booket/client/main.html:384 templates/dent/add_patient.html:37
+#: templates/dent/edit_patient.html:37
+msgid "Female"
+msgstr "Женщина"
+
+#: templates/booket/client/main.html:389
+#, fuzzy
+#| msgid "Comments"
+msgid "Comments(optional)"
+msgstr "Комментарии"
+
+#: templates/booket/client/main.html:397
+msgid "Agree to terms of use"
+msgstr ""
+
+#: templates/booket/client/main.html:399 templates/booket/client/main.html:410
+msgid "Confirm"
+msgstr ""
+
+#: templates/booket/client/main.html:406
+msgid "Confirmation code was sent to"
+msgstr ""
+
+#: templates/booket/client/main.html:411
+msgid "Resend"
+msgstr ""
+
+#: templates/booket/client/main.html:424 templates/booket/client/main.html:430
+#: templates/dent/treatement.html:380
+msgid "Next"
+msgstr "Далее"
+
+#: templates/booket/client/main.html:426
+#: templates/booket/dashboard/dashboard.html:226
+#: templates/booket/dashboard/dashboard.html:272
+#: templates/booket/dashboard/provider_dashboard.html:133
+#: templates/booket/dashboard/provider_dashboard.html:182
+#: templates/dent/calendar.html:103 templates/dent/calendar.html:131
+#: templates/dent/calendar_list.html:100 templates/dent/treatment_info.html:140
+msgid "Close"
+msgstr "Закрыть"
+
+#: templates/booket/client/main.html:432 templates/booket/client/main.html:435
+#: templates/booket/dashboard/dashboard.html:202
+#: templates/booket/dashboard/dashboard.html:208
+#: templates/booket/dashboard/dashboard.html:214
+#: templates/booket/dashboard/provider_dashboard.html:109
+#: templates/booket/dashboard/provider_dashboard.html:115
+#: templates/booket/dashboard/provider_dashboard.html:121
+#: templates/booket/dashboard/provider_statistics.html:23
+#: templates/booket/dashboard/statistics.html:23
+#: templates/booket/provider_edit.html:82
+#: templates/booket/provider_photo.html:117
+#: templates/booket/server_edit.html:80 templates/booket/service_add.html:81
+#: templates/booket/service_edit.html:101 templates/booket/service_type.html:60
+#: templates/booket/service_type_edit.html:68
+#: templates/dent/settings/category/list.html:25
+#: templates/dent/settings/main.html:17
+#: templates/dent/settings/service/list.html:25
+#: templates/dent/settings/tooth_state/list.html:25
+#: templates/dent/settings/user/list.html:26
+#: templates/dent/treatment_history.html:31
+#: templates/dent/treatment_info.html:22
+msgid "Back"
+msgstr "Назад"
+
+#: templates/booket/client/main.html:551
+msgid "Less"
+msgstr ""
+
+#: templates/booket/container.html:36
+#: templates/booket/dashboard/dashboard.html:5
+msgid "Dashboard"
+msgstr ""
+
+#: templates/booket/container.html:39 templates/booket/dashboard/history.html:5
+#: templates/booket/dashboard/provider_history.html:5
+#: templates/dent/patient_list.html:14
+msgid "History"
+msgstr "История"
+
+#: templates/booket/container.html:43
+msgid "Provider dashboard"
+msgstr ""
+
+#: templates/booket/container.html:46
+#, fuzzy
+#| msgid "Treatment history"
+msgid "Provider history"
+msgstr "История лечения"
+
+#: templates/booket/container.html:49
+#, fuzzy
+#| msgid "Settings"
+msgid "Provider Settings"
+msgstr "Настройки"
+
+#: templates/booket/container.html:55
+#: templates/booket/dashboard/my_config.html:17
+#, fuzzy
+#| msgid "settings"
+msgid "My settings"
+msgstr "настройки"
+
+#: templates/booket/dashboard/dashboard.html:37
+#, fuzzy
+#| msgid "Add appointment"
+msgid "Upcoming appointment"
+msgstr "Создать назначение"
+
+#: templates/booket/dashboard/dashboard.html:48
+#: templates/booket/dashboard/dashboard.html:254
+#: templates/booket/dashboard/provider_dashboard.html:164
+#, fuzzy
+#| msgid "Patient"
+msgid "Client"
+msgstr "Пациент"
+
+#: templates/booket/dashboard/dashboard.html:90
+msgid "Today"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:94
+#, fuzzy
+#| msgid "Complaint"
+msgid "Completed"
+msgstr "Жалоба"
+
+#: templates/booket/dashboard/dashboard.html:98
+#, fuzzy
+#| msgid "Add appointment"
+msgid "All appointments"
+msgstr "Создать назначение"
+
+#: templates/booket/dashboard/dashboard.html:102
+#, fuzzy
+#| msgid "Add appointment"
+msgid "No-show appointments"
+msgstr "Создать назначение"
+
+#: templates/booket/dashboard/dashboard.html:111
+msgid "Reminder"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:117
+#: templates/booket/dashboard/dashboard.html:270
+#: templates/booket/dashboard/my_config.html:106
+#: templates/booket/dashboard/my_config.html:177
+#: templates/booket/dashboard/provider_dashboard.html:180
+#: templates/booket/server_service.html:109
+#: templates/dent/settings/clinic_details.html:48
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/booket/dashboard/dashboard.html:168
+#: templates/booket/dashboard/provider_dashboard.html:75
+#: templates/dent/settings/clinic_details.html:37
+#: templates/dent/settings/service/edit.html:63
+#: templates/dent/settings/user/edit.html:44
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:159
+#, fuzzy
+#| msgid "States"
+msgid "Status"
+msgstr "Cостояние"
+
+#: templates/booket/dashboard/dashboard.html:179
+#: templates/booket/dashboard/provider_dashboard.html:86
+msgid "Make sure client has informed about the update!"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:181
+#: templates/booket/dashboard/provider_dashboard.html:88
+#, fuzzy
+#| msgid "End time"
+msgid "New time"
+msgstr "Завершение"
+
+#: templates/booket/dashboard/dashboard.html:187
+#: templates/booket/dashboard/provider_dashboard.html:94
+msgid "CANCEL THE APPOINTMENT?"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:188
+#: templates/booket/dashboard/provider_dashboard.html:95
+msgid "Inform client about cancellation!"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:191
+#: templates/booket/dashboard/provider_dashboard.html:98
+msgid "Client didn't come for no reason?"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:200
+#: templates/booket/dashboard/provider_dashboard.html:107
+#: templates/booket/provider_edit.html:80 templates/booket/server_edit.html:78
+#: templates/booket/service_type_edit.html:67
+msgid "Update"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:206
+#: templates/booket/dashboard/dashboard.html:212
+#: templates/booket/dashboard/provider_dashboard.html:113
+#: templates/booket/dashboard/provider_dashboard.html:119
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:801
+msgid "Yes"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:218
+#: templates/booket/dashboard/provider_dashboard.html:125
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:463
+msgid "Change"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:220
+#: templates/booket/dashboard/provider_dashboard.html:127
+#: templates/dent/calendar.html:132 templates/dent/calendar_list.html:46
+msgid "Cancel"
+msgstr "Отменить"
+
+#: templates/booket/dashboard/dashboard.html:222
+#: templates/booket/dashboard/provider_dashboard.html:129
+msgid "No-show"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:248
+#: templates/booket/dashboard/provider_dashboard.html:155
+#, fuzzy
+#| msgid "Services"
+msgid "Server"
+msgstr "Услуги"
+
+#: templates/booket/dashboard/dashboard.html:255
+#: templates/booket/dashboard/provider_dashboard.html:165
+msgid "Guest"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:258
+#: templates/booket/dashboard/provider_dashboard.html:168
+#, fuzzy
+#| msgid "Start time"
+msgid "Starts at"
+msgstr "Начало"
+
+#: templates/booket/dashboard/dashboard.html:262
+#: templates/booket/dashboard/provider_dashboard.html:172
+msgid "Ends at"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:266
+#: templates/booket/dashboard/provider_dashboard.html:176
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment"
+msgstr "Комментарии"
+
+#: templates/booket/dashboard/dashboard.html:367
+#: templates/booket/dashboard/provider_dashboard.html:229
+#, fuzzy
+#| msgid "Treatment"
+msgid "Create"
+msgstr "Лечение"
+
+#: templates/booket/dashboard/history.html:18
+#: templates/booket/dashboard/provider_history.html:18
+#: templates/dent/patient_list.html:26
+#: templates/dent/settings/user/list.html:38
+msgid "ID"
+msgstr "ИД"
+
+#: templates/booket/dashboard/history.html:19
+#: templates/booket/dashboard/provider_history.html:19
+msgid "CLIENT"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:20
+#: templates/booket/dashboard/provider_history.html:20
+msgid "DATE"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:21
+#: templates/booket/dashboard/provider_history.html:21
+msgid "TIME"
+msgstr ""
+
+#: templates/booket/dashboard/history.html:22
+#: templates/booket/dashboard/provider_history.html:22
+#: templates/dent/settings/service/list.html:40
+#: templates/dent/settings/user/list.html:42
+msgid "STATUS"
+msgstr "Статус"
+
+#: templates/booket/dashboard/my_config.html:5
+msgid "Configs"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:26
+#: templates/booket/provider.html:5
+msgid "Provider"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:30
+#: templates/dent/settings/user/add.html:24
+#: templates/dent/settings/user/edit.html:24
+#, fuzzy
+#| msgid "Full name"
+msgid "First name"
+msgstr "Ф.И.О"
+
+#: templates/booket/dashboard/my_config.html:35
+#: templates/dent/settings/user/add.html:28
+#: templates/dent/settings/user/edit.html:28
+msgid "Last name"
+msgstr "Фамилия"
+
+#: templates/booket/dashboard/my_config.html:42
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1915
+msgid "Email address"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:48
+msgid "Day starts on"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:55
+msgid "Day ends on"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:62
+msgid "Off days"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:67
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:72
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:77
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:82
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:87
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:92
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:21
+#, fuzzy
+#| msgid "State"
+msgid "Sat"
+msgstr "Cостояние"
+
+#: templates/booket/dashboard/my_config.html:97
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:111
+#, fuzzy
+#| msgid "settings"
+msgid "Service settings"
+msgstr "настройки"
+
+#: templates/booket/dashboard/my_config.html:156
+#: templates/booket/server_service.html:88 templates/booket/service_add.html:74
+#: templates/booket/service_edit.html:83
+msgid "Base price"
+msgstr ""
+
+#: templates/booket/dashboard/my_config.html:163
+#: templates/booket/server_service.html:95
+#: templates/booket/service_list.html:53
+#: templates/dent/settings/service/add.html:52
+#: templates/dent/settings/service/edit.html:54
+#: templates/dent/treatment_history.html:40
+msgid "Price"
+msgstr "Цена"
+
+#: templates/booket/dashboard/my_config.html:173
+#: templates/booket/server_service.html:105
+#, fuzzy
+#| msgid "Service category"
+msgid "Service active"
+msgstr "Категория услуги"
+
+#: templates/booket/dashboard/provider_dashboard.html:5
+msgid "Provider Dashboard"
+msgstr ""
+
+#: templates/booket/dashboard/provider_dashboard.html:505
+msgid "Please select a server."
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:5
+msgid "Provider Statistics"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:12
+#: templates/booket/dashboard/statistics.html:12 templates/dent/report.html:63
+msgid "From"
+msgstr "От"
+
+#: templates/booket/dashboard/provider_statistics.html:14
+#: templates/booket/dashboard/statistics.html:14 templates/dent/report.html:72
+msgid "To"
+msgstr "До"
+
+#: templates/booket/dashboard/provider_statistics.html:29
+#: templates/booket/dashboard/statistics.html:29
+msgid "Top 5 Clients (Completed Appointments)"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:33
+#: templates/booket/dashboard/provider_statistics.html:53
+#: templates/booket/dashboard/statistics.html:33
+#: templates/booket/dashboard/statistics.html:53
+msgid "Client Name"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:34
+#: templates/booket/dashboard/statistics.html:34
+#, fuzzy
+#| msgid "Add appointment"
+msgid "Completed Appointments"
+msgstr "Создать назначение"
+
+#: templates/booket/dashboard/provider_statistics.html:49
+#: templates/booket/dashboard/statistics.html:49
+msgid "Top 5 Clients (No-Show Appointments)"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:54
+#: templates/booket/dashboard/statistics.html:54
+#, fuzzy
+#| msgid "Add appointment"
+msgid "No-Show Appointments"
+msgstr "Создать назначение"
+
+#: templates/booket/dashboard/provider_statistics.html:70
+#: templates/booket/dashboard/statistics.html:70
+msgid "Appointment Statistics"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:77
+#: templates/booket/dashboard/statistics.html:77
+msgid "Service Distribution"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:84
+msgid "Completed Appointments per Server"
+msgstr ""
+
+#: templates/booket/dashboard/statistics.html:5
+#, fuzzy
+#| msgid "States"
+msgid "Statistics"
+msgstr "Cостояние"
+
+#: templates/booket/login.html:54 templates/booket/login.html:69
+msgid "Login"
+msgstr ""
+
+#: templates/booket/login.html:60 templates/dent/settings/user/add.html:36
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: templates/booket/login.html:65
+msgid "Password"
+msgstr ""
+
+#: templates/booket/logout.html:20
+msgid "Login again"
+msgstr ""
+
+#: templates/booket/provider.html:22 templates/booket/provider.html:41
+#: templates/booket/provider.html:76 templates/booket/service_list.html:65
+#: templates/dent/patient_list.html:11
+#: templates/dent/settings/category/list.html:24
+#: templates/dent/settings/service/list.html:24
+#: templates/dent/settings/tooth_state/list.html:24
+#: templates/dent/settings/user/list.html:24
+msgid "Edit"
+msgstr "Редактировать"
+
+#: templates/booket/provider.html:23
+msgid "Photos"
+msgstr ""
+
+#: templates/booket/provider.html:29
+msgid "Specialists:"
+msgstr ""
+
+#: templates/booket/provider.html:36
+#: templates/dent/settings/service/edit.html:69
+msgid "Disabled"
+msgstr "Деактивирован"
+
+#: templates/booket/provider.html:54
+#, fuzzy
+#| msgid "Services"
+msgid "Service types:"
+msgstr "Услуги"
+
+#: templates/booket/provider.html:56 templates/booket/service_add.html:80
+#: templates/booket/service_edit.html:98 templates/booket/service_list.html:44
+#: templates/booket/service_type.html:59 templates/dent/calendar.html:104
+#: templates/dent/calendar_list.html:101 templates/dent/patient_list.html:10
+#: templates/dent/settings/category/list.html:23
+#: templates/dent/settings/service/list.html:23
+#: templates/dent/settings/tooth_state/list.html:23
+#: templates/dent/settings/user/list.html:23
+#: templates/dent/treatment_info.html:141
+msgid "Add"
+msgstr "Добавить"
+
+#: templates/booket/provider_edit.html:5 templates/booket/provider_edit.html:39
+#: templates/booket/provider_photo.html:6
+#, fuzzy
+#| msgid "Edit service"
+msgid "Edit provider"
+msgstr "Редактировать услугу"
+
+#: templates/booket/provider_edit.html:48 templates/booket/server_edit.html:46
+msgid "Name"
+msgstr ""
+
+#: templates/booket/provider_edit.html:53
+msgid "Address"
+msgstr ""
+
+#: templates/booket/provider_edit.html:58 templates/booket/service_add.html:70
+#: templates/booket/service_edit.html:78 templates/booket/service_list.html:52
+#: templates/dent/settings/service/add.html:48
+#: templates/dent/settings/service/edit.html:50
+msgid "Description"
+msgstr "Описание"
+
+#: templates/booket/provider_edit.html:63 templates/booket/server_edit.html:69
+#: templates/booket/service_edit.html:88
+#: templates/booket/service_type_edit.html:58
+#: templates/dent/settings/user/edit.html:46
+#: templates/dent/settings/user/list.html:54
+msgid "Active"
+msgstr "Активный"
+
+#: templates/booket/provider_edit.html:65 templates/booket/server_edit.html:71
+#: templates/booket/service_edit.html:90
+#: templates/booket/service_type_edit.html:60
+msgid "True"
+msgstr ""
+
+#: templates/booket/provider_edit.html:66 templates/booket/server_edit.html:72
+#: templates/booket/service_edit.html:91
+#: templates/booket/service_type_edit.html:61
+msgid "False"
+msgstr ""
+
+#: templates/booket/provider_edit.html:70 templates/booket/server_edit.html:62
+#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
+msgid "Image"
+msgstr ""
+
+#: templates/booket/provider_photo.html:40
+msgid "Edit provider photos"
+msgstr ""
+
+#: templates/booket/server_edit.html:39
+msgid "Edit Specialist"
+msgstr ""
+
+#: templates/booket/server_edit.html:58
+msgid "Info"
+msgstr ""
+
+#: templates/booket/server_service.html:5
+#, fuzzy
+#| msgid "Services"
+msgid "Server services"
+msgstr "Услуги"
+
+#: templates/booket/server_service.html:39
+#: templates/booket/service_edit.html:39
+#, fuzzy
+#| msgid "Edit service"
+msgid "Edit service for provider"
+msgstr "Редактировать услугу"
+
+#: templates/booket/service_add.html:5
+#, fuzzy
+#| msgid "Services"
+msgid "Service add"
+msgstr "Услуги"
+
+#: templates/booket/service_add.html:38
+#, fuzzy
+#| msgid "Add new patient"
+msgid "Add new service for provider"
+msgstr "Добавить нового пациента"
+
+#: templates/booket/service_add.html:46 templates/booket/service_edit.html:47
+#, fuzzy
+#| msgid "Service category"
+msgid "Service type"
+msgstr "Категория услуги"
+
+#: templates/booket/service_add.html:58 templates/booket/service_edit.html:63
+#: templates/booket/service_list.html:49 templates/booket/service_type.html:45
+#: templates/booket/service_type_edit.html:46
+msgid "Name UZ"
+msgstr ""
+
+#: templates/booket/service_add.html:62 templates/booket/service_edit.html:68
+#: templates/booket/service_list.html:51 templates/booket/service_type.html:49
+#: templates/booket/service_type_edit.html:50
+msgid "Name EN"
+msgstr ""
+
+#: templates/booket/service_add.html:66 templates/booket/service_edit.html:73
+#: templates/booket/service_list.html:50 templates/booket/service_type.html:53
+#: templates/booket/service_type_edit.html:54
+msgid "Name RU"
+msgstr ""
+
+#: templates/booket/service_edit.html:5
+#, fuzzy
+#| msgid "Services"
+msgid "Service edit"
+msgstr "Услуги"
+
+#: templates/booket/service_list.html:40
+#: templates/dent/settings/service/list.html:19
+msgid "services"
+msgstr "услуги"
+
+#: templates/booket/service_list.html:54
+#, fuzzy
+#| msgid "Active"
+msgid "Action"
+msgstr "Активный"
+
+#: templates/booket/service_type.html:5 templates/booket/service_type.html:38
+#, fuzzy
+#| msgid "Add new patient"
+msgid "Add service type"
+msgstr "Добавить нового пациента"
+
+#: templates/booket/service_type_edit.html:5
+#: templates/booket/service_type_edit.html:38
+#, fuzzy
+#| msgid "Edit service"
+msgid "Edit service type"
+msgstr "Редактировать услугу"
+
 #: templates/dent/add_patient.html:14
 msgid "Add new patient"
 msgstr "Добавить нового пациента"
 
-#: templates/dent/add_patient.html:26 templates/dent/edit_patient.html:26
-#: templates/dent/treatement.html:363
-msgid "Full name"
-msgstr "Ф.И.О"
-
-#: templates/dent/add_patient.html:30 templates/dent/edit_patient.html:30
-msgid "Phone"
-msgstr "Телефон"
-
 #: templates/dent/add_patient.html:34 templates/dent/edit_patient.html:34
 msgid "Male/Female"
 msgstr "Пол"
-
-#: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:36
-msgid "Male"
-msgstr "Мужчина"
-
-#: templates/dent/add_patient.html:37 templates/dent/edit_patient.html:37
-msgid "Female"
-msgstr "Женщина"
 
 #: templates/dent/add_patient.html:41 templates/dent/edit_patient.html:41
 #: templates/dent/treatment_info.html:43 templates/dent/treatment_print.html:63
@@ -71,7 +864,7 @@ msgstr "Календарь"
 
 #: templates/dent/calendar.html:23 templates/dent/calendar.html:69
 #: templates/dent/calendar_list.html:18 templates/dent/calendar_list.html:66
-#: templates/dent/treatment_info.html:124
+#: templates/dent/treatment_info.html:132
 msgid "Add appointment"
 msgstr "Создать назначение"
 
@@ -102,33 +895,9 @@ msgstr "Завершение"
 msgid "Background"
 msgstr "Фон"
 
-#: templates/dent/calendar.html:103 templates/dent/calendar.html:131
-#: templates/dent/calendar_list.html:100 templates/dent/treatment_info.html:132
-msgid "Close"
-msgstr "Закрыть"
-
-#: templates/dent/calendar.html:104 templates/dent/calendar_list.html:101
-#: templates/dent/patient_list.html:10
-#: templates/dent/settings/category/list.html:23
-#: templates/dent/settings/service/list.html:23
-#: templates/dent/settings/tooth_state/list.html:23
-#: templates/dent/settings/user/list.html:23
-#: templates/dent/treatment_info.html:133
-msgid "Add"
-msgstr "Добавить"
-
 #: templates/dent/calendar.html:123 templates/dent/calendar_list.html:49
 msgid "Procedure"
 msgstr "Процедура"
-
-#: templates/dent/calendar.html:125 templates/dent/calendar_list.html:48
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2529
-msgid "Time"
-msgstr "Время"
-
-#: templates/dent/calendar.html:132 templates/dent/calendar_list.html:46
-msgid "Cancel"
-msgstr "Отменить"
 
 #: templates/dent/calendar_list.html:23
 msgid "Calendar view"
@@ -142,17 +911,9 @@ msgstr "Отменить назначение?"
 msgid "Edit Patient Info"
 msgstr "Изменить информацию о пациенте"
 
-#: templates/dent/edit_patient.html:49 templates/dent/treatement.html:238
+#: templates/dent/edit_patient.html:49 templates/dent/treatement.html:233
 msgid "State"
 msgstr "Cостояние"
-
-#: templates/dent/patient_list.html:11
-#: templates/dent/settings/category/list.html:24
-#: templates/dent/settings/service/list.html:24
-#: templates/dent/settings/tooth_state/list.html:24
-#: templates/dent/settings/user/list.html:24
-msgid "Edit"
-msgstr "Редактировать"
 
 #: templates/dent/patient_list.html:12
 #: templates/dent/settings/user/list.html:25
@@ -160,18 +921,9 @@ msgstr "Редактировать"
 msgid "Delete"
 msgstr "Удалить"
 
-#: templates/dent/patient_list.html:14
-msgid "History"
-msgstr "История"
-
 #: templates/dent/patient_list.html:15
 msgid "Add treatment"
 msgstr "Добавить лечение"
-
-#: templates/dent/patient_list.html:26
-#: templates/dent/settings/user/list.html:38
-msgid "ID"
-msgstr "ИД"
 
 #: templates/dent/patient_list.html:27
 #: templates/dent/settings/user/list.html:39
@@ -201,14 +953,6 @@ msgstr "Общая сумма за текущий месяц"
 #: templates/dent/report.html:48
 msgid "Total debts of patients"
 msgstr "Общая задолженность пациентов"
-
-#: templates/dent/report.html:63
-msgid "From"
-msgstr "От"
-
-#: templates/dent/report.html:72
-msgid "To"
-msgstr "До"
 
 #: templates/dent/report.html:90
 msgid "Category"
@@ -267,16 +1011,6 @@ msgstr ""
 msgid "categories"
 msgstr "Категория"
 
-#: templates/dent/settings/category/list.html:25
-#: templates/dent/settings/main.html:17
-#: templates/dent/settings/service/list.html:25
-#: templates/dent/settings/tooth_state/list.html:25
-#: templates/dent/settings/user/list.html:26
-#: templates/dent/treatment_history.html:31
-#: templates/dent/treatment_info.html:22
-msgid "Back"
-msgstr "Назад"
-
 #: templates/dent/settings/category/list.html:37
 #: templates/dent/settings/service/list.html:38
 #: templates/dent/settings/tooth_state/list.html:37
@@ -311,14 +1045,6 @@ msgstr "Адрес клиники"
 msgid "Information"
 msgstr "Информация"
 
-#: templates/dent/settings/clinic_details.html:37
-#: templates/dent/settings/service/edit.html:63
-#: templates/dent/settings/user/edit.html:44
-#, fuzzy
-#| msgid "States"
-msgid "Status"
-msgstr "Cостояние"
-
 #: templates/dent/settings/clinic_details.html:41
 #, fuzzy
 #| msgid "Cancel"
@@ -328,10 +1054,6 @@ msgstr "Баланс"
 #: templates/dent/settings/clinic_details.html:45
 msgid "Currency"
 msgstr "Валюта"
-
-#: templates/dent/settings/clinic_details.html:48
-msgid "Save"
-msgstr "Сохранить"
 
 #: templates/dent/settings/main.html:5 templates/home.html:118
 msgid "Settings"
@@ -358,11 +1080,6 @@ msgstr "Категории"
 #: templates/dent/settings/main.html:40
 msgid "Service category management"
 msgstr "Управление категориями услуг"
-
-#: templates/dent/settings/main.html:50
-#: templates/dent/settings/service/list.html:5
-msgid "Services"
-msgstr "Услуги"
 
 #: templates/dent/settings/main.html:51
 msgid "Price and availability management"
@@ -403,17 +1120,6 @@ msgstr "Название услуги (RU)"
 msgid "Service name (EN)"
 msgstr "Название услуги (EN)"
 
-#: templates/dent/settings/service/add.html:48
-#: templates/dent/settings/service/edit.html:50
-msgid "Description"
-msgstr "Описание"
-
-#: templates/dent/settings/service/add.html:52
-#: templates/dent/settings/service/edit.html:54
-#: templates/dent/treatment_history.html:40
-msgid "Price"
-msgstr "Цена"
-
 #: templates/dent/settings/service/edit.html:4
 #: templates/dent/settings/service/edit.html:13
 msgid "Edit service"
@@ -423,24 +1129,11 @@ msgstr "Редактировать услугу"
 msgid "Enabled"
 msgstr "Активный"
 
-#: templates/dent/settings/service/edit.html:69
-msgid "Disabled"
-msgstr "Деактивирован"
-
-#: templates/dent/settings/service/list.html:19
-msgid "services"
-msgstr "услуги"
-
 #: templates/dent/settings/service/list.html:37
 #, fuzzy
 #| msgid "FULL NAME"
 msgid "NAME"
 msgstr "Ф.И.О"
-
-#: templates/dent/settings/service/list.html:40
-#: templates/dent/settings/user/list.html:42
-msgid "STATUS"
-msgstr "Статус"
 
 #: templates/dent/settings/tooth_state/list.html:5
 #, fuzzy
@@ -457,27 +1150,6 @@ msgstr "состояния зубов"
 #| msgid "Add new patient"
 msgid "Add new staff"
 msgstr "Добавить нового пациента"
-
-#: templates/dent/settings/user/add.html:24
-#: templates/dent/settings/user/edit.html:24
-#, fuzzy
-#| msgid "Full name"
-msgid "First name"
-msgstr "Ф.И.О"
-
-#: templates/dent/settings/user/add.html:28
-#: templates/dent/settings/user/edit.html:28
-msgid "Last name"
-msgstr "Фамилия"
-
-#: templates/dent/settings/user/add.html:32
-#: templates/dent/settings/user/edit.html:32
-msgid "Email"
-msgstr "E-мейл"
-
-#: templates/dent/settings/user/add.html:36
-msgid "Username"
-msgstr "Имя пользователя"
 
 #: templates/dent/settings/user/add.html:40
 #: templates/dent/settings/user/edit.html:36
@@ -496,11 +1168,6 @@ msgstr "Дополнительно(адрес, телефоны, аллерги�
 #| msgid "Edit Patient Info"
 msgid "Edit staff info"
 msgstr "Изменить информацию о пациенте"
-
-#: templates/dent/settings/user/edit.html:46
-#: templates/dent/settings/user/list.html:54
-msgid "Active"
-msgstr "Активный"
 
 #: templates/dent/settings/user/edit.html:47
 msgid "Passive"
@@ -526,61 +1193,52 @@ msgstr "Роль"
 msgid "Deactivated"
 msgstr "Деактивирован"
 
-#: templates/dent/treatement.html:93
+#: templates/dent/treatement.html:88
 msgid "Dr."
 msgstr "Др."
 
-#: templates/dent/treatement.html:339
+#: templates/dent/treatement.html:334
 msgid "Pt."
 msgstr "Пц"
 
-#: templates/dent/treatement.html:354
+#: templates/dent/treatement.html:349
 msgid "Patient info"
 msgstr "Информация о пациенте"
 
-#: templates/dent/treatement.html:367
+#: templates/dent/treatement.html:362
 msgid "Birth date"
 msgstr "Дата рождения"
 
-#: templates/dent/treatement.html:371
+#: templates/dent/treatement.html:366
 msgid "Comments"
 msgstr "Комментарии"
 
-#: templates/dent/treatement.html:378 templates/dent/treatment_history.html:38
+#: templates/dent/treatement.html:373 templates/dent/treatment_history.html:38
 #: templates/dent/treatment_info.html:46 templates/dent/treatment_print.html:66
 msgid "Complaint"
 msgstr "Жалоба"
 
-#: templates/dent/treatement.html:382 templates/dent/treatment_history.html:39
+#: templates/dent/treatement.html:377 templates/dent/treatment_history.html:39
 #: templates/dent/treatment_info.html:50 templates/dent/treatment_print.html:70
 msgid "Diagnosis"
 msgstr "Диагноз"
 
-#: templates/dent/treatement.html:385
-msgid "Next"
-msgstr "Далее"
-
-#: templates/dent/treatement.html:696 templates/dent/treatment_info.html:56
+#: templates/dent/treatement.html:692 templates/dent/treatment_info.html:56
 msgid "Tooth"
 msgstr "Зуб"
 
-#: templates/dent/treatement.html:737 templates/dent/treatment_info.html:91
-#: templates/dent/treatment_print.html:111
-msgid "Total"
-msgstr "Итог"
-
-#: templates/dent/treatement.html:754 templates/dent/treatment_history.html:41
-#: templates/dent/treatment_info.html:93
+#: templates/dent/treatement.html:750 templates/dent/treatment_history.html:41
+#: templates/dent/treatment_info.html:101
 #: templates/dent/treatment_print.html:113
 msgid "Paid"
 msgstr "Оплачен"
 
-#: templates/dent/treatement.html:757 templates/dent/treatment_info.html:87
+#: templates/dent/treatement.html:753 templates/dent/treatment_info.html:95
 #: templates/dent/treatment_print.html:107
 msgid "Recommendations"
 msgstr "Рекомендации"
 
-#: templates/dent/treatement.html:758
+#: templates/dent/treatement.html:754
 msgid "SAVE"
 msgstr "Сохранить"
 
@@ -593,6 +1251,7 @@ msgid "More info"
 msgstr "Больше информации"
 
 #: templates/dent/treatment_history.html:37
+#: templates/dent/treatment_info.html:35
 msgid "Date"
 msgstr "Дата"
 
@@ -623,21 +1282,27 @@ msgstr "Распечатать"
 msgid "States"
 msgstr "Cостояние"
 
-#: templates/dent/treatment_info.html:79 templates/dent/treatment_info.html:91
-#: templates/dent/treatment_info.html:92 templates/dent/treatment_info.html:93
+#: templates/dent/treatment_info.html:87
+#, fuzzy
+#| msgid "sum"
+msgid "som"
+msgstr "сумма"
+
+#: templates/dent/treatment_info.html:99 templates/dent/treatment_info.html:100
+#: templates/dent/treatment_info.html:101
 msgid "sums"
 msgstr ""
 
-#: templates/dent/treatment_info.html:92
+#: templates/dent/treatment_info.html:100
 #: templates/dent/treatment_print.html:112
 msgid "Discount"
 msgstr "Скидка"
 
-#: templates/dent/treatment_info.html:96
+#: templates/dent/treatment_info.html:104
 msgid "Files"
 msgstr "Файлы"
 
-#: templates/dent/treatment_info.html:104
+#: templates/dent/treatment_info.html:112
 msgid "Download"
 msgstr "Скачать"
 
@@ -663,6 +1328,10 @@ msgstr "Выйти"
 #: templates/home.html:109
 msgid "Patients"
 msgstr "Пациенты"
+
+#: venv/lib/python3.12/site-packages/bitfield/admin.py:48
+msgid "All"
+msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
 msgid "Messages"
@@ -989,10 +1658,6 @@ msgstr ""
 msgid "Duration"
 msgstr ""
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1915
-msgid "Email address"
-msgstr ""
-
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1940
 msgid "File path"
 msgstr ""
@@ -1091,10 +1756,6 @@ msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2728
 msgid "Universally unique identifier"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
-msgid "Image"
 msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:24
@@ -1315,16 +1976,8 @@ msgstr ""
 msgid "Currently"
 msgstr ""
 
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:463
-msgid "Change"
-msgstr ""
-
 #: venv/lib/python3.12/site-packages/django/forms/widgets.py:800
 msgid "Unknown"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:801
-msgid "Yes"
 msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/forms/widgets.py:802
@@ -1421,36 +2074,6 @@ msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:13
 msgid "Sunday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:16
-msgid "Mon"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:17
-msgid "Tue"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:18
-msgid "Wed"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:19
-msgid "Thu"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:20
-msgid "Fri"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:21
-#, fuzzy
-#| msgid "State"
-msgid "Sat"
-msgstr "Cостояние"
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:22
-msgid "Sun"
 msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:25
@@ -1916,6 +2539,72 @@ msgstr ""
 
 #: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
 msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:62
+msgid "Average Duration (sec)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:81
+msgid "Could not find job {} in the database! Skipping execution..."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:105
+msgid ""
+"Maximum runtime of {} seconds exceeded! Not all jobs could be completed "
+"successfully. Pending jobs: {}"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:124
+msgid "Executed job '{}'!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:132
+msgid "Run the selected django jobs"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:160
+msgid "Duration (sec)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:18
+msgid "Unique id for this job."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:26
+msgid "Date and time at which this job is scheduled to be executed next."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:72
+msgid "Unique ID for this job execution."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:78
+msgid "The job that this execution relates to."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:86
+msgid "The current status of this job execution."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:91
+msgid "Date and time at which this job was executed."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:101
+msgid "Total run time of this job (in seconds)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:109
+msgid "Timestamp at which this job was finished."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:116
+msgid "Details of exception that occurred during job execution (if any)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:123
+msgid "Traceback of exception that occurred during job execution (if any)."
 msgstr ""
 
 #: venv/lib/python3.12/site-packages/hashid_field/field.py:25
