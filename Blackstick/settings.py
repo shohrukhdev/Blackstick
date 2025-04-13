@@ -20,8 +20,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-FERNET_KEY = os.environ.get('FERNET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', "_jwm)q97gydh7ci3^)o#2nuisyp_1cb0#*y)h6_^%!_j*2-r!3")
+FERNET_KEY = os.environ.get('FERNET_KEY', "c3lKF6mRQmIvtT1fgv27vJAHIwmx-T3u1SYhgb-pR7k=")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', False))
