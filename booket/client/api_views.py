@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from datetime import datetime
 from django.utils import timezone
 
+from ..sms_service import send_sms
 from ..utils import valid_signature, mask_email, mask_phone_number, is_demo_provider
 
 
@@ -182,7 +183,26 @@ def create_appointment_send_otp(request):
                 email=client.email,
                 verification_method=client_data["confirmation_method"]
             )
-            otp.send_otp()
+            if client.language_code == "uz":
+                sms_text = f"Tasdiqlash kodi:{otp.otp_code}"
+            elif client.language_code == "ru":
+                sms_text = f"Код подтверждения: {otp.otp_code}"
+            else:
+                sms_text = f"Appointment confirmation code: {otp.otp_code}"
+            if client_data["confirmation_method"] == "p":
+                sms_result = send_sms(
+                    phone_number=client.phone_number,
+                    message=sms_text,
+                )
+                print(sms_result)
+                if sms_result:
+                    otp.sms_request_id = sms_result["id"]
+                    otp.sms_status = sms_result["status"]
+                    otp.sms_status_date = datetime.now()
+                    otp.save()
+
+
+
             masked_email = mask_email(client.email)
             masked_phone_number = mask_phone_number(client.phone_number)
             response_data = {

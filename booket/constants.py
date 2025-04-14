@@ -1,6 +1,6 @@
 
 
 DEMO_PROVIDERS = [
-    "thebeautybar",
+    # "thebeautybar",
     "psixolog_bobur"
 ]

@@ -235,6 +235,12 @@ class OTPVerification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(default=False)
 
+    # Eskiz SMS metadata
+    sms_request_id = models.CharField(max_length=64, null=True, blank=True)  # UUID from Eskiz response
+    sms_message_id = models.CharField(max_length=64, null=True, blank=True)  # Numeric ID if available
+    sms_status = models.CharField(max_length=20, null=True, blank=True)  # 'waiting', 'DELIVRD', etc.
+    sms_status_date = models.DateTimeField(null=True, blank=True)  # Delivery time
+
     def save(self, *args, **kwargs):
         if not self.otp_code:
             self.otp_code = str(random.randint(100000, 999999))  # Generate 6-digit OTP

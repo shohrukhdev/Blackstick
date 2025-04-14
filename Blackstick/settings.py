@@ -23,6 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', "_jwm)q97gydh7ci3^)o#2nuisyp_1cb0#*y)h6_^%!_j*2-r!3")
 FERNET_KEY = os.environ.get('FERNET_KEY', "c3lKF6mRQmIvtT1fgv27vJAHIwmx-T3u1SYhgb-pR7k=")
 
+ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "your@email.com")
+ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
+
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
 
