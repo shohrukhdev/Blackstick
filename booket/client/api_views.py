@@ -1,4 +1,6 @@
 import json
+
+from django.core.mail import send_mail
 from django.db import transaction
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -194,14 +196,20 @@ def create_appointment_send_otp(request):
                     phone_number=client.phone_number,
                     message=sms_text,
                 )
-                print(sms_result)
                 if sms_result:
                     otp.sms_request_id = sms_result["id"]
                     otp.sms_status = sms_result["status"]
                     otp.sms_status_date = datetime.now()
                     otp.save()
-
-
+            elif client_data["confirmation_method"] == "e":
+                email_result = send_mail(
+                    "Confirmation code",
+                    sms_text,
+                    "noreply@example.com",
+                    [client.email],
+                    fail_silently=True
+                )
+                logger.info(f"Email sent: {email_result}")
 
             masked_email = mask_email(client.email)
             masked_phone_number = mask_phone_number(client.phone_number)

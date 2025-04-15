@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from django.contrib import messages
+from django_ses.settings import AWS_SES_REGION_NAME, AWS_SES_REGION_ENDPOINT
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -26,18 +27,26 @@ FERNET_KEY = os.environ.get('FERNET_KEY', "c3lKF6mRQmIvtT1fgv27vJAHIwmx-T3u1SYhg
 ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "your@email.com")
 ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
 
+################ EMAIL service configs ########################
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_SES_USER_ACCESS_KEY_ID", "your_access_key_id")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SES_USER_SECRET_ACCESS_KEY", "your_secret_key")
 
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+AWS_SES_REGION_NAME = 'eu-north-1'
+
+AWS_SES_REGION_ENDPOINT = 'email.eu-north-1.amazonaws.com'
+
+os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
 
-ALLOWED_HOSTS = ["alphadent.store", "localhost", "127.0.0.1", "0.0.0.0", "51.20.0.174"]
+ALLOWED_HOSTS = ["alphadent.store", "booket.uz", "localhost", "127.0.0.1", "0.0.0.0", "51.20.0.174"]
 
-CSRF_TRUSTED_ORIGINS = ("https://alphadent.store", )
+CSRF_TRUSTED_ORIGINS = ("https://alphadent.store",)
 CORS_ALLOWED_ORIGINS = ["https://alphadent.store", ]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-
 
 # Application definition
 
@@ -124,7 +133,6 @@ MESSAGE_TAGS = {
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -143,7 +151,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Blackstick.wsgi.application'
-
 
 # Database
 DATABASES = {
@@ -179,7 +186,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -199,12 +205,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
-
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
