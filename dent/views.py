@@ -31,6 +31,8 @@ def user_login(request):
                 context={"error": "Incorrect username or password"}
             )
     else:
+        if request.get_host() in ["booket.uz"]:
+            return redirect("https://booket.uz/b/login")
         return render(request, 'login.html', {})
 
 

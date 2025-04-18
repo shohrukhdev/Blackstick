@@ -90,7 +90,6 @@ class ProviderServer(models.Model):  # Provider can have many servers and server
                 # Validate that all days are between 1 and 7
                 if not all(1 <= day <= 7 for day in off_days):
                     raise ValueError("Off days must be integers between 1 and 7.")
-
                 return off_days
             return []
         except ValueError as e:

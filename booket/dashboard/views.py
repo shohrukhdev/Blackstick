@@ -128,7 +128,7 @@ def configs(request):
             try:
                 sr_type = ServiceType.objects.get(
                     id=request.POST.get("service_type_id"),
-                    provider__owner=request.user
+                    provider=p_s_server.provider
                 )
                 if request.POST.get("is_active") is None:
                     ProviderServerService.objects.filter(
@@ -143,11 +143,16 @@ def configs(request):
                     private_price = request.POST.get("private_price")
                     if private_price == 0 or private_price == "":
                         private_price = None
+                    service_duration = int(request.POST.get("service_duration", 60))
+                    if service_duration < 30:
+                        service_duration = 30
+
                     provider_server_service, is_created = ProviderServerService.objects.update_or_create(
                         provider_server=p_s_server,
                         service=service,
                         defaults={
                             "service_private_price": private_price,
+                            "duration": service_duration
                         }
                     )
                 messages.success(request, "Service settings updated successfully.")

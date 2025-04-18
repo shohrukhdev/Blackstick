@@ -101,15 +101,14 @@ class ProviderServerSerializer(serializers.ModelSerializer):
         """
         available_slots = []
         current_date = datetime.strptime(str(start_date), "%Y-%m-%d").date()
-
+        off_days = obj.get_off_days()
         for _ in range(5):
             weekday = current_date.isoweekday()  # 1 = Monday, 7 = Sunday
-            if str(weekday) not in obj.get_off_days():
+            if weekday not in off_days:
                 slots = self._generate_time_slots(obj, current_date)
                 available_slots.append({"date": current_date, "slots": slots})
 
             current_date += timedelta(days=1)
-
         return available_slots
 
     def _generate_time_slots(self, obj, date):

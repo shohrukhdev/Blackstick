@@ -84,7 +84,7 @@
                   </div>
                 </form>
               </a></li>
-              <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> Settings</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> {% trans "Settings" %}</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
@@ -93,7 +93,7 @@
                   <form method="post" action="{% url 'b_logout' %}">
                     {% csrf_token %}
                     <button class="btn btn-sm btn-secondary" style="float: right">
-                      <i class="fas fa-sign-out-alt fa-fw"></i> Log Out
+                      <i class="fas fa-sign-out-alt fa-fw"></i> {% trans "Logout" %}
                     </button>
                   </form>
                 </a>

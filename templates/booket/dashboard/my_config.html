@@ -156,13 +156,16 @@
                                       <span class="input-group-text">{% trans 'Base price' %}</span>
                                       <input type="number" id="private_price" name="base_price" class="form-control"
                                              value="{{ service.price }}" disabled>
+                                      <span class="input-group-text">{% trans 'Price' %}</span>
+                                      <input type="number" id="private_price" name="private_price" class="form-control"
+                                             value="{{ service.assigned_service.0.service_private_price }}">
                                     </div>
                                   </div>
                                   <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
                                     <div class="input-group mb-3 input-group-sm">
-                                      <span class="input-group-text">{% trans 'Price' %}</span>
-                                      <input type="number" id="private_price" name="private_price" class="form-control"
-                                             value="{{ service.assigned_service.0.service_private_price }}">
+                                      <span class="input-group-text">{% trans 'Duration(minutes)' %}</span>
+                                      <input type="number" id="service_duration" name="service_duration" class="form-control"
+                                             value="{{ service.assigned_service.0.duration }}">
                                     </div>
                                   </div>
                                   <div class="col-lg-6">
