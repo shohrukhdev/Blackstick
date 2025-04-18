@@ -22,8 +22,8 @@ python manage.py loaddata treatment.json
 
 python manage.py loaddata providers.json
 python manage.py loaddata service_types.json
-python manage.py loaddata services.json
 python manage.py loaddata servers.json
+python manage.py loaddata services.json
 python manage.py loaddata provider_server.json
 python manage.py loaddata provider_server_services.json
 python manage.py loaddata clients.json
