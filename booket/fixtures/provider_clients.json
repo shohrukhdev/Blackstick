@@ -1,0 +1,42 @@
+[
+  {
+    "model": "booket.providerclient",
+    "pk": 1,
+    "fields": {
+      "provider": 2,
+      "client": 1
+    }
+  },
+  {
+    "model": "booket.providerclient",
+    "pk": 2,
+    "fields": {
+      "provider": 2,
+      "client": 3
+    }
+  },
+  {
+    "model": "booket.providerclient",
+    "pk": 3,
+    "fields": {
+      "provider": 2,
+      "client": 4
+    }
+  },
+  {
+    "model": "booket.providerclient",
+    "pk": 4,
+    "fields": {
+      "provider": 2,
+      "client": 5
+    }
+  },
+  {
+    "model": "booket.providerclient",
+    "pk": 7,
+    "fields": {
+      "provider": 3,
+      "client": 3
+    }
+  }
+]

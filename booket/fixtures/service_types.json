@@ -1,0 +1,112 @@
+[
+  {
+    "model": "booket.servicetype",
+    "pk": 1,
+    "fields": {
+      "provider": 1,
+      "name": "Online consulting",
+      "name_uz": "Onlayn konsalting uz",
+      "name_ru": "Онлайн-консультация",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 2,
+    "fields": {
+      "provider": 1,
+      "name": "Business training en",
+      "name_uz": "Biznes treyning uz 1",
+      "name_ru": "Biznes training ru",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 3,
+    "fields": {
+      "provider": 2,
+      "name": "Hair bar",
+      "name_uz": "Soch uchun ",
+      "name_ru": "Бар волос",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 4,
+    "fields": {
+      "provider": 2,
+      "name": "Nail bar",
+      "name_uz": "Tirnoqlar uchun",
+      "name_ru": "Для ногтей",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 5,
+    "fields": {
+      "provider": 2,
+      "name": "Brow and Lashes bar",
+      "name_uz": "Qosh va kipriklar",
+      "name_ru": "Брови и ресницы",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 6,
+    "fields": {
+      "provider": 2,
+      "name": "Wax bar",
+      "name_uz": "Wax va depilyatsiya",
+      "name_ru": "Воск и депиляция",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 7,
+    "fields": {
+      "provider": 3,
+      "name": "Notarial Services",
+      "name_uz": "Notarial xizmatlar",
+      "name_ru": "Нотариальные услуги",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 8,
+    "fields": {
+      "provider": 3,
+      "name": "Legal Consulting",
+      "name_uz": "Yuridik maslahat",
+      "name_ru": "Юридический консалтинг",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 9,
+    "fields": {
+      "provider": 3,
+      "name": "Translation & Legalization",
+      "name_uz": "Tarjima va legallashtrish",
+      "name_ru": "Перевод и легализация",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 10,
+    "fields": {
+      "provider": 3,
+      "name": "Other",
+      "name_uz": "Boshqa xizmatlar",
+      "name_ru": "Другой",
+      "is_active": true
+    }
+  }
+]

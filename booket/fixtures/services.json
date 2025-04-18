@@ -1,0 +1,535 @@
+[
+  {
+    "model": "booket.service",
+    "pk": 1,
+    "fields": {
+      "tip": 1,
+      "name": "Service 1 en",
+      "name_uz": "Service 1 uz",
+      "name_ru": "Service 1 ru",
+      "description": "Service 1 description",
+      "price": 1000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 2,
+    "fields": {
+      "tip": 1,
+      "name": "Servvice 2 en",
+      "name_uz": "Service 2 uz",
+      "name_ru": "Service 2 ru",
+      "description": "Service 2 description",
+      "price": 2000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 3,
+    "fields": {
+      "tip": 3,
+      "name": "Men's haircut",
+      "name_uz": "Soch olish erkaklar uchun",
+      "name_ru": "Мужская стрижка",
+      "description": "Complimentary: shampoo/edge-up/styling\r\nКомплимент: мытье головы/окантовка/стайлинг",
+      "price": 60000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 4,
+    "fields": {
+      "tip": 3,
+      "name": "Men's evening styling",
+      "name_uz": "Erkaklar uchun tadbir stillari",
+      "name_ru": "Мужская вечерняя укладка",
+      "description": "A professional styling service for men, designed to create a sophisticated and elegant look for evening events, including haircuts, beard grooming, and hair styling. \r\nПрофессиональная услуга по укладке для мужчин, предназначенная для создания изысканного ",
+      "price": 90000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 5,
+    "fields": {
+      "tip": 3,
+      "name": "Face Shaving/Face Care",
+      "name_uz": "Soqol olish/Yuzga parvarish",
+      "name_ru": "Бритьё лица/Уход за лицом",
+      "description": "Precise face shaving and skincare to ensure a smooth, clean, and refreshed appearance.\r\nПрофессиональная услуга, включающая аккуратное бритьё лица и уход за кожей для достижения гладкого, чистого и свежего вида.",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 6,
+    "fields": {
+      "tip": 3,
+      "name": "Children’s haircut (under 12 y.o)",
+      "name_uz": "Bolalar soch olishi (12 yoshgacha)",
+      "name_ru": "Детская стрижка (до 12 л.)",
+      "description": "Professional haircuts for children under 12, ensuring a comfortable and fun experience.\r\nПрофессиональные стрижки для детей до 12 лет с комфортом и вниманием.\r\n12 yoshgacha boʻlgan bolalar uchun qulay va qiziqarli professional soch olish xizmati.",
+      "price": 60000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 7,
+    "fields": {
+      "tip": 3,
+      "name": "Women's haircut and styling",
+      "name_uz": "Ayollar uchun soch stillari",
+      "name_ru": "Женская стрижка/укладка",
+      "description": "Professional haircuts and styling for women, tailored to create a modern and elegant look.\r\nПрофессиональные стрижки и укладки для женщин, создающие современный и элегантный образ.\r\nAyollar uchun zamonaviy va nafis koʻrinish yaratish uchun professional soch",
+      "price": 100000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 8,
+    "fields": {
+      "tip": 3,
+      "name": "Hair lamination",
+      "name_uz": "Soch uchun laminatsiya",
+      "name_ru": "Ламинация волос",
+      "description": "A treatment that adds shine, smoothness, and strength to hair, making it look healthier and more vibrant.\r\nПроцедура, которая придаёт волосам блеск, гладкость и силу, делая их более здоровыми и ухоженными.\r\nSochlarni silliq, yaltiroq va mustahkamlovchi, ula",
+      "price": 200000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 9,
+    "fields": {
+      "tip": 3,
+      "name": "Hair coloring in one tone & styling",
+      "name_uz": "Sochlarni bir rangda boʻyash va stil",
+      "name_ru": "Окрашивание волос в один тон и укладка",
+      "description": "Single-tone hair coloring combined with professional styling for a polished and vibrant look.\r\nОднотонное окрашивание волос с профессиональной укладкой для ухоженного и яркого образа.\r\nSochlarni bir rangda boʻyash va professional uslub bilan zamonaviy va jo",
+      "price": 250000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 10,
+    "fields": {
+      "tip": 4,
+      "name": "Classic manicure",
+      "name_uz": "Klassik manikyur",
+      "name_ru": "Классический маникюр",
+      "description": "A traditional nail care service that includes trimming, shaping, and cuticle care for clean and neat nails.\r\nТрадиционный уход за ногтями, включающий подстригание, придание формы и уход за кутикулой для аккуратного вида.\r\nTirnoqlarni kesish, shakllantirish ",
+      "price": 80000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 11,
+    "fields": {
+      "tip": 4,
+      "name": "Classic pedicure",
+      "name_uz": "Klassik pedikyur",
+      "name_ru": "Классический педикюр",
+      "description": " A traditional foot care service that includes nail trimming, shaping, cuticle care, and skin exfoliation for smooth and healthy feet.\r\nТрадиционный уход за стопами, включающий подстригание ногтей, придание формы.",
+      "price": 150000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 12,
+    "fields": {
+      "tip": 4,
+      "name": "Gel nail polish coating",
+      "name_uz": "Gel-lak bilan qoplash",
+      "name_ru": "Покрытие гель-лака",
+      "description": "A long-lasting nail polish application using gel-based products for a glossy and durable finish.\r\nДолговременное покрытие ногтей гель-лаком для глянцевого и стойкого результата.\r\nTirnoqlarga yaltiroq va uzoq muddatli bardosh beradigan gel-lak qoplash xizmat",
+      "price": 70000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 13,
+    "fields": {
+      "tip": 4,
+      "name": "Weekly/Halal nail polish coating",
+      "name_uz": "Haftalik/Halal lak bilan qoplash",
+      "name_ru": "Покрытие недельным/халяльным лаком",
+      "description": "A temporary nail polish application using halal-certified or weekly polish, ideal for those seeking a short-term, halal-compliant option.\r\nВременное покрытие ногтей халяльным или недельным лаком, подходящее для краткосрочного использования.",
+      "price": 40000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 14,
+    "fields": {
+      "tip": 4,
+      "name": "Nails remover",
+      "name_uz": "Tirnoqlarni olib tashlash",
+      "name_ru": "Снятие ногтей",
+      "description": "Safe and professional removal of nail polish, gel, or acrylic extensions without damaging the natural nails.\r\nБезопасное и профессиональное снятие лака, геля или акриловых покрытий без повреждения натуральных ногтей.\r\nTabiiy tirnoqlarga zarar yetkazmasdan, lak, gel yoki akril qoplamalarni xavfsiz va professional olib tashlash.",
+      "price": 80000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 15,
+    "fields": {
+      "tip": 4,
+      "name": "Nails design",
+      "name_uz": "Tirnoq dizayni",
+      "name_ru": "Дизайн ногтей",
+      "description": "Creative and artistic nail decoration using patterns, colors, and embellishments for a unique and stylish look.\r\nКреативное и художественное украшение ногтей с использованием узоров, цветов и декора для уникального и стильного образа.\r\nNaqshlar, ranglar va bezaklar yordamida tirnoqlarni badiiy va zamonaviy uslubda bezash.",
+      "price": 30000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 16,
+    "fields": {
+      "tip": 4,
+      "name": "Incrustation",
+      "name_uz": "Toshlar bilan bezash (inkrustatsiya)",
+      "name_ru": "Инкрустация камнями",
+      "description": "Decorating nails or jewelry with embedded stones or crystals for a luxurious and elegant appearance.\r\nУкрашение ногтей или украшений вставками из камней или кристаллов для роскошного и элегантного вида.\r\nTirnoqlar yoki zargarlik buyumlarini toshlar yoki kristallar bilan bezash, hashamatli va nafis koʻrinish yaratish.",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 17,
+    "fields": {
+      "tip": 5,
+      "name": "Eyelash extensions",
+      "name_uz": "Kiprik ekish",
+      "name_ru": "Наращивание ресниц",
+      "description": "A natural-looking eyelash extension technique that adds length and volume to each individual lash.\r\nТехника наращивания ресниц, придающая естественную длину и объём каждой реснице.\r\nHar bir kiprikka tabiiy uzunlik va hajm beradigan kiprik kengaytirish usuli.",
+      "price": 70000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 18,
+    "fields": {
+      "tip": 5,
+      "name": "Eyelash removal",
+      "name_uz": "Kiprik olib tashlash",
+      "name_ru": "Снятие ресниц",
+      "description": "Safe and professional removal of eyelash extensions without damaging natural lashes.\r\nБезопасное и профессиональное снятие нарощенных ресниц без вреда для натуральных.\r\nTabiiy kipriklarga zarar yetkazmasdan, kengaytirilgan kipriklarni xavfsiz va professional olib tashlash.",
+      "price": 40000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 19,
+    "fields": {
+      "tip": 5,
+      "name": "Eyebrow lamination",
+      "name_uz": "Qosh laminatsiyasi",
+      "name_ru": "Ламинация бровей",
+      "description": "A treatment that smooths and sets eyebrow hairs in place, giving them a fuller, more defined, and groomed look.\r\nПроцедура, которая выравнивает и фиксирует волоски бровей, придавая им более густой, ухоженный и чёткий вид.\r\nQosh toʻqimalarini silliqlash va ularga toʻliqroq, aniqroq va tartibli koʻrinish berish uchun qoʻllaniladigan parvarish usuli.",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 20,
+    "fields": {
+      "tip": 6,
+      "name": "Armpits depilation",
+      "name_uz": "Qoʻltiq ostini depilyatsiya qilish",
+      "name_ru": "Депиляция подмышечных зон",
+      "description": "Hair removal in the armpit area for a smooth and clean look, using methods like waxing or sugaring.\r\nУдаление волос в зоне подмышек для гладкости и чистоты, с использованием восковой или сахарной эпиляции.Qoʻltiq ostidagi sochlarni silliq va toza koʻrinish uchun mum yoki shakar bilan olib tashlash.",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 21,
+    "fields": {
+      "tip": 6,
+      "name": "Legs depilation (Full)",
+      "name_uz": "Oyoqlarni toʻliq depilyatsiya qilish",
+      "name_ru": "Депиляция ног (полностью)",
+      "description": "Complete hair removal from the legs for a smooth and clean appearance, using methods like waxing or sugaring.\r\nПолное удаление волос с ног для гладкости и чистоты, с использованием восковой или сахарной эпиляции.",
+      "price": 200000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 22,
+    "fields": {
+      "tip": 6,
+      "name": "Legs depilation (Till knee)",
+      "name_uz": "Oyoqlarni tizzagacha depilyatsiya qilish",
+      "name_ru": " Депиляция ног (до колена)",
+      "description": "Hair removal from the legs up to the knee for a smooth and clean appearance, using methods like waxing or sugaring.\r\nУдаление волос с ног до колена для гладкости и чистоты, с использованием восковой или сахарной эпиляции.",
+      "price": 150000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 23,
+    "fields": {
+      "tip": 6,
+      "name": "Face depilation (Full)",
+      "name_uz": "Yuzni toʻliq depilyatsiya qilish",
+      "name_ru": "Депиляция лица (полностью)",
+      "description": "Complete hair removal from the face for a smooth and clean appearance, using methods like waxing or threading.\r\nПолное удаление волос с лица для гладкости и чистоты, с использованием восковой эпиляции или нитей.",
+      "price": 130000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 24,
+    "fields": {
+      "tip": 7,
+      "name": "Power of Attorney\t",
+      "name_uz": "Ishonchnoma tayyorlash\t",
+      "name_ru": "Доверенность\t",
+      "description": "Ishonchnomalarni tayyorlash va rasmiylashtrish",
+      "price": 80000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 25,
+    "fields": {
+      "tip": 7,
+      "name": "Inheritance Certificate",
+      "name_uz": "Meros hujjati",
+      "name_ru": "Наследственное свидетельство",
+      "description": "Meros hujjatlarini tayyorlash va rasmiylashtrish",
+      "price": 150000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 26,
+    "fields": {
+      "tip": 7,
+      "name": "Marriage Contract and Divorce\t",
+      "name_uz": "Nigoh shartnomasi/Ajrim",
+      "name_ru": "Брачный контракт/Razvod",
+      "description": "Nigoh shartnomalariga oid xizmatlar, ajrimni rasmiylashtrish",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 27,
+    "fields": {
+      "tip": 7,
+      "name": "Real Estate Deal Confirmation",
+      "name_uz": "Ko‘chmas mulk bitimi tasdiqlash",
+      "name_ru": "Подтверждение сделки с недвижимостью",
+      "description": "Ko'chmas mulkka doir amaliyotlarni rasmiylashtrish",
+      "price": 200000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 28,
+    "fields": {
+      "tip": 7,
+      "name": "Vehicle buy/sell registartion",
+      "name_uz": "Avtomobil oldi/sotdi rasmiylashtrish",
+      "name_ru": "Регистрация купли-продажи транспортного средства",
+      "description": "Avtomobil oldi sotdi amaliyotlarini rasmiylashtrish",
+      "price": 350000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 29,
+    "fields": {
+      "tip": 8,
+      "name": "Business Registration Support",
+      "name_uz": "Biznes ro‘yxatdan o‘tkazish",
+      "name_ru": "Регистрация бизнеса",
+      "description": "Biznes faoliyat turiga mos holatda optimal yo'llar bilan rasmiylashtrish",
+      "price": 250000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 30,
+    "fields": {
+      "tip": 8,
+      "name": "Tax Consultation",
+      "name_uz": "Soliq bo‘yicha maslahat",
+      "name_ru": "Налоговая консультация",
+      "description": "Soliqqa oid masalalarda yordam ko'rsatish",
+      "price": 100000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 31,
+    "fields": {
+      "tip": 8,
+      "name": "Visa and Immigration Advice",
+      "name_uz": "Viza va immigratsiya bo‘yicha maslahat ",
+      "name_ru": "Консультация по визам и иммиграции",
+      "description": "Visa va immigratsiya masalalrida yordam ko'rsatish",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 32,
+    "fields": {
+      "tip": 8,
+      "name": "Contract Review & Drafting",
+      "name_uz": "Shartnoma tuzish va ko‘rib chiqish",
+      "name_ru": "Разработка и проверка договоров",
+      "description": "Shartnomalarni tuzish, ko'rib chiqish va unga oid muammolarda yordam ko'rsatish",
+      "price": 180000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 33,
+    "fields": {
+      "tip": 8,
+      "name": "Court Document Preparation",
+      "name_uz": "Sud hujjatlarini tayyorlash",
+      "name_ru": "Подготовка судебных документов",
+      "description": "Sud hujjatlarini tayyorlash, ko'rib chiqish va tahlil qilish",
+      "price": 130000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 34,
+    "fields": {
+      "tip": 8,
+      "name": "Intellectual Property Protection",
+      "name_uz": "Intellektual mulk himoyasi",
+      "name_ru": "Защита интеллектуальной собственности",
+      "description": "Intellektual mulk himoyasi va unga doir amaliyotlar",
+      "price": 220000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 35,
+    "fields": {
+      "tip": 8,
+      "name": "Labor Law Consulting",
+      "name_uz": "Mehnat qonunchiligi bo‘yicha maslahat",
+      "name_ru": "Консультации по трудовому праву",
+      "description": "Mehnat qonunchiligiga doir masalalarni tahlil qilish maslahat berish",
+      "price": 140000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 36,
+    "fields": {
+      "tip": 9,
+      "name": "Document Legalization (Ministry of Foreign Affairs)",
+      "name_uz": "Hujjatlarni legalizatsiya qilish",
+      "name_ru": "Легализация документов (МИД)",
+      "description": "Hujjatlarni tegishli tashkilotlar orqali legallashtrish",
+      "price": 160000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 37,
+    "fields": {
+      "tip": 9,
+      "name": "Apostille",
+      "name_uz": "Apostil qo‘yish",
+      "name_ru": "Апостиль",
+      "description": "Hujjatlarni apostil qilish",
+      "price": 180000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 38,
+    "fields": {
+      "tip": 9,
+      "name": "Legal Translation of Commercial Contracts",
+      "name_uz": "Tijorat shartnomalarini tarjima qilish",
+      "name_ru": "Перевод коммерческих контрактов",
+      "description": "Tijoriy shartomalar va bitimlarni tarjima qilish",
+      "price": 200000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 39,
+    "fields": {
+      "tip": 9,
+      "name": "Diplomas & Certificates Translation",
+      "name_uz": "Diplom va sertifikatlarni tarjima qilish",
+      "name_ru": "Перевод дипломов и сертификатов",
+      "description": "Diplom, sertifikat va boshqa turdagi hujjatlarni tarjima qilish ",
+      "price": 150000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 40,
+    "fields": {
+      "tip": 10,
+      "name": "Mobile Notary Visit",
+      "name_uz": "Notariusni chaqirish",
+      "name_ru": "Вызов нотариуса",
+      "description": "Notariusni kerakli joyga chaqrish va xizmatlardan foydalanish",
+      "price": 300000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 41,
+    "fields": {
+      "tip": 3,
+      "name": "Changing hair color",
+      "name_uz": "Sochlarni boshqa tonga o'zgartirish",
+      "name_ru": "Изменить цвет волос",
+      "description": "Sochlarni bir to'ndan boshqa to'nga o'zgartirish.",
+      "price": 300000,
+      "is_active": true
+    }
+  }
+]

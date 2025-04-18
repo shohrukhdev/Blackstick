@@ -1,0 +1,112 @@
+[
+  {
+    "model": "booket.providerserver",
+    "pk": 1,
+    "fields": {
+      "provider": 1,
+      "server": 1,
+      "day_starts_on": "08:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": null
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 2,
+    "fields": {
+      "provider": 2,
+      "server": 2,
+      "day_starts_on": "10:00:00",
+      "day_ends_on": "19:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 3,
+    "fields": {
+      "provider": 2,
+      "server": 3,
+      "day_starts_on": null,
+      "day_ends_on": null,
+      "off_days": null
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 4,
+    "fields": {
+      "provider": 2,
+      "server": 4,
+      "day_starts_on": null,
+      "day_ends_on": null,
+      "off_days": null
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 5,
+    "fields": {
+      "provider": 2,
+      "server": 5,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "20:00:00",
+      "off_days": "7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 6,
+    "fields": {
+      "provider": 3,
+      "server": 6,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 7,
+    "fields": {
+      "provider": 3,
+      "server": 7,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 8,
+    "fields": {
+      "provider": 3,
+      "server": 8,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": "7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 9,
+    "fields": {
+      "provider": 3,
+      "server": 9,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 10,
+    "fields": {
+      "provider": 3,
+      "server": 10,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": "6,7"
+    }
+  }
+]

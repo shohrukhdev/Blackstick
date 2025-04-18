@@ -1,0 +1,298 @@
+[
+  {
+    "model": "booket.appointmentservice",
+    "pk": 1,
+    "fields": {
+      "appointment": 1,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 2,
+    "fields": {
+      "appointment": 2,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 3,
+    "fields": {
+      "appointment": 2,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 4,
+    "fields": {
+      "appointment": 3,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 5,
+    "fields": {
+      "appointment": 4,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 6,
+    "fields": {
+      "appointment": 5,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 7,
+    "fields": {
+      "appointment": 5,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 8,
+    "fields": {
+      "appointment": 5,
+      "service": 9
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 9,
+    "fields": {
+      "appointment": 5,
+      "service": 17
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 10,
+    "fields": {
+      "appointment": 5,
+      "service": 19
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 11,
+    "fields": {
+      "appointment": 6,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 12,
+    "fields": {
+      "appointment": 7,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 13,
+    "fields": {
+      "appointment": 8,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 14,
+    "fields": {
+      "appointment": 9,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 15,
+    "fields": {
+      "appointment": 10,
+      "service": 4
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 16,
+    "fields": {
+      "appointment": 11,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 17,
+    "fields": {
+      "appointment": 12,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 18,
+    "fields": {
+      "appointment": 12,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 19,
+    "fields": {
+      "appointment": 13,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 20,
+    "fields": {
+      "appointment": 13,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 21,
+    "fields": {
+      "appointment": 14,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 22,
+    "fields": {
+      "appointment": 14,
+      "service": 17
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 23,
+    "fields": {
+      "appointment": 15,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 24,
+    "fields": {
+      "appointment": 16,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 25,
+    "fields": {
+      "appointment": 17,
+      "service": 19
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 26,
+    "fields": {
+      "appointment": 18,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 27,
+    "fields": {
+      "appointment": 19,
+      "service": 19
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 28,
+    "fields": {
+      "appointment": 20,
+      "service": 9
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 29,
+    "fields": {
+      "appointment": 21,
+      "service": 8
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 30,
+    "fields": {
+      "appointment": 22,
+      "service": 11
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 31,
+    "fields": {
+      "appointment": 22,
+      "service": 12
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 32,
+    "fields": {
+      "appointment": 23,
+      "service": 9
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 33,
+    "fields": {
+      "appointment": 32,
+      "service": 19
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 35,
+    "fields": {
+      "appointment": 34,
+      "service": 7
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 36,
+    "fields": {
+      "appointment": 35,
+      "service": 19
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 37,
+    "fields": {
+      "appointment": 36,
+      "service": 9
+    }
+  },
+  {
+    "model": "booket.appointmentservice",
+    "pk": 40,
+    "fields": {
+      "appointment": 39,
+      "service": 24
+    }
+  }
+]

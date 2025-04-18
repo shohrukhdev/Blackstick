@@ -1,0 +1,132 @@
+[
+  {
+    "model": "booket.server",
+    "pk": 1,
+    "fields": {
+      "user": 10,
+      "image": "server/photo_2025-01-27_10-28-14_tEPnI7i.jpg",
+      "phone_number": "99899888",
+      "memo": null,
+      "info": "Psixolog, biznes trainer, koach",
+      "is_active": true,
+      "created": "2025-01-27T10:22:48.342Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 2,
+    "fields": {
+      "user": 14,
+      "image": "server/beautybar7.jpg",
+      "phone_number": "+998776543433",
+      "memo": null,
+      "info": "<p style=\"line-height: 1;\"><span style=\"font-size: 14px;\"><b>Certified Manicure &amp; Pedicure specialist</b></span></p><p style=\"line-height: 1;\"><span style=\"font-size: 14px;\">Malakali, sertifikatga ega manikur/pedikur mutaxassisi.</span></p><p style=\"line-height: 1;\"><span style=\"font-size: 14px;\"><i>Сертифицированный специалист по маникюру и педикюру.</i></span></p>",
+      "is_active": true,
+      "created": "2025-02-22T16:10:26.490Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 3,
+    "fields": {
+      "user": 16,
+      "image": "server/channels4_profile.jpg",
+      "phone_number": "+998915431122",
+      "memo": null,
+      "info": "<p style=\"line-height: 1;\"><b><span style=\"font-size: 14px;\">Professional men's barber.</span></b></p><p style=\"line-height: 1;\"><span style=\"font-size: 14px;\">Professional erkaklar sartaroshi.</span></p><p style=\"line-height: 1;\"><span style=\"font-size: 14px;\"><i>Профессиональный мужской парикмахер.</i></span></p><p><b><br></b></p>",
+      "is_active": true,
+      "created": "2025-02-22T16:16:43.966Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 4,
+    "fields": {
+      "user": 15,
+      "image": "server/giorgio-armani-prive-haute-couture-fall-winter-2023-2024-show-as-part-of-paris-f_YcIP1SD.avif",
+      "phone_number": "+998997786543",
+      "memo": null,
+      "info": "<p style=\"line-height: 1;\"><b><span style=\"font-size: 14px;\">Professional wax master, depilation specialist with over 10 years experience.</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: 14px; text-align: var(--bs-body-text-align);\"><br></span></b></p><p style=\"line-height: 1;\"><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: 14px; font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Malakali, 10 yildan ortiq tajribaga ega depilyatsiya mutaxasisi.&nbsp;</span></p><p style=\"line-height: 1;\"><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: 14px; font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><i>Профессиональный мастер депиляции с опытом работы более 10 лет.</i></span></p><p style=\"line-height: 1;\"><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: 14px; font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\"><br></span></p>",
+      "is_active": true,
+      "created": "2025-02-22T16:17:13.482Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 5,
+    "fields": {
+      "user": 11,
+      "image": "server/asal-shodieva_jRWaPOC.medium.jpg",
+      "phone_number": "+998934556677",
+      "memo": "Esdan chiqmasin",
+      "info": "<p style=\"line-height: 1;\"><span style=\"font-size: 14px;\"><b>Certified make-up specialist, cosmetotlogis.</b></span></p><p style=\"line-height: 1;\"><span style=\"font-size: 14px;\">Malakali meykap va kosmetotlog mutaxassis.</span></p><p class=\"p1\" style=\"margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-alternates: normal; font-size-adjust: none; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-variant-position: normal; font-variant-emoji: normal; font-stretch: normal; line-height: normal;\"><span style=\"font-size: 14px;\"><i>Сертифицированный визажист, косметолог.</i></span></p>",
+      "is_active": true,
+      "created": "2025-02-22T16:17:36.197Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 6,
+    "fields": {
+      "user": 21,
+      "image": "server/specialist3.jpg",
+      "phone_number": "956663322",
+      "memo": "",
+      "info": "<p><b><span style=\"font-size: 14px;\">﻿</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\">Senior Legal Advisor.&nbsp;</span></b><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Soliq qonunchiligi va sud ishlari bo‘yicha maslahat beruvchi.</span><b style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\"><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); text-align: var(--bs-body-text-align);\">&nbsp;</span></b><span style=\"color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align); background-color: var(--bs-card-bg);\">Юрист по налоговому праву и судебным делам. Отличается стратегическим подходом.</span></p>",
+      "is_active": true,
+      "created": "2025-04-17T16:00:43.008Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 7,
+    "fields": {
+      "user": 18,
+      "image": "server/specialist2.jpg",
+      "phone_number": "931234567",
+      "memo": "",
+      "info": "<p><span style=\"font-size: 14px;\">﻿</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">12 yillik tajribaga ega notarius. Oilaviy huquq, ko‘chmas mulk bitimlari va rasmiy hujjatlar bo‘yicha mutaxassis.&nbsp;</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Нотариус с более чем 12-летним стажем. Специализируется на семейном праве и недвижимости.&nbsp;</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Certified notary with 12+ years of experience in family law, real estate transactions, and official certifications.</span><br></p>",
+      "is_active": true,
+      "created": "2025-04-17T16:01:11.457Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 8,
+    "fields": {
+      "user": 22,
+      "image": "server/specialist5.webp",
+      "phone_number": "9399911 00",
+      "memo": "",
+      "info": "<p>Yuridik hujjatlarni topshirish va davlat organlari bilan ishlash bo‘yicha mutaxassis.&nbsp;<span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Специалист по подаче юридических документов и взаимодействию с госорганами.</span></p>",
+      "is_active": true,
+      "created": "2025-04-17T16:01:29.394Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 9,
+    "fields": {
+      "user": 19,
+      "image": "server/specialist6.webp",
+      "phone_number": "914567890",
+      "memo": "",
+      "info": "<p><b>Legal Consultant.&nbsp;</b><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Kompaniya qonunchiligi va shartnoma tuzish bo‘yicha mutaxassis. 200 dan ortiq kompaniyaga maslahat bergan.&nbsp;</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Специалист по корпоративному праву. Консультировала более 200 стартапов в Узбекистане.</span></p>",
+      "is_active": true,
+      "created": "2025-04-17T16:01:46.420Z"
+    }
+  },
+  {
+    "model": "booket.server",
+    "pk": 10,
+    "fields": {
+      "user": 20,
+      "image": "server/specialist7.jpg",
+      "phone_number": " 907772211",
+      "memo": "",
+      "info": "<p><b>Legal Translator.&nbsp;</b><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">O‘zbek, rus va ingliz tillarida tarjima qiluvchi notarius yordamchisi.&nbsp;</span><span style=\"background-color: var(--bs-card-bg); color: var(--bs-body-color); font-family: var(--bs-body-font-family); font-size: var(--bs-body-font-size); font-weight: var(--bs-body-font-weight); text-align: var(--bs-body-text-align);\">Переводчик и помощник нотариуса. Свободно владеет узбекским, русским и английским языками.</span></p>",
+      "is_active": true,
+      "created": "2025-04-17T16:02:23.005Z"
+    }
+  }
+]

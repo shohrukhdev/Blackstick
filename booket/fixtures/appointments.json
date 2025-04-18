@@ -1,0 +1,470 @@
+[
+  {
+    "model": "booket.appointment",
+    "pk": 1,
+    "fields": {
+      "client": 1,
+      "server": 5,
+      "start_datetime": "2025-03-20T09:00:00Z",
+      "end_datetime": "2025-03-20T11:30:00Z",
+      "status": "COMPLETED",
+      "comment": "qweqwerqwerqwe",
+      "created_on": "2025-03-20T06:53:13.094Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 2,
+    "fields": {
+      "client": 1,
+      "server": 5,
+      "start_datetime": "2025-03-21T06:00:00Z",
+      "end_datetime": "2025-03-21T08:00:00Z",
+      "status": "COMPLETED",
+      "comment": "ikkinchisi",
+      "created_on": "2025-03-20T06:53:58.184Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 3,
+    "fields": {
+      "client": 1,
+      "server": 5,
+      "start_datetime": "2025-03-21T12:00:00Z",
+      "end_datetime": "2025-03-21T13:00:00Z",
+      "status": "COMPLETED",
+      "comment": "",
+      "created_on": "2025-03-20T06:55:31.943Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 4,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-20T13:00:00Z",
+      "end_datetime": "2025-03-20T14:00:00Z",
+      "status": "REJECTED",
+      "comment": "asdasD",
+      "created_on": "2025-03-20T09:53:24.506Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 5,
+    "fields": {
+      "client": 4,
+      "server": 5,
+      "start_datetime": "2025-03-22T09:30:00Z",
+      "end_datetime": "2025-03-22T14:30:00Z",
+      "status": "NEW",
+      "comment": "asxasdasd",
+      "created_on": "2025-03-20T09:55:07.314Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 6,
+    "fields": {
+      "client": 5,
+      "server": 5,
+      "start_datetime": "2025-03-22T07:30:00Z",
+      "end_datetime": "2025-03-22T08:30:00Z",
+      "status": "COMPLETED",
+      "comment": "asdasd",
+      "created_on": "2025-03-20T10:15:47.066Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 7,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-21T09:00:00Z",
+      "end_datetime": "2025-03-21T10:00:00Z",
+      "status": "NEW",
+      "comment": "asdasdasd",
+      "created_on": "2025-03-21T03:28:57.560Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 8,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-21T11:00:00Z",
+      "end_datetime": "2025-03-21T12:00:00Z",
+      "status": "NEW",
+      "comment": "sdfsdf",
+      "created_on": "2025-03-21T03:34:33.171Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 9,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-21T05:00:00Z",
+      "end_datetime": "2025-03-21T06:00:00Z",
+      "status": "CONFIRMED",
+      "comment": "dsdasd",
+      "created_on": "2025-03-21T03:36:46.797Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 10,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-24T09:30:00Z",
+      "end_datetime": "2025-03-24T10:30:00Z",
+      "status": "NO_SHOW",
+      "comment": "aSDasd",
+      "created_on": "2025-03-21T03:38:50.326Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 11,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-21T10:00:00Z",
+      "end_datetime": "2025-03-21T11:00:00Z",
+      "status": "CONFIRMED",
+      "comment": "Comments are here",
+      "created_on": "2025-03-21T03:45:36.119Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 12,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-22T05:00:00Z",
+      "end_datetime": "2025-03-22T07:00:00Z",
+      "status": "ACCEPTED",
+      "comment": "Test appointmndb",
+      "created_on": "2025-03-21T13:30:09.938Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 13,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-25T10:00:00Z",
+      "end_datetime": "2025-03-25T12:00:00Z",
+      "status": "ACCEPTED",
+      "comment": "",
+      "created_on": "2025-03-24T12:41:14.383Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 14,
+    "fields": {
+      "client": 4,
+      "server": 5,
+      "start_datetime": "2025-03-26T05:30:00Z",
+      "end_datetime": "2025-03-26T07:30:00Z",
+      "status": "NO_SHOW",
+      "comment": "test comment",
+      "created_on": "2025-03-24T12:45:04.440Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 15,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-25T05:30:00Z",
+      "end_datetime": "2025-03-25T06:30:00Z",
+      "status": "ACCEPTED",
+      "comment": "asdfasdfasd",
+      "created_on": "2025-03-24T13:00:37.703Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 16,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-25T13:30:00Z",
+      "end_datetime": "2025-03-25T14:30:00Z",
+      "status": "ACCEPTED",
+      "comment": "dasdfasasd fas",
+      "created_on": "2025-03-24T13:08:42.907Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 17,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-25T07:00:00Z",
+      "end_datetime": "2025-03-25T08:00:00Z",
+      "status": "ACCEPTED",
+      "comment": "asdasdad",
+      "created_on": "2025-03-24T13:10:17.993Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 18,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-03-25T08:30:00Z",
+      "end_datetime": "2025-03-25T09:30:00Z",
+      "status": "ACCEPTED",
+      "comment": "sdfasdfasd",
+      "created_on": "2025-03-24T13:15:44.606Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 19,
+    "fields": {
+      "client": 4,
+      "server": 5,
+      "start_datetime": "2025-03-28T08:00:00Z",
+      "end_datetime": "2025-03-28T09:00:00Z",
+      "status": "ACCEPTED",
+      "comment": "asdasdasd",
+      "created_on": "2025-03-24T13:18:20.961Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 20,
+    "fields": {
+      "client": 4,
+      "server": 5,
+      "start_datetime": "2025-03-26T11:30:00Z",
+      "end_datetime": "2025-03-26T12:30:00Z",
+      "status": "ACCEPTED",
+      "comment": "asdasdasdasd",
+      "created_on": "2025-03-24T13:18:57.463Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 21,
+    "fields": {
+      "client": 4,
+      "server": 5,
+      "start_datetime": "2025-03-31T08:00:00Z",
+      "end_datetime": "2025-03-31T09:00:00Z",
+      "status": "ACCEPTED",
+      "comment": "Hayitdan keyingi kochirildi",
+      "created_on": "2025-03-28T18:12:11.135Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 22,
+    "fields": {
+      "client": 3,
+      "server": 2,
+      "start_datetime": "2025-04-01T06:00:00Z",
+      "end_datetime": "2025-04-01T08:00:00Z",
+      "status": "COMPLETED",
+      "comment": "asdasd\r\nyangi oyga kochirilidi",
+      "created_on": "2025-03-30T13:29:31.237Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 23,
+    "fields": {
+      "client": 4,
+      "server": 5,
+      "start_datetime": "2025-04-01T10:30:00Z",
+      "end_datetime": "2025-04-01T11:30:00Z",
+      "status": "NO_SHOW",
+      "comment": "qweqweqwewerwerwe",
+      "created_on": "2025-03-30T13:30:05.088Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 24,
+    "fields": {
+      "client": 6,
+      "server": 5,
+      "start_datetime": "2025-04-08T04:00:00Z",
+      "end_datetime": "2025-04-08T04:00:00Z",
+      "status": "COMPLETED",
+      "comment": "Test",
+      "created_on": "2025-04-07T17:05:11.980Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 25,
+    "fields": {
+      "client": 6,
+      "server": 5,
+      "start_datetime": "2025-04-07T17:30:00Z",
+      "end_datetime": "2025-04-07T18:30:00Z",
+      "status": "COMPLETED",
+      "comment": "sdasdas",
+      "created_on": "2025-04-07T17:16:42.055Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 26,
+    "fields": {
+      "client": 6,
+      "server": 5,
+      "start_datetime": "2025-04-08T06:30:00Z",
+      "end_datetime": "2025-04-08T07:30:00Z",
+      "status": "COMPLETED",
+      "comment": "asdasdasd",
+      "created_on": "2025-04-07T17:17:47.948Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 27,
+    "fields": {
+      "client": 6,
+      "server": 5,
+      "start_datetime": "2025-04-08T07:30:00Z",
+      "end_datetime": "2025-04-08T09:30:00Z",
+      "status": "COMPLETED",
+      "comment": "asdasdasda",
+      "created_on": "2025-04-07T17:23:29.032Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 28,
+    "fields": {
+      "client": 6,
+      "server": 5,
+      "start_datetime": "2025-04-08T13:00:00Z",
+      "end_datetime": "2025-04-08T14:00:00Z",
+      "status": "COMPLETED",
+      "comment": "",
+      "created_on": "2025-04-08T12:58:39.487Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 29,
+    "fields": {
+      "client": 6,
+      "server": 3,
+      "start_datetime": "2025-04-08T13:30:00Z",
+      "end_datetime": "2025-04-08T14:30:00Z",
+      "status": "COMPLETED",
+      "comment": "asdasd",
+      "created_on": "2025-04-08T13:09:03.736Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 30,
+    "fields": {
+      "client": 6,
+      "server": 2,
+      "start_datetime": "2025-04-09T09:30:00Z",
+      "end_datetime": "2025-04-09T10:30:00Z",
+      "status": "COMPLETED",
+      "comment": "TEst",
+      "created_on": "2025-04-08T13:27:11.094Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 31,
+    "fields": {
+      "client": 6,
+      "server": 5,
+      "start_datetime": "2025-04-09T09:30:00Z",
+      "end_datetime": "2025-04-09T10:30:00Z",
+      "status": "COMPLETED",
+      "comment": "Test Asal",
+      "created_on": "2025-04-08T13:27:46.822Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 32,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-04-11T09:30:00Z",
+      "end_datetime": "2025-04-11T10:30:00Z",
+      "status": "COMPLETED",
+      "comment": "Test demo",
+      "created_on": "2025-04-11T08:09:57.140Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 34,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-04-14T10:30:00Z",
+      "end_datetime": "2025-04-14T11:30:00Z",
+      "status": "NEW",
+      "comment": "test",
+      "created_on": "2025-04-13T16:13:28.314Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 35,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-04-14T11:00:00Z",
+      "end_datetime": "2025-04-14T12:00:00Z",
+      "status": "NEW",
+      "comment": "test 2",
+      "created_on": "2025-04-13T16:15:07.581Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 36,
+    "fields": {
+      "client": 3,
+      "server": 5,
+      "start_datetime": "2025-04-14T09:30:00Z",
+      "end_datetime": "2025-04-14T10:30:00Z",
+      "status": "COMPLETED",
+      "comment": "test",
+      "created_on": "2025-04-14T07:16:38.162Z"
+    }
+  },
+  {
+    "model": "booket.appointment",
+    "pk": 39,
+    "fields": {
+      "client": 3,
+      "server": 7,
+      "start_datetime": "2025-04-21T06:00:00Z",
+      "end_datetime": "2025-04-21T07:00:00Z",
+      "status": "CONFIRMED",
+      "comment": "sfdsfsf hr hfgtrfgfg gr grg",
+      "created_on": "2025-04-18T08:53:20.510Z"
+    }
+  }
+]
