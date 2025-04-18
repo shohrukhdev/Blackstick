@@ -45,6 +45,8 @@ jobs:
           echo DB_PORT="${{ secrets.DB_PORT }}" >> .env
           echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
           echo FERNET_KEY="${{ secrets.FERNET_KEY }}" >> .env
+          echo ESKIZ_EMAIL="${{ secrets.ESKIZ_EMAIL }}" >> .env
+          echo ESKIZ_PASSWORD="${{ secrets.ESKIZ_PASSWORD }}" >> .env
           scp -i dev.key -o StrictHostKeyChecking=no docker-compose.prod.yml ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           scp -i dev.key -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }}:./
           ssh -i dev.key -o StrictHostKeyChecking=no ubuntu@${{ secrets.INSTANCE_IP_ADDRESS }} << "ENDSSH"
