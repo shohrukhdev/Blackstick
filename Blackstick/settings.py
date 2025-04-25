@@ -17,7 +17,7 @@ from pathlib import Path
 
 load_dotenv()
 
-USE_S3 = os.getenv('USE_S3') == "True"
+USE_S3 = os.getenv('USE_S3') == 1
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -209,7 +209,7 @@ USE_TZ = True
 
 ################ STATIC AND MEDIA FILES   ############################
 
-if USE_S3 == "True":
+if USE_S3 == 1:
     # aws settings
     AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
     AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
