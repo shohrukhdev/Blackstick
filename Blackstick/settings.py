@@ -17,8 +17,7 @@ from pathlib import Path
 
 load_dotenv()
 
-# USE_S3 = os.getenv('USE_S3') == "True"
-USE_S3 = "True"
+USE_S3 = os.getenv('USE_S3') == "True"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,7 +40,7 @@ AWS_SES_REGION_ENDPOINT = 'email.eu-north-1.amazonaws.com'
 
 os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', True))
+DEBUG = bool(os.environ.get('DEBUG', False))
 
 ALLOWED_HOSTS = ["alphadent.store", "booket.uz", "localhost", "127.0.0.1", "0.0.0.0"]
 

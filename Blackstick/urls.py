@@ -44,4 +44,7 @@ urlpatterns = [
     path('treatment/file/upload', mainviews.upload_file, name='upload_file'),
     path('settings/', include('dent.settings.urls')),
     path('', include('booket.client.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
