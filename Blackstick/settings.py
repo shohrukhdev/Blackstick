@@ -17,6 +17,8 @@ from pathlib import Path
 
 load_dotenv()
 
+# USE_S3 = os.getenv('USE_S3') == "True"
+USE_S3 = "True"
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,7 +66,8 @@ INSTALLED_APPS = [
     'dent',
     'booket',
     'fontawesomefree',
-    'django_apscheduler'
+    'django_apscheduler',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -205,16 +208,33 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+################ STATIC AND MEDIA FILES   ############################
 
-STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+if USE_S3 == "True":
+    # aws settings
+    AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
+    AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
+    AWS_S3_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "TEST")
+    AWS_S3_DEFAULT_ACL = "public-read"
+    AWS_S3_LOCATION = "eu-north-1"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_STORAGE_BUCKET_NAME}.s3.{AWS_S3_LOCATION}.amazonaws.com"
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+    STATICFILES_STORAGE = "booket.storage_backends.StaticStorage"
+    # public media s3 settings
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    DEFAULT_FILE_STORAGE = "booket.storage_backends.PublicMediaStorage"
+else:
+    LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), 'static'
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -223,7 +243,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/home'
-
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = BASE_DIR / 'mediafiles'

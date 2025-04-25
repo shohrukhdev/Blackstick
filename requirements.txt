@@ -16,6 +16,7 @@ django-crispy-forms==2.3
 django-hashid-field==3.3.7
 django-redis==5.4.0
 django-ses==4.4.0
+django-storages==1.14.6
 django-widget-tweaks==1.5.0
 djangorestframework==3.14.0
 djangorestframework-datatables==0.7.2
