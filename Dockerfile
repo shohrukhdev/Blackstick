@@ -67,6 +67,8 @@ COPY .. $APP_HOME
 # chown all the files to the app user
 RUN chown -R app:app $APP_HOME
 RUN chown -R app:app $APP_HOME/static
+RUN chmod -R 755 $APP_HOME/staticfiles
+RUN chmod -R 755 $APP_HOME/mediafiles
 
 # change to the app user
 USER app
