@@ -208,27 +208,39 @@ USE_I18N = True
 USE_TZ = True
 
 ################ STATIC AND MEDIA FILES   ############################
+AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
+AWS_S3_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "TEST")
+AWS_S3_DEFAULT_ACL = "public-read"
+AWS_S3_LOCATION = "eu-north-1"
+AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_STORAGE_BUCKET_NAME}.s3.{AWS_S3_LOCATION}.amazonaws.com"
+AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+STATICFILES_STORAGE = "booket.storage_backends.StaticStorage"
+# public media s3 settings
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+DEFAULT_FILE_STORAGE = "booket.storage_backends.PublicMediaStorage"
 
-if USE_S3 == 1:
-    # aws settings
-    AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
-    AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
-    AWS_S3_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "TEST")
-    AWS_S3_DEFAULT_ACL = "public-read"
-    AWS_S3_LOCATION = "eu-north-1"
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_STORAGE_BUCKET_NAME}.s3.{AWS_S3_LOCATION}.amazonaws.com"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    STATICFILES_STORAGE = "booket.storage_backends.StaticStorage"
-    # public media s3 settings
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    DEFAULT_FILE_STORAGE = "booket.storage_backends.PublicMediaStorage"
-else:
-    LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# if USE_S3 == 1:
+#     # aws settings
+#     AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
+#     AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
+#     AWS_S3_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "TEST")
+#     AWS_S3_DEFAULT_ACL = "public-read"
+#     AWS_S3_LOCATION = "eu-north-1"
+#     AWS_S3_CUSTOM_DOMAIN = f"{AWS_S3_STORAGE_BUCKET_NAME}.s3.{AWS_S3_LOCATION}.amazonaws.com"
+#     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+#     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+#     STATICFILES_STORAGE = "booket.storage_backends.StaticStorage"
+#     # public media s3 settings
+#     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+#     DEFAULT_FILE_STORAGE = "booket.storage_backends.PublicMediaStorage"
+# else:
+#     LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+#     STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+#     STATIC_URL = '/static/'
+#     MEDIA_URL = '/media/'
+#     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), 'static'
