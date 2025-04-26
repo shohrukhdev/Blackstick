@@ -17,7 +17,7 @@ from pathlib import Path
 
 load_dotenv()
 
-USE_S3 = os.getenv('USE_S3') == 1
+USE_S3 = os.environ.get("USE_S3", "1")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
