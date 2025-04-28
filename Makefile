@@ -26,3 +26,7 @@ load all fixtures:
 
 migrate docker db:
 	docker-compose exec web python manage.py flush --no-input
+
+
+collect statics:
+	python manage.py collectstatic --no-input --ignore=chartjs --ignore=dist --ignore=dt --ignore=fc --ignore=jui --ignore=login --ignore=node_modules --ignore=plugins --ignore=summernote --ignore=teeth --ignore=admin --ignore=venv --ignore=rest_framework --ignore=fontawesomefree -v 2

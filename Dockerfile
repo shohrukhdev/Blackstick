@@ -46,6 +46,8 @@ ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
 RUN mkdir $APP_HOME/mediafiles
+RUN chown -R app:app /home/app/web/staticfiles
+RUN chown -R app:app /home/app/web/mediafiles
 WORKDIR $APP_HOME
 
 # Install dependencies using apk (Alpine's package manager)

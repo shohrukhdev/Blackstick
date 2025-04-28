@@ -46,5 +46,5 @@ urlpatterns = [
     path('', include('booket.client.urls')),
 ]
 
-if settings.DEBUG:
+if settings.USE_S3 != "1":
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
