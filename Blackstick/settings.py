@@ -40,7 +40,7 @@ AWS_SES_REGION_ENDPOINT = 'email.eu-north-1.amazonaws.com'
 
 os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', False))
+DEBUG = bool(os.environ.get('DEBUG', True))
 
 ALLOWED_HOSTS = ["alphadent.store", "booket.uz", "localhost", "127.0.0.1", "0.0.0.0"]
 
