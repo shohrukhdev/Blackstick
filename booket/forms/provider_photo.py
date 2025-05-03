@@ -17,15 +17,12 @@ class ProviderPhotosForm(forms.ModelForm):
 
         }
 
-    def clean_photo(
-
-
-            self):
+    def clean_photo(self):
         photo = self.cleaned_data.get('photo')
         if photo:
             # Check file size (2 MB limit)
             max_size = 2 * 1024 * 1024  # 2 MB in bytes
-            if photo.size > max_size:
+            if photo.file.size > max_size:
                 raise ValidationError("The file size must be less than 2 MB.")
         return photo
 
