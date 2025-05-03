@@ -29,8 +29,8 @@ ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "your@email.com")
 ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
 
 ################ EMAIL service configs ########################
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "your_access_key_id")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "your_secret_key")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "your_access_key_id")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "your_secret_key")
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
@@ -40,7 +40,7 @@ AWS_SES_REGION_ENDPOINT = 'email.eu-north-1.amazonaws.com'
 
 os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DEBUG', False))
+DEBUG = bool(os.environ.get('DEBUG', True))
 
 ALLOWED_HOSTS = ["alphadent.store", "booket.uz", "localhost", "127.0.0.1", "0.0.0.0"]
 
