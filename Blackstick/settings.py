@@ -29,8 +29,8 @@ ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "your@email.com")
 ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
 
 ################ EMAIL service configs ########################
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "your_access_key_id")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "your_secret_key")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "your_access_key_id")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "your_secret_key")
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
@@ -213,8 +213,8 @@ if USE_S3 == "1":
     AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "blackstickbucket")
     AWS_S3_DEFAULT_ACL = None
-    AWS_S3_LOCATION = "eu-north-1"
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_LOCATION}.amazonaws.com"
+    AWS_LOCATION = "eu-north-1"
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_LOCATION}.amazonaws.com"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_S3_FILE_OVERWRITE = False
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
@@ -226,7 +226,7 @@ if USE_S3 == "1":
     STORAGES = {
         # Media file (image) management
         "default": {
-            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+            "BACKEND": "Blackstick.storage_backends.PublicMediaStorage",
         },
         # Static files management
         "staticfiles": {
