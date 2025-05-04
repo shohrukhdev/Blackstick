@@ -42,7 +42,7 @@ os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', True))
 
-ALLOWED_HOSTS = ["alphadent.store", "booket.uz", "localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", ["alphadent.store", "booket.uz"])
 
 CSRF_TRUSTED_ORIGINS = ("https://alphadent.store", "https://booket.uz")
 CORS_ALLOWED_ORIGINS = ["https://alphadent.store", "https://booket.uz"]
