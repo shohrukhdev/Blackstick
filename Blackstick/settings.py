@@ -214,6 +214,7 @@ if USE_S3 == "1":
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "blackstickbucket")
     AWS_S3_DEFAULT_ACL = None
     AWS_LOCATION = "eu-north-1"
+    AWS_S3_REGION_NAME = "eu-north-1"
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_LOCATION}.amazonaws.com"
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_S3_FILE_OVERWRITE = False
