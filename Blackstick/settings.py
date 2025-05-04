@@ -218,10 +218,8 @@ if USE_S3 == "1":
     AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
     AWS_S3_FILE_OVERWRITE = False
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    # STATICFILES_STORAGE = "booket.storage_backends.StaticStorage"
     # public media s3 settings
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    # DEFAULT_FILE_STORAGE = "booket.storage_backends.PublicMediaSt"
 
     STORAGES = {
         # Media file (image) management
