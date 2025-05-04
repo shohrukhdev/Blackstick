@@ -29,8 +29,8 @@ ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "your@email.com")
 ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
 
 ################ EMAIL service configs ########################
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "your_access_key_id")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "your_secret_key")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "your_access_key_id")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "your_secret_key")
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
@@ -226,7 +226,7 @@ if USE_S3 == "1":
     STORAGES = {
         # Media file (image) management
         "default": {
-            "BACKEND": "Blackstick.storage_backends.PublicMediaStorage",
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
         },
         # Static files management
         "staticfiles": {
