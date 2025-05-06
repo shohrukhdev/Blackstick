@@ -211,7 +211,7 @@ if USE_S3 == "1":
     # aws settings
     AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
     AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
-    AWS_STORAGE_BUCKET_NAME = "blackstick2bucket"
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "blackstickbucket")
     AWS_S3_DEFAULT_ACL = None
     AWS_LOCATION = "eu-north-1"
     AWS_S3_REGION_NAME = "eu-north-1"
