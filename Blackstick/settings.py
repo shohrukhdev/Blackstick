@@ -216,7 +216,7 @@ if USE_S3 == "1":
     AWS_LOCATION = "eu-north-1"
     AWS_S3_REGION_NAME = "eu-north-1"
     AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_LOCATION}.amazonaws.com"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=86400"}
+    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=8640"}
     AWS_S3_FILE_OVERWRITE = False
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
     # public media s3 settings
