@@ -256,7 +256,7 @@ COLLECTSTATIC_IGNORE_PATTERNS = [
     "plugins/**",
     "summernote/**"
 ]
-LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale")]
 
 
 
