@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from django.contrib import messages
-from django_ses.settings import AWS_SES_REGION_NAME, AWS_SES_REGION_ENDPOINT
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -31,6 +30,10 @@ ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
 ################ EMAIL service configs ########################
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "access_key_id")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "secret_key")
+
+AWS_SES_ACCESS_KEY_ID = os.environ.get("AWS_SES_USER_ACCESS_KEY_ID", "access_key_id")
+AWS_SES_SECRET_ACCESS_KEY = os.environ.get("AWS_SES_USER_SECRET_ACCESS_KEY", "secret_key")
+
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 

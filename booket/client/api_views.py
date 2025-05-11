@@ -203,11 +203,11 @@ def create_appointment_send_otp(request):
                     otp.save()
             elif client_data["confirmation_method"] == "e":
                 email_result = send_mail(
-                    "Confirmation code",
+                    "booket.uz confirmation code",
                     sms_text,
-                    "noreply@example.com",
+                    "alphadevmanager@gmail.com",
                     [client.email],
-                    fail_silently=True
+                    fail_silently=False
                 )
                 logger.info(f"Email sent: {email_result}")
 
