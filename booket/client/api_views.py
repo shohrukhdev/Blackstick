@@ -186,11 +186,11 @@ def create_appointment_send_otp(request):
                 verification_method=client_data["confirmation_method"]
             )
             if client.language_code == "uz":
-                sms_text = f"Tasdiqlash kodi:{otp.otp_code}"
+                sms_text = f"booket.uz uchun uchrashuvni tasdiqlash kodi:{otp.otp_code}"
             elif client.language_code == "ru":
-                sms_text = f"Код подтверждения: {otp.otp_code}"
+                sms_text = f"Код подтверждения записи на booket.uz: {otp.otp_code}"
             else:
-                sms_text = f"Appointment confirmation code: {otp.otp_code}"
+                sms_text = f"Appointment confirmation code for booket.uz: {otp.otp_code}"
             if client_data["confirmation_method"] == "p":
                 sms_result = send_sms(
                     phone_number=client.phone_number,
