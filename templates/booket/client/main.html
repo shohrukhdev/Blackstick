@@ -446,6 +446,7 @@
 <script>
     // Global variables for managing appointment data and related operations
     const appointment = { services: [] };
+    appointment.provider_identifier = "{{ provider.identifier }}"
     let responseData = {};
     let lastDate;
     let firstDate;
@@ -1026,7 +1027,7 @@ let timerInterval
                 'X-Signature': signature
             },
             type: 'POST',
-            data: JSON.stringify({"otp_id": appointment.otp_id, "otp_code": otp_code}),
+            data: JSON.stringify({"otp_id": appointment.otp_id, "otp_code": otp_code, "provider_identifier": appointment.provider_identifier}),
             contentType: 'application/json',
             success: function (response){
                 $('#clientConfirmationForm').hide()

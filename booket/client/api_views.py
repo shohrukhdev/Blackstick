@@ -257,6 +257,7 @@ def confirmOTP(request):
     try:
         opt_id = request.data.get("otp_id")
         otp_code = request.data.get("otp_code")
+        provider_identifier = request.data.get("provider_identifier")
         otp = OTPVerification.objects.get(id=opt_id, otp_code=otp_code, is_verified=False)
         if otp:
             otp.is_verified = True
@@ -270,8 +271,7 @@ def confirmOTP(request):
                 f"Sizda yangi uchrashuv/У вас новая встреча! "
                 f"Vaqti/Время: {appointment.start_datetime.strftime('%d.%m.%Y %H:%M')} - {appointment.end_datetime.strftime('%H:%M')}. "
                 f"Mijoz/Клиент: {appointment.client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/")
-            provider_client = ProviderClient.objects.get(client=appointment.client)
-            if provider_client.provider.identifier not in DEMO_PROVIDERS:
+            if provider_identifier not in DEMO_PROVIDERS:
                 send_sms(
                     phone_number=otp.appointment.server.phone_number,
                     message=notification_text
