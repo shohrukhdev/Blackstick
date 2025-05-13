@@ -272,10 +272,11 @@ def confirmOTP(request):
                 f"Vaqti/Время: {appointment.start_datetime.strftime('%d.%m.%Y %H:%M')} - {appointment.end_datetime.strftime('%H:%M')}. "
                 f"Mijoz/Клиент: {appointment.client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/")
             if provider_identifier not in DEMO_PROVIDERS:
-                send_sms(
+                sms_result = send_sms(
                     phone_number=otp.appointment.server.phone_number,
                     message=notification_text
                 )
+                logger.info(sms_result)
             return Response({"success": True, "message": "OTP verified successfully"}, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "message": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
