@@ -24,6 +24,7 @@ from ..utils import valid_signature, mask_email, mask_phone_number, is_demo_prov
 
 logger = logging.getLogger(__name__)
 
+
 class ProviderServerDetailView(generics.RetrieveAPIView):
     throttle_classes = [AnonRateThrottle]
     serializer_class = ProviderServerSerializer
@@ -214,8 +215,6 @@ def create_appointment_send_otp(request):
                     fail_silently=False
                 )
                 logger.info(f"Email sent: {email_result}")
-
-
 
             masked_email = mask_email(client.email)
             masked_phone_number = mask_phone_number(client.phone_number)
