@@ -19,6 +19,7 @@ from rest_framework.response import Response
 from datetime import datetime
 from django.utils import timezone
 
+from ..constants import DEMO_PROVIDERS
 from ..sms_service import send_sms
 from ..utils import valid_signature, mask_email, mask_phone_number, is_demo_provider
 
@@ -194,27 +195,29 @@ def create_appointment_send_otp(request):
                 sms_text = f"Код подтверждения записи на платформе booket.uz :{otp.otp_code}"
             else:
                 sms_text = f"Appointment confirmation code for booket.uz: {otp.otp_code}"
-            if client_data["confirmation_method"] == "p":
-                sms_result = send_sms(
-                    phone_number=client.phone_number,
-                    message=sms_text,
-                )
-                logger.info(sms_result)
-                if sms_result:
-                    otp.sms_request_id = sms_result["id"]
-                    otp.sms_status = sms_result["status"]
-                    otp.sms_status_date = datetime.now()
-                    otp.save()
-            elif client_data["confirmation_method"] == "e":
-                pass
-                email_result = send_mail(
-                    "booket.uz confirmation code",
-                    sms_text,
-                    "alphadevmanager@gmail.com",
-                    [client.email],
-                    fail_silently=False
-                )
-                logger.info(f"Email sent: {email_result}")
+
+            if not is_demo_provider(provider.identifier):
+                if client_data["confirmation_method"] == "p":
+                    sms_result = send_sms(
+                        phone_number=client.phone_number,
+                        message=sms_text,
+                    )
+                    logger.info(sms_result)
+                    if sms_result:
+                        otp.sms_request_id = sms_result["id"]
+                        otp.sms_status = sms_result["status"]
+                        otp.sms_status_date = datetime.now()
+                        otp.save()
+                elif client_data["confirmation_method"] == "e":
+                    pass
+                    email_result = send_mail(
+                        "booket.uz confirmation code",
+                        sms_text,
+                        "alphadevmanager@gmail.com",
+                        [client.email],
+                        fail_silently=False
+                    )
+                    logger.info(f"Email sent: {email_result}")
 
             masked_email = mask_email(client.email)
             masked_phone_number = mask_phone_number(client.phone_number)
@@ -267,10 +270,12 @@ def confirmOTP(request):
                 f"Sizda yangi uchrashuv/У вас новая встреча! "
                 f"Vaqti/Время: {appointment.start_datetime.strftime('%d.%m.%Y %H:%M')} - {appointment.end_datetime.strftime('%H:%M')}. "
                 f"Mijoz/Клиент: {appointment.client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/")
-            send_sms(
-                phone_number=otp.appointment.server.phone_number,
-                message=notification_text
-            )
+            provider_client = ProviderClient.objects.get(client=appointment.client)
+            if provider_client.provider.identifier not in DEMO_PROVIDERS:
+                send_sms(
+                    phone_number=otp.appointment.server.phone_number,
+                    message=notification_text
+                )
             return Response({"success": True, "message": "OTP verified successfully"}, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "message": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
