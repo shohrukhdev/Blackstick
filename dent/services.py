@@ -1,3 +1,4 @@
+from booket.sms_service import send_sms
 from .models import *
 from datetime import datetime
 import traceback
@@ -25,6 +26,12 @@ def add_event(form, cur_user):
                              end_time=end_time_obj,
                              background_color=form['background'],
                              border_color=form['background'])
+        sms_text = (f"Siz tish doktori {staff.user.get_full_name()} qabuliga yozildingiz. "
+                    f"Vaqti: {start_time_obj.strftime('%d.%m.%Y %H:%M')}. Iltimos kech qolmang!")
+        send_sms(
+            phone_number=patient.mobile_phone,
+            message=sms_text,
+        )
         response['success'] = True
     except Exception as e:
         response['success'] = False
