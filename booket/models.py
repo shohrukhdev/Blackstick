@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models import UniqueConstraint, Q
+from django.db.models import UniqueConstraint, Q, CheckConstraint
 
 logger = logging.getLogger('booket')  # Use the app's logger
 
@@ -158,21 +158,36 @@ class Client(models.Model):
     language_code = models.CharField(max_length=3, null=True, blank=True)
 
     class Meta:
-        """
-        Clients without an email or phone (optional fields).
-        If a client provides an email, it must be unique.
-        If a client provides a phone number, it must be unique.
-        The same full name can exist with different phone numbers or different emails.
-        """
         constraints = [
-            UniqueConstraint(
-                fields=["full_name", "phone_number"],
-                name="unique_client_name_phone"
+            # 1. Constraint to ensure at least one of email or phone_number is NOT NULL.
+            CheckConstraint(
+                check=Q(email__isnull=False) | Q(phone_number__isnull=False),
+                name='at_least_one_contact_info_required'
             ),
+
+            # 2. Constraint for when BOTH email and phone_number are provided.
+            # The combination of non-null email and non-null phone_number must be unique.
             UniqueConstraint(
-                fields=["phone_number"],
-                name="unique_client_phone",
-                condition=Q(phone_number__isnull=False)
+                fields=['email', 'phone_number'],
+                condition=Q(email__isnull=False) & Q(phone_number__isnull=False),
+                name='unique_email_and_phone_when_both_provided'
+            ),
+
+            # 3. Constraint for when phone_number IS NULL (only email is provided as contact).
+            # Email must be unique among all records where phone_number is NULL.
+            # This addresses the error you saw: two records with (some_email, NULL) would conflict.
+            UniqueConstraint(
+                fields=['email'],
+                condition=Q(phone_number__isnull=True) & Q(email__isnull=False),
+                name='unique_email_when_phone_is_null'
+            ),
+
+            # 4. Constraint for when email IS NULL (only phone_number is provided as contact).
+            # Phone_number must be unique among all records where email is NULL.
+            UniqueConstraint(
+                fields=['phone_number'],
+                condition=Q(email__isnull=True) & Q(phone_number__isnull=False),
+                name='unique_phone_when_email_is_null'
             )
         ]
 
@@ -245,17 +260,6 @@ class OTPVerification(models.Model):
             self.otp_code = str(random.randint(100000, 999999))  # Generate 6-digit OTP
         super().save(*args, **kwargs)
 
-    def send_otp(self):
-        if self.phone_number:
-            # Integrate SMS API here
-            pass
-        if self.email:
-            pass
-            # send_mail(
-            #     "Your Verification Code",
-            #     f"Your OTP code is {self.otp_code}",
-            #     "noreply@example.com",
-            #     [self.email],
-            #     fail_silently=False,
-            # )
-        cache.set(f"otp_{self.phone_number or self.email}", self.otp_code, timeout=300)  # Store OTP for 5 minutes
+    def update_code(self):
+        self.otp_code = str(random.randint(100000, 999999))
+        self.save()

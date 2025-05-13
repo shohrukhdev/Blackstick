@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.core.mail import send_mail
 from django.db import transaction
@@ -11,7 +12,7 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
 from booket.models import (
-    ProviderServer, Client, logger, Provider, ProviderClient,
+    ProviderServer, Client, Provider, ProviderClient,
     AppointmentService, Appointment, Service, OTPVerification)
 from .serializers import ProviderServerSerializer, ClientSerializer
 from rest_framework.response import Response
@@ -21,6 +22,7 @@ from django.utils import timezone
 from ..sms_service import send_sms
 from ..utils import valid_signature, mask_email, mask_phone_number, is_demo_provider
 
+logger = logging.getLogger(__name__)
 
 class ProviderServerDetailView(generics.RetrieveAPIView):
     throttle_classes = [AnonRateThrottle]
@@ -186,9 +188,9 @@ def create_appointment_send_otp(request):
                 verification_method=client_data["confirmation_method"]
             )
             if client.language_code == "uz":
-                sms_text = f"booket.uz uchun uchrashuvni tasdiqlash kodi:{otp.otp_code}"
+                sms_text = f"booket.uz platformasida uchrashuvni tasdiqlash kodi: {otp.otp_code}"
             elif client.language_code == "ru":
-                sms_text = f"Код подтверждения записи на booket.uz: {otp.otp_code}"
+                sms_text = f"Код подтверждения записи на платформе booket.uz :{otp.otp_code}"
             else:
                 sms_text = f"Appointment confirmation code for booket.uz: {otp.otp_code}"
             if client_data["confirmation_method"] == "p":
@@ -196,12 +198,14 @@ def create_appointment_send_otp(request):
                     phone_number=client.phone_number,
                     message=sms_text,
                 )
+                logger.info(sms_result)
                 if sms_result:
                     otp.sms_request_id = sms_result["id"]
                     otp.sms_status = sms_result["status"]
                     otp.sms_status_date = datetime.now()
                     otp.save()
             elif client_data["confirmation_method"] == "e":
+                pass
                 email_result = send_mail(
                     "booket.uz confirmation code",
                     sms_text,
@@ -210,6 +214,8 @@ def create_appointment_send_otp(request):
                     fail_silently=False
                 )
                 logger.info(f"Email sent: {email_result}")
+
+
 
             masked_email = mask_email(client.email)
             masked_phone_number = mask_phone_number(client.phone_number)
@@ -256,10 +262,69 @@ def confirmOTP(request):
             appointment.status = "CONFIRMED"
             appointment.save()
             otp.save()
+
+            # Send SMS notification to server about new appointment
+            notification_text = (
+                f"Sizda yangi uchrashuv/У вас новая встреча! "
+                f"Vaqti/Время: {appointment.start_datetime.strftime('%d.%m.%Y %H:%M')} - {appointment.end_datetime.strftime('%H:%M')}. "
+                f"Mijoz/Клиент: {appointment.client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/")
+            send_sms(
+                phone_number=otp.appointment.server.phone_number,
+                message=notification_text
+            )
             return Response({"success": True, "message": "OTP verified successfully"}, status=status.HTTP_200_OK)
         else:
             return Response({"success": False, "message": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
 
+    except Exception as e:
+        logger.error(f"Error on confirmOTP: {e}", exc_info=True)
+        return Response({"success": False, "message": "OTP confirmation failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def resendOTP(request):
+    if not valid_signature(request):
+        return Response({"error": "Invalid request headers"}, status=status.HTTP_400_BAD_REQUEST)
+
+    if request.method != "POST":
+        return Response({"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    try:
+        otp_id = request.data.get("otp_id")
+        otp = OTPVerification.objects.get(id=otp_id, is_verified=False)
+        otp.update_code()
+        client = otp.appointment.client
+        if client.language_code == "uz":
+            sms_text = f"booket.uz platformasida uchrashuvni tasdiqlash kodi: {otp.otp_code}"
+        elif client.language_code == "ru":
+            sms_text = f"Код подтверждения записи на платформе booket.uz :{otp.otp_code}"
+        else:
+            sms_text = f"Appointment confirmation code for booket.uz: {otp.otp_code}"
+        if otp.verification_method == "p":
+            sms_result = send_sms(
+                phone_number=client.phone_number,
+                message=sms_text,
+            )
+            logger.info(f"re-send SMS: {sms_result}")
+            if sms_result:
+                otp.sms_request_id = sms_result["id"]
+                otp.sms_status = sms_result["status"]
+                otp.sms_status_date = datetime.now()
+                otp.save()
+        elif otp.verification_method == "e":
+            email_result = send_mail(
+                "booket.uz confirmation code",
+                sms_text,
+                "alphadevmanager@gmail.com",
+                [client.email],
+                fail_silently=False
+            )
+            logger.info(f"Email re-sent: {email_result}")
+        response_data = {
+            "success": True,
+            "message": "OTP re-sent successfully",
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
     except Exception as e:
         logger.error(f"Error on confirmOTP: {e}", exc_info=True)
         return Response({"success": False, "message": "OTP confirmation failed"}, status=status.HTTP_400_BAD_REQUEST)

@@ -409,10 +409,10 @@
                     <div class="input-group">
                       <input type="text" class="form-control" id="otp_code" name="otp_code"
                              placeholder="Enter Code">
-                      <button class="btn btn-success shadow" type="button" onclick="confirmOTP()" id="otpConfirmBtn" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)</button>
-                      <button class="btn btn-primary shadow" id="resendBtn" type="button" style="display: none;">{% trans "Resend" %}</button>
+                      <button class="btn btn-success shadow" id="otpConfirmBtn" type="button" onclick="confirmOTP()" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)</button>
                     </div>
                   </div>
+                  <button class="btn btn-primary shadow" id="resendBtn" onclick="resendOTPCode()" style="display: none;" type="button" disabled>{% trans "Resend" %}</button>
                 </div>
               </form>
             </div>
@@ -828,7 +828,7 @@
         resetAppointmentData();
         clearClientInfoInput();
         $('.timeSlot .confirmation .tfooter .confirmationSuccess .client_info_input .confirmationCodeInput').hide();
-        $('#resendBtn #clientFound').hide()
+        $('#clientFound').hide()
         $('.serviceList').show();
         $('.confirmation').hide();
         $('.timeSlot').hide();
@@ -993,15 +993,16 @@ let timerInterval
         let timer = 60;
         $('#timer').text(timer);
         $('#otpConfirmBtn').prop('disabled', true);
-        $('#resendBtn').hide();
+        $('#resendBtn').prop('disabled', true);
         $('#otpConfirmBtn').show();
         timerInterval = setInterval(() => {
             timer--;
             $('#timer').text(timer);
             if (timer <= 0) {
                 clearInterval(timerInterval);
-                $('#otpConfirmBtn').hide();
-                $('#resendBtn').show();
+                $('#otpConfirmBtn').prop('disabled', false);
+                $('#resendBtn').show()
+                $('#resendBtn').prop('disabled', false);
             }
         }, 1000);
     }
@@ -1028,7 +1029,6 @@ let timerInterval
             data: JSON.stringify({"otp_id": appointment.otp_id, "otp_code": otp_code}),
             contentType: 'application/json',
             success: function (response){
-                console.log(response)
                 $('#clientConfirmationForm').hide()
                 $('#confirmationCodeInput').hide()
                 $('#backToTimeSlots').hide()
@@ -1038,8 +1038,27 @@ let timerInterval
                 handleAjaxError(error);
             }
         })
-        console.log(appointment.otp_id)
         resetOTPInput()
+    }
+    
+    function resendOTPCode(){
+        $.ajax({
+            url: '/client/appointment/confirm/resend/',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            type: 'POST',
+            data: JSON.stringify({"otp_id": appointment.otp_id}),
+            contentType: 'application/json',
+            success: function (response){
+                $('#resendBtn').prop('disabled', true)
+                startTimer()
+            },
+            error: function (error) {
+                handleAjaxError(error);
+            }
+        })
     }
     
     function handleAjaxError(error){

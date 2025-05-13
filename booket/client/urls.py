@@ -10,5 +10,6 @@ urlpatterns = [
     path('provider-server/<int:p_server_id>/available-slots/', AvailableTimeSlotsView.as_view(), name='available-slots'),
     path('client/appointment/create/', api_view.create_appointment_send_otp, name='create_appointment'),
     path('client/appointment/confirm/', api_view.confirmOTP, name='confirmOTP'),
+    path('client/appointment/confirm/resend/', api_view.resendOTP, name='resendOTP'),
 
 ]
