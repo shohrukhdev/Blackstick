@@ -4,7 +4,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from booket import services as sv
 from booket.forms.provider_photo import ProviderPhotosFormSet
-
+import qrcode
+import io
 from booket.models import Provider, Server, ProviderPhotos
 
 
@@ -156,3 +157,23 @@ def provider_photos(request):
         'formset': formset,
         'existing_photos': existing_photos,
     })
+
+
+@login_required
+def provider_qr(request, provider_identifier: str):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(f"https://booket.uz/{provider_identifier}/")  # The URL to encode
+    qr.make(fit=True)
+
+    img = qr.make_image(fill_color="black", back_color="white")
+
+    buffer = io.BytesIO()
+    img.save(buffer, format="PNG")
+    buffer.seek(0)
+
+    return HttpResponse(buffer.getvalue(), content_type="image/png")

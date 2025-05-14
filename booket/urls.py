@@ -8,6 +8,7 @@ urlpatterns = [
     path('provider/', b_views.provider_main, name="b_provider_main"),
     path('provider/edit/', b_views.provider_edit, name="b_provider_edit"),
     path('provider/photo/', b_views.provider_photos, name="b_provider_photos"),
+    path('provider/qr/<str:provider_identifier>/', b_views.provider_qr, name="b_provider_qr"),
 
     path('server/edit/<int:id>/', b_views.server_edit, name="b_server_edit"),
     path('servicetype/add/', b_views.service_type_add, name="b_service_type_add"),

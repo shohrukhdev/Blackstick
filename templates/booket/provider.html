@@ -21,6 +21,7 @@
             <p class="card-text">{{ provider.description|safe }}</p>
             <a onclick="location.href='{% url 'b_provider_edit' %}'" class="btn btn-primary">{% trans "Edit" %}</a>
             <a onclick="location.href='{% url 'b_provider_photos' %}'" class="btn btn-success">{% trans "Photos" %}</a>
+            <a onclick="location.href='https://booket.uz/b/provider/qr/{{ provider.identifier }}/'" class="btn btn-warning">{% trans "QR" %}</a>
           </div>
         </div>
       </div>
