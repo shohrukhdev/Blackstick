@@ -56,17 +56,29 @@
         </div>
       </div>
       {% if request.user.staff_user.role.code == "OWN" %}
-      <div class="col-lg-4 col-6">
-        <div class="small-box bg-primary" style="cursor: pointer" onclick="window.location.href='{% url "clinic_details" %}?successSave=false'">
-          <div class="inner">
+        <div class="col-lg-4 col-6">
+          <div class="small-box bg-primary" style="cursor: pointer"
+               onclick="window.location.href='{% url "clinic_details" %}?successSave=false'">
+            <div class="inner">
               <h3>{% trans 'Clinic details' %}</h3>
               <p>{% trans 'Your clinic information' %}</p>
-          </div>
-          <div class="icon">
-            <i class="fas fa-hospital"></i>
+            </div>
+            <div class="icon">
+              <i class="fas fa-hospital"></i>
+            </div>
           </div>
         </div>
-      </div>
+        <div class="col-lg-4 col-6">
+          <div class="small-box bg-primary" style="cursor: pointer" onclick="window.location.href='{% url "clinic_details" %}?successSave=false'">
+            <div class="inner">
+              <h3>{% trans 'Reports' %}</h3>
+              <p>{% trans 'Reports and statistics' %}</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-hospital"></i>
+            </div>
+          </div>
+        </div>
       {% endif %}
     </div>
 {#==============================  SETTINGS blocks =============================    #}

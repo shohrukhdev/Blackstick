@@ -1,0 +1,131 @@
+{% extends "home.html" %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% load mathfilters %}
+{% block title %}{% trans 'Financial report' %}{% endblock %}
+{% block content %}
+{% get_current_language as LANG_CODE %}
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 d-flex" style="margin-top: 1rem">
+        <div class="card shadow h-100 w-100">
+          <div class="card-body" style="margin-bottom: -15px">
+            <form>
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-greater-than-equal"></i>
+                  </span>
+                </div>
+                <input id="date_start" type="date" name="date_start" class="form-control" value="{{ date_start|date:'Y-m-d' }}">
+              </div>
+              <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-less-than-equal"></i>
+                  </span>
+                </div>
+                <input id="date_end" type="date" name="date_end" class="form-control" value="{{ date_end|date:'Y-m-d' }}">
+              </div>
+              <button class="btn btn-block bg-gradient-primary btn-sm shadow" style="width: 100%">{% trans "Apply" %}</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 d-flex" style="margin-top: 1rem">
+        <div class="card shadow card-primary h-100 w-100">
+          <div class="card-body" style="margin-bottom: -15px">
+            <div class="info-box bg-gradient-success shadow" style="display: block; text-align: center; margin: 0; cursor: pointer;">
+                <span style="font-size: 3.5rem; margin: 0">{{ treatments_count }}</span>
+              <div style="margin: 0">
+                <span class="shadow" style="font-size: 1.1rem">{% trans "Treatments" %}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 d-flex" style="margin-top: 1rem">
+        <div class="card shadow card-primary h-100 w-100">
+          <div class="card-body" style="margin-bottom: -15px">
+            <div class="info-box bg-gradient-primary shadow" style="display: block; text-align: center; margin: 0">
+                <span style="font-size: 3.5rem; margin: 0">{{ new_patients_count }}</span>
+              <div style="margin: 0">
+                <span class="shadow" style="font-size: 1.1rem">{% trans "New clients" %}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 d-flex" style="margin-top: 1rem">
+        <div class="card shadow card-primary h-100 w-100">
+          <div class="card-body d-flex align-items-center justify-content-center">
+            <div class="info-box bg-gradient-info shadow d-flex flex-column align-items-center justify-content-center w-100 h-100" style="margin: 0;">
+                <span style="font-size: 1.5rem;">{{ total_payments|intcomma }}</span>
+              <div>
+                <span class="shadow" style="font-size: 1.1rem">{% trans "Payments" %}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Debtor patients section -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{% trans "Debtor patients" %}</h3>
+            <div class="card-tools">
+              <button onclick="window.location.href='{% url "treatment_history " %}'" type="button" class="btn btn-block bg-gradient-primary btn-sm shadow">
+                {% trans 'Treatments history' %}
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="table table-bordered table-striped table-responsive-sm table-responsive-md">
+              <thead>
+                <tr>
+                  <th>{% trans "Action" %}</th>
+                  <th>{% trans "ID" %}</th>
+                  <th>{% trans "Patient" %}</th>
+                  <th>{% trans "Date" %}</th>
+                  <th>{% trans "Total Amount" %}</th>
+                  <th>{% trans "Remaining" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for treatment in debtor_treatments %}
+                <tr>
+                  <td><button onclick="window.location.href='{% url "treatment_edit" %}?treatment_ref_id={{ treatment.reference_id }}'" class="btn btn-block bg-gradient-warning btn-sm">{% trans "Open" %}</button></td>
+                  <td>{{ treatment.reference_id }}</td>
+                  <td>{{ treatment.patient.full_name }}({{ treatment.patient.mobile_phone }})</td>
+                  <td>{{ treatment.cr_on|date:"d.m.Y" }}</td>
+                  <td>{{ treatment.get_actual_amount|intcomma }}</td>
+                  <td>{{ treatment.total_amount|sub:treatment.paid_amount|intcomma }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="6" class="text-center">{% trans "No debtor patients found" %}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Service distribution section -->
+    <div class="row mt-4">
+
+    </div>
+  </div>
+<script>
+</script>
+{% endblock %}

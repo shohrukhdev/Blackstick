@@ -82,13 +82,13 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-9">
+      <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
         <div class="card" style="margin-top: 2px">
           <div class="card-header p-2">
             <h4>{% trans 'Dr.' %}  {{ doctor.user.last_name }}</h4>
           </div>
           <div class="card-body" style="overflow-x: auto">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-responsive-md table-responsive-sm">
               <tbody id="teeth_table" class="teethtable">
               <tr class="upper-row">
                 <td>
@@ -328,7 +328,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-3">
+      <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
         <div class="card" style="margin-top: 2px">
           <div class="card-header p-2">
             <h4>{% trans 'Pt.' %} {{ patient.full_name }}</h4>
@@ -484,6 +484,7 @@
 ////////////////////   ON BTN SAVE  ///////////////////////////////
     $(document).on('click', '#btnsave', function () {
       cart.recommendations = $('#recommendations').val();
+      cart.amount_paid = $('#amount_paid').val();
       $.ajax({
         type: "POST",
         url: "{% url 'treatement_save' %}",
@@ -535,7 +536,7 @@
             state = 'checked'
           }
           $('#service_list').append(
-            '<div class="col-2">' +
+            '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">' +
               '<div class="icheck-primary d-inline">' +
                 '<input ' + state + ' data-id="' + val.id + '"  class="stateinput" type="checkbox" id="statecheck' + val.id + '" name="state' + val.id + '">' +
                 '<label for="statecheck' + val.id + '">' + val.name_ru + '</label>' +
@@ -549,7 +550,7 @@
             state = 'checked'
           }
           $('#service_list').append(
-            '<div class="col-2">' +
+            '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">' +
               '<div class="icheck-primary d-inline">' +
                 '<input ' + state + ' data-id="' + val.id + '" class="stateinput" type="checkbox" id="statecheck' + val.id + '" name="state' + val.id + '">' +
                 '<label for="statecheck' + val.id + '">' + val.name_uz + '</label>' +
@@ -563,7 +564,7 @@
             state = 'checked'
           }
           $('#service_list').append(
-            '<div class="col-2">' +
+            '<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">' +
               '<div class="icheck-primary d-inline">' +
                 '<input ' + state + ' data-id="' + val.id + '" class="stateinput" type="checkbox" id="statecheck' + val.id + '" name="state' + val.id + '">' +
                 '<label for="statecheck' + val.id + '">' + val.name + '</label>' +
@@ -595,7 +596,7 @@
         }
         if (cur_lang === 'uz'){
           $('#service_list').append(
-          '<div class="col-2">' +
+          '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-6">' +
           '  <div style="width: 100px">' +
           '    <div class="input-group mb-3">' +
           '      <div class="input-group-prepend">' +
@@ -619,10 +620,10 @@
           '    </div>' +
           '  </div>' +
           '</div>' +
-          '<div class="col-4">' + val.name_uz + ' <b>' + val.price.toLocaleString() + '</b></div>');
+          '<div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">' + val.name_uz + ' <b>' + val.price.toLocaleString() + '</b></div>');
         } else if (cur_lang === 'ru'){
           $('#service_list').append(
-          '<div class="col-2">' +
+          '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-6">' +
           '  <div style="width: 100px">' +
           '    <div class="input-group mb-3">' +
           '      <div class="input-group-prepend">' +
@@ -646,10 +647,10 @@
           '    </div>' +
           '  </div>' +
           '</div>' +
-          '<div class="col-4">' + val.name_ru + ' <b>' + val.price.toLocaleString() + '</b></div>');
+          '<div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">' + val.name_ru + ' <b>' + val.price.toLocaleString() + '</b></div>');
         } else {
           $('#service_list').append(
-          '<div class="col-2">' +
+          '<div class="col-lg-2 col-md-4 col-sm-6 col-xs-6">' +
           '  <div style="width: 100px">' +
           '    <div class="input-group mb-3">' +
           '      <div class="input-group-prepend">' +
@@ -673,7 +674,7 @@
           '    </div>' +
           '  </div>' +
           '</div>' +
-          '<div class="col-4">' + val.name + ' <b>' + val.price.toLocaleString() + '</b></div>');
+          '<div class="col-lg-4 col-md-8 col-sm-6 col-xs-6">' + val.name + ' <b>' + val.price.toLocaleString() + '</b></div>');
         }
 
       });
@@ -748,7 +749,7 @@
                            '</tr>' +
                            '<tr>' +
                               '<td>{% trans 'Paid' %}:</td>' +
-                              '<td><input id="amount_paid" value="' + cart.amount_paid + '" onchange="paidamounthandler(this)" type="number" min="0" class="form-control" style="float: right; height: 1.6rem"></td>' +
+                              '<td><input id="amount_paid" value="' + cart.amount_paid + '"bt type="number" min="0" class="form-control" style="float: right; height: 1.6rem"></td>' +
                            '</tr>' +
                            '<tr><td colspan=2><textarea id="recommendations" class="form-control" placeholder="{% trans 'Recommendations' %}"></textarea></td></tr>' +
                            '<tr><td colspan=2><button type="button" id="btnsave" class="btn btn-block bg-gradient-success btn-sm">{% trans 'SAVE' %}</button></td></tr>' +

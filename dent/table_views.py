@@ -15,3 +15,13 @@ class PatientViewSet(viewsets.ModelViewSet):
 class DebtViewSet(viewsets.ModelViewSet):
     queryset = Treatment.objects.all()
     serializer_class = DebtSerializer
+
+
+class TreatmentViewSet(viewsets.ModelViewSet):
+    queryset = Treatment.objects.all()
+    serializer_class = TreatmentSerializer
+
+    def get_queryset(self):
+        return Treatment.objects.filter(
+            doctor__user=self.request.user
+        )

@@ -119,6 +119,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{% url 'finance_board' %}?successSave=false" class="nav-link">
+                                <i class="nav-icon fas fa-coins"></i>
+                                <p>
+                                    {% trans 'Finance' %}
+                                </p>
+                            </a>
+                        </li>
                     {% endif %}
 
                         <li class="nav-item" onclick="submitLogoutForm()" style="cursor: pointer">

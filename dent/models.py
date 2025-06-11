@@ -38,6 +38,7 @@ class Staff(models.Model):
     additional_info = models.TextField(null=True, blank=True)
     status = models.IntegerField(default=1)
     hire_date = models.DateField()
+    notes = models.TextField(null=True, blank=True)
     cr_on = models.DateTimeField(auto_now_add=True)
     up_on = models.DateTimeField(auto_now=True)
     cr_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_crby', null=True)

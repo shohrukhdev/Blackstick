@@ -1,9 +1,7 @@
 from booket.sms_service import send_sms
-from .models import *
 from datetime import datetime
 import traceback
 from .serializers import *
-from django.core import serializers
 import json
 from django.core.serializers.json import DjangoJSONEncoder
 
@@ -211,6 +209,19 @@ def get_treatment(treatment_ref_id):
     context = {"treatment": treatment,
                "teeth_set": teeth_set}
     return context
+
+
+def edit_treatment(treatment_ref_id, new_paid_amount):
+    treatment = Treatment.objects.get(reference_id=treatment_ref_id)
+    try:
+        if treatment.total_amount >= int(new_paid_amount):
+            treatment.paid_amount = new_paid_amount
+            treatment.save()
+            return True, None
+        else:
+            return False, f"{new_paid_amount} is greater than total amount. {new_paid_amount} > {treatment.total_amount}"
+    except Exception as e:
+        return False, str(e)
 
 
 def get_patient_treatment_history(cur_user, patient_ref_id):

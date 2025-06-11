@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('clinic_details', views.clinic_detail, name='clinic_details'),
 
+    path('finance_board/', views.finance_dashboard, name='finance_board')
+
     # path('tooth_state_list', views.tooth_state_list, name='tooth_state_list'),
     # path('tooth_state_add', views.tooth_state_list, name='tooth_state_add'),
     # path('tooth_state_edit', views.tooth_state_list, name='tooth_state_edit'),

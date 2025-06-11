@@ -7,12 +7,8 @@
 <div class="row" style="width: 100%; padding-top: 2px; margin: 0;">
   <div class="col-sm-12">
     <div id="buttonrow" style="display: inline-block">
-      <button class="btn btn-primary" onclick="addPatient()">{% trans 'Add' %}</button>
-      <button class="btn btn-primary act_btn" onclick="editPatient()">{% trans 'Edit' %}</button>
-      <button class="btn btn-warning act_btn" onclick="deletePatient()">{% trans 'Delete' %}</button>
-      <button class="btn btn-info act_btn" onclick="treatmentHistory()">
-        <i class="fas fa-list"></i> {% trans 'History' %}</button>
-      <button class="btn btn-success act_btn" onclick="addTreatement()">{% trans 'Add treatment' %}</button>
+      <button class="btn btn-info act_btn" onclick="editTreatment()">{% trans 'More info' %}</button>
+      <button class="btn btn-primary" onclick="window.location.href='{% url "finance_board" %}?successSave=false'">{% trans 'Back' %}</button>
       {% csrf_token %}
     </div>
     <div style="float: right">
@@ -20,14 +16,14 @@
     </div>
   </div>
   <div class="col-sm-12">
-    <table id="patient_table" class="table table-bordered table-hover dataTable dtr-inline" role="grid" style="width: 100%">
+    <table id="treatment_table" class="table table-bordered table-hover dataTable dtr-inline" role="grid" style="width: 100%">
       <thead>
         <tr role="row">
           <th>{% trans 'ID' %}</th>
-          <th>{% trans 'FULL NAME' %}</th>
+          <th>{% trans 'PATIENT FULL NAME' %}</th>
           <th>{% trans 'PHONE NUMBER' %}</th>
-          <th>{% trans 'DATE BIRTH' %}</th>
           <th>{% trans 'CREATED' %}</th>
+          <th>{% trans 'PAYMENT' %}</th>
         </tr>
       </thead>
     </table>
@@ -53,19 +49,9 @@
     var selected_row = null;
     var table = null;
     $(document).ready(function () {
-      if ({{ request.GET.successSave }}){
-        $(document).Toasts('create',{
-              title: 'Info',
-              body: 'Saved Successfully!',
-              autohide: true,
-              delay: 3000,
-              fade: true,
-              class: 'bg-success'
-            })
-      }
       checkActBtn();
       var obec = 5;
-      table = $('#patient_table').DataTable({
+      table = $('#treatment_table').DataTable({
         dom: '<"top"<\'row\'<\'col-md-8\'B><\'col-md-4\'f>>>rt<"bottom"<\'row\'<\'col-md-6\'i><\'col-md-6\'p>>>',
         buttons: ['excel'],
         scroller: true,
@@ -78,13 +64,14 @@
         responsive: true,
         scrollY: "70vh",
         select: true,
-        ajax: "/api/patient?format=datatables",
+        order: [[4, 'desc']],
+        ajax: "/api/treatment?format=datatables",
         columns: [
           {"data": "reference_id"},
-          {"data": "full_name"},
-          {"data": "mobile_phone"},
-          {"data": "birth_date", "name": "date_birth"},
-            {"data": "created_by", "name": "created_by"}
+          {"data": "patient_full_name"},
+          {"data": "mobile_phone_number"},
+          {"data": "created_on", "name": "cr_on"},
+          {"data": "payment", "orderable": false, "searchable": false},
         ]
       });
       table.buttons().container().appendTo($('#buttonrow'));
@@ -110,19 +97,8 @@
       }
     }
 
-    function addPatient() {
-        window.location.href = '{% url "patient_add" %}'
-      }
-    function editPatient() {
-      window.location.href = '{% url "patient_edit" %}' + '?patient_ref_id=' + selected_row.reference_id
-    }
-    function addTreatement() {
-      window.location.href = '{% url "treatment" %}' + '?patient_ref_id=' + selected_row.reference_id
-    }
-    function deletePatient() {
-    }
-    function treatmentHistory() {
-      window.location.href = '{% url "patient_treatment_history" %}' + '?patient_ref_id=' + selected_row.reference_id
+    function editTreatment() {
+      window.location.href = '{% url "treatment_edit" %}' + '?treatment_ref_id=' + selected_row.reference_id
     }
   </script>
   <style>

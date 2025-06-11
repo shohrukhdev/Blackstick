@@ -69,7 +69,8 @@ INSTALLED_APPS = [
     'booket',
     'fontawesomefree',
     'django_apscheduler',
-    'storages'
+    'storages',
+    'mathfilters'
 ]
 
 MIDDLEWARE = [

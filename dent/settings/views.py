@@ -1,12 +1,15 @@
+import functools
 import json
 import traceback
+from datetime import datetime, date
 from lib2to3.fixes.fix_input import context
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum, F
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from dent.models import Role, Staff, Clinic
+from dent.models import Role, Staff, Clinic, Treatment, Patient
 from dent.settings import service
 from dent.settings.service import get_staff_services, get_clinic_categories
 
@@ -18,6 +21,7 @@ def settings_window(request, *args, **kwargs) -> HttpResponse:
         if request.user.staff_user.role.code in ("OWN", "DEN"):
             return render(request, "dent/settings/main.html")
         return redirect("/")
+    return HttpResponse()
 
 
 @login_required
@@ -33,6 +37,7 @@ def staff_list(request, *args, **kwargs) -> HttpResponse:
             template_name="dent/settings/user/list.html",
             context=context_data
         )
+    return None
 
 
 @login_required
@@ -86,6 +91,8 @@ def add_new_staff(request, *args, **kwargs) -> HttpResponse:
                 template_name="dent/settings/user/add.html",
                 context=context_data
             )
+    return None
+
 
 @login_required
 def edit_staff(request, *args, **kwargs):
@@ -130,6 +137,9 @@ def edit_staff(request, *args, **kwargs):
                 template_name="dent/settings/user/add.html",
                 context=context_data
             )
+    return None
+
+
 ############################# CATEGORY ##############################################
 @login_required
 def category_list(request, *args, **kwargs):
@@ -150,6 +160,7 @@ def category_list(request, *args, **kwargs):
                 template_name="dent/settings/category/list.html",
                 context=context_data
             )
+    return None
 
 
 @login_required
@@ -176,6 +187,8 @@ def category_add(request, *args, **kwargs):
                 template_name="dent/settings/category/add.html",
                 context=context_data
             )
+    return None
+
 
 @login_required
 def category_edit(request, *args, **kwargs):
@@ -216,6 +229,7 @@ def category_edit(request, *args, **kwargs):
                 template_name="dent/settings/category/edit.html",
                 context=context_data
             )
+    return None
 
 
 ############################# SERVICE ##############################################
@@ -239,6 +253,7 @@ def service_list(request, *args, **kwargs):
                 template_name="dent/settings/service/list.html",
                 context=context_data
             )
+    return None
 
 
 @login_required
@@ -271,6 +286,7 @@ def service_add(request, *args, **kwargs):
                 template_name="dent/settings/service/add.html",
                 context=context_data
             )
+    return None
 
 
 @login_required
@@ -319,6 +335,8 @@ def service_edit(request, *args, **kwargs):
                 template_name="dent/settings/service/edit.html",
                 context=context_data
             )
+    return None
+
 
 #################### TOOTH LIST ################################
 @login_required
@@ -338,6 +356,7 @@ def tooth_state_list(request, *args, **kwargs):
                 template_name="dent/settings/tooth_state/list.html",
                 context=context_data
             )
+    return None
 
 
 ######################## CLINIC DETAILS ###############################
@@ -372,3 +391,121 @@ def clinic_detail(request, *args, **kwargs):
                 template_name="dent/settings/clinic_details.html",
                 context=context_data
             )
+    return None
+
+
+@login_required
+def dashboard(request, *args, **kwargs) -> HttpResponse:
+    """Main settings page view, only dentist or owner can access."""
+    if request.method == "GET":
+        if request.user.staff_user.role.code in ("OWN", "DEN"):
+            return render(request, "dent/settings/dashboard.html")
+        return redirect("/")
+    return HttpResponse()
+
+
+# LRU cache with a timeout of 10 minutes and max size of 128 items
+def lru_cache_with_timeout(maxsize=128, timeout_minutes=10):
+    def decorator(func):
+        @functools.lru_cache(maxsize=maxsize)
+        def cached_func(*args, cache_timestamp=None, **kwargs):
+            return func(*args, **kwargs)
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Generate a timestamp based on current time rounded to the nearest timeout period
+            # This ensures the cache is invalidated after the timeout period
+            now = datetime.now()
+            cache_timestamp = int(now.timestamp() // (timeout_minutes * 60))
+            return cached_func(*args, cache_timestamp=cache_timestamp, **kwargs)
+
+        # Add cache_clear method for manual cache invalidation
+        wrapper.cache_clear = cached_func.cache_clear
+        return wrapper
+
+    return decorator
+
+
+def get_finance_data(user_id, date_start, date_end, cache_timestamp=None):
+    """
+    Calculate financial data for the given period.
+    Cache is automatically invalidated every 5 minutes.
+    """
+    staff = Staff.objects.get(user_id=user_id)
+
+    # Number of treatments by the current staff within the period
+    treatments_count = Treatment.objects.filter(
+        doctor=staff,
+        cr_on__gte=date_start,
+        cr_on__lte=date_end
+    ).count()
+
+    # Number of new patients created within the staff's clinic in the given period
+    new_patients_count = Patient.objects.filter(
+        clinic=staff.clinic,
+        cr_on__gte=date_start,
+        cr_on__lte=date_end
+    ).count()
+
+    # Total sum of paid_amount in Treatment for the given period by the staff
+    total_payments = Treatment.objects.filter(
+        doctor=staff,
+        cr_on__gte=date_start,
+        cr_on__lte=date_end
+    ).aggregate(total=Sum('paid_amount'))['total'] or 0
+
+    # List of debtor treatments (where paid_amount < total_amount) by the staff for all time
+    debtor_treatments = Treatment.objects.filter(
+        doctor=staff,
+        paid_amount__lt=F('total_amount')
+    ).select_related('patient').order_by('-cr_on')
+
+    return {
+        'treatments_count': treatments_count,
+        'new_patients_count': new_patients_count,
+        'total_payments': total_payments,
+        'debtor_treatments': debtor_treatments
+    }
+
+
+@login_required
+def finance_dashboard(request):
+    if request.method == 'GET':
+        # Default date range: start of current month to today
+        today = date.today()
+        default_date_start = date(today.year, today.month, 1)
+        default_date_end = today
+
+        # Get date range from request, or use defaults
+        date_start_str = request.GET.get('date_start')
+        date_end_str = request.GET.get('date_end')
+
+        try:
+            date_start = datetime.strptime(date_start_str, '%Y-%m-%d').date() if date_start_str else default_date_start
+            date_end = datetime.strptime(date_end_str, '%Y-%m-%d').date() if date_end_str else default_date_end
+        except (ValueError, TypeError):
+            date_start = default_date_start
+            date_end = default_date_end
+
+        # Convert to datetime with time
+        date_start_dt = datetime.combine(date_start, datetime.min.time())
+        date_end_dt = datetime.combine(date_end, datetime.max.time())
+
+        # Get financial data
+        finance_data = get_finance_data(request.user.id, date_start_dt, date_end_dt)
+
+        context_data = {
+            'date_start': date_start,
+            'date_end': date_end,
+            'treatments_count': finance_data['treatments_count'],
+            'new_patients_count': finance_data['new_patients_count'],
+            'total_payments': finance_data['total_payments'],
+            'debtor_treatments': finance_data['debtor_treatments'],
+        }
+
+        return render(
+            request,
+            'dent/settings/finance_board.html',
+            context=context_data
+        )
+    return None

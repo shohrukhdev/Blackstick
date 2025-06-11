@@ -38,6 +38,7 @@ class EventSerializer(serializers.ModelSerializer):
 
 class PatientSerializer(serializers.ModelSerializer):
     birth_date = serializers.DateField(source='date_birth', format='%d.%m.%Y')
+    created_by = serializers.CharField(source='cr_by.user.get_full_name')
 
     class Meta:
         model = Patient
@@ -46,7 +47,9 @@ class PatientSerializer(serializers.ModelSerializer):
                   'full_name',
                   'mobile_phone',
                   'sex',
-                  'birth_date')
+                  'birth_date',
+                  'created_by',
+                  )
 
 
 class DebtSerializer(serializers.ModelSerializer):
@@ -59,3 +62,28 @@ class StaffServiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
         fields = '__all__'
+
+
+class TreatmentSerializer(serializers.ModelSerializer):
+    created_on = serializers.DateTimeField(format="%d.%m.%Y %H:%M", source="cr_on", read_only=True)
+    doctor_full_name = serializers.CharField(source="doctor.user.get_full_name", read_only=True)
+    patient_full_name = serializers.CharField(source="patient.full_name", read_only=True)
+    mobile_phone_number = serializers.CharField(source="patient.mobile_phone")
+    payment = serializers.SerializerMethodField()
+
+    def get_payment(self, obj):
+        return int(obj.total_amount * (100 - obj.discount)/100)
+
+    class Meta:
+        model = Treatment
+        exclude = ()
+        fields = [
+            'reference_id',
+            'doctor_full_name',
+            'patient_full_name',
+            'mobile_phone_number',
+            'created_on',
+            'payment',
+            'cr_on',
+            'cr_by'
+        ]
