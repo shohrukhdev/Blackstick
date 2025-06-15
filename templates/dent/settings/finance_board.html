@@ -107,7 +107,7 @@
                   <td>{{ treatment.patient.full_name }}({{ treatment.patient.mobile_phone }})</td>
                   <td>{{ treatment.cr_on|date:"d.m.Y" }}</td>
                   <td>{{ treatment.get_actual_amount|intcomma }}</td>
-                  <td>{{ treatment.total_amount|sub:treatment.paid_amount|intcomma }}</td>
+                  <td>{{ treatment.actual_amount|sub:treatment.paid_amount|intcomma }}</td>
                 </tr>
                 {% empty %}
                 <tr>

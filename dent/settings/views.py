@@ -1,11 +1,9 @@
 import functools
-import json
 import traceback
 from datetime import datetime, date
-from lib2to3.fixes.fix_input import context
 
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum, F
+from django.db.models import Sum, F, ExpressionWrapper, IntegerField
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
@@ -455,10 +453,15 @@ def get_finance_data(user_id, date_start, date_end, cache_timestamp=None):
     ).aggregate(total=Sum('paid_amount'))['total'] or 0
 
     # List of debtor treatments (where paid_amount < total_amount) by the staff for all time
-    debtor_treatments = Treatment.objects.filter(
-        doctor=staff,
-        paid_amount__lt=F('total_amount')
-    ).select_related('patient').order_by('-cr_on')
+    debtor_treatments = Treatment.objects.annotate(
+    actual_amount=ExpressionWrapper(
+        F('total_amount') * (100 - F('discount')) / 100.0,
+        output_field=IntegerField()
+    )
+).filter(
+    doctor=staff,
+    paid_amount__lt=F('actual_amount')
+).select_related('patient').order_by('-cr_on')
 
     return {
         'treatments_count': treatments_count,
