@@ -16,6 +16,8 @@ router.register('eventlist', viewset=api_views.EventListViewSet, basename='Event
 
 router.register('treatment', viewset=table_views.TreatmentViewSet, basename='treatment_list')
 
+router.register('reception_event', viewset=api_views.ReceptionEventViewSet, basename='reception_event')
+
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
     path('api/', include(router.urls)),

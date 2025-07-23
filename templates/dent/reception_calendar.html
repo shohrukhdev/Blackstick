@@ -38,14 +38,20 @@
               <i class="fa fa-list"></i>
              {% trans 'List view' %}
             </button>
+            <button id="listview" onclick="location.href='{% url 'calendar_list' %}'" type="button"
+                  class="btn btn-info btn-sm">
+              <i class="fa fa-user-friends"></i>
+              {% trans 'Patients' %}
+            </button>
           </div>
-
         </div>
         <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-{#            <li class="breadcrumb-item"><a href="#">Home</a></li>#}
-{#            <li class="breadcrumb-item active">{% trans 'Calendar' %}</li>#}
-          </ol>
+          <select name="doctor" id="doctor" style="width: auto; float: left" class="form-control form-control-sm">
+            <option value="">{% trans 'All doctors' %}</option>
+            {% for staff in staff_list %}
+              <option value="{{ staff.id }}">{{ staff.user.get_full_name }}</option>
+            {% endfor %}
+          </select>
         </div>
       </div>
     </div><!-- /.container-fluid -->
@@ -152,13 +158,6 @@
   {{ block.super }}
   <!-- fullCalendar 2.2.5 -->
   <script src="{% static 'plugins/moment/moment.min.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar/main.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar-daygrid/main.min.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar-timegrid/main.min.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar-interaction/main.min.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar/locales/ru.js' %}"></script>
-  <script src="{% static 'plugins/fullcalendar/locales/uz.js' %}"></script>
   <script src="{% static 'vendor/util.js' %}"></script>
   <!-- Page specific script -->
   <script>
@@ -166,8 +165,23 @@
     var selected_event_id;
     var lang_code;
     $(document).ready(function () {
+      var a_ration = calculateAspectRatio()
       lang_code = $('#cur_lang').val();
       drawCalendar();
+    });
+
+    function calculateAspectRatio() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        let dv = 1;
+        if (width < height) {
+            dv = 2
+        }
+        return Math.max(0.5, Math.min(2.5, 3.2 * (width / height) - 0.3))/dv;
+      }
+
+    $(window).on('resize', function () {
+        drawCalendar();
     });
 
     function reRenderCalendar() {
@@ -200,41 +214,57 @@
     }
 
     function drawCalendar() {
-      var Calendar = FullCalendar.Calendar;
-      var calendarEl = document.getElementById('calendar');
+        var Calendar = FullCalendar.Calendar;
+        var calendarEl = document.getElementById('calendar');
+        var today = new Date().toISOString().slice(0, 10)
+        var initialView = 'timeGridWeek'
+        var defaultHeaderToolBar = {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'timeGridDay,timeGridFourDays,timeGridWeek,dayGridMonth' // user can switch between the two
+          }
+
+        var mobileHeaderToolBar = {
+              left: 'prev,next',
+              right: 'timeGridFourDays,dayGridMonth' // user can switch between the two
+          }
+
+        if (isItMobile()) {
+            defaultHeaderToolBar = mobileHeaderToolBar;
+            initialView = 'timeGridFourDays'
+        }
+
 
       calendar = new Calendar(calendarEl, {
-        eventClick: function (info) {
-          showEvent(info);
-        },
-        plugins: ['bootstrap', 'interaction', 'dayGrid', 'timeGrid', 'dayGridPlugin', 'listPlugin'],
+        plugins: [],
         defaultView: 'timeGridWeek',
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
-        },
+        initialView: initialView,
+        initialDate: today,
+        firstDay: 1,
+        themeSystem: 'bootstrap5',
+        headerToolbar: defaultHeaderToolBar,
         locale: lang_code,
+        views: {
+          timeGridFourDays: {
+            type: 'timeGrid',
+            duration: {days: 3},
+            buttonText: '3 days'
+          }
+        },
         eventTimeFormat: {
           hour: '2-digit',
           minute: '2-digit',
           hour12: false
         },
+        aspectRatio: calculateAspectRatio(),
         scrollTime: '09:00:00',
-        aspectRatio: 2.5,
-        events: '/api/event',
-        editable: true,
-        droppable: true, // this allows things to be dropped onto the calendar !!!
-        eventDrop: function (info) {
-          changeEventTime(info.event.id,
-                          info.event.start.getTime()/1000,
-                          info.event.end.getTime()/1000);
+        events: '/api/reception_event',
+        eventClick: function (info) {
+          showEvent(info);
         },
-        eventResize: function (info) {
-          changeEventTime(info.event.id,
-                          info.event.start.getTime()/1000,
-                          info.event.end.getTime()/1000);
-        },
+        dateClick: function (info) {
+            console.log(info)
+        }
 
       });
       calendar.render();
@@ -303,6 +333,10 @@
 
         });
     }
+
+    function isItMobile() {
+          return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      }
 
     function closeModal() {
       $('#patient_box')

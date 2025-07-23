@@ -39,6 +39,11 @@ class Staff(models.Model):
     status = models.IntegerField(default=1)
     hire_date = models.DateField()
     notes = models.TextField(null=True, blank=True)
+    color = models.CharField(
+        max_length=7,  # For hex color codes like #RRGGBB
+        default='#ADD8E6',  # Optional: set a default color
+        null=True, blank=True  # Or make it optional without a default
+    )
     cr_on = models.DateTimeField(auto_now_add=True)
     up_on = models.DateTimeField(auto_now=True)
     cr_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='staff_crby', null=True)

@@ -42,6 +42,7 @@ def provider_main(request):
     if request.method == "GET":
         context_data = sv.get_owners_provider(request.user)
         return render(request, "booket/provider.html", context=context_data)
+    return None
 
 
 @login_required
@@ -52,6 +53,7 @@ def provider_edit(request):
     elif request.method == "POST":
         context_data = sv.edit_provider(request)
         return render(request, "booket/provider.html", context=context_data)
+    return None
 
 
 @login_required
@@ -62,6 +64,7 @@ def server_edit(request, id: int):
     elif request.method == "POST":
         context_data = sv.edit_server(request)
         return render(request, "booket/server_edit.html", context=context_data)
+    return None
 
 
 @login_required
@@ -73,6 +76,7 @@ def service_type_add(request):
         if not context_data["success"]:
             return render(request, "booket/service_type.html", context=context_data)
         return HttpResponseRedirect('/b/provider/')
+    return None
 
 
 @login_required
@@ -85,6 +89,7 @@ def service_type_edit(request, id: int):
         if not context_data.get("success"):
             return render(request, "booket/service_type_edit.html", context=context_data)
         return HttpResponseRedirect('/b/provider/')
+    return None
 
 
 @login_required
@@ -92,6 +97,7 @@ def service_list(request, type_id: int):
     if request.method == "GET":
         context_data = sv.get_service_list_by_type(type_id=type_id, user=request.user)
         return render(request, "booket/service_list.html", context=context_data)
+    return None
 
 
 @login_required
@@ -107,6 +113,7 @@ def service_add(request, type_id: int):
             return render(request, "booket/service_add.html", context=context_data)
         sr = result["sr"]
         return HttpResponseRedirect(f'/b/service/list/{sr.tip.id}')
+    return None
 
 
 @login_required
@@ -123,6 +130,7 @@ def service_edit(request, id: int):
             context_data["error"] = result.get("error")
             return render(request, "booket/service_edit.html", context=context_data)
         return HttpResponseRedirect(f'/b/service/list/{sr.tip.id}/')
+    return None
 
 
 @login_required

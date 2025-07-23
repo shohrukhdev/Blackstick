@@ -1,3 +1,4 @@
+import json
 import traceback
 from django.db.models import Prefetch
 from django.http import HttpRequest
@@ -14,6 +15,18 @@ def get_owners_provider(user: User) -> dict:
     """Get Provider object which given user is the owner of."""
     try:
         provider = Provider.objects.get(owner=user)
+        # Ensure social_media is a list, not a string
+        if isinstance(provider.social_media, str):
+            try:
+                provider.social_media = json.loads(provider.social_media)
+            except json.JSONDecodeError:
+                provider.social_media = []
+
+        if isinstance(provider.phone_numbers, str):
+            try:
+                provider.phone_numbers = json.loads(provider.phone_numbers)
+            except json.JSONDecodeError:
+                provider.phone_numbers = []
         context_data = {"provider": provider}
     except Exception as e:
         context_data = {
@@ -35,10 +48,17 @@ def edit_provider(request: HttpRequest) -> dict:
     Return context data.
     """
     try:
+        social_media_json = json.loads(request.POST.get("social_media_json"))
+        phone_numbers_json = json.loads(request.POST.get("phone_numbers_json"))
         provider = get_object_or_404(Provider, id=request.POST.get("provider_id"))
         provider.name = request.POST.get("name")
         provider.address = request.POST.get("address")
         provider.description = request.POST.get("description")
+        provider.specialists_section_text = request.POST.get("specs_section_text")
+        provider.specialists_section_text_2 = request.POST.get("specs_section_text_2")
+        provider.footer_text = request.POST.get("footer_text")
+        provider.social_media = social_media_json
+        provider.phone_numbers = phone_numbers_json
         provider.is_active = request.POST.get("is_active") == "True"
         provider.logo = request.FILES.get("logo", provider.logo)
         provider.save()
@@ -86,6 +106,9 @@ def edit_server(request: HttpRequest) -> dict:
         if ps.server.user == request.user or ps.provider.owner == request.user:
             ps.server.phone_number = request.POST.get("phone_number")
             ps.server.info = request.POST.get("info")
+            ps.server.title = request.POST.get("title")
+            ps.server.title_uz = request.POST.get("title_uz")
+            ps.server.title_ru = request.POST.get("title_ru")
             ps.server.is_active = request.POST.get("is_active") == "True"
             ps.server.image = request.FILES.get("image", ps.server.image)
             ps.server.save()

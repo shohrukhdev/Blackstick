@@ -146,3 +146,104 @@
   </script>
 {% endblock %}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Social Media Section -->
+<div class="mb-3">
+    <label class="form-label fw-bold">{% trans "Social Media" %}</label>
+    <div id="social-media-container">
+        {# Loop through existing social media entries and display them #}
+        {% for social in provider.social_media %}
+        <div class="social-media-row input-group mb-2">
+            <select class="form-select social-media-type" style="max-width: 120px;">
+                <option value="telegram" {% if social.type == 'telegram' %}selected{% endif %}>Telegram</option>
+                <option value="instagram" {% if social.type == 'instagram' %}selected{% endif %}>Instagram</option>
+                <option value="facebook" {% if social.type == 'facebook' %}selected{% endif %}>Facebook</option>
+                <option value="website" {% if social.type == 'website' %}selected{% endif %}>Website</option>
+                <option value="other" {% if social.type == 'other' %}selected{% endif %}>Other</option>
+            </select>
+            <input type="text" class="form-control social-media-name" placeholder="{% trans 'Name or @username' %}" value="{{ social.name|default_if_none:'' }}">
+            <input type="url" class="form-control social-media-link" placeholder="{% trans 'Link (e.g., https://...)' %}" value="{{ social.link|default_if_none:'' }}">
+            <button class="btn btn-outline-danger btn-delete-social" type="button" title="{% trans 'Delete' %}">
+                &times;
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    <button id="btn-add-social" type="button" class="btn btn-outline-primary mt-2">
+        + {% trans "Add Social Media" %}
+    </button>
+</div>
+
+<!-- Hidden input that will store the final JSON data for submission -->
+<input type="hidden" name="social_media_json" id="social-media-json-input">
+
+<!--
+  A <template> tag holds the HTML for a new row.
+  It's not rendered by the browser but can be cloned with JavaScript.
+-->
+<template id="social-media-template">
+    <div class="social-media-row input-group mb-2">
+        <select class="form-select social-media-type" style="max-width: 120px;">
+            <option value="telegram">Telegram</option>
+            <option value="instagram" selected>Instagram</option>
+            <option value="facebook">Facebook</option>
+            <option value="website">Website</option>
+            <option value="other">Other</option>
+        </select>
+        <input type="text" class="form-control social-media-name" placeholder="{% trans 'Name or @username' %}">
+        <input type="url" class="form-control social-media-link" placeholder="{% trans 'Link (e.g., https://...)' %}">
+        <button class="btn btn-outline-danger btn-delete-social" type="button" title="{% trans 'Delete' %}">
+            &times;
+        </button>
+    </div>
+</template>
+
+
+
+<!-- Phone Numbers Section -->
+<div class="mb-3">
+    <label class="form-label fw-bold">{% trans "Phone Numbers" %}</label>
+    <div id="phone-numbers-container">
+        {# Loop through existing phone numbers and display them #}
+        {% for phone in provider.phone_numbers %}
+        <div class="phone-number-row input-group mb-2">
+            <input type="tel" class="form-control phone-number-input" placeholder="{% trans 'Phone Number' %}" value="{{ phone|default_if_none:'' }}">
+            <button class="btn btn-outline-danger btn-delete-phone" type="button" title="{% trans 'Delete' %}">
+                &times;
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    <button id="btn-add-phone" type="button" class="btn btn-outline-primary mt-2">
+        + {% trans "Add Phone Number" %}
+    </button>
+</div>
+
+<!-- Hidden input that will store the final JSON data for submission -->
+<input type="hidden" name="phone_numbers_json" id="phone-numbers-json-input">
+
+<!-- Template for a new phone number row -->
+<template id="phone-number-template">
+    <div class="phone-number-row input-group mb-2">
+        <input type="tel" class="form-control phone-number-input" placeholder="{% trans 'Phone Number' %}">
+        <button class="btn btn-outline-danger btn-delete-phone" type="button" title="{% trans 'Delete' %}">
+            &times;
+        </button>
+    </div>
+</template>

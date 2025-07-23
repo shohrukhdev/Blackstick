@@ -188,6 +188,11 @@ def edit_staff_service(
         service.save()
 
 
+def get_staff_list(clinic_id):
+    """Get staff list of the clinic by clinic_id."""
+    staff_list = Staff.objects.filter(clinic_id=clinic_id, status=1)
+    return staff_list
+
 ############ TOOTH STATE #################################
 
 # def add_tooth_state()

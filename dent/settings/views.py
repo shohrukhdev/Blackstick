@@ -512,3 +512,14 @@ def finance_dashboard(request):
             context=context_data
         )
     return None
+
+
+@login_required
+def reception_dashboard(request):
+    if request.method == "GET":
+        staff_list = service.get_staff_list(clinic_id=request.session.get("clinic_id"))
+        context_data = {"staff_list": staff_list}
+        return render(request, "dent/reception_calendar.html", context=context_data)
+
+    return None
+

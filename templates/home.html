@@ -129,6 +129,15 @@
                         </li>
                     {% endif %}
 
+                        <li class="nav-item">
+                            <a href="{% url 'reception_dashboard' %}?successSave=false" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-check"></i>
+                                <p>
+                                    {% trans 'Reception' %}
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item" onclick="submitLogoutForm()" style="cursor: pointer">
                             <a class="nav-link">
                                  <form id="logout-form" method="POST" action="{% url 'logout' %}" class="nav-link" style="display: none;">

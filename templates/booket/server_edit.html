@@ -55,6 +55,18 @@
                      required>
             </div>
             <div class="mb-3">
+              <label for="info" class="form-label">{% trans "Title" %}</label>
+              <input type="text" class="form-control" id="title" value="{{ ps.server.title }}" name="title">
+            </div>
+            <div class="mb-3">
+              <label for="info" class="form-label">{% trans "Title UZ" %}</label>
+              <input type="text" class="form-control" id="title_uz" value="{{ ps.server.title_uz }}" name="title_uz">
+            </div>
+            <div class="mb-3">
+              <label for="info" class="form-label">{% trans "Title RU" %}</label>
+              <input type="text" class="form-control" id="title_ru" value="{{ ps.server.title_uz }}" name="title_ru">
+            </div>
+            <div class="mb-3">
               <label for="info" class="form-label">{% trans "Info" %}</label>
               <textarea type="text" class="form-control" id="info" name="info">{{ ps.server.info }}</textarea>
             </div>

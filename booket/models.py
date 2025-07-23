@@ -1,7 +1,9 @@
+import json
 import logging
 import random
 
 from django.contrib.auth.models import User
+from django.db.models import JSONField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import UniqueConstraint, Q, CheckConstraint
@@ -14,7 +16,12 @@ class Provider(models.Model):
     identifier = models.CharField(max_length=255, unique=True)
     logo = models.ImageField(upload_to='logo', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    address = models.CharField(max_length=255, null=True, blank=True)
+    address = models.TextField(null=True, blank=True)
+    specialists_section_text = models.CharField(max_length=255, null=True, blank=True)
+    specialists_section_text_2 = models.TextField(null=True, blank=True)
+    footer_text = models.TextField(null=True, blank=True)
+    phone_numbers = JSONField(default=list, blank=True, null=True)
+    social_media = JSONField(default=list, blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     has_many_servers = models.BooleanField(default=False)
@@ -42,6 +49,9 @@ class Server(models.Model):
     image = models.ImageField(upload_to='server', null=True, blank=True)
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     memo = models.TextField(null=True, blank=True)
+    title = models.CharField(null=True, blank=True, max_length=255)
+    title_uz = models.CharField(null=True, blank=True, max_length=255)
+    title_ru = models.CharField(null=True, blank=True, max_length=255)
     info = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)

@@ -21,7 +21,7 @@
 
       @media (min-width: 768px) {
           .card-container {
-              width: 50%; /* Width for desktop and wider screens */
+              width: 70%; /* Width for desktop and wider screens */
           }
 
           .card-form {
@@ -38,7 +38,8 @@
                   class="btn-close btn-close-white" aria-label="Close" style="float: right"></button>
           <h5 class="card-title mb-0">{% trans "Edit provider" %}</h5>
         </div>
-        <form class="form-group card-form" enctype="multipart/form-data" action="{% url 'b_provider_edit' %}"
+        <form id="provider_edit_form" class="form-group card-form" enctype="multipart/form-data"
+              action="{% url 'b_provider_edit' %}"
               method="post">
           <!-- Card Body (Form) -->
           <div class="card-body">
@@ -50,15 +51,139 @@
                      required>
             </div>
             <div class="mb-3">
+              <label for="name" class="form-label">{% trans "ID" %}</label>
+              <input type="text" disabled class="form-control" id="identifier" name="identifier" maxlength="255"
+                     value="{{ provider.identifier }}"
+                     required>
+            </div>
+            <div class="mb-3">
               <label for="address" class="form-label">{% trans "Address" %}</label>
-              <input type="text" class="form-control" id="address" name="address" maxlength="255"
-                     value="{{ provider.address }}" required>
+              <textarea type="text" class="form-control" id="address" name="address"
+                        required>{{ provider.address }}</textarea>
             </div>
             <div class="mb-3">
               <label for="description" class="form-label">{% trans "Description" %}</label>
               <textarea type="text" class="form-control" id="description"
                         name="description">{{ provider.description }}</textarea>
             </div>
+
+            <div class="mb-3">
+              <label for="specs_section_text" class="form-label">{% trans "Specialists section" %}</label>
+              <input type="text" class="form-control" id="specs_section_text"
+                     name="specs_section_text" value="{{ provider.specialists_section_text }}">
+            </div>
+
+            <div class="mb-3">
+              <label for="specs_section_text_2" class="form-label">{% trans "Specialists section 2" %}</label>
+              <textarea type="text" class="form-control" id="specs_section_text_2"
+                        name="specs_section_text_2">{% if provider.specialists_section_text_2 %}
+                {{ provider.specialists_section_text_2 }}{% endif %}</textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="footer_text" class="form-label">{% trans "Footer text" %}</label>
+              <textarea type="text" class="form-control" id="footer_text"
+                        name="footer_text">{% if provider.footer_text %}{{ provider.footer_text }}{% endif %}</textarea>
+            </div>
+
+            <!-- Social Media Section -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">{% trans "Social Media" %}</label>
+              <div id="social-media-container">
+                {# Loop through existing social media entries and display them #}
+                {% for social in provider.social_media %}
+                  <div class="social-media-row input-group mb-2">
+                    <select class="form-select social-media-type" style="max-width: 120px;">
+                      <option value="telegram" {% if social.type == 'telegram' %}selected{% endif %}>Telegram</option>
+                      <option value="instagram" {% if social.type == 'instagram' %}selected{% endif %}>Instagram</option>
+                      <option value="facebook" {% if social.type == 'facebook' %}selected{% endif %}>Facebook</option>
+                      <option value="whatsapp" {% if social.type == 'whatsapp' %}selected{% endif %}>WhatsApp</option>
+                      <option value="x" {% if social.type == 'x' %}selected{% endif %}>X(Twitter)</option>
+                      <option value="youtube" {% if social.type == 'youtube' %}selected{% endif %}>Youtube</option>
+                      <option value="website" {% if social.type == 'website' %}selected{% endif %}>Website</option>
+                      <option value="other" {% if social.type == 'other' %}selected{% endif %}>Other</option>
+                    </select>
+                    <input type="text" class="form-control social-media-name"
+                           placeholder="{% trans 'Name or @username' %}" value="{{ social.name|default_if_none:'' }}">
+                    <input type="url" class="form-control social-media-link"
+                           placeholder="{% trans 'Link (e.g., https://...)' %}"
+                           value="{{ social.link|default_if_none:'' }}">
+                    <button class="btn btn-outline-danger btn-sm btn-delete-social" type="button"
+                            title="{% trans 'Delete' %}">
+                      &times;
+                    </button>
+                  </div>
+                {% endfor %}
+              </div>
+              <button id="btn-add-social" type="button" class="btn btn-outline-primary mt-2">
+                + {% trans "Add Social Media" %}
+              </button>
+            </div>
+
+            <!-- Hidden input that will store the final JSON data for submission -->
+            <input type="hidden" name="social_media_json" id="social-media-json-input">
+
+            <!--
+              A <template> tag holds the HTML for a new row.
+              It's not rendered by the browser but can be cloned with JavaScript.
+            -->
+            <template id="social-media-template">
+              <div class="social-media-row input-group mb-2">
+                <select class="form-select social-media-type" style="max-width: 120px;">
+                  <option value="" disabled selected>Type</option>
+                  <option value="telegram">Telegram</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="youtube">Youtube</option>
+                  <option value="whatsapp">WhatsApp</option>
+                  <option value="x">X(Twitter)</option>
+                  <option value="website">Website</option>
+                  <option value="other">Other</option>
+                </select>
+                <input type="text" class="form-control social-media-name" placeholder="{% trans 'Name or @username' %}">
+                <input type="url" class="form-control social-media-link"
+                       placeholder="{% trans 'Link (e.g., https://...)' %}">
+                <button class="btn btn-outline-danger btn-delete-social" type="button" title="{% trans 'Delete' %}">
+                  &times;
+                </button>
+              </div>
+            </template>
+
+
+            <!-- Phone Numbers Section -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">{% trans "Phone Numbers" %}</label>
+              <div id="phone-numbers-container">
+                {# Loop through existing phone numbers and display them #}
+                {% for phone in provider.phone_numbers %}
+                  <div class="phone-number-row input-group mb-2">
+                    <input type="tel" class="form-control phone-number-input" placeholder="{% trans 'Phone Number' %}"
+                           value="{{ phone|default_if_none:'' }}">
+                    <button class="btn btn-outline-danger btn-delete-phone" type="button" title="{% trans 'Delete' %}">
+                      &times;
+                    </button>
+                  </div>
+                {% endfor %}
+              </div>
+              <button id="btn-add-phone" type="button" class="btn btn-outline-primary mt-2">
+                + {% trans "Add Phone Number" %}
+              </button>
+            </div>
+
+            <!-- Hidden input that will store the final JSON data for submission -->
+            <input type="hidden" name="phone_numbers_json" id="phone-numbers-json-input">
+
+            <!-- Template for a new phone number row -->
+            <template id="phone-number-template">
+              <div class="phone-number-row input-group mb-2">
+                <input type="tel" class="form-control phone-number-input" placeholder="{% trans 'Phone Number' %}">
+                <button class="btn btn-outline-danger btn-delete-phone" type="button" title="{% trans 'Delete' %}">
+                  &times;
+                </button>
+              </div>
+            </template>
+
+
             <div class="mb-3">
               <label for="logo" class="form-label">{% trans "Active" %}</label>
               <select class="form-select" id="active" name="is_active">
@@ -67,7 +192,7 @@
               </select>
             </div>
             <div class="mb-3">
-              <label for="address" class="form-label">{% trans "Image" %}</label>
+              <label for="address" class="form-label">{% trans "Logo" %}</label>
               <input type="file" class="form-control" id="logo" name="logo" value="{{ provider.logo.name }}">
               {% if provider.logo %}
                 <img src="{{ provider.logo.url }}" alt="{{ provider.logo.name }}" width="100%">
@@ -100,6 +225,102 @@
                   ['color', ['color']],
                   ['para', ['paragraph', 'ul', 'ol']],
               ]
+          });
+
+          $('#specs_section_text_2').summernote({
+              toolbar: [
+                  // [groupName, [list of button]]
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['font', ['strikethrough',]],
+                  ['insert', ['link',]],
+                  ['fontsize', ['fontsize', 'fontname', 'height']],
+                  ['color', ['color']],
+                  ['para', ['paragraph', 'ul', 'ol']],
+              ]
+          });
+
+          $('#footer_text').summernote({
+              toolbar: [
+                  // [groupName, [list of button]]
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['font', ['strikethrough',]],
+                  ['insert', ['link',]],
+                  ['fontsize', ['fontsize', 'fontname', 'height']],
+                  ['color', ['color']],
+                  ['para', ['paragraph', 'ul', 'ol']],
+              ]
+          });
+
+          $('#address').summernote({
+              toolbar: [
+                  // [groupName, [list of button]]
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['font', ['strikethrough',]],
+                  ['insert', ['link',]],
+                  ['fontsize', ['fontsize', 'fontname', 'height']],
+                  ['color', ['color']],
+                  ['para', ['paragraph', 'ul', 'ol']],
+              ]
+          });
+
+
+
+          // --- Phone Number and Social media Management ---
+
+          // 1. Add a new phone number row from the template
+          $('#btn-add-phone').on('click', function() {
+              const template = document.getElementById('phone-number-template');
+              const clone = template.content.cloneNode(true);
+              $('#phone-numbers-container').append(clone);
+          });
+
+          // 1. Add a new social media row from the template
+          $('#btn-add-social').on('click', function() {
+              const template = document.getElementById('social-media-template');
+              // Clone the content of the template
+              const clone = template.content.cloneNode(true);
+              // Append the new row to the container
+              $('#social-media-container').append(clone);
+          });
+
+          // 2. Delete a phone number row (using event delegation)
+          $('#phone-numbers-container').on('click', '.btn-delete-phone', function() {
+              $(this).closest('.phone-number-row').remove();
+          });
+
+          // 2. Delete a social media row (using event delegation for dynamic rows)
+          $('#social-media-container').on('click', '.btn-delete-social', function() {
+              // Find the closest parent row and remove it
+              $(this).closest('.social-media-row').remove();
+          });
+
+          // 3. UPDATED form submission handler to include BOTH social media and phone numbers
+          $('form.card-form').on('submit', function() {
+              // --- Gather Social Media Data ---
+              const socialMediaData = [];
+              $('#social-media-container .social-media-row').each(function() {
+                  const row = $(this);
+                  const type = row.find('.social-media-type').val();
+                  const name = row.find('.social-media-name').val().trim();
+                  const link = row.find('.social-media-link').val().trim();
+
+                  if (name || link) {
+                      socialMediaData.push({ type: type, name: name, link: link });
+                  }
+              });
+              $('#social-media-json-input').val(JSON.stringify(socialMediaData));
+
+              // --- Gather Phone Number Data ---
+              const phoneNumbersData = [];
+              $('#phone-numbers-container .phone-number-input').each(function() {
+                  const phoneNumber = $(this).val().trim();
+                  // Only add non-empty phone numbers
+                  if (phoneNumber) {
+                      phoneNumbersData.push(phoneNumber);
+                  }
+              });
+              // Convert the array to a JSON string and set the hidden input's value
+              $('#phone-numbers-json-input').val(JSON.stringify(phoneNumbersData));
           });
       });
   </script>
