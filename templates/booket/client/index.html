@@ -14,19 +14,20 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'design/css/main.css' %}">
-                <!-- Include Flatpickr -->
+        <!-- Include Flatpickr -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        <link rel="stylesheet" href="{% static "design/js/script.js" %}">
-
+        <!-- Note: JavaScript should be included at the end of the body, not in the head -->
     </head>
+    <input type="hidden" id="provider_identifier" value="{{ provider.identifier }}">
+    <input type="hidden" id="signature" value="{{ signature }}">
     {% get_current_language as LANG_CODE %}
         <header>
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container">
                     <a class="navbar-brand" href="#"><img src="{{ provider.logo.url }}" style="max-width: 150px" alt="logo"></a>
-                    
+
 
                     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -92,14 +93,14 @@
               </div>
             </div>
         </div>
-     
+
 
         <div class="container">
           <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
             <div class="carousel-inner">
               {% for item in provider.providerphotos_set.all %}
-                <div class="carousel-item active">
-                  <img src="{{ item.photo.url }}" alt="carousel1">
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <img src="{{ item.photo.url }}" class="d-block w-100" alt="carousel-image-{{ forloop.counter }}">
                 </div>
               {% endfor %}
             </div>
@@ -259,17 +260,17 @@
             <div class="modal-dialog modal-lg modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="bookLabel">Specialist Bobur</h5>
+                  <h5 class="modal-title">{% trans "Specialist" %} <span id="bookLabel"></span></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><img src="images/close.svg" alt="icon"></span>
+                    <span aria-hidden="true"><img src="{% static 'design/images/close.svg' %}" alt="icon"></span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <div class="services">
+                  <div id="ps_services" class="services">
               <div class="service_box">
                 <div class="header">
-                  <h1>Hair bar</h1>
-                  <div class="icon-arrow"><img src="images/arrow-up.svg" alt="icon"></div>
+                  <h1>Hair barrrr</h1>
+                  <div class="icon-arrow"><img src="{% static 'design/images/arrow-up.svg' %}" alt="icon"></div>
                 </div>
                 <div class="list">
                   <ul>
@@ -278,7 +279,7 @@
                       <div class="d-flex align-items-center justify-content-end">
                         <span>> 200.000</span>
                         <div class="form-check">
-                          <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
+                          <input class="form-check-input position-static " type="checkbox" id="blankCheckbox" value="option1" aria-label="...">
                         </div>
                       </div>
                     </li>
@@ -297,7 +298,7 @@
               <div class="service_box">
                 <div class="header">
                   <h1>Nail bar</h1>
-                  <div class="icon-arrow"><img src="images/arrow-up.svg" alt="icon"></div>
+                  <div class="icon-arrow"><img src="{% static 'design/images/arrow-up.svg' %}" alt="icon"></div>
                 </div>
                 <div class="list">
                   <ul>
@@ -325,7 +326,7 @@
               <div class="service_box">
                 <div class="header">
                   <h1>Brow and Lashes bar</h1>
-                  <div class="icon-arrow"><img src="images/arrow-up.svg" alt="icon"></div>
+                  <div class="icon-arrow"><img src="{% static 'design/images/arrow-up.svg' %}" alt="icon"></div>
                 </div>
                 <div class="list">
                   <ul>
@@ -364,23 +365,23 @@
             <div class="modal-dialog modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="date-timeLabel">Specialist Bobur</h5>
+                  <h5 class="modal-title" id="date-timeLabel">Specialist Bobur</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><img src="images/close.svg" alt="icon"></span>
+                    <span aria-hidden="true"><img src="{% static 'design/images/close.svg' %}" alt="icon"></span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <div class="duration">
-                    <img src="images/clock.svg" alt="icon">
+                    <img src="{% static 'design/images/clock.svg' %}" alt="icon">
                     <p>Estimated duration: <b><span id="duration">60</span> minutes</b></p>
                   </div>
                   <div class="date-nav">
                     <button class="btn" id="prevDateBtn">
-                      <img src="images/arrow-left-btn.svg" alt="icon">
+                      <img src="{% static 'design/images/arrow-left-btn.svg' %}" alt="icon">
                     </button>
                     <div class="date-wrapper" id="dateContainer"></div>
                     <button class="btn" id="nextDateBtn">
-                      <img src="images/arrow-right-btn.svg" alt="icon">
+                      <img src="{% static 'design/images/arrow-right-btn.svg' %}" alt="icon">
                     </button>
                   </div>
                   <div class="time-select">
@@ -401,47 +402,47 @@
             <div class="modal-dialog modal-xl modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="confirmLabel">Specialist Bobur</h5>
+                  <h5 class="modal-title" id="confirmLabel">Specialist Bobur</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><img src="images/close.svg" alt="icon"></span>
+                    <span aria-hidden="true"><img src="{% static 'design/images/close.svg' %}" alt="icon"></span>
                   </button>
                 </div>
                 <div class="modal-body">
                   <div class="left">
                     <div class="confirm-time-date">
-                      <div class="grey-box"><img src="images/clock-white.svg" alt="icon"><p>19:00</p></div>
-                      <div class="grey-box"><img src="images/calendar.svg" alt="icon"><p>25.05.2025</p></div>
+                      <div class="grey-box"><img src="{% static 'design/images/clock-white.svg' %}" alt="icon"><p>19:00</p></div>
+                      <div class="grey-box"><img src="{% static 'design/images/calendar.svg' %}" alt="icon"><p>25.05.2025</p></div>
                     </div>
                     <div class="service_box" style="margin-bottom: 10px;">
                       <div class="header">
                         <h1>Selected services</h1>
-                        <div class="icon-arrow"><img src="images/arrow-up.svg" alt="icon"></div>
+                        <div class="icon-arrow"><img src="{% static 'design/images/arrow-up.svg' %}" alt="icon"></div>
                       </div>
                       <div class="list">
                         <ul>
-                          <li>  
+                          <li>
                             <p>Hair lamination</p>
                             <div class="d-flex align-items-center justify-content-end" style="gap: 10px;">
                               <span>200.000</span>
-                            <div class="time"><img src="images/clock-grey.svg" alt="icon"><p>60 min</p></div>
+                            <div class="time"><img src="{% static 'design/images/clock-grey.svg' %}" alt="icon"><p>60 min</p></div>
                             </div>
                           </li>
                           <li>
                             <p>Hair coloring in one tone & styling</p>
                             <div class="d-flex align-items-center justify-content-end" style="gap: 10px;">
                               <span>250.000</span>
-                            <div class="time"><img src="images/clock-grey.svg" alt="icon"><p>60 min</p></div>
+                            <div class="time"><img src="{% static 'design/images/clock-grey.svg' %}" alt="icon"><p>60 min</p></div>
                             </div>
                           </li>
                         </ul>
                       </div>
                     </div>
                     <div class="duration" style="margin-bottom: 10px;">
-                      <img src="images/clock.svg" alt="icon">
+                      <img src="{% static 'design/images/clock.svg' %}" alt="icon">
                       <p>Estimated duration: <b><span id="duration">60</span> minutes</b></p>
                     </div>
                     <div class="total_amount">
-                      <img src="images/moneys.svg" alt="icon">
+                      <img src="{% static 'design/images/moneys.svg' %}" alt="icon">
                       <p>Total: <b><span id="duration">670 000</span> sum</b></p>
                     </div>
                   </div>
@@ -474,7 +475,7 @@
                                   <label for="date-birth">Date of birth</label>
                                   <div class="dob-input">
                                     <input type="text" id="date-birth" class="date-picker" placeholder="dd.mm.yyyy" readonly>
-                                    <span class="calendar-icon"><img src="images/calendar-black.svg" alt="icon"></span>
+                                    <span class="calendar-icon"><img src="{% static 'design/images/calendar-black.svg' %}" alt="icon"></span>
                                   </div>
                                 </div>
 
@@ -516,7 +517,7 @@
                                   <label for="dob">Date of birth</label>
                                   <div class="dob-input">
                                     <input type="text" id="dob" class="date-picker" placeholder="dd.mm.yyyy" readonly>
-                                    <span class="calendar-icon"><img src="images/calendar-black.svg" alt="icon"></span>
+                                    <span class="calendar-icon"><img src="{% static 'design/images/calendar-black.svg' %}" alt="icon"></span>
                                   </div>
                                 </div>
 
@@ -605,14 +606,6 @@
                 <div class="col-12 col-md-6 col-lg-3">
                   <div class="map">
                     <img src="{% static 'design/images/map.png' %}" alt="map">
-                    <!-- <div class="map-responsive" style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin-top:15px;">
-                      <a href="https://www.google.com/maps?q=YOUR+ADDRESS+HERE" target="_blank" style="position:absolute; top:0; left:0; width:100%; height:100%;">
-                        <iframe
-                          src="https://www.google.com/maps/embed/v1/place?q=YOUR+ADDRESS+HERE&key=YOUR_GOOGLE_MAPS_API_KEY"
-                          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                          referrerpolicy="no-referrer-when-downgrade"></iframe>
-                      </a>
-                    </div> -->
                   </div>
                 </div>
               </div>
@@ -636,7 +629,7 @@
 
         <script src="{% static 'design/js/jquery-3.5.1.min.js'%}"></script>
         <script src="{% static 'design/js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'vendor/util.js' %}"></script>
         <script src="{% static 'design/js/script.js' %}"></script>
-
 
 {% endblock %}
