@@ -686,6 +686,9 @@ button:focus{
       padding: 0;
       border: none;
     }
+    .date-nav button image:hover{
+        box-shadow: 10px 10px 5px #085065;
+    }
     .date-wrapper {
       display: flex;
       overflow: hidden;

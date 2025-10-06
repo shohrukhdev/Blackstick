@@ -97,12 +97,12 @@ class ProviderServerSerializer(serializers.ModelSerializer):
 
     def _calculate_available_slots(self, obj, start_date):
         """
-        Generate available time slots for the next 5 days considering off days and booked appointments.
+        Generate available time slots for the next 3 days considering off days and booked appointments.
         """
         available_slots = []
         current_date = datetime.strptime(str(start_date), "%Y-%m-%d").date()
         off_days = obj.get_off_days()
-        for _ in range(5):
+        while len(available_slots) < 3:
             weekday = current_date.isoweekday()  # 1 = Monday, 7 = Sunday
             if weekday not in off_days:
                 slots = self._generate_time_slots(obj, current_date)

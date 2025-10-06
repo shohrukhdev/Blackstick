@@ -31,7 +31,7 @@ def main_page(request, identifier: str):
                 # If no close match or difference is more than 4 characters, return 404
                 return render(request, "404.html", status=404)
         signature = generate_signature(provider.id)
-        if request.GET.get('v') and request.GET.get('v') == 1:
+        if request.GET.get('ver') and request.GET.get('ver') == "1":
             return render(request, "booket/client/main.html", context={"provider": provider, "signature": signature})
         else:
             return render(request, "booket/client/index.html", context={"provider": provider, "signature": signature})

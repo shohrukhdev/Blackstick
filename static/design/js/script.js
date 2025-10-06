@@ -1,10 +1,54 @@
 $(document).ready(function () {
-    // Initialize components
+    setupEventListeners();
+    $("#book").modal({backdrop: 'static', keyboard: false, show: false});
+    $("#date-time").modal({backdrop: 'static', keyboard: false, show: false});
+    $("#confirm").modal({backdrop: 'static', keyboard: false, show: false});
+
+    // Event Delegation: Handle Service Checkbox Changes
+    $(document).on('change', '.service-checkbox', handleServiceCheckboxChange);
     initializeComponents();
 
-    // Set up event listeners
-    setupEventListeners();
+    // Add listeners for phone and email inputs
+    $('#phone').on('input', checkPhoneInput);
+    $('#email').on('input', checkEmailInput);
 });
+
+// Simple i18n messages map and helpers
+const MESSAGES = {
+    en: {
+        noSlots: "No available time slots",
+        slotUnavailable: "This time slot is not available for the selected services",
+        genericError: "An error occurred while processing your request.",
+        unknownError: "Unknown error occurred",
+        invalidOtp: "Invalid OTP code",
+        resendFailed: "Failed to resend code"
+    },
+    ru: {
+        noSlots: "Нет доступных временных слотов",
+        slotUnavailable: "Этот интервал недоступен для выбранных услуг",
+        genericError: "Произошла ошибка при обработке вашего запроса.",
+        unknownError: "Произошла неизвестная ошибка",
+        invalidOtp: "Неверный код подтверждения",
+        resendFailed: "Не удалось отправить код повторно"
+    },
+    uz: {
+        noSlots: "Mavjud vaqt oralig'i yo'q",
+        slotUnavailable: "Tanlangan xizmatlar uchun bu vaqt oralig'i mavjud emas",
+        genericError: "So'rovingizni bajarishda xatolik yuz berdi.",
+        unknownError: "Noma'lum xatolik yuz berdi",
+        invalidOtp: "Noto'g'ri tasdiqlash kodi",
+        resendFailed: "Kod qayta yuborilmadi"
+    }
+};
+function getLang() {
+    const val = $('#cur_lang').val();
+    return (val ? String(val).toLowerCase() : 'en');
+}
+function t(key) {
+    const lang = getLang();
+    return (MESSAGES[lang] && MESSAGES[lang][key]) || (MESSAGES.en && MESSAGES.en[key]) || key;
+}
+
 
 // Global variables for managing appointment data
 const appointment = {services: []};
@@ -69,11 +113,6 @@ function setupEventListeners() {
     // Form tab handling
     $("#phone-number-tab, #email-tab").on("shown.bs.tab", handleConfirmationMethodChange);
 
-    // Server selection
-    $(document).on("click", ".service-checkbox", function () {
-        updateNextButtonState();
-    });
-
     // Check agreement checkbox to enable confirm button
     $("#defaultCheck1, #defaultCheck2").on("change", function () {
         updateConfirmButton();
@@ -133,7 +172,7 @@ function toggleServiceAccordion() {
 function selectServer(serverId, serverName) {
     appointment.services = [];
     appointment.server_id = serverId;
-
+    $('#goToDateSelectBtn').attr("disabled", "disabled")
     // Update modal title with server name
     $("#bookLabel, #date-timeLabel, #confirmLabel").text(`${serverName}`);
 
@@ -146,18 +185,18 @@ function selectServer(serverId, serverName) {
         dataType: "json",
         headers: {'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature},
         success: function (response) {
-            console.log(response)
             responseData = response;
             appointment.server_id = serverId;
+            appointment.server_name = serverName
             fillServices(response.service_types, lang_code);
-            // renderDates(response.available_time_slots);
-            // Show the booking modal
+            renderDates(response.available_time_slots);
             $("#book").modal("show");
         },
         error: function (error) {
             handleAjaxError(error)
         }
     });
+}
 
     function fillServices(service_types, lang_code) {
         $('#ps_services').empty();
@@ -166,13 +205,13 @@ function selectServer(serverId, serverName) {
                 lang_code === "ru" ? service_type.name_ru :
                     service_type.name;
             let serviceBox = `
-         <div class="service_box">
+                <div class="service_box">
                 <div class="header">
                   <h1>${serviceTypeName}</h1>
                 </div>
                 <div class="list">
                 <ul class="list-group list-group-flush">       
-        `;
+                `;
 
             $.each(service_type.services, function (index, service) {
                 const price = service.service_private_price !== null ? service.service_private_price : service.price;
@@ -181,22 +220,25 @@ function selectServer(serverId, serverName) {
                         service.name;
 
                 serviceBox += `
-        <li class="list-group-item">
-          <p>${serviceName}</p>
-          <div class="d-flex align-items-center justify-content-end">
-            <span>> ${price.toLocaleString()}</span>
-            <div class="form-check">
-              <input class="form-check-input position-static " 
-                type="checkbox" 
-                id="blankCheckbox_${service.id}"
-                data-id="${service.id}"
-                data-name="${serviceName}"
-                data-price="${price}"
-                data-duration="${service.duration}" 
-                aria-label="...">
-            </div>
-          </div>
-        </li>
+                <li class="list-group-item service-list-item">
+                  <div class="d-flex align-items-center justify-content-between w-100">
+                    <div class="service-text-container">
+                      <p class="service-name">${serviceName}</p>
+                      <small class="service-price d-block">> ${price.toLocaleString()}</small>
+                    </div>
+                    <div class="checkbox-container">
+                      <input class="form-check-input position-static service-checkbox" 
+                        type="checkbox" 
+                        id="blankCheckbox_${service.id}"
+                        data-id="${service.id}"
+                        data-name="${serviceName}"
+                        data-price="${price}"
+                        data-duration="${service.duration}" 
+                        aria-label="...">
+                    </div>
+                  </div>
+                </li>
+
         `;
             });
 
@@ -209,96 +251,41 @@ function selectServer(serverId, serverName) {
         })
     }
 
-    // Show the booking modal
-    $("#book").modal("show");
-}
+// Function to handle changes in service checkboxes
+function handleServiceCheckboxChange() {
+    $('#goToDateSelectBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+    const serviceId = $(this).data('id');
+    const price = $(this).data('price');
+    const duration = $(this).data('duration');
+    const serviceName = $(this).data('name');
 
-/**
- * Fetch services for the selected server
- * @param {string} serverId - The server ID
- */
-function fetchServerServices(serverId) {
-    $.ajax({
-        url: `/provider-server/${serverId}/services/`,
-        method: 'GET',
-        dataType: 'json',
-        headers: {'X-CSRFToken': getCookie('csrftoken')},
-        success: function (response) {
-            console.log(response);
-            // renderServerServices(response);
-        },
-        error: handleAjaxError
-    });
-}
-
-/**
- * Render services available for the server
- * @param {Object} response - The response containing services
- */
-function renderServerServices(response) {
-    responseData = response;
-
-    // Clear existing checkboxes
-    $(".service-checkbox").prop("checked", false);
-
-    // Populate each service in its category
-    if (response.services && response.services.length > 0) {
-        // Services are already rendered in the modal, just make sure checkboxes work
-        setupServiceCheckboxes();
+    if ($(this).is(':checked')) {
+        appointment.services.push({ service_id: serviceId, service_name: serviceName, price: price, duration: duration });
+    } else {
+        appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
     }
+    updateTotalDuration();
 }
 
-/**
- * Setup service checkboxes for selection
- */
-function setupServiceCheckboxes() {
-    $(".form-check-input").on("change", function () {
-        const serviceId = $(this).val();
-        const price = $(this).data("price");
-        const duration = $(this).data("duration") || 60;
-        const serviceName = $(this).closest("li").find("p").text();
-
-        if ($(this).is(":checked")) {
-            appointment.services.push({
-                service_id: serviceId,
-                service_name: serviceName,
-                price: parseFloat(price),
-                duration: parseInt(duration)
-            });
-        } else {
-            appointment.services = appointment.services.filter(service =>
-                service.service_id !== serviceId
-            );
-        }
-
-        updateNextButtonState();
-        updateTotalDuration();
-    });
+function goToDateTimeSelect(){
+    $("#book").modal("hide");
+    getDates("previous");
+    $("#date-time").modal("show");
 }
 
-/**
- * Update next button state based on service selection
- */
-function updateNextButtonState() {
-    $(".btn-primary[data-dismiss='modal'][data-toggle='modal'][data-target='#date-time']")
-        .prop("disabled", appointment.services.length === 0);
+function goBackToServiceSelect(){
+    $("#date-time").modal("hide");
+    $('#goToDateSelectBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
+    $("#book").modal("show");
 }
 
 /**
  * Calculate and update total duration
  */
 function updateTotalDuration() {
+    const service_list = appointment.services
     const totalDuration = calculateTotalDuration(appointment.services);
     $("#duration").text(totalDuration);
-}
-
-/**
- * Calculate the total duration of selected services
- * @param {Array} services - The selected services
- * @returns {number} The total duration
- */
-function calculateTotalDuration(services) {
-    return services.reduce((sum, service) => sum + service.duration, 0);
 }
 
 /**
@@ -310,67 +297,62 @@ function calculateTotalSum(services) {
     return services.reduce((sum, service) => sum + service.price, 0);
 }
 
-/**
- * Fetch available dates for the selected server
- * @param {string} direction - The direction to fetch dates (next/previous)
- */
-function getDates(direction) {
-    const date = new Date();
-    date.setDate(date.getDate() + (direction === "next" ? 7 : -7));
-
-    const formattedDate = formatDate(date, 'YYYY-MM-DD');
-
-    $.ajax({
-        url: `/provider-server/${appointment.server_id}/available-slots/?start_date=${formattedDate}`,
-        method: 'GET',
-        dataType: 'json',
-        headers: {'X-CSRFToken': getCookie('csrftoken')},
-        success: function (response) {
-            renderDates(response.available_slots);
-        },
-        error: handleAjaxError
-    });
-}
 
 /**
  * Render available dates in the date picker
  * @param {Array} availableSlots - The available slots
  */
 function renderDates(availableSlots) {
-    const $dateContainer = $("#dateContainer");
-    $dateContainer.empty();
+    $("#dateContainer").empty();
+    $("#timeSlots").empty();
+    const lang_code = $('#cur_lang').val();
 
-    availableSlots.forEach((slot, index) => {
-        const date = new Date(slot.date);
-        const day = date.getDate();
-        const month = date.toLocaleString('default', {month: 'short'});
-        const weekday = date.toLocaleString('default', {weekday: 'short'});
-
-        const $dateBtn = $(`
-            <div class="date-item" data-date="${slot.date}">
-                <span class="weekday">${weekday}</span>
-                <span class="day">${day}</span>
-                <span class="month">${month}</span>
-            </div>
-        `);
-
-        if (index === 0) {
-            $dateBtn.addClass("active");
-            appointment.date = slot.date;
-            renderTimeSlots(slot.slots);
-            $("#selectedDateText").text(formatDateFull(date));
+    $.each(availableSlots, function (index, item) {
+        const dateBtn = $("<button>")
+            .addClass("btn btn-outline-secondary day-btn")
+            .text(formatDate(item.date, "DD-MM"))
+            .on("click", function () {
+                $("#dateContainer button").removeClass("btn-primary active");
+                $(this).addClass("btn-primary active");
+                appointment.date = item.date;
+                updateSelectedDateText(appointment.date, lang_code);
+                renderTimeSlots(item.slots)
+            });
+        if (index === 0){
+            firstDate = item.date;
+            renderTimeSlots(item.slots);
+            dateBtn.addClass("btn-primary active");
+            updateSelectedDateText(item.date, lang_code);
+            appointment.date = item.date;
         }
+        lastDate = item.date;
+        $("#dateContainer").append(dateBtn);
+    })
+}
 
-        $dateBtn.on("click", function () {
-            $(".date-item").removeClass("active");
-            $(this).addClass("active");
-            appointment.date = slot.date;
-            renderTimeSlots(slot.slots);
-            $("#selectedDateText").text(formatDateFull(date));
-        });
-
-        $dateContainer.append($dateBtn);
+// Function to fetch available dates based on direction (next/previous)
+function getDates(direction) {
+    const date_param = modifyDate(lastDate, direction === "next" ? 1 : -9);
+    const endpoint = `/provider-server/${responseData.server_id}/available-slots/?start_date=${date_param}`;
+    $.ajax({
+        url: endpoint,
+        type: "GET",
+        dataType: "json",
+        headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
+        success: function (response){
+            renderDates(response.available_slots)
+        },
+        error: function (error){
+            handleAjaxError(error)
+        }
     });
+}
+
+// Function to modify date for next/previous date fetching
+function modifyDate(dateStr, days) {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().split('T')[0];
 }
 
 /**
@@ -383,33 +365,71 @@ function formatDateFull(date) {
     return date.toLocaleDateString(undefined, options);
 }
 
-/**
- * Render time slots for the selected date
- * @param {Array} slots - The available time slots
- */
 function renderTimeSlots(slots) {
-    const $timeSlots = $("#timeSlots");
-    $timeSlots.empty();
+    $("#timeSlots").empty();
+    // Always start with disabled "next" in the date-time modal until a slot is chosen
+    $(".modal-footer .btn-primary").prop("disabled", true);
 
-    slots.forEach(time => {
-        const $timeBtn = $(`<div class="time-slot">${time}</div>`);
+    if (!Array.isArray(slots) || slots.length === 0) {
+        const noSlots = $("<div>").addClass("no-slots").text("No available time slots");
+        $("#timeSlots").append(noSlots);
+        // Clear previously selected time if switching to a date with no slots
+        appointment.time = undefined;
+        return;
+    }
 
-        $timeBtn.on("click", function () {
-            $(".time-slot").removeClass("active");
-            $(this).addClass("active");
-            appointment.time = time;
-            enableNextButton();
+
+    $.each(slots, function (index, time) {
+        const timeDiv = $("<div>")
+            .addClass("time-slot")
+            .attr("data-time", time)
+            .text(time);
+
+        timeDiv.on("click", function () {
+            // Toggle active state among all time-slot elements
+            $("#timeSlots .time-slot").removeClass("selected");
+            const service_list = appointment.services;
+            const totalDuration = calculateTotalDuration(service_list);
+            const available = isSlotAvailable(time, totalDuration, slots);
+            if (available){
+                $(this).addClass("selected");
+                // Save the selected time and enable the next/confirm action
+                appointment.time = time;
+                enableNextOnTimeSelect();
+            } else {
+                disableNextOnTimeSelect();
+                showError("This time slot is not available for the selected services");
+            }
+
         });
-
-        $timeSlots.append($timeBtn);
+        $("#timeSlots").append(timeDiv);
     });
 }
 
+// Function to check if a time slot is available
+function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
+    const startTime = moment(selectedTime, "HH:mm");
+    const endTime = startTime.clone().add(totalDuration, "minutes");
+    const requiredSlots = [];
+
+    let tempTime = startTime.clone();
+    while (tempTime.isBefore(endTime)) {
+        requiredSlots.push(tempTime.format("HH:mm"));
+        tempTime.add(30, "minutes");
+    }
+
+    return requiredSlots.every(slot => availableSlots.includes(slot));
+}
 /**
  * Enable the next button when a time slot is selected
  */
-function enableNextButton() {
-    $(".modal-footer .btn-primary").prop("disabled", false);
+function enableNextOnTimeSelect() {
+    $("#goToConfirmBtn").prop("disabled", false);
+}
+
+
+function disableNextOnTimeSelect() {
+    $("#goToConfirmBtn").prop("disabled", true);
 }
 
 /**
@@ -691,3 +711,194 @@ function handleAjaxError(error) {
 function showError(message) {
     alert(message);
 }
+
+// Function to close the modal and reset data
+function closeModal() {
+    $('#book').modal("hide");
+    resetAppointmentData();
+    // resetOTPInput();
+}
+
+// Utility function to reset appointment and response data
+function resetAppointmentData() {
+    appointment.services = [];
+    responseData = {};
+}
+
+// Function to calculate the total duration of selected services
+function calculateTotalDuration(services) {
+    return services.reduce((sum, service) => sum + service.duration, 0);
+}
+
+// Function to update the selected date text with appropriate formatting
+function updateSelectedDateText(dateStr, lang_code) {
+    const date = new Date(dateStr);
+    const day = date.getDate();
+
+    // Get month name based on language code
+    let monthName;
+    const monthIndex = date.getMonth();
+
+    if (lang_code === 'uz') {
+        const uzMonths = ['YAN', 'FEV', 'MAR', 'APR', 'MAY', 'IYUN', 'IYUL', 'AVG', 'SEN', 'OKT', 'NOY', 'DEK'];
+        monthName = uzMonths[monthIndex];
+    } else if (lang_code === 'ru') {
+        const ruMonths = ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮНЬ', 'ИЮЛЬ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК'];
+        monthName = ruMonths[monthIndex];
+    } else {
+        const enMonths = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+        monthName = enMonths[monthIndex];
+    }
+
+    // Get weekday name based on language code
+    let weekdayName;
+    const weekdayIndex = date.getDay();
+
+    if (lang_code === 'uz') {
+        const uzWeekdays = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
+        weekdayName = uzWeekdays[weekdayIndex];
+    } else if (lang_code === 'ru') {
+        const ruWeekdays = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+        weekdayName = ruWeekdays[weekdayIndex];
+    } else {
+        const enWeekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        weekdayName = enWeekdays[weekdayIndex];
+    }
+
+    // Update the selected date text
+    $('#selectedDateText').text(`${day} ${monthName}, ${weekdayName}`);
+}
+
+function goToConfirm(){
+    // Populate confirm modal details from the appointment object before showing
+    renderConfirm();
+    $("#date-time").modal("hide");
+    $("#book").modal("hide");
+    $("#confirm").modal("show");
+}
+
+function renderConfirm(){
+    try {
+        // Time and Date
+        if (appointment.time) {
+            $("#appointment_time").text(appointment.time);
+        }
+        if (appointment.date) {
+            $("#appointment_date").text(formatDate(appointment.date, 'DD.MM.YYYY'));
+        }
+
+        // Services list
+        const $list = $("#appointment_services");
+        $list.empty();
+        if (Array.isArray(appointment.services)) {
+            appointment.services.forEach(svc => {
+                const priceText = Number(svc.price).toLocaleString();
+                const $li = $(
+                    `<li>
+                        <p></p>
+                        <div class="d-flex align-items-center justify-content-end" style="gap: 10px;">
+                          <span></span>
+                          <div class="time"><img src="/static/design/images/clock-grey.svg" alt="icon"><p></p></div>
+                        </div>
+                      </li>`
+                );
+                $li.find('p').first().text(svc.service_name || '');
+                $li.find('span').text(priceText);
+                $li.find('.time p').text(`${svc.duration} min`);
+                $list.append($li);
+            });
+        }
+
+        // Duration
+        const totalDuration = calculateTotalDuration(appointment.services || []);
+        $("#appointment_duration").text(totalDuration);
+
+        // Total amount
+        const totalAmount = calculateTotalSum(appointment.services || []);
+        $("#appointment_total").text(Number(totalAmount).toLocaleString());
+
+        // Specialist label is already set elsewhere (#confirmLabel), no change here
+    } catch (e) {
+        console.error('Error rendering confirm modal:', e);
+    }
+}
+
+function selectConfirmByPhone(){
+    $("#confirm_by_email").removeClass("active");
+    $("#confirm_by_phone").addClass("active");
+    $("#phone_field").show();
+    $("#email_field").hide();
+}
+
+function selectConfirmByEmail(){
+    $("#confirm_by_phone").removeClass("active");
+    $("#confirm_by_email").addClass("active");
+    $("#phone_field").hide();
+    $("#email_field").show();
+}
+
+function checkPhoneInput(){
+    const phoneValue = $(this).val();
+    if (phoneValue.length > 8){
+        searchClient({phone_number: phoneValue});
+    } else {
+        $('#client_form_field').hide();
+    }
+}
+
+// Check if the email input is valid
+function checkEmailInput() {
+    const emailValue = $(this).val();
+    if (isValidEmail(emailValue)) {
+        searchClient({email: emailValue});
+    } else {
+        $('.client_form_field').hide();
+    }
+}
+// Helper function to validate email
+function isValidEmail(email) {
+    // Basic email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function searchClient(search_data){
+    const signature = $('#signature').val();
+        $.ajax({
+            url: '/client/search/',
+            type: 'GET',
+            data: search_data,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'X-Signature': signature
+            },
+            success: function (response) {
+                if (response.success) {
+                    //fill form inputs
+                    $('#full_name').val(response.client_full_name)
+                    $('#dob').val(response.client_dob)
+                    $('#sex').val(response.client_sex)
+                    $('#client_id').val(response.client_id)
+                    //show client info block
+                    $('#enter_text').hide()
+                    $('#clientFound').show()
+                    $('#client_form_field').show();
+
+                }
+            },
+            error: function (error) {
+                console.log(error.responseText)
+                $('#full_name').val("")
+                $('#dob').val("")
+                $('#sex').val("")
+                $('#client_id').val("")
+                $('#clientNotFound').show()
+                $('#clientFound').hide()
+                $('#client_form_field').show();
+           }
+        });
+}
+
+
+
+

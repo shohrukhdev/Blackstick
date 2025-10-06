@@ -659,7 +659,6 @@
             dataType: "json",
             headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
             success: function (response){
-                console.log(response)
                 renderDates(response.available_slots)
             },
             error: function (error){ 
@@ -847,7 +846,6 @@
                 fillServices(response.service_types, lang_code);
                 renderDates(response.available_time_slots);
                 $('#customModal').modal('show');
-                console.log(response)
             },
             error: function (error) {
                 handleAjaxError(error)
@@ -901,7 +899,7 @@
                 $('#clientNotFound').show()
                 $('#clientFound').hide()
                 $('.client_info_input').show();
-            }
+           }
         });
     }
     

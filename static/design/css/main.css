@@ -1,2 +1,43 @@
 @import './base.css';
 
+.service-list-item {
+  padding: 0.5rem;
+}
+
+.service-text-container {
+  min-width: 0;
+  width: calc(100% - 40px);
+  margin-right: 0.75rem;
+}
+
+.service-name {
+  margin-bottom: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.service-price {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.checkbox-container {
+  min-width: 24px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 375px) {
+  /* Additional adjustments for very small screens */
+  .service-text-container {
+    width: calc(100% - 30px);
+  }
+
+  .service-list-item {
+    padding: 0.4rem;
+  }
+}
