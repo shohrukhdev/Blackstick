@@ -11,6 +11,8 @@ $(document).ready(function () {
     // Add listeners for phone and email inputs
     $('#phone').on('input', checkPhoneInput);
     $('#email').on('input', checkEmailInput);
+
+    $(document).on('input change', '#full_name, #dob, #sex, #agree', checkConfirmButton)
 });
 
 // Simple i18n messages map and helpers
@@ -275,6 +277,7 @@ function goToDateTimeSelect(){
 
 function goBackToServiceSelect(){
     $("#date-time").modal("hide");
+    $("#confirm").modal("hide");
     $('#goToDateSelectBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
     $("#book").modal("show");
 }
@@ -715,6 +718,7 @@ function showError(message) {
 // Function to close the modal and reset data
 function closeModal() {
     $('#book').modal("hide");
+    $('#confirm').modal("hide");
     resetAppointmentData();
     // resetOTPInput();
 }
@@ -826,6 +830,7 @@ function renderConfirm(){
 function selectConfirmByPhone(){
     $("#confirm_by_email").removeClass("active");
     $("#confirm_by_phone").addClass("active");
+    clearConfirmFields();
     $("#phone_field").show();
     $("#email_field").hide();
 }
@@ -833,8 +838,20 @@ function selectConfirmByPhone(){
 function selectConfirmByEmail(){
     $("#confirm_by_phone").removeClass("active");
     $("#confirm_by_email").addClass("active");
+    clearConfirmFields();
+    $("#enter_text").hide();
+    $("#clientFound").hide();
     $("#phone_field").hide();
     $("#email_field").show();
+}
+
+function clearConfirmFields(){
+    $("#full_name").val("");
+    $("#dob").val("");
+    $("#sex").val("")
+    $("#phone").val("");
+    $("#email").val("");
+
 }
 
 function checkPhoneInput(){
@@ -897,6 +914,19 @@ function searchClient(search_data){
                 $('#client_form_field').show();
            }
         });
+}
+
+function checkConfirmButton() {
+    const fullNameValue = $('#full_name').val();
+    const dobValue = $('#dob').val();
+    const sexValue = $('#sex').val();
+    const agreeChecked = $('#agree').is(':checked');
+
+    if (fullNameValue && dobValue && sexValue && agreeChecked) {
+        $('#confirmBtn').prop('disabled', false);
+    } else {
+        $('#confirmBtn').prop('disabled', true);
+    }
 }
 
 

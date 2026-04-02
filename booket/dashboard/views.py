@@ -1,4 +1,5 @@
 import json
+import logging
 import traceback
 from collections import defaultdict
 from datetime import timedelta, datetime
@@ -10,9 +11,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
 from booket.models import (
-    ProviderServer, logger, ServiceType, Service, ProviderServerService, Appointment,
+    ProviderServer, ServiceType, Service, ProviderServerService, Appointment,
     AppointmentService, Provider
 )
+
+logger = logging.getLogger(__name__)
 
 
 @login_required

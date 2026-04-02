@@ -440,7 +440,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{% trans "Specialist" %} <span id="confirmLabel"></span></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" onclick="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true"><img src="{% static 'design/images/close.svg' %}" alt="icon"></span>
             </button>
           </div>
@@ -566,7 +566,7 @@
                           </div>
                           <div class="form-check d-flex justify-content-center align-items-center">
                             <div>
-                              <input class="form-check-input" name="agree" type="checkbox" required>
+                              <input class="form-check-input" id="agree" name="agree" type="checkbox" required>
                             <label class="form-check-label">
                               <a href="#" style="margin-left: 0">{% trans "Agree to terms of use" %}</a>
                             </label>
@@ -581,8 +581,8 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-outline">{% trans "Back" %}</button>
-            <button type="button" class="btn btn-primary"
+            <button type="button" onclick="goBackToServiceSelect()" class="btn btn-outline">{% trans "Back" %}</button>
+            <button id="confirmBtn" type="button" class="btn btn-primary"
                     style="background-color: #164D35;">{% trans "Confirm" %}</button>
           </div>
         </div>

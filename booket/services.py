@@ -220,6 +220,7 @@ def get_service_list_by_type(type_id: int, user: User) -> dict:
 
 
 def add_service(request: HttpRequest) -> dict:
+    st = None
     try:
         st = get_object_or_404(ServiceType, id=request.POST.get("type_id"), provider__owner=request.user)
         sr = Service.objects.create(
@@ -251,10 +252,10 @@ def add_service(request: HttpRequest) -> dict:
 
 def get_service(id: int, user: User) -> dict:
     try:
-        sv = get_object_or_404(Service, id=id, tip__provider__owner=user)
+        service = get_object_or_404(Service, id=id, tip__provider__owner=user)
         st_list = ServiceType.objects.filter(provider__owner=user)
         context_data = {
-            "service": sv,
+            "service": service,
             "service_type_list": st_list,
         }
     except Exception as e:
@@ -268,17 +269,17 @@ def get_service(id: int, user: User) -> dict:
 
 def edit_service(request: HttpRequest) -> dict:
     try:
-        sv = get_object_or_404(Service, id=request.POST.get("id"), tip__provider__owner=request.user)
-        sv.name = request.POST.get("name")
-        sv.name_uz = request.POST.get("name_uz")
-        sv.name_ru = request.POST.get("name_ru")
-        sv.description = request.POST.get("description")
-        sv.price = request.POST.get("price")
-        sv.is_active = request.POST.get("is_active") == "True"
-        sv.save()
+        service = get_object_or_404(Service, id=request.POST.get("id"), tip__provider__owner=request.user)
+        service.name = request.POST.get("name")
+        service.name_uz = request.POST.get("name_uz")
+        service.name_ru = request.POST.get("name_ru")
+        service.description = request.POST.get("description")
+        service.price = request.POST.get("price")
+        service.is_active = request.POST.get("is_active") == "True"
+        service.save()
         context_data = {
             "success": True,
-            "service": sv,
+            "service": service,
         }
     except Exception as e:
         context_data = {

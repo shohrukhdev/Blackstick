@@ -510,9 +510,11 @@
         // Add listeners for phone and email inputs
         $('#phone').on('input', checkPhoneInput);
         $('#email').on('input', checkEmailInput);
+
+        $(document).on('input change', '#full_name, #dob, #sex, #agree', checkConfirmButton)
         
         // Enable/disable "Confirm" button based on form validity
-        $('#full_name, #dob, #sex, #agree').on('input change', checkConfirmButton);
+        $('#full_name, #dob, #sex, #agree').on('input', checkConfirmButton);
         
         // Enable/disable "Confirm" button based on OTP input
         $('#otp_code').on('input', checkOTPConfirmButton);
@@ -931,10 +933,12 @@
     
     // Function to check and enable/disable the "Confirm" button
     function checkConfirmButton() {
+        console.log("SHIT")
         const fullNameValue = $('#full_name').val();
         const dobValue = $('#dob').val();
         const sexValue = $('#sex').val();
         const agreeChecked = $('#agree').is(':checked');
+        console.log(fullNameValue, dobValue, sexValue, agreeChecked)
 
         if (fullNameValue && dobValue && sexValue && agreeChecked) {
             $('#confirmBtn').prop('disabled', false);
@@ -942,6 +946,7 @@
             $('#confirmBtn').prop('disabled', true);
         }
     }
+
     function sendToConfirm(){
         
         appointment.comments = $('#commentary').val()
