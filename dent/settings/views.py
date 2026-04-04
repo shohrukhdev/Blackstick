@@ -1,5 +1,5 @@
 import functools
-import traceback
+import logging
 from datetime import datetime, date
 
 from django.contrib.auth.decorators import login_required
@@ -10,6 +10,8 @@ from django.shortcuts import render, redirect
 from dent.models import Role, Staff, Clinic, Treatment, Patient
 from dent.settings import service
 from dent.settings.service import get_staff_services, get_clinic_categories
+
+logger = logging.getLogger(__name__)
 
 
 @login_required
@@ -71,18 +73,20 @@ def add_new_staff(request, *args, **kwargs) -> HttpResponse:
                 return redirect("/settings/user_list?successSave=true")
             except Exception as e:
                 new_user.delete()  # delete user since staff not created
+                logger.exception("Error creating staff for user")
                 roles = service.get_roles()
-                context_data = {"error_msg": str(traceback.format_exc()), "roles": roles}
+                context_data = {"error_msg": str(e), "roles": roles}
                 return render(
                     request=request,
                     template_name="dent/settings/user/add.html",
                     context=context_data
                 )
         except Exception as e:
+            logger.exception("Error creating user")
             roles = service.get_roles()
             error_msg = f"User creation error: {e}"
             if "UNIQUE constraint failed" in str(e):
-                error_msg = f"username {request.POST.get('username', )} already exists!"
+                error_msg = f"Username '{request.POST.get('username')}' already exists."
             context_data = {"roles": roles, "error_msg": error_msg}
             return render(
                 request=request,
@@ -128,8 +132,9 @@ def edit_staff(request, *args, **kwargs):
             staff.save()
             return redirect("/settings/user_list?successSave=true")
         except Exception as e:
+            logger.exception("Error updating staff")
             roles = service.get_roles()
-            context_data = {"error_msg": str(traceback.format_exc()), "roles": roles}
+            context_data = {"error_msg": str(e), "roles": roles}
             return render(
                 request=request,
                 template_name="dent/settings/user/add.html",
@@ -152,7 +157,8 @@ def category_list(request, *args, **kwargs):
                 context=context_data
             )
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error fetching categories")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/category/list.html",
@@ -179,7 +185,8 @@ def category_add(request, *args, **kwargs):
             )
             return redirect("/settings/category_list?successSave=true")
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error adding category")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/category/add.html",
@@ -203,7 +210,8 @@ def category_edit(request, *args, **kwargs):
                 context=context_data
             )
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error fetching category for edit")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/category/list.html",
@@ -221,7 +229,8 @@ def category_edit(request, *args, **kwargs):
             )
             return redirect("/settings/category_list?successSave=true")
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error editing category")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/category/edit.html",
@@ -245,7 +254,8 @@ def service_list(request, *args, **kwargs):
                 context=context_data
             )
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error fetching services")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/service/list.html",
@@ -278,7 +288,8 @@ def service_add(request, *args, **kwargs):
             )
             return redirect("/settings/service_list?successSave=true")
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error adding service")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/service/add.html",
@@ -306,7 +317,8 @@ def service_edit(request, *args, **kwargs):
                 context=context_data,
             )
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error fetching service for edit")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/service/list.html",
@@ -327,7 +339,8 @@ def service_edit(request, *args, **kwargs):
             )
             return redirect("/settings/service_list?successSave=true")
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error editing service")
+            context_data = {"error_msg": str(e)}
             return render(
                 request=request,
                 template_name="dent/settings/service/edit.html",
@@ -348,7 +361,8 @@ def tooth_state_list(request, *args, **kwargs):
                 context=context_data
             )
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error fetching tooth state list")
+            context_data = {"error_msg": str(e)}
             return render(
                 request,
                 template_name="dent/settings/tooth_state/list.html",
@@ -383,7 +397,8 @@ def clinic_detail(request, *args, **kwargs):
                 template_name="dent/settings/clinic_details.html"
             )
         except Exception as e:
-            context_data = {"error_msg": str(traceback.format_exc())}
+            logger.exception("Error updating clinic details")
+            context_data = {"error_msg": str(e)}
             return render(
                 request,
                 template_name="dent/settings/clinic_details.html",

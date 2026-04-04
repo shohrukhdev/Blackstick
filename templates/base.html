@@ -41,6 +41,9 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
+  <!-- Toast container for notifications -->
+  <div id="toast-container" style="position: fixed; top: 1rem; right: 1rem; z-index: 105000;"></div>
+
  <style>
    .select2 {
       width:100%!important;
@@ -111,6 +114,44 @@
     <script src="{% static 'vendor/util.js' %}"></script>
     <script src="{% static 'dist/js/demo.js' %}"></script>
 {#    <script src="{% static 'jui/jquery-ui.min.js' %}"></script>#}
+    <script>
+    function showToast(message, type) {
+      type = type || 'info';
+      var bgMap = {
+        success: 'bg-success',
+        error: 'bg-danger',
+        warning: 'bg-warning',
+        info: 'bg-info'
+      };
+      var textMap = {
+        success: 'text-white',
+        error: 'text-white',
+        warning: 'text-dark',
+        info: 'text-white'
+      };
+      var bg = bgMap[type] || bgMap.info;
+      var text = textMap[type] || textMap.info;
+
+      var $container = $('#toast-container');
+      $container.empty();
+
+      var toastHtml =
+        '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" ' +
+        '     data-autohide="true" data-delay="4000">' +
+        '  <div class="toast-header ' + bg + ' ' + text + '">' +
+        '    <strong class="mr-auto">Notification</strong>' +
+        '    <button type="button" class="ml-2 mb-1 close ' + text + '" data-dismiss="toast">' +
+        '      <span aria-hidden="true">&times;</span>' +
+        '    </button>' +
+        '  </div>' +
+        '  <div class="toast-body">' + message + '</div>' +
+        '</div>';
+
+      $container.append(toastHtml);
+      $container.find('.toast').toast('show');
+    }
+    </script>
+
     <script>
     $(document).ready(function () {
 

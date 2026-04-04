@@ -912,11 +912,59 @@ function handleAjaxError(error) {
 }
 
 /**
- * Display an error message to the user.
- * TODO: replace alert() with an inline toast or modal notification.
+ * Show a Bootstrap toast notification.
+ * Self-contained so it works regardless of which base template is loaded.
+ *
+ * @param {string} message
+ * @param {string} type  - 'success' | 'error' | 'warning' | 'info'
+ */
+function showToast(message, type) {
+    type = type || 'info';
+    var bgMap = {
+        success: 'bg-success text-white',
+        error: 'bg-danger text-white',
+        warning: 'bg-warning text-dark',
+        info: 'bg-primary text-white'
+    };
+    var cls = bgMap[type] || bgMap.info;
+
+    var container = document.querySelector('.toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'toast-container position-fixed top-0 end-0 p-3';
+        container.style.zIndex = '105000';
+        document.body.appendChild(container);
+    }
+
+    // Remove previous toasts to avoid stacking
+    container.innerHTML = '';
+
+    var toastEl = document.createElement('div');
+    toastEl.className = 'toast align-items-center ' + cls + ' border-0 shadow';
+    toastEl.setAttribute('role', 'alert');
+    toastEl.setAttribute('aria-live', 'assertive');
+    toastEl.setAttribute('aria-atomic', 'true');
+    toastEl.setAttribute('data-bs-autohide', 'true');
+    toastEl.setAttribute('data-bs-delay', '4000');
+    toastEl.innerHTML =
+        '<div class="d-flex">' +
+        '<div class="toast-body">' + message + '</div>' +
+        '<button type="button" class="btn-close btn-close-white me-2 m-auto" ' +
+        'data-bs-dismiss="toast" aria-label="Close"></button>' +
+        '</div>';
+
+    container.appendChild(toastEl);
+
+    if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+        new bootstrap.Toast(toastEl).show();
+    }
+}
+
+/**
+ * Display an error toast message to the user.
  *
  * @param {string} message
  */
 function showError(message) {
-    alert(message);
+    showToast(message, 'error');
 }

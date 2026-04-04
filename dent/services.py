@@ -1,9 +1,13 @@
-from booket.sms_service import send_sms
-from datetime import datetime
-import traceback
-from .serializers import *
 import json
+import logging
+from datetime import datetime
+
 from django.core.serializers.json import DjangoJSONEncoder
+
+from booket.sms_service import send_sms
+from .serializers import *
+
+logger = logging.getLogger(__name__)
 
 
 def get_staff(user):
@@ -33,7 +37,8 @@ def add_event(form, cur_user):
         response['success'] = True
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = str(traceback.format_exc())
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
     return response
 
 
@@ -47,7 +52,8 @@ def edit_event(form):
         response['success'] = True
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = str(traceback.format_exc())
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
     return response
 
 
@@ -58,7 +64,8 @@ def delete_event(id):
         event.delete()
         response['success'] = True
     except Exception as e:
-        response['error_msg'] = str(traceback.format_exc())
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
         response['success'] = False
     return response
 
@@ -82,7 +89,8 @@ def add_patient(form, cur_user):
         response['success'] = True
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = str(traceback.format_exc())
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
 
     return response
 
@@ -106,7 +114,8 @@ def edit_patient(form, cur_user):
         response['success'] = True
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = str(traceback.format_exc())
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
     return response
 
 
@@ -120,7 +129,8 @@ def delete_patient(patient_ref_id, cur_user):
         response['success'] = True
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = str(traceback.format_exc())
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
     return response
 
 
@@ -199,7 +209,8 @@ def save_treatment(cur_user, data):
         response['treatment_ref_id'] = treatment.reference_id
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = traceback.format_exc()
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
     return response
 
 
@@ -251,7 +262,8 @@ def save_treatment_file(user, req):
         response["success"] = True
     except Exception as e:
         response['success'] = False
-        response['error_msg'] = traceback.format_exc()
+        logger.exception("Service error")
+        response['error_msg'] = str(e)
     return response
 
 

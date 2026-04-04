@@ -22,11 +22,14 @@
 <body>
 <style>
   .toast-container {
-    z-index: 105000; /* Ensure it's above other elements */
+    z-index: 105000;
   }
 </style>
+
+  <!-- Toast container — always present so showToast() can target it -->
+  <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
   {% block container %}
-    
   {% endblock %}
 </body>
 
@@ -40,8 +43,8 @@
     <script src="{% static 'summernote/summernote-bs5.min.js' %}"></script>
     <script src="{% static 'vendor/util.js' %}"></script>
   <script>
-  function showToast(message, type = "info") {
-    // Define Bootstrap toast classes for different types
+  function showToast(message, type) {
+    type = type || "info";
     const toastClasses = {
       success: "bg-success text-white",
       error: "bg-danger text-white",
@@ -49,33 +52,29 @@
       warning: "bg-warning text-dark"
     };
 
-    // Remove existing toasts to prevent stacking issues
     $(".toast-container .toast").remove();
 
-    // Create the toast dynamically
     const toastHTML = `
-      <div class="toast align-items-center ${toastClasses[type] || toastClasses.info} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+      <div class="toast align-items-center ${toastClasses[type] || toastClasses.info} border-0 shadow"
+           role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="4000">
         <div class="d-flex">
-          <div class="toast-body">
-            ${message}
-          </div>
-          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                  data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>`;
 
-    // Append the toast container if not already present
-    if ($(".toast-container").length === 0) {
-      $("body").append('<div class="toast-container position-fixed top-0 end-0 p-3"></div>');
-    }
-
-    // Append the toast inside the container
     $(".toast-container").append(toastHTML);
-
-    // Initialize and show the toast
-    var toastElement = $(".toast").last();
-    var toast = new bootstrap.Toast(toastElement[0]);
-    toast.show();
+    var toastElement = $(".toast-container .toast").last();
+    new bootstrap.Toast(toastElement[0]).show();
   }
+
+  // Display Django messages as toasts on page load
+  $(document).ready(function () {
+    {% for message in messages %}
+    showToast("{{ message|escapejs }}", "{{ message.tags }}");
+    {% endfor %}
+  });
   </script>
 
 {% endblock %}

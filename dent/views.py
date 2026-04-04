@@ -1,5 +1,5 @@
 import json
-import traceback
+import logging
 
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -9,6 +9,8 @@ from django.utils import timezone
 
 import dent.services as service
 from dent.models import Event
+
+logger = logging.getLogger(__name__)
 
 
 def user_login(request):
@@ -110,12 +112,9 @@ def debt_list(request):
 
 @login_required
 def add_event(request):
-    response = {}
-    if request.method == 'POST':
-        response = service.add_event(request.POST, request.user)
-    else:
-        response['success'] = False
-        response['error_msg'] = 'Only POST allowed !'
+    if request.method != 'POST':
+        return JsonResponse({"success": False, "message": "Method not allowed."}, status=405)
+    response = service.add_event(request.POST, request.user)
     return JsonResponse(response, status=200)
 
 
@@ -159,14 +158,12 @@ def patient_edit(request):
 
 @login_required
 def get_patient_list_json(request):
-    response = {}
     try:
-        response['success'] = True
-        response['data'] = service.get_clinic_patients_json(request.user)
+        data = service.get_clinic_patients_json(request.user)
+        return JsonResponse({"success": True, "data": data}, safe=False)
     except Exception as e:
-        response['success'] = False
-        response['error_msg'] = str(traceback.format_exc())
-    return JsonResponse(response, status=200, safe=False)
+        logger.exception("Error fetching patient list")
+        return JsonResponse({"success": False, "message": str(e)}, status=500, safe=False)
 
 
 @login_required
@@ -258,10 +255,8 @@ def edit_treatment(request):
             treatment_ref_id=request_data.get("reference_id"),
             new_paid_amount=request_data.get("paid_amount")
         )
-        response = {"success": success, "error_msg": error_message}
-        if success:
-            status_code = 200
-        else:
-            status_code = 501
-        return JsonResponse(response, status=status_code)
+        return JsonResponse(
+            {"success": success, "message": error_message},
+            status=200 if success else 400
+        )
     return None

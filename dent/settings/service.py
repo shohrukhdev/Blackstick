@@ -1,5 +1,3 @@
-import traceback
-
 from django.core.exceptions import ValidationError
 
 from dent.models import Staff, Role, Clinic, Category, ServiceStaff, Service
