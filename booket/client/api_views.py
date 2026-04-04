@@ -259,27 +259,60 @@ def confirmOTP(request):
         otp_code = request.data.get("otp_code")
         provider_identifier = request.data.get("provider_identifier")
         otp = OTPVerification.objects.get(id=opt_id, otp_code=otp_code, is_verified=False)
-        if otp:
-            otp.is_verified = True
-            appointment = otp.appointment
-            appointment.status = "CONFIRMED"
-            appointment.save()
-            otp.save()
+        otp.is_verified = True
+        appointment = otp.appointment
+        server = appointment.server
+        client = appointment.client
 
-            # Send SMS notification to server about new appointment
-            notification_text = (
-                f"Sizda yangi uchrashuv/У вас новая встреча! "
-                f"Vaqti/Время: {appointment.start_datetime.strftime('%d.%m.%Y %H:%M')} - {appointment.end_datetime.strftime('%H:%M')}. "
-                f"Mijoz/Клиент: {appointment.client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/")
-            if provider_identifier not in DEMO_PROVIDERS:
-                sms_result = send_sms(
-                    phone_number=otp.appointment.server.phone_number,
-                    message=notification_text
-                )
-                logger.info(sms_result)
-            return Response({"success": True, "message": "OTP verified successfully"}, status=status.HTTP_200_OK)
+        provider = get_object_or_404(Provider, identifier=provider_identifier)
+
+        # Auto-accept if the provider has that setting enabled
+        appointment.status = "ACCEPTED" if provider.auto_accept else "CONFIRMED"
+        appointment.save()
+        otp.save()
+
+        specialist_name = server.user.get_full_name() or server.user.username
+        dt = appointment.start_datetime.strftime('%d.%m.%Y %H:%M')
+
+        # Confirmation SMS to the client
+        lang = client.language_code or 'ru'
+        if lang == 'uz':
+            client_sms = (
+                f"Siz No{appointment.id} uchrashuvni tasdiqlading. "
+                f"Sana: {dt}. Mutaxassis: {specialist_name}. Kechikmaslikka harakat qiling!"
+            )
+        elif lang == 'ru':
+            client_sms = (
+                f"Вы записаны на приём №{appointment.id}. "
+                f"Дата: {dt}. Специалист: {specialist_name}. Не опаздывайте!"
+            )
         else:
-            return Response({"success": False, "message": "Invalid OTP"}, status=status.HTTP_400_BAD_REQUEST)
+            client_sms = (
+                f"Your appointment No{appointment.id} is confirmed. "
+                f"Date: {dt}. Specialist: {specialist_name}. Don't be late!"
+            )
+
+        # Specialist notification SMS
+        specialist_sms = (
+            f"Sizda yangi uchrashuv/У вас новая встреча! "
+            f"Vaqti/Время: {dt} - {appointment.end_datetime.strftime('%H:%M')}. "
+            f"Mijoz/Клиент: {client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/"
+        )
+
+        if not is_demo_provider(provider_identifier):
+            if client.phone_number:
+                sms_result = send_sms(phone_number=client.phone_number, message=client_sms)
+                logger.info(f"Client confirmation SMS: {sms_result}")
+            if server.phone_number:
+                sms_result = send_sms(phone_number=server.phone_number, message=specialist_sms)
+                logger.info(f"Specialist notification SMS: {sms_result}")
+
+        return Response({
+            "success": True,
+            "message": "OTP verified successfully",
+            "appointment_id": appointment.id,
+            "appointment_status": appointment.status,
+        }, status=status.HTTP_200_OK)
 
     except Exception as e:
         logger.error(f"Error on confirmOTP: {e}", exc_info=True)

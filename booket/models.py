@@ -25,6 +25,7 @@ class Provider(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     has_many_servers = models.BooleanField(default=False)
+    auto_accept = models.BooleanField(default=True, help_text="Automatically accept appointments after OTP verification. Disable to require manual acceptance via dashboard.")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
