@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from booket.models import AppointmentService, Appointment, Server
+from booket.models import AppointmentService, Appointment, AppointmentFile, Server
 
 
 class AppointmentServiceSerializer(serializers.ModelSerializer):
@@ -41,6 +41,17 @@ class ServerSerializer(serializers.ModelSerializer):
         return obj.user.get_full_name()
 
 
+class AppointmentFileSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AppointmentFile
+        fields = ['id', 'file_name', 'url', 'uploaded_at']
+
+    def get_url(self, obj):
+        return obj.file.url
+
+
 class AppointmentSerializer(serializers.ModelSerializer):
     start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", source="start_datetime", read_only=True)
     end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", source="end_datetime", read_only=True)
@@ -51,6 +62,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     status = serializers.CharField(read_only=True)
     services = AppointmentServiceSerializer(many=True, read_only=True, source="appointmentservice_set")
     server = ServerSerializer(many=False, read_only=True)
+    files = AppointmentFileSerializer(many=True, read_only=True)
 
     class Meta:
         model = Appointment
@@ -64,8 +76,10 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "client_email",
             "services",
             "comment",
+            "comment_by_server",
             "status",
-            "server"
+            "server",
+            "files",
         ]
 
     def get_title(self, obj):
@@ -76,6 +90,7 @@ class AppointmentDtSerializer(serializers.ModelSerializer):
     client_name = serializers.CharField(source="client.full_name", read_only=True)
     client_phone = serializers.CharField(source="client.phone_number", read_only=True)
     client_email = serializers.CharField(source="client.email", read_only=True)
+    server_name = serializers.CharField(source="server.user.get_full_name", read_only=True)
     apptmt_date = serializers.DateTimeField(format="%d.%m.%Y", source="start_datetime", read_only=True)
     start_time = serializers.DateTimeField(format="%H:%M", source="start_datetime", read_only=True)
     end_time = serializers.DateTimeField(format="%H:%M", source="end_datetime", read_only=True)
@@ -83,6 +98,7 @@ class AppointmentDtSerializer(serializers.ModelSerializer):
     comment = serializers.CharField(read_only=True)
     time_slot = serializers.SerializerMethodField()
     services = AppointmentServiceSerializer(many=True, read_only=True, source="appointmentservice_set")
+    files = AppointmentFileSerializer(many=True, read_only=True)
 
     class Meta:
         model = Appointment
@@ -97,7 +113,10 @@ class AppointmentDtSerializer(serializers.ModelSerializer):
             "time_slot",
             "status",
             "comment",
-            "services"
+            "comment_by_server",
+            "server_name",
+            "services",
+            "files",
         ]
 
     def get_time_slot(self, obj):

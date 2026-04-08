@@ -1,4 +1,3 @@
-import json
 import logging
 import random
 
@@ -231,6 +230,7 @@ class Appointment(models.Model):
     end_datetime = models.DateTimeField(null=True, blank=True)
     status = models.CharField(max_length=12, choices=STATUSES, null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
+    comment_by_server = models.TextField(null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
@@ -240,6 +240,16 @@ class Appointment(models.Model):
         indexes = [
             models.Index(fields=["status", "end_datetime", "created_on"]),
         ]
+
+
+class AppointmentFile(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name='files')
+    file = models.FileField(upload_to='appointment_files/')
+    file_name = models.CharField(max_length=255, blank=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.appointment_id} — {self.file_name}"
 
 
 class AppointmentService(models.Model):

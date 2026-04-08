@@ -1,5 +1,4 @@
 import logging
-import traceback
 from datetime import datetime
 from urllib.parse import unquote
 from django.utils import timezone
@@ -8,8 +7,8 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from booket.dashboard.serializers import AppointmentSerializer
-from booket.models import Appointment, Provider, Client, Server
+from booket.dashboard.serializers import AppointmentSerializer, AppointmentFileSerializer
+from booket.models import Appointment, AppointmentFile, Provider, Client, Server
 
 logger = logging.getLogger(__name__)
 
@@ -20,8 +19,12 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        if self.action == 'update_appointment':
-            return Appointment.objects.filter(pk=self.request.data.get('appointment_id'))
+        if self.action in ('update_appointment', 'upload_file', 'delete_file'):
+            try:
+                return Appointment.objects.filter(server=self.request.user.server_user)
+            except Exception:
+                provider = Provider.objects.get(owner=self.request.user)
+                return Appointment.objects.filter(server__providerserver__provider=provider)
 
         if self.request.query_params.get("viewby") and self.request.query_params.get("viewby") == "provider":
             provider = Provider.objects.get(owner=self.request.user)
@@ -60,8 +63,14 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
         appointment = self.get_object()
         try:
             action_type = request.data.get('action_type')
+            comment_by_server = request.data.get('comment_by_server')
 
-            if action_type == 'change_time':
+            if action_type == 'save_note':
+                appointment.comment_by_server = comment_by_server
+                appointment.save(update_fields=['comment_by_server'])
+                return Response({'success': 'Note saved.'})
+
+            elif action_type == 'change_time':
                 new_datetime_str = request.data.get('new_datetime')
                 if not new_datetime_str:
                     return Response({'error': 'New datetime is required.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -70,24 +79,23 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                     return Response({'error': 'New datetime must be in the future.'},
                                     status=status.HTTP_400_BAD_REQUEST)
                 appointment.start_datetime = new_datetime
-                # Calculate new end_datetime based on the duration of the services
                 total_duration = sum(
                     s.service.providerserverservice_set.first().duration for s in
                     appointment.appointmentservice_set.all())
                 appointment.end_datetime = new_datetime + timezone.timedelta(minutes=total_duration)
-                appointment.comment = request.data.get('comment')
+                appointment.comment_by_server = comment_by_server
                 appointment.save()
                 return Response({'success': 'Appointment time updated successfully.'})
 
             elif action_type == 'cancel':
                 appointment.status = 'CANCELLED'
-                appointment.comment = request.data.get('comment')
+                appointment.comment_by_server = comment_by_server
                 appointment.save()
                 return Response({'success': 'Appointment cancelled successfully.'})
 
             elif action_type == 'no_show':
                 appointment.status = 'NO_SHOW'
-                appointment.comment = request.data.get('comment')
+                appointment.comment_by_server = comment_by_server
                 appointment.save()
                 return Response({'success': 'Appointment marked as no-show.'})
 
@@ -95,7 +103,43 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 return Response({'error': 'Invalid action type.'}, status=status.HTTP_400_BAD_REQUEST)
 
         except Exception as e:
-            logger.error(traceback.format_exc())
+            logger.exception("API error")
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=True, methods=['post'], url_path='upload_file')
+    def upload_file(self, request, pk=None):
+        appointment = self.get_object()
+        files = request.FILES.getlist('files')
+        if not files:
+            return Response({'error': 'No files provided.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            created = []
+            for f in files:
+                af = AppointmentFile.objects.create(
+                    appointment=appointment,
+                    file=f,
+                    file_name=f.name,
+                )
+                created.append(af)
+            serializer = AppointmentFileSerializer(created, many=True)
+            return Response({'success': 'Files uploaded.', 'files': serializer.data}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            logger.exception("API error")
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=True, methods=['delete'], url_path='delete_file')
+    def delete_file(self, request, pk=None):
+        appointment = self.get_object()
+        file_id = request.data.get('file_id')
+        try:
+            af = AppointmentFile.objects.get(id=file_id, appointment=appointment)
+            af.file.delete(save=False)
+            af.delete()
+            return Response({'success': 'File deleted.'})
+        except AppointmentFile.DoesNotExist:
+            return Response({'error': 'File not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            logger.exception("API error")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'])
@@ -161,5 +205,5 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
             return Response({'success': 'Appointment created successfully.'})
 
         except Exception as e:
-            logger.error(traceback.format_exc())
+            logger.exception("API error")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -107,31 +107,7 @@
   {% block content %}
   {% endblock %}
 
-  <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-    <div id="toast-container">
-        {% for message in messages %}
-        <div class="toast align-items-center text-white bg-{{ message.tags }} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true"
-            {% if message.tags == "success" %}data-bs-autohide="true" data-bs-delay="3000"{% else %}data-bs-autohide="false"{% endif %}>
-            <div class="d-flex">
-                <div class="toast-body">
-                    {{ message | safe }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-  </div>
   <script>
-  
-    document.addEventListener("DOMContentLoaded", function () {
-        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
-        var toastList = toastElList.map(function (toastEl) {
-            return new bootstrap.Toast(toastEl).show();
-        });
-    });
-  
-  
       function submitUserLogoutForm() {
           $('#user-logout-form').submit();
       }
@@ -144,7 +120,6 @@
 
       document.querySelectorAll('.dropdown-toggle').forEach(item => {
           item.addEventListener('click', event => {
-
               if (event.target.classList.contains('dropdown-toggle')) {
                   event.target.classList.toggle('toggle-change');
               } else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
@@ -152,57 +127,25 @@
               }
           })
       });
-      // custom.js
+
+      // Show Django messages and service-level feedback as toasts
       document.addEventListener("DOMContentLoaded", function () {
-          // Parse query parameters
-          var success;
-          var errorMessage;
-
-          {% if success is False or success is True %}
-              success = "{{ success }}";
-              errorMessage = "{{ error }}";
+          {% for message in messages %}
+          showToast("{{ message|escapejs }}", "{{ message.tags }}");
+          {% endfor %}
+          {% if success is False and error %}
+          showToast("{{ error|escapejs }}", "error");
+          {% elif success is True %}
+          showToast("{% trans 'Operation completed successfully.' %}", "success");
           {% endif %}
-          // Check if success is false and an error message exists
-          if (success === 'False' && errorMessage) {
-              // Get the toast element
-              const toastElement = document.getElementById('errorToast');
-              const toastMessage = document.getElementById('toastMessage');
-
-              // Set the error message
-              toastMessage.textContent = errorMessage;
-
-              // Initialize and show the toast
-              const toast = new bootstrap.Toast(toastElement);
-              toast.show();
-          } else if (success === 'True') {
-              // Get the toast element
-              const toastElement = document.getElementById('errorToast');
-              const toastMessage = document.getElementById('toastMessage');
-              const toastTitleElement = document.getElementById('toast-title');
-
-              // Set the error message
-              toastTitleElement.textContent = "Success!";
-              toastMessage.textContent = "Operation succeeded";
-
-              // Initialize and show the toast
-              const toast = new bootstrap.Toast(toastElement, {
-                  autohide: true,
-                  delay: 5000, // 5 sec
-              });
-              toast.show();
-          }
       });
-      function activateNavItem(itemId) {
-        // Remove 'active' class and 'aria-current' attribute from all nav items
-        $('.nav-link').removeClass('active').removeAttr('aria-current');
 
-        // Add 'active' class and 'aria-current="page"' attribute to the specified item
-        const $navItem = $(`#${itemId}`);
-        if ($navItem.length) {
-            $navItem.addClass('active').attr('aria-current', 'page');
-        } else {
-            console.log(`Element with ID '${itemId}' not found.`);
-        }
-    }
+      function activateNavItem(itemId) {
+          $('.nav-link').removeClass('active').removeAttr('aria-current');
+          const $navItem = $(`#${itemId}`);
+          if ($navItem.length) {
+              $navItem.addClass('active').attr('aria-current', 'page');
+          }
+      }
   </script>
 {% endblock %}

@@ -6,6 +6,9 @@
 {% block content %}
   {% get_current_language as LANG_CODE %}
   <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
+  <style>
+      #appointments_table tbody tr { cursor: pointer; }
+  </style>
   <div class="container-fluid">
     <div class="row" style="margin-top: 10px">
       <div class="col-md-12">
@@ -14,9 +17,9 @@
             <table id="appointments_table" class="table table-bordered table-striped table-hover">
               <thead>
               <tr role="row" class="table-dark">
-                <th></th>
                 <th>{% trans 'ID' %}</th>
                 <th>{% trans 'CLIENT' %}</th>
+                <th>{% trans 'SERVER' %}</th>
                 <th>{% trans 'DATE' %}</th>
                 <th>{% trans 'TIME' %}</th>
                 <th>{% trans 'STATUS' %}</th>
@@ -29,12 +32,84 @@
     </div>
   </div>
 
+  <!-- Appointment detail modal (read/notes/files only) -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"><i class="fa-solid fa-user"></i> <span id="client_name"></span></h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-primary">
+              <i class="fa-solid fa-clock"></i>
+              <span id="timeframe"></span>
+              <span id="event_date" style="float: right"></span>
+            </li>
+            <li class="list-group-item list-group-item-primary">
+              <i class="fa-solid fa-scissors"></i>
+              <span>{% trans 'Server' %}:</span>
+              <span id="server_name" style="float: right"></span>
+            </li>
+            <li class="list-group-item list-group-item-primary client-phone" style="display: none;">
+              <i class="fa-solid fa-phone"></i>
+              <span>{% trans 'Phone' %}:</span>
+              <span id="client_phone" style="float: right"></span>
+            </li>
+            <li class="list-group-item list-group-item-primary client-email" style="display: none;">
+              <i class="fa-solid fa-square-envelope"></i>
+              <span>{% trans 'Email' %}:</span>
+              <span id="client_email" style="float: right"></span>
+            </li>
+          </ul>
+          <ul class="list-group" id="event_services"></ul>
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-warning">
+              <span>{% trans 'Status' %}:</span>
+              <span id="event_status" style="float: right"></span>
+            </li>
+            <li class="list-group-item list-group-item-info event-comment" style="display: none;">
+              <i class="fa-solid fa-circle-info fa-beat"></i> {% trans 'Client comment' %}:
+              <span id="event_comments" class="ms-1"></span>
+            </li>
+          </ul>
+          <ul class="list-group mt-2">
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span><i class="fa-solid fa-note-sticky"></i> {% trans 'My notes' %}:</span>
+                <button class="btn btn-sm btn-outline-primary button-shadow" onclick="saveServerNote()">
+                  <i class="fa-solid fa-floppy-disk"></i> {% trans 'Save' %}
+                </button>
+              </div>
+              <textarea class="form-control form-control-sm" id="server_comment" rows="3"></textarea>
+            </li>
+            <li class="list-group-item">
+              <span><i class="fa-solid fa-paperclip"></i> {% trans 'Files' %}:</span>
+              <div id="appointment_files" class="mt-1"></div>
+              <div class="input-group input-group-sm mt-2">
+                <input type="file" class="form-control" id="file_upload" multiple>
+                <button class="btn btn-outline-primary button-shadow" type="button" onclick="uploadAppointmentFiles()">
+                  <i class="fa-solid fa-upload"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger button-shadow" data-bs-dismiss="modal">{% trans 'Close' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
 
 {% block js %}
   {{ block.super }}
   <script src="{% static 'dt/datatables.min.js' %}" type="text/javascript"></script>
   <script>
+      var selectedAppointment = {};
 
       $(document).ready(function () {
           activateNavItem('provider-history-nav-link');
@@ -46,21 +121,14 @@
                           {
                               text: 'Statistics',
                               action: function (e, dt, node, config) {
-                                  location.href='{% url 'provider_statistics' %}'
+                                  location.href = '{% url 'provider_statistics' %}'
                               }
                           }
                       ],
                   },
-                  topEnd: {
-                      search: 'search',
-                  },
-                  bottomStart: {
-                      pageLength: 'pageLength',
-                      info: 'info',
-                  },
-                  bottomEnd: {
-                      paging: 'paging',
-                  },
+                  topEnd: { search: 'search' },
+                  bottomStart: { pageLength: 'pageLength', info: 'info' },
+                  bottomEnd: { paging: 'paging' },
               },
               select: true,
               processing: true,
@@ -72,53 +140,169 @@
               responsive: true,
               ajax: "/dashboard/api/dt_appointments?format=datatables&viewby=provider",
               columns: [
-                  {
-                    className: 'dt-control',
-                    orderable: false,
-                    data: null,
-                    defaultContent: ''
-                  },
                   {"data": "id", "name": "id"},
                   {"data": "client_name", "name": "client.full_name"},
+                  {"data": "server_name", "name": "server__user__first_name"},
                   {"data": "apptmt_date", "name": "start_datetime"},
                   {"data": "time_slot", orderable: false, searchable: false},
                   {"data": "status", "name": "status"},
                   {"data": "comment", visible: false, searchable: false},
+                  {"data": "comment_by_server", visible: false, searchable: false},
                   {"data": "client_email", visible: false, name: "client.email"},
                   {"data": "client_phone", visible: false, name: "client.phone_number"},
                   {"data": "services", visible: false, searchable: false},
+                  {"data": "files", visible: false, searchable: false},
               ],
           });
 
-          // Add event listener for opening and closing details
-          $('#appointments_table tbody').on('click', 'td.dt-control', function () {
-              var tr = $(this).closest('tr');
-              var row = table.row(tr);
-
-              if (row.child.isShown()) {
-                  // This row is already open - close it
-                  row.child.hide();
-              } else {
-                  // Open this row
-                  row.child(expand(row.data())).show();
+          $('#appointments_table tbody').on('click', 'tr', function () {
+              var rowData = table.row(this).data();
+              if (rowData) {
+                  showEvent(rowData);
               }
           });
-
       });
 
-      function expand(data){
-          let ul = '<ul class="list-group">'
-              + '<li class="list-group-item">Tel: ' + data.client_phone + '</li>'
-              + '<li class="list-group-item">Email: ' + data.client_email + '</li>'
-              + '<li class="list-group-item">Comment: ' + (data.comment || '') + '</li>'; // Handle null comment
+      function showEvent(appointment) {
+          $('.client-phone').hide();
+          $('.client-email').hide();
+          $('.event-comment').hide();
+          $('#event_comments').text('');
+          $('#server_comment').val('');
+          $('#file_upload').val('');
 
-          $.each(data.services, function (index, service) {
-              ul += '<li class="list-group-item">' + service.name + '</li>'; // Corrected: ul += and removed </i>
+          $('#client_name').text(appointment.client_name);
+          $('#timeframe').text(appointment.time_slot);
+          $('#event_date').text(appointment.apptmt_date);
+          $('#server_name').text(appointment.server_name);
+
+          if (appointment.client_phone) {
+              $('#client_phone').text(appointment.client_phone);
+              $('.client-phone').show();
+          }
+          if (appointment.client_email) {
+              $('#client_email').text(appointment.client_email);
+              $('.client-email').show();
+          }
+          if (appointment.comment) {
+              $('#event_comments').text(appointment.comment);
+              $('.event-comment').show();
+          }
+
+          $('#event_services').empty();
+          $.each(appointment.services, function (index, service) {
+              let trow = `<li class="list-group-item list-group-item-secondary">${service.name} <span class="badge rounded-pill bg-primary"><i>${service.price.toLocaleString()}</i></span></li>`;
+              $('#event_services').append(trow);
           });
 
-          ul += '</ul>'; // Added closing </ul>
+          $('#event_status').text(appointment.status);
+          $('#server_comment').val(appointment.comment_by_server || '');
+          renderAppointmentFiles(appointment.files || []);
 
-          return ul;
+          selectedAppointment = appointment;
+          $('#myModal').modal('show');
+      }
+
+      function saveServerNote() {
+          const appointmentId = selectedAppointment.id;
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/update_appointment/`,
+              type: 'POST',
+              data: JSON.stringify({
+                  action_type: 'save_note',
+                  comment_by_server: $('#server_comment').val(),
+                  appointment_id: appointmentId,
+              }),
+              contentType: 'application/json',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, "success");
+                  selectedAppointment.comment_by_server = $('#server_comment').val();
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function renderAppointmentFiles(files) {
+          const $container = $('#appointment_files');
+          $container.empty();
+          if (!files || !files.length) {
+              $container.html('<span class="text-muted small">{% trans "No files attached." %}</span>');
+              return;
+          }
+          files.forEach(function (f) {
+              const ext = f.file_name.split('.').pop().toLowerCase();
+              const icon = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)
+                  ? 'fa-file-image' : ['pdf'].includes(ext)
+                  ? 'fa-file-pdf' : 'fa-file';
+              $container.append(
+                  `<div id="appt-file-${f.id}" class="d-flex align-items-center justify-content-between border-bottom py-1">
+                    <a href="${f.url}" target="_blank" class="text-truncate me-2 small" style="max-width:220px;">
+                      <i class="fa-solid ${icon}"></i> ${f.file_name}
+                    </a>
+                    <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteAppointmentFile(${f.id})">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>`
+              );
+          });
+      }
+
+      function uploadAppointmentFiles() {
+          const appointmentId = selectedAppointment.id;
+          const files = $('#file_upload')[0].files;
+          if (!files.length) {
+              showToast("{% trans 'Please select at least one file.' %}", "warning");
+              return;
+          }
+          const formData = new FormData();
+          for (let i = 0; i < files.length; i++) {
+              formData.append('files', files[i]);
+          }
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/upload_file/`,
+              type: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, "success");
+                  selectedAppointment.files = (selectedAppointment.files || []).concat(response.files);
+                  renderAppointmentFiles(selectedAppointment.files);
+                  $('#file_upload').val('');
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function deleteAppointmentFile(fileId) {
+          const appointmentId = selectedAppointment.id;
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/delete_file/`,
+              type: 'DELETE',
+              data: JSON.stringify({file_id: fileId}),
+              contentType: 'application/json',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, "success");
+                  $(`#appt-file-${fileId}`).remove();
+                  selectedAppointment.files = selectedAppointment.files.filter(function (f) {
+                      return f.id !== fileId;
+                  });
+                  if (!selectedAppointment.files.length) {
+                      $('#appointment_files').html('<span class="text-muted small">{% trans "No files attached." %}</span>');
+                  }
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function handleAjaxError(error) {
+          if (error.responseText.includes("Invalid request headers")) {
+              location.reload();
+          }
+          showToast(`${error.status} ${error.statusText} ${error.responseText}`, "error");
       }
 
   </script>

@@ -1,6 +1,5 @@
 import json
 import logging
-import traceback
 from collections import defaultdict
 from datetime import timedelta, datetime
 from django.contrib import messages
@@ -28,7 +27,7 @@ def dashboard(request):
             server.save()
             messages.success(request, "Memo updated successfully.")
         except Exception as e:
-            logger.error(traceback.format_exc())
+            logger.exception("View error")
             messages.error(request, f"Error updating memo: {str(e)}")
 
             # Redirect to the same page to prevent form resubmission
@@ -81,7 +80,7 @@ def dashboard(request):
                 "memo": server.memo
             }
         except Exception as e:
-            logger.error(traceback.format_exc())
+            logger.exception("View error")
             context_data = {
                 "error": str(e)
             }
@@ -161,7 +160,7 @@ def configs(request):
                 messages.success(request, "Service settings updated successfully.")
                 return redirect(reverse("dashboard_config"))
             except Exception as e:
-                logger.error(traceback.format_exc())
+                logger.exception("View error")
                 messages.error(request, f"Error updating service settings: {str(e)}")
                 context_data = {
                     "p_server": p_s_server,
@@ -199,7 +198,7 @@ def configs(request):
                 messages.success(request, "Settings updated successfully.")
                 return redirect(reverse("dashboard_config"))  # Redirect to an appropriate page after saving
             except Exception as e:
-                logger.error(traceback.format_exc())
+                logger.exception("View error")
                 messages.error(request, f"Error updating settings: {str(e)}")
                 context_data = {
                     "p_server": p_server,

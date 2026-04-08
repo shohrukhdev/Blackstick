@@ -1,5 +1,4 @@
 import json
-import traceback
 from django.db.models import Prefetch
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
@@ -33,7 +32,7 @@ def get_owners_provider(user: User) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -71,7 +70,7 @@ def edit_provider(request: HttpRequest) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -93,7 +92,7 @@ def get_server_by_id(user: User, server_id: int) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
 
     return context_data
 
@@ -126,7 +125,7 @@ def edit_server(request: HttpRequest) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -149,7 +148,7 @@ def add_service_type(request: HttpRequest) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -171,7 +170,7 @@ def get_service_type(id: int, user: User) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -198,7 +197,7 @@ def edit_service_type(request: HttpRequest) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -215,7 +214,7 @@ def get_service_list_by_type(type_id: int, user: User) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -246,7 +245,7 @@ def add_service(request: HttpRequest) -> dict:
             "price": request.POST.get("price"),
             "service_type": st,
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -263,7 +262,7 @@ def get_service(id: int, user: User) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -286,7 +285,7 @@ def edit_service(request: HttpRequest) -> dict:
             "success": False,
             "error": str(e),
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -318,7 +317,7 @@ def get_server_services(p_server_id: int, user: User) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data
 
 
@@ -360,5 +359,5 @@ def edit_server_service(request: HttpRequest) -> dict:
             "success": False,
             "error": str(e)
         }
-        logger.error(traceback.format_exc())
+        logger.exception("Service error in %s", __name__)
     return context_data

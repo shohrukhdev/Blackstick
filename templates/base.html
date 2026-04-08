@@ -148,7 +148,27 @@
         '</div>';
 
       $container.append(toastHtml);
-      $container.find('.toast').toast('show');
+      var $toast = $container.find('.toast');
+      $toast.toast({ autohide: true, delay: 8000 });
+      $toast.toast('show');
+
+      // Explicit close button handler
+      $toast.find('[data-dismiss="toast"]').on('click', function () {
+        $toast.toast('hide');
+      });
+
+      // Dismiss on any link or button click outside the toast
+      function dismissOnNav(e) {
+        if (!$.contains($toast[0], e.target)) {
+          $toast.toast('hide');
+        }
+      }
+      $(document).on('click', dismissOnNav);
+
+      // Clean up once toast is hidden
+      $toast.one('hidden.bs.toast', function () {
+        $(document).off('click', dismissOnNav);
+      });
     }
     </script>
 

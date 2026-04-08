@@ -169,8 +169,31 @@
               <span id="event_status" style="float: right">Confirmed</span>
             </li>
             <li class="list-group-item list-group-item-info event-comment" style="display: none;">
-              <i class="fa-solid fa-circle-info fa-beat"></i> Comments:
-              <textarea class="form-control" id="event_comments"> Comments </textarea>
+              <i class="fa-solid fa-circle-info fa-beat"></i> {% trans 'Client comment' %}:
+              <span id="event_comments" class="ms-1"></span>
+            </li>
+          </ul>
+
+          <!-- Server notes + files in one list group -->
+          <ul class="list-group mt-2">
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span><i class="fa-solid fa-note-sticky"></i> {% trans 'My notes' %}:</span>
+                <button class="btn btn-sm btn-outline-primary button-shadow" onclick="saveServerNote()">
+                  <i class="fa-solid fa-floppy-disk"></i> {% trans 'Save' %}
+                </button>
+              </div>
+              <textarea class="form-control form-control-sm" id="server_comment" rows="3"></textarea>
+            </li>
+            <li class="list-group-item">
+              <span><i class="fa-solid fa-paperclip"></i> {% trans 'Files' %}:</span>
+              <div id="appointment_files" class="mt-1"></div>
+              <div class="input-group input-group-sm mt-2">
+                <input type="file" class="form-control" id="file_upload" multiple>
+                <button class="btn btn-outline-primary button-shadow" type="button" onclick="uploadAppointmentFiles()">
+                  <i class="fa-solid fa-upload"></i>
+                </button>
+              </div>
             </li>
           </ul>
           <ul class="list-group event-action" style="display: none;">
@@ -452,10 +475,12 @@
           $('.cancel-appointment').hide();
           $('.no-show').hide();
           $('#time-update').val('');
-          $('#event_comments').val('');
+          $('#event_comments').text('');
+          $('#server_comment').val('');
+          $('#file_upload').val('');
           $('#btn_change, #btn_cancel, #btn_no_show').prop('disabled', false);
           $(`#client_name`).text(appointment.client_full_name);
-          $('#timeframe').text("" + appointment.start_datetime.slice(11, 16) + " - " + appointment.end_datetime.slice(11, 16) + "");
+          $('#timeframe').text(appointment.start_datetime.slice(11, 16) + " - " + appointment.end_datetime.slice(11, 16));
           $('#event_date').text(formatDate(appointment.end_datetime.slice(0, 10)));
           $('#btn_save_change').prop('disabled', true);
           if (appointment.client_phone) {
@@ -464,27 +489,29 @@
           }
           if (appointment.client_email) {
               $('#client_email').text(appointment.client_email);
-              $('.client-email').show()
+              $('.client-email').show();
           }
-          $('#event_comments').val(appointment.comment);
-          $('.event-comment').show();
+          if (appointment.comment) {
+              $('#event_comments').text(appointment.comment);
+              $('.event-comment').show();
+          }
           $('#event_services').empty();
           $.each(appointment.services, function (index, service) {
               let trow = `<li class="list-group-item list-group-item-secondary">${service.name} <span class="badge rounded-pill bg-primary"><i>${service.price.toLocaleString()}</i></span></li>`;
               $('#event_services').append(trow);
           });
           $('#event_status').text(appointment.status);
+          $('#server_comment').val(appointment.comment_by_server || '');
+          renderAppointmentFiles(appointment.files || []);
 
           selectedAppointment = appointment;
           const now = new Date();
           const eventStart = new Date(appointment.start_datetime);
           if (eventStart < now) {
-              // Disable the buttons
               $('#btn_change, #btn_cancel').prop('disabled', true);
           }
           $('.action-buttons').show();
           $('#myModal').modal('show');
-          console.log(selectedAppointment)
       }
 
       function onChangeButtonClick() {
@@ -540,8 +567,8 @@
           const appointmentId = selectedAppointment.id;
           const postData = {
               action_type: actionType,
-              comment: $('#event_comments').val()
-          }
+              comment_by_server: $('#server_comment').val(),
+          };
           if (actionType === 'change_time') {
               postData.new_datetime = $('#time_update').val();
           }
@@ -551,14 +578,107 @@
               type: 'POST',
               data: JSON.stringify(postData),
               contentType: 'application/json',
-              headers: {
-                  'X-CSRFToken': getCookie('csrftoken')
-              },
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
               success: function (response) {
-                  console.log(response.success);
                   $('#myModal').modal('hide');
                   showToast(response.success, "success");
                   calendar.refetchEvents();
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function saveServerNote() {
+          const appointmentId = selectedAppointment.id;
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/update_appointment/`,
+              type: 'POST',
+              data: JSON.stringify({
+                  action_type: 'save_note',
+                  comment_by_server: $('#server_comment').val(),
+                  appointment_id: appointmentId,
+              }),
+              contentType: 'application/json',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, "success");
+                  selectedAppointment.comment_by_server = $('#server_comment').val();
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function renderAppointmentFiles(files) {
+          const $container = $('#appointment_files');
+          $container.empty();
+          if (!files || !files.length) {
+              $container.html('<span class="text-muted small">{% trans "No files attached." %}</span>');
+              return;
+          }
+          files.forEach(function (f) {
+              const ext = f.file_name.split('.').pop().toLowerCase();
+              const icon = ['jpg','jpeg','png','gif','webp'].includes(ext)
+                  ? 'fa-file-image' : ['pdf'].includes(ext)
+                  ? 'fa-file-pdf' : 'fa-file';
+              $container.append(
+                  `<div id="appt-file-${f.id}" class="d-flex align-items-center justify-content-between border-bottom py-1">
+                    <a href="${f.url}" target="_blank" class="text-truncate me-2 small" style="max-width:220px;">
+                      <i class="fa-solid ${icon}"></i> ${f.file_name}
+                    </a>
+                    <button class="btn btn-sm btn-outline-danger py-0 px-1" onclick="deleteAppointmentFile(${f.id})">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </div>`
+              );
+          });
+      }
+
+      function uploadAppointmentFiles() {
+          const appointmentId = selectedAppointment.id;
+          const files = $('#file_upload')[0].files;
+          if (!files.length) {
+              showToast("{% trans 'Please select at least one file.' %}", "warning");
+              return;
+          }
+          const formData = new FormData();
+          for (let i = 0; i < files.length; i++) {
+              formData.append('files', files[i]);
+          }
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/upload_file/`,
+              type: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, "success");
+                  // Merge new files into the current list and re-render
+                  selectedAppointment.files = (selectedAppointment.files || []).concat(response.files);
+                  renderAppointmentFiles(selectedAppointment.files);
+                  $('#file_upload').val('');
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function deleteAppointmentFile(fileId) {
+          const appointmentId = selectedAppointment.id;
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/delete_file/`,
+              type: 'DELETE',
+              data: JSON.stringify({ file_id: fileId }),
+              contentType: 'application/json',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, "success");
+                  $(`#appt-file-${fileId}`).remove();
+                  selectedAppointment.files = selectedAppointment.files.filter(function (f) {
+                      return f.id !== fileId;
+                  });
+                  if (!selectedAppointment.files.length) {
+                      $('#appointment_files').html('<span class="text-muted small">{% trans "No files attached." %}</span>');
+                  }
               },
               error: handleAjaxError
           });

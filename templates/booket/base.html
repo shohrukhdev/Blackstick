@@ -48,6 +48,7 @@
     const toastClasses = {
       success: "bg-success text-white",
       error: "bg-danger text-white",
+      danger: "bg-danger text-white",
       info: "bg-primary text-white",
       warning: "bg-warning text-dark"
     };
@@ -56,7 +57,7 @@
 
     const toastHTML = `
       <div class="toast align-items-center ${toastClasses[type] || toastClasses.info} border-0 shadow"
-           role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="4000">
+           role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="8000">
         <div class="d-flex">
           <div class="toast-body">${message}</div>
           <button type="button" class="btn-close btn-close-white me-2 m-auto"
@@ -65,16 +66,28 @@
       </div>`;
 
     $(".toast-container").append(toastHTML);
-    var toastElement = $(".toast-container .toast").last();
-    new bootstrap.Toast(toastElement[0]).show();
-  }
+    var toastEl = $(".toast-container .toast").last()[0];
+    var toastInstance = new bootstrap.Toast(toastEl, { delay: 8000 });
+    toastInstance.show();
 
-  // Display Django messages as toasts on page load
-  $(document).ready(function () {
-    {% for message in messages %}
-    showToast("{{ message|escapejs }}", "{{ message.tags }}");
-    {% endfor %}
-  });
+    // Explicit close button handler (programmatic toasts need this wired manually)
+    toastEl.querySelector('[data-bs-dismiss="toast"]').addEventListener("click", function () {
+      toastInstance.hide();
+    });
+
+    // Dismiss on any link or button click outside the toast
+    function dismissOnNav(e) {
+      if (!toastEl.contains(e.target)) {
+        toastInstance.hide();
+      }
+    }
+    document.addEventListener("click", dismissOnNav);
+
+    // Clean up the nav handler once toast is fully hidden
+    toastEl.addEventListener("hidden.bs.toast", function () {
+      document.removeEventListener("click", dismissOnNav);
+    }, { once: true });
+  }
   </script>
 
 {% endblock %}

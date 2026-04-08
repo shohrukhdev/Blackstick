@@ -923,6 +923,7 @@ function showToast(message, type) {
     var bgMap = {
         success: 'bg-success text-white',
         error: 'bg-danger text-white',
+        danger: 'bg-danger text-white',
         warning: 'bg-warning text-dark',
         info: 'bg-primary text-white'
     };
@@ -945,7 +946,7 @@ function showToast(message, type) {
     toastEl.setAttribute('aria-live', 'assertive');
     toastEl.setAttribute('aria-atomic', 'true');
     toastEl.setAttribute('data-bs-autohide', 'true');
-    toastEl.setAttribute('data-bs-delay', '4000');
+    toastEl.setAttribute('data-bs-delay', '8000');
     toastEl.innerHTML =
         '<div class="d-flex">' +
         '<div class="toast-body">' + message + '</div>' +
@@ -956,7 +957,26 @@ function showToast(message, type) {
     container.appendChild(toastEl);
 
     if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
-        new bootstrap.Toast(toastEl).show();
+        var toastInstance = new bootstrap.Toast(toastEl, { delay: 8000 });
+        toastInstance.show();
+
+        // Explicit close button handler (programmatic toasts need this wired manually)
+        toastEl.querySelector('[data-bs-dismiss="toast"]').addEventListener('click', function () {
+            toastInstance.hide();
+        });
+
+        // Dismiss on any link or button click outside the toast
+        function dismissOnNav(e) {
+            if (!toastEl.contains(e.target)) {
+                toastInstance.hide();
+            }
+        }
+        document.addEventListener('click', dismissOnNav);
+
+        // Clean up the nav handler once toast is fully hidden
+        toastEl.addEventListener('hidden.bs.toast', function () {
+            document.removeEventListener('click', dismissOnNav);
+        }, { once: true });
     }
 }
 
