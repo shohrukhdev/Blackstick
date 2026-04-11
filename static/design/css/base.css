@@ -422,7 +422,15 @@ button:focus{
       background-color: aliceblue;
       display: flex;
       justify-content: center;
+      align-items: center;
       margin-bottom: 20px;
+    }
+    .card .image > img {
+      height: 320px;
+      width: 320px;
+      object-fit: cover;
+      flex-shrink: 0;
+      transition: all 0.6s ease;
     }
     .card .image .arrow{
       display: flex;
@@ -483,6 +491,15 @@ button:focus{
     .card:hover .btn{
       display: block;
       transition: all 1s ease;
+    }
+
+    /* Widen hovered card so the image becomes square */
+    .card:hover {
+      flex: 0 0 320px;
+    }
+    /* Siblings can shrink to make room, but must NOT grow */
+    .card-container:has(.card:hover) .card:not(:hover) {
+      flex: 0 1 var(--card-width);
     }
 
     .footer{
