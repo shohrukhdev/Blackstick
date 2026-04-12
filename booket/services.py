@@ -1,4 +1,5 @@
 import json
+import bleach
 from django.db.models import Prefetch
 from django.http import HttpRequest
 from django.shortcuts import get_object_or_404
@@ -6,6 +7,9 @@ from booket.models import Provider, ServiceType, ProviderServer, ProviderServerS
 from django.contrib.auth.models import User
 import logging
 from booket.models import Service
+
+_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'strong', 'em', 'ul', 'ol', 'li', 'br', 'a', 'h2', 'h3', 'h4', 'span']
+_ALLOWED_ATTRS = {'a': ['href', 'title'], 'span': ['style']}
 
 logger = logging.getLogger(__name__)
 
@@ -104,7 +108,8 @@ def edit_server(request: HttpRequest) -> dict:
 
         if ps.server.user == request.user or ps.provider.owner == request.user:
             ps.server.phone_number = request.POST.get("phone_number")
-            ps.server.info = request.POST.get("info")
+            raw_info = request.POST.get("info") or ""
+            ps.server.info = bleach.clean(raw_info, tags=_ALLOWED_TAGS, attributes=_ALLOWED_ATTRS, strip=True)
             ps.server.title = request.POST.get("title")
             ps.server.title_uz = request.POST.get("title_uz")
             ps.server.title_ru = request.POST.get("title_ru")

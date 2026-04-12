@@ -268,6 +268,7 @@ class OTPVerification(models.Model):
     otp_code = models.CharField(max_length=6)
     created_at = models.DateTimeField(auto_now_add=True)
     is_verified = models.BooleanField(default=False)
+    attempts = models.PositiveSmallIntegerField(default=0)
 
     # Eskiz SMS metadata
     sms_request_id = models.CharField(max_length=64, null=True, blank=True)  # UUID from Eskiz response
@@ -281,5 +282,8 @@ class OTPVerification(models.Model):
         super().save(*args, **kwargs)
 
     def update_code(self):
+        from django.utils import timezone as tz
         self.otp_code = str(random.randint(100000, 999999))
+        self.attempts = 0
+        self.created_at = tz.now()  # reset expiry window (auto_now_add only fires on INSERT)
         self.save()

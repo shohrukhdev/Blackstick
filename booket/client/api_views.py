@@ -142,13 +142,12 @@ def create_appointment_send_otp(request):
             # Client creation/update
             if client_data.get("client_id"):
                 client = get_object_or_404(Client, id=client_data["client_id"], is_active=True)
+                # Only update non-contact fields; phone/email changes require a verified account flow
                 client.full_name = client_data.get("full_name")
-                client.phone_number = client_data.get("phone_number")
-                client.email = client_data.get("email")
                 client.sex = client_data.get("sex")
                 client.date_of_birth = datetime.strptime(client_data.get("dob"), "%Y-%m-%d").date()
                 client.language_code = appointment_data.get("language_code")
-                client.save()
+                client.save(update_fields=["full_name", "sex", "date_of_birth", "language_code"])
             else:
                 client = Client.objects.create(
                     full_name=client_data["full_name"],
@@ -263,7 +262,26 @@ def confirmOTP(request):
         otp_id = request.data.get("otp_id")
         otp_code = request.data.get("otp_code")
         provider_identifier = request.data.get("provider_identifier")
-        otp = OTPVerification.objects.get(id=otp_id, otp_code=otp_code, is_verified=False)
+
+        try:
+            otp = OTPVerification.objects.get(id=otp_id, is_verified=False)
+        except OTPVerification.DoesNotExist:
+            return Response({"success": False, "message": "OTP confirmation failed"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Expire after 10 minutes
+        if (timezone.now() - otp.created_at).total_seconds() > 600:
+            return Response({"success": False, "message": "OTP has expired. Please request a new one."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Lock after 5 failed attempts
+        if otp.attempts >= 5:
+            return Response({"success": False, "message": "Too many incorrect attempts. Please request a new OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if otp.otp_code != otp_code:
+            otp.attempts += 1
+            otp.save(update_fields=["attempts"])
+            remaining = 5 - otp.attempts
+            return Response({"success": False, "message": f"Incorrect code. {remaining} attempt(s) remaining."}, status=status.HTTP_400_BAD_REQUEST)
+
         otp.is_verified = True
         appointment = otp.appointment
         server = appointment.server
