@@ -50,13 +50,17 @@ class AvailableTimeSlotsView(APIView):
         provider_server = ProviderServer.objects.filter(id=p_server_id).first()
         if not provider_server:
             return Response({"error": "Provider Server not found"}, status=404)
-        start_date = request.GET.get('start_date')
-        if (
-            start_date and datetime.strptime(str(start_date), "%Y-%m-%d").date() < datetime.today().date()
-        ):
-            start_date = datetime.today().date()
-        serializer = ProviderServerSerializer()
-        available_slots = serializer._calculate_available_slots(provider_server, start_date)
+        today = timezone.localtime(timezone.now()).date()
+        start_date_param = request.GET.get('start_date')
+        if start_date_param:
+            try:
+                parsed = datetime.strptime(str(start_date_param), "%Y-%m-%d").date()
+                start_date = max(parsed, today)
+            except ValueError:
+                start_date = today
+        else:
+            start_date = today
+        available_slots = ProviderServerSerializer._calculate_available_slots(provider_server, start_date)
 
         return Response({"available_slots": available_slots})
 
@@ -107,7 +111,7 @@ def get_client_data(request):
             response["client_phone"] = client.phone_number
             response["client_full_name"] = client.full_name
             response["client_sex"] = client.sex
-            response["client_dob"] = client.date_of_birth
+            response["client_dob"] = client.date_of_birth.isoformat() if client.date_of_birth else None
             return JsonResponse(response)
         except Client.DoesNotExist:
             response["success"] = False
@@ -152,6 +156,7 @@ def create_appointment_send_otp(request):
                     email=client_data["email"],
                     sex=client_data["sex"],
                     date_of_birth=datetime.strptime(client_data["dob"], "%Y-%m-%d").date(),
+                    language_code=appointment_data.get("language_code"),
                 )
 
             # ProviderClient relationship
@@ -206,7 +211,7 @@ def create_appointment_send_otp(request):
                     if sms_result:
                         otp.sms_request_id = sms_result["id"]
                         otp.sms_status = sms_result["status"]
-                        otp.sms_status_date = datetime.now()
+                        otp.sms_status_date = timezone.now()
                         otp.save()
                 elif client_data["confirmation_method"] == "e":
                     pass
@@ -255,10 +260,10 @@ def confirmOTP(request):
         return Response({"error": "Method not allowed"}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     try:
-        opt_id = request.data.get("otp_id")
+        otp_id = request.data.get("otp_id")
         otp_code = request.data.get("otp_code")
         provider_identifier = request.data.get("provider_identifier")
-        otp = OTPVerification.objects.get(id=opt_id, otp_code=otp_code, is_verified=False)
+        otp = OTPVerification.objects.get(id=otp_id, otp_code=otp_code, is_verified=False)
         otp.is_verified = True
         appointment = otp.appointment
         server = appointment.server
@@ -329,6 +334,7 @@ def resendOTP(request):
 
     try:
         otp_id = request.data.get("otp_id")
+        provider_identifier = request.data.get("provider_identifier")
         otp = OTPVerification.objects.get(id=otp_id, is_verified=False)
         otp.update_code()
         client = otp.appointment.client
@@ -338,26 +344,27 @@ def resendOTP(request):
             sms_text = f"Код подтверждения записи на платформе booket.uz :{otp.otp_code}"
         else:
             sms_text = f"Appointment confirmation code for booket.uz: {otp.otp_code}"
-        if otp.verification_method == "p":
-            sms_result = send_sms(
-                phone_number=client.phone_number,
-                message=sms_text,
-            )
-            logger.info(f"re-send SMS: {sms_result}")
-            if sms_result:
-                otp.sms_request_id = sms_result["id"]
-                otp.sms_status = sms_result["status"]
-                otp.sms_status_date = datetime.now()
-                otp.save()
-        elif otp.verification_method == "e":
-            email_result = send_mail(
-                "booket.uz confirmation code",
-                sms_text,
-                "alphadevmanager@gmail.com",
-                [client.email],
-                fail_silently=False
-            )
-            logger.info(f"Email re-sent: {email_result}")
+        if not is_demo_provider(provider_identifier):
+            if otp.verification_method == "p":
+                sms_result = send_sms(
+                    phone_number=client.phone_number,
+                    message=sms_text,
+                )
+                logger.info(f"re-send SMS: {sms_result}")
+                if sms_result:
+                    otp.sms_request_id = sms_result["id"]
+                    otp.sms_status = sms_result["status"]
+                    otp.sms_status_date = timezone.now()
+                    otp.save()
+            elif otp.verification_method == "e":
+                email_result = send_mail(
+                    "booket.uz confirmation code",
+                    sms_text,
+                    "alphadevmanager@gmail.com",
+                    [client.email],
+                    fail_silently=False
+                )
+                logger.info(f"Email re-sent: {email_result}")
         response_data = {
             "success": True,
             "message": "OTP re-sent successfully",

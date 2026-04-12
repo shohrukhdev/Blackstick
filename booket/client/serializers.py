@@ -93,25 +93,30 @@ class ProviderServerSerializer(serializers.ModelSerializer):
         ).data
 
     def get_available_time_slots(self, obj):
-        return self._calculate_available_slots(obj, datetime.today().date())
+        return self._calculate_available_slots(obj, timezone.localtime(timezone.now()).date())
 
-    def _calculate_available_slots(self, obj, start_date):
+    @staticmethod
+    def _calculate_available_slots(obj, start_date):
         """
         Generate available time slots for the next 3 days considering off days and booked appointments.
         """
         available_slots = []
         current_date = datetime.strptime(str(start_date), "%Y-%m-%d").date()
         off_days = obj.get_off_days()
-        while len(available_slots) < 3:
+        days_checked = 0
+        max_days = 60
+        while len(available_slots) < 3 and days_checked < max_days:
             weekday = current_date.isoweekday()  # 1 = Monday, 7 = Sunday
             if weekday not in off_days:
-                slots = self._generate_time_slots(obj, current_date)
+                slots = ProviderServerSerializer._generate_time_slots(obj, current_date)
                 available_slots.append({"date": current_date, "slots": slots})
 
             current_date += timedelta(days=1)
+            days_checked += 1
         return available_slots
 
-    def _generate_time_slots(self, obj, date):
+    @staticmethod
+    def _generate_time_slots(obj, date):
         """
         Generate available time slots for a given date by checking booked appointments.
         """
@@ -122,15 +127,16 @@ class ProviderServerSerializer(serializers.ModelSerializer):
         end_time = obj.day_ends_on
         slot_duration = 30  # Default to 30 minutes
 
-        if date == datetime.today().date():
+        now_local = timezone.localtime(timezone.now())
+        if date == now_local.date():
             # Round current time to the next half-hour mark
-            next_half_hour = (datetime.now() + timedelta(minutes=(30 - datetime.now().minute % 30))).time()
-            start_time = max(start_time, next_half_hour)  # Ensure it does not go below `day_starts_on`
+            next_half_hour = (now_local + timedelta(minutes=(30 - now_local.minute % 30))).time()
+            start_time = max(start_time, next_half_hour)
 
         booked_appointments = Appointment.objects.filter(
             server=obj.server,
             start_datetime__date=date,
-            status__in=["ACCEPTED", "CONFIRMED", "PENDING"]
+            status__in=["NEW", "ACCEPTED", "CONFIRMED", "PENDING"]
         ).values_list("start_datetime", "end_datetime")
 
         slots = []
@@ -140,9 +146,9 @@ class ProviderServerSerializer(serializers.ModelSerializer):
         while current_slot.time() < end_time:
             slot_end = current_slot + timedelta(minutes=slot_duration)
 
-            # Check if the slot is already booked
+            # Check if the slot overlaps with any booked appointment
             is_booked = any(
-                start <= current_slot < end
+                start < slot_end and end > current_slot
                 for start, end in booked_appointments
             )
             if not is_booked:

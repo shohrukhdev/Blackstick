@@ -22,7 +22,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
         if self.action in ('update_appointment', 'upload_file', 'delete_file'):
             try:
                 return Appointment.objects.filter(server=self.request.user.server_user)
-            except Exception:
+            except AttributeError:
                 provider = Provider.objects.get(owner=self.request.user)
                 return Appointment.objects.filter(server__providerserver__provider=provider)
 
@@ -41,8 +41,8 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
             ).order_by("start_datetime")
 
         server = self.request.user.server_user
-        start_date = unquote(self.request.query_params.get("start")[0:19])
-        end_date = unquote(self.request.query_params.get("end")[0:19])
+        start_date = unquote((self.request.query_params.get("start") or "")[0:19])
+        end_date = unquote((self.request.query_params.get("end") or "")[0:19])
         if start_date and end_date:
             start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S"))
             end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S"))
@@ -79,9 +79,14 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                     return Response({'error': 'New datetime must be in the future.'},
                                     status=status.HTTP_400_BAD_REQUEST)
                 appointment.start_datetime = new_datetime
-                total_duration = sum(
-                    s.service.providerserverservice_set.first().duration for s in
-                    appointment.appointmentservice_set.all())
+                total_duration = 0
+                for s in appointment.appointmentservice_set.select_related('service').all():
+                    pss = s.service.providerserverservice_set.first()
+                    if pss and pss.duration:
+                        total_duration += pss.duration
+                if total_duration == 0:
+                    return Response({'error': 'Could not determine appointment duration.'},
+                                    status=status.HTTP_400_BAD_REQUEST)
                 appointment.end_datetime = new_datetime + timezone.timedelta(minutes=total_duration)
                 appointment.comment_by_server = comment_by_server
                 appointment.save()
@@ -146,7 +151,10 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
     def create_guest_appointment(self, request):
         server = request.user.server_user
         try:
-            guest_client = Client.objects.get(email="guestclient@gmail.com")
+            guest_client, _ = Client.objects.get_or_create(
+                email="guestclient@gmail.com",
+                defaults={"full_name": "Guest Client"},
+            )
             # Get the start_date, end_date, and comment from the request body
             start_date_str = request.data.get('start_date')
             end_date_str = request.data.get('end_date')

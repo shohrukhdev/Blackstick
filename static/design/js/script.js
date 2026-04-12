@@ -409,7 +409,9 @@ function modifyDate(dateStr, days) {
  * @param {string} langCode  - 'en', 'ru', or 'uz'
  */
 function updateSelectedDateText(dateStr, langCode) {
-    const date = new Date(dateStr);
+    // Parse as local date to avoid UTC-midnight timezone shift
+    const [y, m, d_] = dateStr.split('-').map(Number);
+    const date = new Date(y, m - 1, d_);
     const day = date.getDate();
     const monthIndex = date.getMonth();
     const weekdayIndex = date.getDay();
@@ -846,7 +848,14 @@ function calculateTotalSum(services) {
  * @returns {string}
  */
 function formatDate(date, format) {
-    const d = new Date(date);
+    // Parse YYYY-MM-DD as local date to avoid UTC-midnight timezone shift
+    let d;
+    if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        const [y, m, day_] = date.split('-').map(Number);
+        d = new Date(y, m - 1, day_);
+    } else {
+        d = new Date(date);
+    }
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');

@@ -22,12 +22,14 @@ class AppointmentServiceSerializer(serializers.ModelSerializer):
             return obj.service.name
 
     def get_duration(self, obj):
-        return obj.service.providerserverservice_set.first().duration
+        pss = obj.service.providerserverservice_set.first()
+        return pss.duration if pss else None
 
     def get_price(self, obj):
-        if obj.service.providerserverservice_set.first().service_private_price:
-            return obj.service.providerserverservice_set.first().service_private_price
-        return obj.service.providerserverservice_set.first().service.price
+        pss = obj.service.providerserverservice_set.first()
+        if not pss:
+            return obj.service.price
+        return pss.service_private_price if pss.service_private_price else pss.service.price
 
 
 class ServerSerializer(serializers.ModelSerializer):
@@ -83,7 +85,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
 
     def get_title(self, obj):
-        return f"{obj.client.full_name}"
+        return obj.client.full_name if obj.client else "Guest"
 
 
 class AppointmentDtSerializer(serializers.ModelSerializer):
@@ -120,4 +122,6 @@ class AppointmentDtSerializer(serializers.ModelSerializer):
         ]
 
     def get_time_slot(self, obj):
+        if not obj.start_datetime or not obj.end_datetime:
+            return None
         return f"{obj.start_datetime.strftime('%H:%M')} - {obj.end_datetime.strftime('%H:%M')}"
