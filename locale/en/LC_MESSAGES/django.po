@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-11 18:37+0500\n"
+"POT-Creation-Date: 2026-04-11 23:41+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,12 +21,12 @@ msgstr ""
 msgid "Main"
 msgstr "Main"
 
-#: templates/booket/client/index.html:30 templates/booket/client/index.html:554
+#: templates/booket/client/index.html:30 templates/booket/client/index.html:555
 #: templates/home.html:17
 msgid "Home"
 msgstr "Home"
 
-#: templates/booket/client/index.html:33 templates/booket/client/index.html:555
+#: templates/booket/client/index.html:33 templates/booket/client/index.html:556
 #: templates/booket/client/main.html:115 templates/booket/provider.html:44
 #: templates/booket/provider.html:79 templates/booket/service_list.html:5
 #: templates/dent/settings/main.html:50
@@ -34,7 +34,7 @@ msgstr "Home"
 msgid "Services"
 msgstr "Services"
 
-#: templates/booket/client/index.html:36 templates/booket/client/index.html:556
+#: templates/booket/client/index.html:36 templates/booket/client/index.html:557
 #: templates/booket/client/main.html:188
 msgid "Specialists"
 msgstr "Specialists"
@@ -66,37 +66,51 @@ msgstr "Our Services"
 msgid "Our Specialists"
 msgstr "Our Specialists"
 
-#: templates/booket/client/index.html:244 templates/booket/client/main.html:212
+#: templates/booket/client/index.html:245 templates/booket/client/main.html:212
+#: templates/booket/client/server_detail.html:229
 msgid "Book appointment"
 msgstr "Book appointment"
 
-#: templates/booket/client/index.html:256
-#: templates/booket/client/index.html:281
-#: templates/booket/client/index.html:322 templates/booket/client/main.html:231
+#: templates/booket/client/index.html:257
+#: templates/booket/client/index.html:282
+#: templates/booket/client/index.html:323 templates/booket/client/main.html:231
+#: templates/booket/client/server_detail.html:253
+#: templates/booket/client/server_detail.html:277
+#: templates/booket/client/server_detail.html:316
 #: templates/booket/server_edit.html:5
 msgid "Specialist"
 msgstr "Specialist"
 
-#: templates/booket/client/index.html:268
-#: templates/booket/client/index.html:310 templates/booket/client/main.html:426
-#: templates/booket/client/main.html:432 templates/dent/treatement.html:380
+#: templates/booket/client/index.html:269
+#: templates/booket/client/index.html:311 templates/booket/client/main.html:426
+#: templates/booket/client/main.html:432
+#: templates/booket/client/server_detail.html:264
+#: templates/booket/client/server_detail.html:304
+#: templates/dent/treatement.html:380
 msgid "Next"
 msgstr "Next"
 
-#: templates/booket/client/index.html:289
-#: templates/booket/client/index.html:353 templates/booket/client/main.html:326
+#: templates/booket/client/index.html:290
+#: templates/booket/client/index.html:354 templates/booket/client/main.html:326
+#: templates/booket/client/server_detail.html:285
+#: templates/booket/client/server_detail.html:345
 msgid "Estimated duration"
 msgstr "Estimated duration"
 
-#: templates/booket/client/index.html:289
-#: templates/booket/client/index.html:353 templates/booket/client/main.html:304
+#: templates/booket/client/index.html:290
+#: templates/booket/client/index.html:354 templates/booket/client/main.html:304
 #: templates/booket/client/main.html:327
+#: templates/booket/client/server_detail.html:285
+#: templates/booket/client/server_detail.html:345
 msgid "minutes"
 msgstr "minutes"
 
-#: templates/booket/client/index.html:308
-#: templates/booket/client/index.html:500 templates/booket/client/main.html:434
+#: templates/booket/client/index.html:309
+#: templates/booket/client/index.html:501 templates/booket/client/main.html:434
 #: templates/booket/client/main.html:437
+#: templates/booket/client/server_detail.html:207
+#: templates/booket/client/server_detail.html:302
+#: templates/booket/client/server_detail.html:474
 #: templates/booket/dashboard/dashboard.html:225
 #: templates/booket/dashboard/dashboard.html:231
 #: templates/booket/dashboard/dashboard.html:237
@@ -122,11 +136,13 @@ msgstr "minutes"
 msgid "Back"
 msgstr "Back"
 
-#: templates/booket/client/index.html:343 templates/booket/client/main.html:290
+#: templates/booket/client/index.html:344 templates/booket/client/main.html:290
+#: templates/booket/client/server_detail.html:336
 msgid "Selected services"
 msgstr "Selected services"
 
-#: templates/booket/client/index.html:357 templates/booket/client/main.html:324
+#: templates/booket/client/index.html:358 templates/booket/client/main.html:324
+#: templates/booket/client/server_detail.html:349
 #: templates/booket/dashboard/provider_statistics.html:70
 #: templates/dent/treatement.html:734 templates/dent/treatment_edit.html:96
 #: templates/dent/treatment_info.html:99
@@ -134,7 +150,8 @@ msgstr "Selected services"
 msgid "Total"
 msgstr "Total"
 
-#: templates/booket/client/index.html:357
+#: templates/booket/client/index.html:358
+#: templates/booket/client/server_detail.html:349
 #: templates/dent/treatment_print.html:99
 #: templates/dent/treatment_print.html:111
 #: templates/dent/treatment_print.html:112
@@ -142,19 +159,25 @@ msgstr "Total"
 msgid "sum"
 msgstr "sum"
 
-#: templates/booket/client/index.html:369 templates/booket/client/main.html:343
+#: templates/booket/client/index.html:370 templates/booket/client/main.html:343
+#: templates/booket/client/server_detail.html:359
 msgid "Confirm the appointment by"
 msgstr "Confirm the appointment by"
 
-#: templates/booket/client/index.html:373
-#: templates/booket/client/index.html:382 templates/booket/client/main.html:347
+#: templates/booket/client/index.html:374
+#: templates/booket/client/index.html:383 templates/booket/client/main.html:347
+#: templates/booket/client/server_detail.html:363
+#: templates/booket/client/server_detail.html:372
 msgid "Phone number"
 msgstr "Phone number"
 
-#: templates/booket/client/index.html:377
-#: templates/booket/client/index.html:401
-#: templates/booket/client/index.html:402 templates/booket/client/main.html:352
+#: templates/booket/client/index.html:378
+#: templates/booket/client/index.html:402
+#: templates/booket/client/index.html:403 templates/booket/client/main.html:352
 #: templates/booket/client/main.html:355
+#: templates/booket/client/server_detail.html:367
+#: templates/booket/client/server_detail.html:382
+#: templates/booket/client/server_detail.html:383
 #: templates/booket/dashboard/dashboard.html:59
 #: templates/booket/dashboard/dashboard.html:160
 #: templates/booket/dashboard/history.html:56
@@ -165,110 +188,132 @@ msgstr "Phone number"
 msgid "Email"
 msgstr "Email"
 
-#: templates/booket/client/index.html:394
+#: templates/booket/client/index.html:395
+#: templates/booket/client/server_detail.html:377
 msgid "Enter exactly 9 digits after +998"
 msgstr "Enter exactly 9 digits after +998"
 
-#: templates/booket/client/index.html:408
+#: templates/booket/client/index.html:409
+#: templates/booket/client/server_detail.html:389
 msgid "Enter client information"
 msgstr "Enter client information"
 
-#: templates/booket/client/index.html:409 templates/booket/client/main.html:366
+#: templates/booket/client/index.html:410 templates/booket/client/main.html:366
+#: templates/booket/client/server_detail.html:390
 msgid "Client information exists."
 msgstr "Client information exists."
 
-#: templates/booket/client/index.html:412
-#: templates/booket/client/index.html:414 templates/booket/client/main.html:373
+#: templates/booket/client/index.html:413
+#: templates/booket/client/index.html:415 templates/booket/client/main.html:373
+#: templates/booket/client/server_detail.html:393
+#: templates/booket/client/server_detail.html:395
 #: templates/dent/add_patient.html:26 templates/dent/edit_patient.html:26
 #: templates/dent/treatement.html:358
 msgid "Full name"
 msgstr "Full name"
 
-#: templates/booket/client/index.html:420 templates/booket/client/main.html:379
+#: templates/booket/client/index.html:421 templates/booket/client/main.html:379
+#: templates/booket/client/server_detail.html:401
 msgid "Date of birth"
 msgstr "Date of birth"
 
-#: templates/booket/client/index.html:431 templates/booket/client/main.html:383
+#: templates/booket/client/index.html:432 templates/booket/client/main.html:383
+#: templates/booket/client/server_detail.html:412
 msgid "Gender"
 msgstr "Gender"
 
-#: templates/booket/client/index.html:433 templates/booket/client/main.html:385
+#: templates/booket/client/index.html:434 templates/booket/client/main.html:385
+#: templates/booket/client/server_detail.html:414
 #: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:36
 msgid "Male"
 msgstr "Male"
 
-#: templates/booket/client/index.html:434 templates/booket/client/main.html:386
+#: templates/booket/client/index.html:435 templates/booket/client/main.html:386
+#: templates/booket/client/server_detail.html:415
 #: templates/dent/add_patient.html:37 templates/dent/edit_patient.html:37
 msgid "Female"
 msgstr "Female"
 
-#: templates/booket/client/index.html:440
+#: templates/booket/client/index.html:441
+#: templates/booket/client/server_detail.html:421
 msgid "Comments (optional)"
 msgstr "Comments (optional)"
 
-#: templates/booket/client/index.html:448 templates/booket/client/main.html:399
+#: templates/booket/client/index.html:449 templates/booket/client/main.html:399
+#: templates/booket/client/server_detail.html:429
 msgid "Agree to terms of use"
 msgstr "Agree to terms of use"
 
-#: templates/booket/client/index.html:457
+#: templates/booket/client/index.html:458
+#: templates/booket/client/server_detail.html:437
 msgid "Enter confirmation code"
 msgstr "Enter confirmation code"
 
-#: templates/booket/client/index.html:458
+#: templates/booket/client/index.html:459
+#: templates/booket/client/server_detail.html:438
 msgid "Code sent to"
 msgstr "Code sent to"
 
-#: templates/booket/client/index.html:461
+#: templates/booket/client/index.html:462
+#: templates/booket/client/server_detail.html:440
 msgid "Demo code"
 msgstr "Demo code"
 
-#: templates/booket/client/index.html:464
+#: templates/booket/client/index.html:465
+#: templates/booket/client/server_detail.html:443
 msgid "Confirmation code"
 msgstr "Confirmation code"
 
-#: templates/booket/client/index.html:471
-#: templates/booket/client/index.html:503 templates/booket/client/main.html:401
+#: templates/booket/client/index.html:472
+#: templates/booket/client/index.html:504 templates/booket/client/main.html:401
 #: templates/booket/client/main.html:412
+#: templates/booket/client/server_detail.html:449
+#: templates/booket/client/server_detail.html:476
 msgid "Confirm"
 msgstr "Confirm"
 
-#: templates/booket/client/index.html:474
+#: templates/booket/client/index.html:475
+#: templates/booket/client/server_detail.html:451
 msgid "Resend in"
 msgstr "Resend in"
 
-#: templates/booket/client/index.html:474
+#: templates/booket/client/index.html:475
+#: templates/booket/client/server_detail.html:451
 msgid "sec"
 msgstr "sec"
 
-#: templates/booket/client/index.html:478
+#: templates/booket/client/index.html:479
+#: templates/booket/client/server_detail.html:454
 msgid "Resend code"
 msgstr "Resend code"
 
-#: templates/booket/client/index.html:486
+#: templates/booket/client/index.html:487
+#: templates/booket/client/server_detail.html:460
 msgid "Appointment confirmed!"
 msgstr "Appointment confirmed!"
 
-#: templates/booket/client/index.html:489
+#: templates/booket/client/index.html:490
+#: templates/booket/client/server_detail.html:464
 msgid "Done"
 msgstr "Done"
 
-#: templates/booket/client/index.html:542
+#: templates/booket/client/index.html:543
 msgid "Contacts"
 msgstr "Contacts"
 
-#: templates/booket/client/index.html:552
+#: templates/booket/client/index.html:553
 msgid "Navigations"
 msgstr "Navigations"
 
-#: templates/booket/client/index.html:570
+#: templates/booket/client/index.html:571
 msgid "All Rights Reserved."
 msgstr "All Rights Reserved."
 
-#: templates/booket/client/index.html:573
+#: templates/booket/client/index.html:574
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
-#: templates/booket/client/index.html:575
+#: templates/booket/client/index.html:576
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
@@ -341,6 +386,12 @@ msgstr "Close"
 #: templates/booket/client/main.html:556
 msgid "Less"
 msgstr "Less"
+
+#: templates/booket/client/server_detail.html:240
+#, fuzzy
+#| msgid "Confirmation code"
+msgid "No information provided."
+msgstr "No information provided."
 
 #: templates/booket/container.html:36
 #: templates/booket/dashboard/dashboard.html:5

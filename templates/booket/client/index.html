@@ -219,7 +219,8 @@
 
     <div class="card-container">
       {% for ps in provider.providerserver_set.all %}
-        <div class="card">
+        <div class="card" style="cursor: pointer;"
+             onclick="location.href='{% url 'server_detail_page' identifier=provider.identifier ps_id=ps.id %}'">
           <div class="image">
             {% if ps.server.image %}
               <img src="{{ ps.server.image.url }}" alt="{{ ps.server.user.get_full_name }}">
@@ -239,7 +240,7 @@
             {% endif %}
           </div>
           <button class="btn btn-primary"
-                  onclick="selectServer('{{ ps.id }}', '{{ ps.server.user.first_name }}')"
+                  onclick="event.stopPropagation(); selectServer('{{ ps.id }}', '{{ ps.server.user.first_name }}')"
                   role="button" type="button">
             {% trans 'Book appointment' %}
           </button>

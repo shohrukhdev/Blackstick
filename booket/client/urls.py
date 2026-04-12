@@ -4,6 +4,7 @@ from booket.client import api_views as api_view
 from booket.client.api_views import ProviderServerDetailView, AvailableTimeSlotsView
 
 urlpatterns = [
+    path('<str:identifier>/server/<int:ps_id>/', views.server_detail_page, name='server_detail_page'),
     path('<str:identifier>/', views.main_page, name='main_page'),
     path('client/search/', api_view.get_client_data, name='search_client'),
     path('provider-server/<int:p_server_id>/', ProviderServerDetailView.as_view(), name='provider-server-detail'),

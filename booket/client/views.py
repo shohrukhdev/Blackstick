@@ -1,8 +1,8 @@
 from django.core.cache import cache
 from django.http import HttpResponseNotAllowed
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from difflib import get_close_matches
-from booket.models import Provider
+from booket.models import Provider, ProviderServer
 from booket.utils import generate_signature
 
 
@@ -36,3 +36,16 @@ def main_page(request, identifier: str):
         else:
             return render(request, "booket/client/index.html", context={"provider": provider, "signature": signature})
     return HttpResponseNotAllowed(['POST'])
+
+
+def server_detail_page(request, identifier, ps_id):
+    if request.method != 'GET':
+        return HttpResponseNotAllowed(['GET'])
+    provider = get_object_or_404(Provider, identifier=identifier)
+    ps = get_object_or_404(ProviderServer, id=ps_id, provider=provider)
+    signature = generate_signature(provider.id)
+    return render(request, 'booket/client/server_detail.html', {
+        'provider': provider,
+        'ps': ps,
+        'signature': signature,
+    })
