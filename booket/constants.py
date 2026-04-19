@@ -1,6 +1,6 @@
 
 
 DEMO_PROVIDERS = [
-    "psixolog_bobur",
+    "smile_dental",
     "adolat_legal_services"
 ]

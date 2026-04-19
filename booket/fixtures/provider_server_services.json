@@ -4,9 +4,9 @@
     "pk": 10,
     "fields": {
       "provider_server": 1,
-      "service": 2,
+      "service": 1,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -14,9 +14,9 @@
     "pk": 11,
     "fields": {
       "provider_server": 1,
-      "service": 1,
+      "service": 2,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -56,7 +56,7 @@
       "provider_server": 3,
       "service": 6,
       "service_private_price": null,
-      "duration": 60
+      "duration": 45
     }
   },
   {
@@ -86,7 +86,7 @@
       "provider_server": 2,
       "service": 11,
       "service_private_price": null,
-      "duration": 60
+      "duration": 90
     }
   },
   {
@@ -96,7 +96,7 @@
       "provider_server": 2,
       "service": 12,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -106,7 +106,7 @@
       "provider_server": 2,
       "service": 13,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -116,7 +116,7 @@
       "provider_server": 2,
       "service": 14,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -126,7 +126,7 @@
       "provider_server": 2,
       "service": 15,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -136,7 +136,7 @@
       "provider_server": 2,
       "service": 16,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -146,7 +146,7 @@
       "provider_server": 2,
       "service": 18,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -156,7 +156,7 @@
       "provider_server": 2,
       "service": 17,
       "service_private_price": null,
-      "duration": 60
+      "duration": 90
     }
   },
   {
@@ -176,7 +176,7 @@
       "provider_server": 4,
       "service": 20,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -196,7 +196,7 @@
       "provider_server": 4,
       "service": 22,
       "service_private_price": null,
-      "duration": 60
+      "duration": 45
     }
   },
   {
@@ -206,7 +206,7 @@
       "provider_server": 4,
       "service": 23,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -216,7 +216,7 @@
       "provider_server": 4,
       "service": 14,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -226,7 +226,7 @@
       "provider_server": 4,
       "service": 15,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -236,7 +236,7 @@
       "provider_server": 4,
       "service": 16,
       "service_private_price": null,
-      "duration": 60
+      "duration": 30
     }
   },
   {
@@ -246,7 +246,7 @@
       "provider_server": 5,
       "service": 7,
       "service_private_price": null,
-      "duration": 60
+      "duration": 90
     }
   },
   {
@@ -256,7 +256,7 @@
       "provider_server": 5,
       "service": 8,
       "service_private_price": null,
-      "duration": 60
+      "duration": 120
     }
   },
   {
@@ -266,7 +266,7 @@
       "provider_server": 5,
       "service": 9,
       "service_private_price": null,
-      "duration": 60
+      "duration": 120
     }
   },
   {
@@ -276,7 +276,7 @@
       "provider_server": 5,
       "service": 17,
       "service_private_price": 90000,
-      "duration": 60
+      "duration": 90
     }
   },
   {
@@ -316,7 +316,7 @@
       "provider_server": 10,
       "service": 39,
       "service_private_price": null,
-      "duration": 60
+      "duration": 45
     }
   },
   {
@@ -748,5 +748,255 @@
       "service_private_price": null,
       "duration": 60
     }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 86,
+    "fields": {
+      "provider_server": 1,
+      "service": 42,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 87,
+    "fields": {
+      "provider_server": 1,
+      "service": 43,
+      "service_private_price": null,
+      "duration": 60
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 88,
+    "fields": {
+      "provider_server": 1,
+      "service": 44,
+      "service_private_price": null,
+      "duration": 90
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 89,
+    "fields": {
+      "provider_server": 1,
+      "service": 45,
+      "service_private_price": null,
+      "duration": 60
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 90,
+    "fields": {
+      "provider_server": 1,
+      "service": 46,
+      "service_private_price": 550000,
+      "duration": 90
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 91,
+    "fields": {
+      "provider_server": 1,
+      "service": 47,
+      "service_private_price": null,
+      "duration": 90
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 92,
+    "fields": {
+      "provider_server": 11,
+      "service": 1,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 93,
+    "fields": {
+      "provider_server": 11,
+      "service": 2,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 94,
+    "fields": {
+      "provider_server": 11,
+      "service": 42,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 95,
+    "fields": {
+      "provider_server": 11,
+      "service": 50,
+      "service_private_price": null,
+      "duration": 120
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 96,
+    "fields": {
+      "provider_server": 11,
+      "service": 51,
+      "service_private_price": null,
+      "duration": 60
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 97,
+    "fields": {
+      "provider_server": 11,
+      "service": 52,
+      "service_private_price": null,
+      "duration": 90
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 98,
+    "fields": {
+      "provider_server": 11,
+      "service": 53,
+      "service_private_price": null,
+      "duration": 120
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 99,
+    "fields": {
+      "provider_server": 12,
+      "service": 1,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 100,
+    "fields": {
+      "provider_server": 12,
+      "service": 2,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 101,
+    "fields": {
+      "provider_server": 12,
+      "service": 42,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 102,
+    "fields": {
+      "provider_server": 12,
+      "service": 48,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 103,
+    "fields": {
+      "provider_server": 12,
+      "service": 49,
+      "service_private_price": null,
+      "duration": 60
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 104,
+    "fields": {
+      "provider_server": 12,
+      "service": 50,
+      "service_private_price": null,
+      "duration": 120
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 105,
+    "fields": {
+      "provider_server": 13,
+      "service": 1,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 106,
+    "fields": {
+      "provider_server": 13,
+      "service": 2,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 107,
+    "fields": {
+      "provider_server": 13,
+      "service": 42,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 108,
+    "fields": {
+      "provider_server": 13,
+      "service": 54,
+      "service_private_price": 40000,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 109,
+    "fields": {
+      "provider_server": 13,
+      "service": 55,
+      "service_private_price": null,
+      "duration": 30
+    }
+  },
+  {
+    "model": "booket.providerserverservice",
+    "pk": 110,
+    "fields": {
+      "provider_server": 13,
+      "service": 56,
+      "service_private_price": null,
+      "duration": 30
+      }
   }
 ]

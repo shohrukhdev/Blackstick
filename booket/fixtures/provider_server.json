@@ -5,9 +5,9 @@
     "fields": {
       "provider": 1,
       "server": 1,
-      "day_starts_on": "08:00:00",
+      "day_starts_on": "09:00:00",
       "day_ends_on": "18:00:00",
-      "off_days": null
+      "off_days": "7"
     }
   },
   {
@@ -27,9 +27,9 @@
     "fields": {
       "provider": 2,
       "server": 3,
-      "day_starts_on": null,
-      "day_ends_on": null,
-      "off_days": null
+      "day_starts_on": "10:00:00",
+      "day_ends_on": "19:00:00",
+      "off_days": "6,7"
     }
   },
   {
@@ -38,9 +38,9 @@
     "fields": {
       "provider": 2,
       "server": 4,
-      "day_starts_on": null,
-      "day_ends_on": null,
-      "off_days": null
+      "day_starts_on": "10:00:00",
+      "day_ends_on": "19:00:00",
+      "off_days": "7"
     }
   },
   {
@@ -106,6 +106,39 @@
       "server": 10,
       "day_starts_on": "09:00:00",
       "day_ends_on": "18:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 11,
+    "fields": {
+      "provider": 1,
+      "server": 11,
+      "day_starts_on": "10:00:00",
+      "day_ends_on": "18:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 12,
+    "fields": {
+      "provider": 1,
+      "server": 12,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "17:00:00",
+      "off_days": "6,7"
+    }
+  },
+  {
+    "model": "booket.providerserver",
+    "pk": 13,
+    "fields": {
+      "provider": 1,
+      "server": 13,
+      "day_starts_on": "09:00:00",
+      "day_ends_on": "16:00:00",
       "off_days": "6,7"
     }
   }

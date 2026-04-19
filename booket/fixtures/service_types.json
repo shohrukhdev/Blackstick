@@ -4,9 +4,9 @@
     "pk": 1,
     "fields": {
       "provider": 1,
-      "name": "Online consulting",
-      "name_uz": "Onlayn konsalting uz",
-      "name_ru": "Онлайн-консультация",
+      "name": "Diagnostics & X-Ray",
+      "name_uz": "Tashxis va rentgen",
+      "name_ru": "Диагностика и рентген",
       "is_active": true
     }
   },
@@ -15,9 +15,9 @@
     "pk": 2,
     "fields": {
       "provider": 1,
-      "name": "Business training en",
-      "name_uz": "Biznes treyning uz 1",
-      "name_ru": "Biznes training ru",
+      "name": "Therapeutic Dentistry",
+      "name_uz": "Terapevtik stomatologiya",
+      "name_ru": "Терапевтическая стоматология",
       "is_active": true
     }
   },
@@ -26,9 +26,9 @@
     "pk": 3,
     "fields": {
       "provider": 2,
-      "name": "Hair bar",
-      "name_uz": "Soch uchun ",
-      "name_ru": "Бар волос",
+      "name": "Hair Bar",
+      "name_uz": "Soch xizmatlari",
+      "name_ru": "Уход за волосами",
       "is_active": true
     }
   },
@@ -37,9 +37,9 @@
     "pk": 4,
     "fields": {
       "provider": 2,
-      "name": "Nail bar",
-      "name_uz": "Tirnoqlar uchun",
-      "name_ru": "Для ногтей",
+      "name": "Nail Bar",
+      "name_uz": "Tirnoq xizmatlari",
+      "name_ru": "Уход за ногтями",
       "is_active": true
     }
   },
@@ -48,7 +48,7 @@
     "pk": 5,
     "fields": {
       "provider": 2,
-      "name": "Brow and Lashes bar",
+      "name": "Brow & Lash Bar",
       "name_uz": "Qosh va kipriklar",
       "name_ru": "Брови и ресницы",
       "is_active": true
@@ -59,7 +59,7 @@
     "pk": 6,
     "fields": {
       "provider": 2,
-      "name": "Wax bar",
+      "name": "Wax & Depilation",
       "name_uz": "Wax va depilyatsiya",
       "name_ru": "Воск и депиляция",
       "is_active": true
@@ -103,9 +103,42 @@
     "pk": 10,
     "fields": {
       "provider": 3,
-      "name": "Other",
+      "name": "Other Services",
       "name_uz": "Boshqa xizmatlar",
-      "name_ru": "Другой",
+      "name_ru": "Другие услуги",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 11,
+    "fields": {
+      "provider": 1,
+      "name": "Surgical Dentistry",
+      "name_uz": "Jarrohlik stomatologiyasi",
+      "name_ru": "Хирургическая стоматология",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 12,
+    "fields": {
+      "provider": 1,
+      "name": "Orthodontics & Prosthetics",
+      "name_uz": "Ortodontiya va protezlash",
+      "name_ru": "Ортодонтия и протезирование",
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.servicetype",
+    "pk": 13,
+    "fields": {
+      "provider": 1,
+      "name": "Pediatric Dentistry",
+      "name_uz": "Bolalar stomatologiyasi",
+      "name_ru": "Детская стоматология",
       "is_active": true
     }
   }

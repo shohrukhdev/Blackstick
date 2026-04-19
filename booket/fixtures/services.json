@@ -4,11 +4,11 @@
     "pk": 1,
     "fields": {
       "tip": 1,
-      "name": "Service 1 en",
-      "name_uz": "Service 1 uz",
-      "name_ru": "Service 1 ru",
-      "description": "Service 1 description",
-      "price": 1000,
+      "name": "Consultation",
+      "name_uz": "Maslahat",
+      "name_ru": "Консультация",
+      "description": "Dastlabki ko'rik va mutaxassis maslahati. Первичный осмотр и консультация специалиста.",
+      "price": 50000,
       "is_active": true
     }
   },
@@ -17,11 +17,11 @@
     "pk": 2,
     "fields": {
       "tip": 1,
-      "name": "Servvice 2 en",
-      "name_uz": "Service 2 uz",
-      "name_ru": "Service 2 ru",
-      "description": "Service 2 description",
-      "price": 2000,
+      "name": "X-Ray (1 tooth)",
+      "name_uz": "Rentgen (1 tish)",
+      "name_ru": "Рентген (1 зуб)",
+      "description": "Bitta tish rentgen tekshiruvi. Рентгеновский снимок одного зуба.",
+      "price": 30000,
       "is_active": true
     }
   },
@@ -30,10 +30,10 @@
     "pk": 3,
     "fields": {
       "tip": 3,
-      "name": "Men's haircut",
-      "name_uz": "Soch olish erkaklar uchun",
+      "name": "Men's Haircut",
+      "name_uz": "Erkaklar soch olish",
       "name_ru": "Мужская стрижка",
-      "description": "Complimentary: shampoo/edge-up/styling\r\nКомплимент: мытье головы/окантовка/стайлинг",
+      "description": "Complimentary: shampoo / edge-up / styling. Комплимент: мытьё головы / окантовка / стайлинг.",
       "price": 60000,
       "is_active": true
     }
@@ -43,10 +43,10 @@
     "pk": 4,
     "fields": {
       "tip": 3,
-      "name": "Men's evening styling",
-      "name_uz": "Erkaklar uchun tadbir stillari",
+      "name": "Men's Evening Styling",
+      "name_uz": "Erkaklar tadbir stillari",
       "name_ru": "Мужская вечерняя укладка",
-      "description": "A professional styling service for men, designed to create a sophisticated and elegant look for evening events, including haircuts, beard grooming, and hair styling. \r\nПрофессиональная услуга по укладке для мужчин, предназначенная для создания изысканного ",
+      "description": "Professional styling for men for evening events. Профессиональная вечерняя укладка для мужчин.",
       "price": 90000,
       "is_active": true
     }
@@ -56,10 +56,10 @@
     "pk": 5,
     "fields": {
       "tip": 3,
-      "name": "Face Shaving/Face Care",
-      "name_uz": "Soqol olish/Yuzga parvarish",
-      "name_ru": "Бритьё лица/Уход за лицом",
-      "description": "Precise face shaving and skincare to ensure a smooth, clean, and refreshed appearance.\r\nПрофессиональная услуга, включающая аккуратное бритьё лица и уход за кожей для достижения гладкого, чистого и свежего вида.",
+      "name": "Face Shaving & Care",
+      "name_uz": "Soqol olish va yuz parvarishi",
+      "name_ru": "Бритьё лица и уход",
+      "description": "Precise face shaving and skincare. Профессиональное бритьё лица и уход за кожей.",
       "price": 120000,
       "is_active": true
     }
@@ -69,10 +69,10 @@
     "pk": 6,
     "fields": {
       "tip": 3,
-      "name": "Children’s haircut (under 12 y.o)",
-      "name_uz": "Bolalar soch olishi (12 yoshgacha)",
-      "name_ru": "Детская стрижка (до 12 л.)",
-      "description": "Professional haircuts for children under 12, ensuring a comfortable and fun experience.\r\nПрофессиональные стрижки для детей до 12 лет с комфортом и вниманием.\r\n12 yoshgacha boʻlgan bolalar uchun qulay va qiziqarli professional soch olish xizmati.",
+      "name": "Children's Haircut (under 12)",
+      "name_uz": "Bolalar soch olish (12 yoshgacha)",
+      "name_ru": "Детская стрижка (до 12 лет)",
+      "description": "Professional haircuts for children under 12. Профессиональные стрижки для детей до 12 лет.",
       "price": 60000,
       "is_active": true
     }
@@ -82,10 +82,10 @@
     "pk": 7,
     "fields": {
       "tip": 3,
-      "name": "Women's haircut and styling",
-      "name_uz": "Ayollar uchun soch stillari",
-      "name_ru": "Женская стрижка/укладка",
-      "description": "Professional haircuts and styling for women, tailored to create a modern and elegant look.\r\nПрофессиональные стрижки и укладки для женщин, создающие современный и элегантный образ.\r\nAyollar uchun zamonaviy va nafis koʻrinish yaratish uchun professional soch",
+      "name": "Women's Haircut & Styling",
+      "name_uz": "Ayollar soch olish va stillash",
+      "name_ru": "Женская стрижка и укладка",
+      "description": "Professional haircuts and styling for women. Профессиональные стрижки и укладки для женщин.",
       "price": 100000,
       "is_active": true
     }
@@ -95,10 +95,10 @@
     "pk": 8,
     "fields": {
       "tip": 3,
-      "name": "Hair lamination",
-      "name_uz": "Soch uchun laminatsiya",
+      "name": "Hair Lamination",
+      "name_uz": "Soch laminatsiyasi",
       "name_ru": "Ламинация волос",
-      "description": "A treatment that adds shine, smoothness, and strength to hair, making it look healthier and more vibrant.\r\nПроцедура, которая придаёт волосам блеск, гладкость и силу, делая их более здоровыми и ухоженными.\r\nSochlarni silliq, yaltiroq va mustahkamlovchi, ula",
+      "description": "Treatment that adds shine, smoothness and strength to hair. Процедура для блеска, гладкости и силы волос.",
       "price": 200000,
       "is_active": true
     }
@@ -108,10 +108,10 @@
     "pk": 9,
     "fields": {
       "tip": 3,
-      "name": "Hair coloring in one tone & styling",
-      "name_uz": "Sochlarni bir rangda boʻyash va stil",
+      "name": "Hair Coloring (one tone) & Styling",
+      "name_uz": "Sochlarni bir rangda bo'yash va stillash",
       "name_ru": "Окрашивание волос в один тон и укладка",
-      "description": "Single-tone hair coloring combined with professional styling for a polished and vibrant look.\r\nОднотонное окрашивание волос с профессиональной укладкой для ухоженного и яркого образа.\r\nSochlarni bir rangda boʻyash va professional uslub bilan zamonaviy va jo",
+      "description": "Single-tone hair coloring with professional styling. Однотонное окрашивание с профессиональной укладкой.",
       "price": 250000,
       "is_active": true
     }
@@ -121,10 +121,10 @@
     "pk": 10,
     "fields": {
       "tip": 4,
-      "name": "Classic manicure",
+      "name": "Classic Manicure",
       "name_uz": "Klassik manikyur",
       "name_ru": "Классический маникюр",
-      "description": "A traditional nail care service that includes trimming, shaping, and cuticle care for clean and neat nails.\r\nТрадиционный уход за ногтями, включающий подстригание, придание формы и уход за кутикулой для аккуратного вида.\r\nTirnoqlarni kesish, shakllantirish ",
+      "description": "Traditional nail care: trimming, shaping, cuticle care. Традиционный уход за ногтями: обрезка, форма, кутикула.",
       "price": 80000,
       "is_active": true
     }
@@ -134,10 +134,10 @@
     "pk": 11,
     "fields": {
       "tip": 4,
-      "name": "Classic pedicure",
+      "name": "Classic Pedicure",
       "name_uz": "Klassik pedikyur",
       "name_ru": "Классический педикюр",
-      "description": " A traditional foot care service that includes nail trimming, shaping, cuticle care, and skin exfoliation for smooth and healthy feet.\r\nТрадиционный уход за стопами, включающий подстригание ногтей, придание формы.",
+      "description": "Traditional foot care: nail trimming, shaping, cuticle care, exfoliation. Традиционный уход за стопами.",
       "price": 150000,
       "is_active": true
     }
@@ -147,10 +147,10 @@
     "pk": 12,
     "fields": {
       "tip": 4,
-      "name": "Gel nail polish coating",
+      "name": "Gel Nail Polish Coating",
       "name_uz": "Gel-lak bilan qoplash",
-      "name_ru": "Покрытие гель-лака",
-      "description": "A long-lasting nail polish application using gel-based products for a glossy and durable finish.\r\nДолговременное покрытие ногтей гель-лаком для глянцевого и стойкого результата.\r\nTirnoqlarga yaltiroq va uzoq muddatli bardosh beradigan gel-lak qoplash xizmat",
+      "name_ru": "Покрытие гель-лаком",
+      "description": "Long-lasting gel nail polish for a glossy, durable finish. Долговременное покрытие гель-лаком.",
       "price": 70000,
       "is_active": true
     }
@@ -160,10 +160,10 @@
     "pk": 13,
     "fields": {
       "tip": 4,
-      "name": "Weekly/Halal nail polish coating",
-      "name_uz": "Haftalik/Halal lak bilan qoplash",
-      "name_ru": "Покрытие недельным/халяльным лаком",
-      "description": "A temporary nail polish application using halal-certified or weekly polish, ideal for those seeking a short-term, halal-compliant option.\r\nВременное покрытие ногтей халяльным или недельным лаком, подходящее для краткосрочного использования.",
+      "name": "Halal Nail Polish Coating",
+      "name_uz": "Halal lak bilan qoplash",
+      "name_ru": "Покрытие халяльным лаком",
+      "description": "Temporary halal-certified nail polish, ideal for short-term use. Халяльный временный лак для ногтей.",
       "price": 40000,
       "is_active": true
     }
@@ -173,10 +173,10 @@
     "pk": 14,
     "fields": {
       "tip": 4,
-      "name": "Nails remover",
-      "name_uz": "Tirnoqlarni olib tashlash",
-      "name_ru": "Снятие ногтей",
-      "description": "Safe and professional removal of nail polish, gel, or acrylic extensions without damaging the natural nails.\r\nБезопасное и профессиональное снятие лака, геля или акриловых покрытий без повреждения натуральных ногтей.\r\nTabiiy tirnoqlarga zarar yetkazmasdan, lak, gel yoki akril qoplamalarni xavfsiz va professional olib tashlash.",
+      "name": "Nail Extension Removal",
+      "name_uz": "Tirnoq qoplamalarini olib tashlash",
+      "name_ru": "Снятие ногтевых покрытий",
+      "description": "Safe removal of gel, acrylic or polish without damaging natural nails. Безопасное снятие гель, акрила или лака.",
       "price": 80000,
       "is_active": true
     }
@@ -186,10 +186,10 @@
     "pk": 15,
     "fields": {
       "tip": 4,
-      "name": "Nails design",
+      "name": "Nail Design",
       "name_uz": "Tirnoq dizayni",
       "name_ru": "Дизайн ногтей",
-      "description": "Creative and artistic nail decoration using patterns, colors, and embellishments for a unique and stylish look.\r\nКреативное и художественное украшение ногтей с использованием узоров, цветов и декора для уникального и стильного образа.\r\nNaqshlar, ranglar va bezaklar yordamida tirnoqlarni badiiy va zamonaviy uslubda bezash.",
+      "description": "Creative nail decoration using patterns, colors and embellishments. Художественное украшение ногтей.",
       "price": 30000,
       "is_active": true
     }
@@ -199,10 +199,10 @@
     "pk": 16,
     "fields": {
       "tip": 4,
-      "name": "Incrustation",
+      "name": "Nail Incrustation (Rhinestones)",
       "name_uz": "Toshlar bilan bezash (inkrustatsiya)",
       "name_ru": "Инкрустация камнями",
-      "description": "Decorating nails or jewelry with embedded stones or crystals for a luxurious and elegant appearance.\r\nУкрашение ногтей или украшений вставками из камней или кристаллов для роскошного и элегантного вида.\r\nTirnoqlar yoki zargarlik buyumlarini toshlar yoki kristallar bilan bezash, hashamatli va nafis koʻrinish yaratish.",
+      "description": "Decorating nails with embedded stones or crystals for a luxurious look. Украшение ногтей камнями или кристаллами.",
       "price": 120000,
       "is_active": true
     }
@@ -212,10 +212,10 @@
     "pk": 17,
     "fields": {
       "tip": 5,
-      "name": "Eyelash extensions",
+      "name": "Eyelash Extensions",
       "name_uz": "Kiprik ekish",
       "name_ru": "Наращивание ресниц",
-      "description": "A natural-looking eyelash extension technique that adds length and volume to each individual lash.\r\nТехника наращивания ресниц, придающая естественную длину и объём каждой реснице.\r\nHar bir kiprikka tabiiy uzunlik va hajm beradigan kiprik kengaytirish usuli.",
+      "description": "Natural-looking eyelash extensions adding length and volume. Наращивание ресниц для объёма и длины.",
       "price": 70000,
       "is_active": true
     }
@@ -225,10 +225,10 @@
     "pk": 18,
     "fields": {
       "tip": 5,
-      "name": "Eyelash removal",
+      "name": "Eyelash Removal",
       "name_uz": "Kiprik olib tashlash",
       "name_ru": "Снятие ресниц",
-      "description": "Safe and professional removal of eyelash extensions without damaging natural lashes.\r\nБезопасное и профессиональное снятие нарощенных ресниц без вреда для натуральных.\r\nTabiiy kipriklarga zarar yetkazmasdan, kengaytirilgan kipriklarni xavfsiz va professional olib tashlash.",
+      "description": "Safe removal of eyelash extensions without damaging natural lashes. Безопасное снятие нарощенных ресниц.",
       "price": 40000,
       "is_active": true
     }
@@ -238,10 +238,10 @@
     "pk": 19,
     "fields": {
       "tip": 5,
-      "name": "Eyebrow lamination",
+      "name": "Eyebrow Lamination",
       "name_uz": "Qosh laminatsiyasi",
       "name_ru": "Ламинация бровей",
-      "description": "A treatment that smooths and sets eyebrow hairs in place, giving them a fuller, more defined, and groomed look.\r\nПроцедура, которая выравнивает и фиксирует волоски бровей, придавая им более густой, ухоженный и чёткий вид.\r\nQosh toʻqimalarini silliqlash va ularga toʻliqroq, aniqroq va tartibli koʻrinish berish uchun qoʻllaniladigan parvarish usuli.",
+      "description": "Treatment smoothing and setting brows for a fuller, more defined look. Процедура для объёма и формы бровей.",
       "price": 120000,
       "is_active": true
     }
@@ -251,10 +251,10 @@
     "pk": 20,
     "fields": {
       "tip": 6,
-      "name": "Armpits depilation",
-      "name_uz": "Qoʻltiq ostini depilyatsiya qilish",
+      "name": "Armpit Depilation",
+      "name_uz": "Qo'ltiq osti depilyatsiyasi",
       "name_ru": "Депиляция подмышечных зон",
-      "description": "Hair removal in the armpit area for a smooth and clean look, using methods like waxing or sugaring.\r\nУдаление волос в зоне подмышек для гладкости и чистоты, с использованием восковой или сахарной эпиляции.Qoʻltiq ostidagi sochlarni silliq va toza koʻrinish uchun mum yoki shakar bilan olib tashlash.",
+      "description": "Hair removal in the armpit area using waxing or sugaring. Удаление волос в зоне подмышек.",
       "price": 120000,
       "is_active": true
     }
@@ -264,10 +264,10 @@
     "pk": 21,
     "fields": {
       "tip": 6,
-      "name": "Legs depilation (Full)",
-      "name_uz": "Oyoqlarni toʻliq depilyatsiya qilish",
+      "name": "Full Leg Depilation",
+      "name_uz": "Oyoqlarni to'liq depilyatsiya qilish",
       "name_ru": "Депиляция ног (полностью)",
-      "description": "Complete hair removal from the legs for a smooth and clean appearance, using methods like waxing or sugaring.\r\nПолное удаление волос с ног для гладкости и чистоты, с использованием восковой или сахарной эпиляции.",
+      "description": "Complete hair removal from the legs using waxing or sugaring. Полное удаление волос с ног.",
       "price": 200000,
       "is_active": true
     }
@@ -277,10 +277,10 @@
     "pk": 22,
     "fields": {
       "tip": 6,
-      "name": "Legs depilation (Till knee)",
+      "name": "Half Leg Depilation (till knee)",
       "name_uz": "Oyoqlarni tizzagacha depilyatsiya qilish",
-      "name_ru": " Депиляция ног (до колена)",
-      "description": "Hair removal from the legs up to the knee for a smooth and clean appearance, using methods like waxing or sugaring.\r\nУдаление волос с ног до колена для гладкости и чистоты, с использованием восковой или сахарной эпиляции.",
+      "name_ru": "Депиляция ног (до колена)",
+      "description": "Hair removal from the legs up to the knee. Удаление волос с ног до колена.",
       "price": 150000,
       "is_active": true
     }
@@ -290,10 +290,10 @@
     "pk": 23,
     "fields": {
       "tip": 6,
-      "name": "Face depilation (Full)",
-      "name_uz": "Yuzni toʻliq depilyatsiya qilish",
+      "name": "Full Face Depilation",
+      "name_uz": "Yuzni to'liq depilyatsiya qilish",
       "name_ru": "Депиляция лица (полностью)",
-      "description": "Complete hair removal from the face for a smooth and clean appearance, using methods like waxing or threading.\r\nПолное удаление волос с лица для гладкости и чистоты, с использованием восковой эпиляции или нитей.",
+      "description": "Complete hair removal from the face using waxing or threading. Полное удаление волос с лица.",
       "price": 130000,
       "is_active": true
     }
@@ -303,10 +303,10 @@
     "pk": 24,
     "fields": {
       "tip": 7,
-      "name": "Power of Attorney\t",
-      "name_uz": "Ishonchnoma tayyorlash\t",
-      "name_ru": "Доверенность\t",
-      "description": "Ishonchnomalarni tayyorlash va rasmiylashtrish",
+      "name": "Power of Attorney",
+      "name_uz": "Ishonchnoma tayyorlash",
+      "name_ru": "Доверенность",
+      "description": "Ishonchnomalarni tayyorlash va rasmiylashtrish. Оформление доверенности.",
       "price": 80000,
       "is_active": true
     }
@@ -319,7 +319,7 @@
       "name": "Inheritance Certificate",
       "name_uz": "Meros hujjati",
       "name_ru": "Наследственное свидетельство",
-      "description": "Meros hujjatlarini tayyorlash va rasmiylashtrish",
+      "description": "Meros hujjatlarini tayyorlash va rasmiylashtrish. Оформление наследства.",
       "price": 150000,
       "is_active": true
     }
@@ -329,10 +329,10 @@
     "pk": 26,
     "fields": {
       "tip": 7,
-      "name": "Marriage Contract and Divorce\t",
-      "name_uz": "Nigoh shartnomasi/Ajrim",
-      "name_ru": "Брачный контракт/Razvod",
-      "description": "Nigoh shartnomalariga oid xizmatlar, ajrimni rasmiylashtrish",
+      "name": "Marriage Contract & Divorce",
+      "name_uz": "Nikoh shartnomasi va ajrim",
+      "name_ru": "Брачный контракт и развод",
+      "description": "Nikoh shartnomalariga oid xizmatlar va ajrimni rasmiylashtrish. Оформление брачного договора и развода.",
       "price": 120000,
       "is_active": true
     }
@@ -343,9 +343,9 @@
     "fields": {
       "tip": 7,
       "name": "Real Estate Deal Confirmation",
-      "name_uz": "Ko‘chmas mulk bitimi tasdiqlash",
+      "name_uz": "Ko'chmas mulk bitimini tasdiqlash",
       "name_ru": "Подтверждение сделки с недвижимостью",
-      "description": "Ko'chmas mulkka doir amaliyotlarni rasmiylashtrish",
+      "description": "Ko'chmas mulkka doir amaliyotlarni rasmiylashtrish. Нотариальное удостоверение сделок с недвижимостью.",
       "price": 200000,
       "is_active": true
     }
@@ -355,10 +355,10 @@
     "pk": 28,
     "fields": {
       "tip": 7,
-      "name": "Vehicle buy/sell registartion",
-      "name_uz": "Avtomobil oldi/sotdi rasmiylashtrish",
+      "name": "Vehicle Buy/Sell Registration",
+      "name_uz": "Avtomobil oldi-sotdi rasmiylashtrish",
       "name_ru": "Регистрация купли-продажи транспортного средства",
-      "description": "Avtomobil oldi sotdi amaliyotlarini rasmiylashtrish",
+      "description": "Avtomobil oldi-sotdi amaliyotlarini rasmiylashtrish. Оформление купли-продажи автомобиля.",
       "price": 350000,
       "is_active": true
     }
@@ -369,9 +369,9 @@
     "fields": {
       "tip": 8,
       "name": "Business Registration Support",
-      "name_uz": "Biznes ro‘yxatdan o‘tkazish",
+      "name_uz": "Biznes ro'yxatdan o'tkazish",
       "name_ru": "Регистрация бизнеса",
-      "description": "Biznes faoliyat turiga mos holatda optimal yo'llar bilan rasmiylashtrish",
+      "description": "Biznes faoliyat turiga mos holatda optimal yo'llar bilan rasmiylashtrish. Регистрация бизнеса.",
       "price": 250000,
       "is_active": true
     }
@@ -382,9 +382,9 @@
     "fields": {
       "tip": 8,
       "name": "Tax Consultation",
-      "name_uz": "Soliq bo‘yicha maslahat",
+      "name_uz": "Soliq bo'yicha maslahat",
       "name_ru": "Налоговая консультация",
-      "description": "Soliqqa oid masalalarda yordam ko'rsatish",
+      "description": "Soliqqa oid masalalarda yordam ko'rsatish. Консультация по налоговым вопросам.",
       "price": 100000,
       "is_active": true
     }
@@ -394,10 +394,10 @@
     "pk": 31,
     "fields": {
       "tip": 8,
-      "name": "Visa and Immigration Advice",
-      "name_uz": "Viza va immigratsiya bo‘yicha maslahat ",
+      "name": "Visa & Immigration Advice",
+      "name_uz": "Viza va immigratsiya bo'yicha maslahat",
       "name_ru": "Консультация по визам и иммиграции",
-      "description": "Visa va immigratsiya masalalrida yordam ko'rsatish",
+      "description": "Viza va immigratsiya masalalarida yordam ko'rsatish. Консультация по визам и иммиграции.",
       "price": 120000,
       "is_active": true
     }
@@ -408,9 +408,9 @@
     "fields": {
       "tip": 8,
       "name": "Contract Review & Drafting",
-      "name_uz": "Shartnoma tuzish va ko‘rib chiqish",
+      "name_uz": "Shartnoma tuzish va ko'rib chiqish",
       "name_ru": "Разработка и проверка договоров",
-      "description": "Shartnomalarni tuzish, ko'rib chiqish va unga oid muammolarda yordam ko'rsatish",
+      "description": "Shartnomalarni tuzish va ko'rib chiqish. Разработка и проверка договоров.",
       "price": 180000,
       "is_active": true
     }
@@ -423,7 +423,7 @@
       "name": "Court Document Preparation",
       "name_uz": "Sud hujjatlarini tayyorlash",
       "name_ru": "Подготовка судебных документов",
-      "description": "Sud hujjatlarini tayyorlash, ko'rib chiqish va tahlil qilish",
+      "description": "Sud hujjatlarini tayyorlash, ko'rib chiqish va tahlil qilish. Подготовка судебных документов.",
       "price": 130000,
       "is_active": true
     }
@@ -436,7 +436,7 @@
       "name": "Intellectual Property Protection",
       "name_uz": "Intellektual mulk himoyasi",
       "name_ru": "Защита интеллектуальной собственности",
-      "description": "Intellektual mulk himoyasi va unga doir amaliyotlar",
+      "description": "Intellektual mulk himoyasi va unga doir amaliyotlar. Защита интеллектуальной собственности.",
       "price": 220000,
       "is_active": true
     }
@@ -447,9 +447,9 @@
     "fields": {
       "tip": 8,
       "name": "Labor Law Consulting",
-      "name_uz": "Mehnat qonunchiligi bo‘yicha maslahat",
-      "name_ru": "Консультации по трудовому праву",
-      "description": "Mehnat qonunchiligiga doir masalalarni tahlil qilish maslahat berish",
+      "name_uz": "Mehnat qonunchiligi bo'yicha maslahat",
+      "name_ru": "Консультация по трудовому праву",
+      "description": "Mehnat qonunchiligiga doir masalalarni tahlil qilish. Консультация по трудовому праву.",
       "price": 140000,
       "is_active": true
     }
@@ -460,9 +460,9 @@
     "fields": {
       "tip": 9,
       "name": "Document Legalization (Ministry of Foreign Affairs)",
-      "name_uz": "Hujjatlarni legalizatsiya qilish",
+      "name_uz": "Hujjatlarni legalizatsiya qilish (Tashqi ishlar vazirligi)",
       "name_ru": "Легализация документов (МИД)",
-      "description": "Hujjatlarni tegishli tashkilotlar orqali legallashtrish",
+      "description": "Hujjatlarni tegishli tashkilotlar orqali legallashtrish. Легализация документов через МИД.",
       "price": 160000,
       "is_active": true
     }
@@ -473,9 +473,9 @@
     "fields": {
       "tip": 9,
       "name": "Apostille",
-      "name_uz": "Apostil qo‘yish",
+      "name_uz": "Apostil qo'yish",
       "name_ru": "Апостиль",
-      "description": "Hujjatlarni apostil qilish",
+      "description": "Hujjatlarni apostil qilish. Проставление апостиля на документах.",
       "price": 180000,
       "is_active": true
     }
@@ -488,7 +488,7 @@
       "name": "Legal Translation of Commercial Contracts",
       "name_uz": "Tijorat shartnomalarini tarjima qilish",
       "name_ru": "Перевод коммерческих контрактов",
-      "description": "Tijoriy shartomalar va bitimlarni tarjima qilish",
+      "description": "Tijorat shartnomalari va bitimlarni tarjima qilish. Перевод коммерческих договоров.",
       "price": 200000,
       "is_active": true
     }
@@ -501,7 +501,7 @@
       "name": "Diplomas & Certificates Translation",
       "name_uz": "Diplom va sertifikatlarni tarjima qilish",
       "name_ru": "Перевод дипломов и сертификатов",
-      "description": "Diplom, sertifikat va boshqa turdagi hujjatlarni tarjima qilish ",
+      "description": "Diplom, sertifikat va boshqa hujjatlarni tarjima qilish. Перевод дипломов и сертификатов.",
       "price": 150000,
       "is_active": true
     }
@@ -514,7 +514,7 @@
       "name": "Mobile Notary Visit",
       "name_uz": "Notariusni chaqirish",
       "name_ru": "Вызов нотариуса",
-      "description": "Notariusni kerakli joyga chaqrish va xizmatlardan foydalanish",
+      "description": "Notariusni kerakli joyga chaqirish. Выезд нотариуса на место.",
       "price": 300000,
       "is_active": true
     }
@@ -524,11 +524,206 @@
     "pk": 41,
     "fields": {
       "tip": 3,
-      "name": "Changing hair color",
+      "name": "Hair Color Change",
       "name_uz": "Sochlarni boshqa tonga o'zgartirish",
-      "name_ru": "Изменить цвет волос",
-      "description": "Sochlarni bir to'ndan boshqa to'nga o'zgartirish.",
+      "name_ru": "Изменение цвета волос",
+      "description": "Sochlarni bir to'ndan boshqa to'nga o'zgartirish. Смена цвета волос.",
       "price": 300000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 42,
+    "fields": {
+      "tip": 1,
+      "name": "Panoramic X-Ray (OPG)",
+      "name_uz": "Panoram rentgen (OPG)",
+      "name_ru": "Панорамный рентген (ОПГ)",
+      "description": "Butun tish qatorigining panoram rentgen tekshiruvi. Полный панорамный снимок всех зубов.",
+      "price": 80000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 43,
+    "fields": {
+      "tip": 2,
+      "name": "Cavity Treatment (Composite Filling)",
+      "name_uz": "Kariyes davolash (kompozit plomba)",
+      "name_ru": "Лечение кариеса (композитная пломба)",
+      "description": "Kariyes davolash va kompozit plomba o'rnatish. Лечение кариеса с установкой композитной пломбы.",
+      "price": 150000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 44,
+    "fields": {
+      "tip": 2,
+      "name": "Root Canal Treatment (1 canal)",
+      "name_uz": "Ildiz kanali davolash (1 kanal)",
+      "name_ru": "Лечение корневых каналов (1 канал)",
+      "description": "Bitta ildiz kanalini davolash. Лечение одного корневого канала.",
+      "price": 250000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 45,
+    "fields": {
+      "tip": 2,
+      "name": "Professional Teeth Cleaning (Ultrasonic)",
+      "name_uz": "Tishlarni professional tozalash (ultratovush)",
+      "name_ru": "Профессиональная чистка зубов (ультразвук)",
+      "description": "Ultratovush yordamida tosh va dog'larni olib tashlash. Удаление зубного камня и налёта ультразвуком.",
+      "price": 200000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 46,
+    "fields": {
+      "tip": 2,
+      "name": "Teeth Whitening (In-Office)",
+      "name_uz": "Tishlarni klinikada oqartirish",
+      "name_ru": "Отбеливание зубов (в клинике)",
+      "description": "Klinikada tishlarni professional oqartirish. Профессиональное отбеливание зубов в клинике.",
+      "price": 600000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 47,
+    "fields": {
+      "tip": 2,
+      "name": "Pulpitis Treatment (1 canal)",
+      "name_uz": "Pulpit davolash (1 kanal)",
+      "name_ru": "Лечение пульпита (1 канал)",
+      "description": "Pulpit kasalligini davolash, bitta kanal uchun. Лечение пульпита, один канал.",
+      "price": 350000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 48,
+    "fields": {
+      "tip": 11,
+      "name": "Simple Tooth Extraction",
+      "name_uz": "Oddiy tish olish",
+      "name_ru": "Простое удаление зуба",
+      "description": "Oddiy usulda tish olish. Простое удаление зуба под местной анестезией.",
+      "price": 120000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 49,
+    "fields": {
+      "tip": 11,
+      "name": "Surgical / Wisdom Tooth Extraction",
+      "name_uz": "Murakkab tish olish / Aql tishi",
+      "name_ru": "Сложное удаление / Зуб мудрости",
+      "description": "Murakkab holatda tish olish va aql tishini jarrohlik yo'li bilan olish. Сложное удаление и удаление зуба мудрости.",
+      "price": 300000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 50,
+    "fields": {
+      "tip": 12,
+      "name": "Dental Implant Installation",
+      "name_uz": "Tish implanti o'rnatish",
+      "name_ru": "Установка зубного имплантата",
+      "description": "Zamonaviy tish implantini o'rnatish amaliyoti. Установка современного зубного имплантата.",
+      "price": 3500000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 51,
+    "fields": {
+      "tip": 12,
+      "name": "Metal-Ceramic Crown",
+      "name_uz": "Metall-keramika toj",
+      "name_ru": "Металлокерамическая коронка",
+      "description": "Metall-keramika materialidan tish toji tayyorlash va o'rnatish. Изготовление и установка металлокерамической коронки.",
+      "price": 700000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 52,
+    "fields": {
+      "tip": 12,
+      "name": "Zirconia Crown",
+      "name_uz": "Zirkoniya toj",
+      "name_ru": "Циркониевая коронка",
+      "description": "Yuqori sifatli zirkoniya materialidan tish toji. Высококачественная циркониевая коронка.",
+      "price": 1200000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 53,
+    "fields": {
+      "tip": 12,
+      "name": "Braces Installation (1 arch)",
+      "name_uz": "Breketlar o'rnatish (1 jag')",
+      "name_ru": "Установка брекетов (1 челюсть)",
+      "description": "Bitta jag'ga breketlar o'rnatish. Установка брекет-системы на одну челюсть.",
+      "price": 2500000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 54,
+    "fields": {
+      "tip": 13,
+      "name": "Child Consultation",
+      "name_uz": "Bolalar maslahati",
+      "name_ru": "Детская консультация",
+      "description": "Bolalar uchun dastlabki tish ko'rigi va maslahat. Первичный осмотр и консультация для детей.",
+      "price": 40000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 55,
+    "fields": {
+      "tip": 13,
+      "name": "Child Cavity Treatment",
+      "name_uz": "Bolalar kariyes davolash",
+      "name_ru": "Лечение кариеса у детей",
+      "description": "Bolalarda kariyes davolash, og'riqsiz usul. Лечение кариеса у детей безболезненным методом.",
+      "price": 100000,
+      "is_active": true
+    }
+  },
+  {
+    "model": "booket.service",
+    "pk": 56,
+    "fields": {
+      "tip": 13,
+      "name": "Fluoride Treatment",
+      "name_uz": "Ftorid muolajasi",
+      "name_ru": "Фторирование зубов",
+      "description": "Tish emalini mustahkamlash uchun ftorid muolajasi. Укрепление эмали зубов фторированием.",
+      "price": 50000,
       "is_active": true
     }
   }
