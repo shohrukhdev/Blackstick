@@ -72,32 +72,40 @@ def mask_phone_number(phone_number):
 
 
 def complete_old_appointments(days_back: int = 0):
-    """Mark old appointments as COMPLETED."""
+    """
+    Auto-resolve appointments whose end_datetime has passed:
+      - NEW (OTP never confirmed) → CANCELLED
+      - CONFIRMED / PENDING / ACCEPTED → COMPLETED
+
+    days_back: when > 0, restrict to appointments created within the last N days.
+    When 0 (default), processes all matching appointments regardless of age.
+    """
     now = timezone.now()
-    today = now.date()
-
+    base_filter = {}
     if days_back > 0:
-        created_after = today - timedelta(days=days_back)
-    else:
-        created_after = today
-
-    statuses_to_check = ["CONFIRMED", "PENDING", "ACCEPTED"]
+        base_filter["created_on__date__gte"] = now.date() - timedelta(days=days_back)
 
     try:
-        appointments = Appointment.objects.filter(
-            created_on__date__gte=created_after,
-            created_on__date__lte=today,
-            status__in=statuses_to_check,
-            end_datetime__lt=now
+        cancelled_count = Appointment.objects.filter(
+            **base_filter,
+            status="NEW",
+            end_datetime__lt=now,
+        ).update(status="CANCELLED")
+
+        completed_count = Appointment.objects.filter(
+            **base_filter,
+            status__in=["CONFIRMED", "PENDING", "ACCEPTED"],
+            end_datetime__lt=now,
+        ).update(status="COMPLETED")
+
+        logger.info(
+            f"[complete_old_appointments] {cancelled_count} unconfirmed → CANCELLED, "
+            f"{completed_count} past → COMPLETED."
         )
-
-        updated_count = appointments.update(status="COMPLETED")
-
-        logger.info(f"[Appointment Completion Task] ✅ Updated {updated_count} appointment(s) to COMPLETED.")
-        return updated_count
+        return cancelled_count + completed_count
 
     except Exception as e:
-        logger.error(f"[Appointment Completion Task] ❌ Error while updating appointments: {str(e)}", exc_info=True)
+        logger.error(f"[complete_old_appointments] Error: {str(e)}", exc_info=True)
         return 0
 
 

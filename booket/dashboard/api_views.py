@@ -36,8 +36,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
         if self.request.query_params.get("format") and self.request.query_params.get("format") == "datatables":
             return Appointment.objects.filter(
                 server=self.request.user.server_user,
-                status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED"]
-
+                status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED", "REJECTED"]
             ).order_by("start_datetime")
 
         server = self.request.user.server_user
@@ -91,6 +90,22 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 appointment.comment_by_server = comment_by_server
                 appointment.save()
                 return Response({'success': 'Appointment time updated successfully.'})
+
+            elif action_type == 'accept':
+                if appointment.status != 'CONFIRMED':
+                    return Response({'error': 'Only CONFIRMED appointments can be accepted.'}, status=status.HTTP_400_BAD_REQUEST)
+                appointment.status = 'ACCEPTED'
+                appointment.comment_by_server = comment_by_server
+                appointment.save()
+                return Response({'success': 'Appointment accepted.'})
+
+            elif action_type == 'reject':
+                if appointment.status not in ('NEW', 'CONFIRMED'):
+                    return Response({'error': 'Only NEW or CONFIRMED appointments can be rejected.'}, status=status.HTTP_400_BAD_REQUEST)
+                appointment.status = 'REJECTED'
+                appointment.comment_by_server = comment_by_server
+                appointment.save()
+                return Response({'success': 'Appointment rejected.'})
 
             elif action_type == 'cancel':
                 appointment.status = 'CANCELLED'
@@ -207,7 +222,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 start_datetime=start_date,
                 end_datetime=end_date,
                 comment=comment,
-                status='CONFIRMED'  # Default status for the appointment
+                status='ACCEPTED'  # Provider creates directly, no approval needed
             )
 
             return Response({'success': 'Appointment created successfully.'})

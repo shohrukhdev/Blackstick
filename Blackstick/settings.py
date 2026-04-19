@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'booket',
     'fontawesomefree',
-    'django_apscheduler',
     'storages',
     'mathfilters',
 ]
