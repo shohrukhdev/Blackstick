@@ -37,10 +37,14 @@ os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', False))
 
-ALLOWED_HOSTS = ["booket.uz", "localhost"]
+_allowed_hosts = os.environ.get('ALLOWED_HOSTS', 'booket.uz,localhost')
+ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts.split(',') if h.strip()]
 
-CSRF_TRUSTED_ORIGINS = ["https://booket.uz"]
-CORS_ALLOWED_ORIGINS = ["https://booket.uz"]
+_csrf_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://booket.uz')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins.split(',') if o.strip()]
+
+_cors_origins = os.environ.get('CORS_ALLOWED_ORIGINS', 'https://booket.uz')
+CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins.split(',') if o.strip()]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
@@ -95,12 +99,24 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 15,
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "unique-snowflake",
+_redis_url = os.environ.get('REDIS_URL', '')
+if _redis_url:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": _redis_url,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
     }
-}
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "unique-snowflake",
+        }
+    }
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'info',

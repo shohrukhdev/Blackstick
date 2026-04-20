@@ -1,15 +1,75 @@
 services:
+  db:
+    image: postgres:16-alpine
+    container_name: blackstick_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file: .env.db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: blackstick_redis
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
-    container_name: ubuntu_web_1
-    env_file:
-      - .env
-    image: "${BE_IMAGE}"
-    ports:
-      - "8000:8000"
-    command: gunicorn Blackstick.wsgi:application --bind 0.0.0.0:8000
+    image: ${DOCKER_IMAGE:-ghcr.io/shohrukhdev/blackstick:latest}
+    container_name: blackstick_web
+    env_file: .env
+    command: >
+      gunicorn Blackstick.wsgi:application
+        --bind 0.0.0.0:8000
+        --workers 3
+        --timeout 120
+        --access-logfile -
+        --error-logfile -
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: blackstick_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static_volume:/home/app/web/staticfiles:ro
+      - media_volume:/home/app/web/mediafiles:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+    depends_on:
+      - web
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: blackstick_certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: /bin/sh -c "trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;"
+
 volumes:
+  postgres_data:
   static_volume:
   media_volume:
+  certbot_www:
+  certbot_conf:
