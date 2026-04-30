@@ -8,7 +8,6 @@ from pathlib import Path
 
 load_dotenv()
 
-USE_S3 = os.environ.get("USE_S3", "1")
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,12 +18,8 @@ FERNET_KEY = os.environ.get('FERNET_KEY', "c3lKF6mRQmIvtT1fgv27vJAHIwmx-T3u1SYhg
 ESKIZ_EMAIL = os.environ.get('ESKIZ_EMAIL', "your@email.com")
 ESKIZ_PASSWORD = os.environ.get('ESKIZ_PASSWORD', "your_password")
 
-################ EMAIL service configs ########################
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "access_key_id")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "secret_key")
-
-AWS_SES_ACCESS_KEY_ID = os.environ.get("AWS_SES_USER_ACCESS_KEY_ID", "access_key_id")
-AWS_SES_SECRET_ACCESS_KEY = os.environ.get("AWS_SES_USER_SECRET_ACCESS_KEY", "secret_key")
+AWS_SES_ACCESS_KEY_ID = os.environ.get("AWS_SES_USER_ACCESS_KEY_ID", "")
+AWS_SES_SECRET_ACCESS_KEY = os.environ.get("AWS_SES_USER_SECRET_ACCESS_KEY", "")
 
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
@@ -63,7 +58,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'booket',
     'fontawesomefree',
-    'storages',
     'mathfilters',
 ]
 
@@ -201,35 +195,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-if USE_S3 == "1":
-    # aws settings
-    AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "TEST_KEY")
-    AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "TEST")
-    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_S3_STORAGE_BUCKET_NAME", "blackstickbucket")
-    AWS_S3_DEFAULT_ACL = None
-    AWS_LOCATION = "eu-north-1"
-    AWS_S3_REGION_NAME = "eu-north-1"
-    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_LOCATION}.amazonaws.com"
-    AWS_S3_OBJECT_PARAMETERS = {"CacheControl": "max-age=8640"}
-    AWS_S3_FILE_OVERWRITE = False
-    STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-    # public media s3 settings
-    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-
-    STORAGES = {
-        # Media file (image) management
-        "default": {
-            "BACKEND": "Blackstick.storage_backends.PublicMediaStorage",
-        },
-        # Static files management
-        "staticfiles": {
-            "BACKEND": "Blackstick.storage_backends.StaticStorage",
-        },
-    }
-else:
-    STATIC_URL = '/static/'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 

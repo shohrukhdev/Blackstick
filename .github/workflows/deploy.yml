@@ -82,4 +82,8 @@ jobs:
 
             docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload || true
 
+            # Keep only the 3 most recent images, remove the rest
+            docker images "${IMAGE}" --format "{{.ID}}" | tail -n +4 | xargs -r docker rmi -f 2>/dev/null || true
+            docker image prune -f
+
             echo "Deploy complete."
