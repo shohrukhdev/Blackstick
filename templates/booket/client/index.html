@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="{% static 'design/css/static/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'design/css/main.css' %}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  {% if provider.latitude and provider.longitude %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -560,7 +563,11 @@
           </div>
           <div class="col-12 col-md-6 col-lg-3">
             <div class="map">
-              <img src="{% static 'design/images/map.png' %}" alt="map">
+              {% if provider.latitude and provider.longitude %}
+                <div id="provider-map" style="width:100%;height:220px;border-radius:8px;"></div>
+              {% else %}
+                <p class="text-muted">{% trans "Location not specified" %}</p>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -587,4 +594,21 @@
   <script src="{% static 'design/js/bootstrap.bundle.min.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="{% static 'design/js/script.js' %}"></script>
+  {% if provider.latitude and provider.longitude %}
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+      (function () {
+        {% localize off %}
+        const lat = {{ provider.latitude }};
+        const lng = {{ provider.longitude }};
+        {% endlocalize %}
+        const map = L.map('provider-map', { zoomControl: true, scrollWheelZoom: false }).setView([lat, lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          maxZoom: 19,
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map);
+      })();
+    </script>
+  {% endif %}
 {% endblock %}

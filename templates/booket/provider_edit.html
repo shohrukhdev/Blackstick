@@ -86,6 +86,24 @@
                         name="footer_text">{% if provider.footer_text %}{{ provider.footer_text }}{% endif %}</textarea>
             </div>
 
+            <!-- Map Location -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">{% trans "Map Location" %}</label>
+              <div class="row g-2">
+                <div class="col">
+                  <input type="number" step="any" class="form-control" id="latitude" name="latitude"
+                         placeholder="{% trans 'Latitude (e.g. 41.299496)' %}"
+                         value="{{ provider.latitude|default_if_none:'' }}">
+                </div>
+                <div class="col">
+                  <input type="number" step="any" class="form-control" id="longitude" name="longitude"
+                         placeholder="{% trans 'Longitude (e.g. 69.240073)' %}"
+                         value="{{ provider.longitude|default_if_none:'' }}">
+                </div>
+              </div>
+              <div class="form-text">{% trans "Get coordinates: open openstreetmap.org, right-click your location → 'Show address', then copy the lat/lon numbers." %}</div>
+            </div>
+
             <!-- Social Media Section -->
             <div class="mb-3">
               <label class="form-label fw-bold">{% trans "Social Media" %}</label>

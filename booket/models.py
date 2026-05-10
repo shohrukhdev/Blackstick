@@ -16,6 +16,8 @@ class Provider(models.Model):
     logo = models.ImageField(upload_to='logo', null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     address = models.TextField(null=True, blank=True)
+    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     specialists_section_text = models.CharField(max_length=255, null=True, blank=True)
     specialists_section_text_2 = models.TextField(null=True, blank=True)
     footer_text = models.TextField(null=True, blank=True)

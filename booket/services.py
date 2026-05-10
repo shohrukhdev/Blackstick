@@ -1,4 +1,5 @@
 import json
+from decimal import Decimal, InvalidOperation
 import bleach
 from django.db.models import Prefetch
 from django.http import HttpRequest
@@ -64,6 +65,16 @@ def edit_provider(request: HttpRequest) -> dict:
         provider.phone_numbers = phone_numbers_json
         provider.is_active = request.POST.get("is_active") == "True"
         provider.logo = request.FILES.get("logo", provider.logo)
+        try:
+            lat = request.POST.get("latitude")
+            provider.latitude = Decimal(lat) if lat else None
+        except InvalidOperation:
+            provider.latitude = None
+        try:
+            lng = request.POST.get("longitude")
+            provider.longitude = Decimal(lng) if lng else None
+        except InvalidOperation:
+            provider.longitude = None
         provider.save()
         context_data = {
             "success": True,

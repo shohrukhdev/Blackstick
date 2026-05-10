@@ -91,7 +91,8 @@ class ProviderAdmin(admin.ModelAdmin):
             "fields": ("name", "identifier", "owner", "logo", "is_active", "has_many_servers", "auto_accept")
         }),
         ("Content", {
-            "fields": ("description", "address", "specialists_section_text", "specialists_section_text_2",
+            "fields": ("description", "address", "latitude", "longitude",
+                       "specialists_section_text", "specialists_section_text_2",
                        "footer_text", "phone_numbers", "social_media"),
             "classes": ("collapse",),
         }),

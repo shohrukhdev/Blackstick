@@ -126,4 +126,4 @@ dmypy.json
 .sqlite3
 /media/
 media/
-media
+media.env.local
