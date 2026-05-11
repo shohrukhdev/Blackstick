@@ -91,14 +91,18 @@
               <label class="form-label fw-bold">{% trans "Map Location" %}</label>
               <div class="row g-2">
                 <div class="col">
+                  {% localize off %}
                   <input type="number" step="any" class="form-control" id="latitude" name="latitude"
                          placeholder="{% trans 'Latitude (e.g. 41.299496)' %}"
                          value="{{ provider.latitude|default_if_none:'' }}">
+                  {% endlocalize %}
                 </div>
                 <div class="col">
+                  {% localize off %}
                   <input type="number" step="any" class="form-control" id="longitude" name="longitude"
                          placeholder="{% trans 'Longitude (e.g. 69.240073)' %}"
                          value="{{ provider.longitude|default_if_none:'' }}">
+                  {% endlocalize %}
                 </div>
               </div>
               <div class="form-text">{% trans "Get coordinates: open openstreetmap.org, right-click your location → 'Show address', then copy the lat/lon numbers." %}</div>
