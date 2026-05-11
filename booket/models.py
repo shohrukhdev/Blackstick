@@ -30,7 +30,7 @@ class Provider(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.name or self.identifier
 
     @staticmethod
     def is_user_owner(user):
@@ -169,6 +169,10 @@ class Client(models.Model):
     language_code = models.CharField(max_length=3, null=True, blank=True)
 
     class Meta:
+        indexes = [
+            models.Index(fields=['email']),
+            models.Index(fields=['phone_number']),
+        ]
         constraints = [
             # 1. Constraint to ensure at least one of email or phone_number is NOT NULL.
             CheckConstraint(
@@ -241,6 +245,7 @@ class Appointment(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=["status", "end_datetime", "created_on"]),
+            models.Index(fields=["server", "start_datetime", "status"]),
         ]
 
 
@@ -277,6 +282,11 @@ class OTPVerification(models.Model):
     sms_message_id = models.CharField(max_length=64, null=True, blank=True)  # Numeric ID if available
     sms_status = models.CharField(max_length=20, null=True, blank=True)  # 'waiting', 'DELIVRD', etc.
     sms_status_date = models.DateTimeField(null=True, blank=True)  # Delivery time
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['is_verified', 'created_at']),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.otp_code:

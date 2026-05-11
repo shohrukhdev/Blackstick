@@ -19,6 +19,12 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        _full_prefetch = [
+            "appointmentservice_set__service__providerserverservice_set",
+            "files",
+        ]
+        _full_select = ["client", "server__user"]
+
         if self.action in ('update_appointment', 'upload_file', 'delete_file'):
             try:
                 return Appointment.objects.filter(server=self.request.user.server_user)
@@ -26,18 +32,18 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 provider = Provider.objects.get(owner=self.request.user)
                 return Appointment.objects.filter(server__providerserver__provider=provider)
 
-        if self.request.query_params.get("viewby") and self.request.query_params.get("viewby") == "provider":
+        if self.request.query_params.get("viewby") == "provider":
             provider = Provider.objects.get(owner=self.request.user)
             return Appointment.objects.filter(
                 server__providerserver__provider=provider,
                 status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED"]
-            ).order_by("start_datetime")
+            ).select_related(*_full_select).prefetch_related(*_full_prefetch).order_by("start_datetime")
 
-        if self.request.query_params.get("format") and self.request.query_params.get("format") == "datatables":
+        if self.request.query_params.get("format") == "datatables":
             return Appointment.objects.filter(
                 server=self.request.user.server_user,
                 status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED", "REJECTED"]
-            ).order_by("start_datetime")
+            ).select_related(*_full_select).prefetch_related(*_full_prefetch).order_by("start_datetime")
 
         server = self.request.user.server_user
         start_date = unquote((self.request.query_params.get("start") or "")[0:19])
@@ -46,11 +52,12 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
             start_date = timezone.make_aware(datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S"))
             end_date = timezone.make_aware(datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S"))
             return Appointment.objects.filter(
-                server=server, status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED"], start_datetime__gte=start_date, end_datetime__lte=end_date
-            ).prefetch_related("appointmentservice_set__service").order_by("id")
+                server=server, status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED"],
+                start_datetime__gte=start_date, end_datetime__lte=end_date
+            ).select_related(*_full_select).prefetch_related(*_full_prefetch).order_by("id")
         return Appointment.objects.filter(
             server=server, status__in=["CONFIRMED", "ACCEPTED", "COMPLETED", "NO_SHOW", "CANCELLED"]
-        ).prefetch_related("appointmentservice_set__service")
+        ).select_related(*_full_select).prefetch_related(*_full_prefetch)
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -79,8 +86,11 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                                     status=status.HTTP_400_BAD_REQUEST)
                 appointment.start_datetime = new_datetime
                 total_duration = 0
-                for s in appointment.appointmentservice_set.select_related('service').all():
-                    pss = s.service.providerserverservice_set.first()
+                for s in appointment.appointmentservice_set.select_related(
+                    'service'
+                ).prefetch_related('service__providerserverservice_set').all():
+                    pss_list = list(s.service.providerserverservice_set.all())
+                    pss = pss_list[0] if pss_list else None
                     if pss and pss.duration:
                         total_duration += pss.duration
                 if total_duration == 0:
@@ -196,7 +206,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
             ps = server.providerserver_set.first()
 
             # Check if the selected time is within the server's working hours
-            if ps.day_starts_on and ps.day_ends_on:
+            if ps and ps.day_starts_on and ps.day_ends_on:
                 start_time = start_date.time()
                 if not (ps.day_starts_on <= start_time < ps.day_ends_on):
                     return Response(

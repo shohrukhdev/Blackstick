@@ -21,12 +21,16 @@ class AppointmentServiceSerializer(serializers.ModelSerializer):
         else:
             return obj.service.name
 
+    def _get_pss(self, obj):
+        pss_list = list(obj.service.providerserverservice_set.all())
+        return pss_list[0] if pss_list else None
+
     def get_duration(self, obj):
-        pss = obj.service.providerserverservice_set.first()
+        pss = self._get_pss(obj)
         return pss.duration if pss else None
 
     def get_price(self, obj):
-        pss = obj.service.providerserverservice_set.first()
+        pss = self._get_pss(obj)
         if not pss:
             return obj.service.price
         return pss.service_private_price if pss.service_private_price else pss.service.price

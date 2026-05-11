@@ -291,8 +291,9 @@ def confirmOTP(request):
 
         # Auto-accept if the provider has that setting enabled
         appointment.status = "ACCEPTED" if provider.auto_accept else "CONFIRMED"
-        appointment.save()
-        otp.save()
+        with transaction.atomic():
+            appointment.save()
+            otp.save()
 
         specialist_name = server.user.get_full_name() or server.user.username
         dt = appointment.start_datetime.strftime('%d.%m.%Y %H:%M')
