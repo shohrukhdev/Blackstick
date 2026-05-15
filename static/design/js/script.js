@@ -798,6 +798,8 @@ function goBackToServiceSelect() {
 function goBackToDateTime() {
     $("#confirm").modal("hide");
     $("#date-time").modal("show");
+    // Re-populate time slots for the active date (cleared when #date-time was hidden on step forward)
+    $("#dateContainer .btn-primary.active").trigger("click");
 }
 
 /**
