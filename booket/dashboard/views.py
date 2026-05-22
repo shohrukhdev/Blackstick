@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.utils import timezone
 from booket.models import (
     ProviderServer, ServiceType, Service, ProviderServerService, Appointment,
-    AppointmentService, Provider
+    AppointmentService, Provider,
 )
 
 logger = logging.getLogger(__name__)
@@ -72,12 +72,21 @@ def dashboard(request):
                 start_datetime__lt=today_end
             ).count()
 
+            server_services = list(
+                ProviderServerService.objects.filter(
+                    provider_server__server=server
+                ).select_related('service').values(
+                    'id', 'service__id', 'service__name', 'service__name_uz', 'service__name_ru', 'duration'
+                )
+            )
+
             context_data = {
                 "appointment": next_appointment,
                 "today_no_show_appointments_count": no_show_appointments_count,
                 "today_appointments_count": today_appointments_count,
                 "today_completed_appointments_count": today_completed_appointments_count,
-                "memo": server.memo
+                "memo": server.memo,
+                "server_services_json": json.dumps(server_services),
             }
         except Exception as e:
             logger.exception("View error")

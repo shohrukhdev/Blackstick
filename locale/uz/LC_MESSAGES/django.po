@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-11 23:41+0500\n"
+"POT-Creation-Date: 2026-05-20 18:52+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,29 +21,30 @@ msgstr ""
 msgid "Main"
 msgstr "Asosiy menu"
 
-#: templates/booket/client/index.html:30 templates/booket/client/index.html:555
+#: templates/booket/client/index.html:33 templates/booket/client/index.html:558
 #: templates/home.html:17
 msgid "Home"
 msgstr "Bosh sahifa"
 
-#: templates/booket/client/index.html:33 templates/booket/client/index.html:556
-#: templates/booket/client/main.html:115 templates/booket/provider.html:44
-#: templates/booket/provider.html:79 templates/booket/service_list.html:5
-#: templates/dent/settings/main.html:50
+#: templates/booket/client/index.html:36 templates/booket/client/index.html:559
+#: templates/booket/client/main.html:115
+#: templates/booket/dashboard/dashboard.html:333
+#: templates/booket/provider.html:44 templates/booket/provider.html:79
+#: templates/booket/service_list.html:5 templates/dent/settings/main.html:50
 #: templates/dent/settings/service/list.html:5
 msgid "Services"
 msgstr "Xizmatlar"
 
-#: templates/booket/client/index.html:36 templates/booket/client/index.html:557
+#: templates/booket/client/index.html:39 templates/booket/client/index.html:560
 #: templates/booket/client/main.html:188
 msgid "Specialists"
 msgstr "Mutaxassislar"
 
-#: templates/booket/client/index.html:119
+#: templates/booket/client/index.html:122
 msgid "Location"
 msgstr "Manzil"
 
-#: templates/booket/client/index.html:126 templates/booket/client/main.html:359
+#: templates/booket/client/index.html:129 templates/booket/client/main.html:359
 #: templates/booket/dashboard/dashboard.html:53
 #: templates/booket/dashboard/dashboard.html:155
 #: templates/booket/dashboard/history.html:51
@@ -54,26 +55,26 @@ msgstr "Manzil"
 msgid "Phone"
 msgstr "Telefon"
 
-#: templates/booket/client/index.html:135
+#: templates/booket/client/index.html:138
 msgid "On media"
 msgstr "Ijtimoiy tarmoqlar"
 
-#: templates/booket/client/index.html:167
+#: templates/booket/client/index.html:170
 msgid "Our Services"
 msgstr "Bizning xizmatlarimiz"
 
-#: templates/booket/client/index.html:214
+#: templates/booket/client/index.html:217
 msgid "Our Specialists"
 msgstr "Bizning mutaxassislarimiz"
 
-#: templates/booket/client/index.html:245 templates/booket/client/main.html:212
+#: templates/booket/client/index.html:248 templates/booket/client/main.html:212
 #: templates/booket/client/server_detail.html:229
 msgid "Book appointment"
 msgstr "Qabulga yozish"
 
-#: templates/booket/client/index.html:257
-#: templates/booket/client/index.html:282
-#: templates/booket/client/index.html:323 templates/booket/client/main.html:231
+#: templates/booket/client/index.html:260
+#: templates/booket/client/index.html:285
+#: templates/booket/client/index.html:326 templates/booket/client/main.html:231
 #: templates/booket/client/server_detail.html:253
 #: templates/booket/client/server_detail.html:277
 #: templates/booket/client/server_detail.html:316
@@ -81,8 +82,8 @@ msgstr "Qabulga yozish"
 msgid "Specialist"
 msgstr "Mutaxassis"
 
-#: templates/booket/client/index.html:269
-#: templates/booket/client/index.html:311 templates/booket/client/main.html:426
+#: templates/booket/client/index.html:272
+#: templates/booket/client/index.html:314 templates/booket/client/main.html:426
 #: templates/booket/client/main.html:432
 #: templates/booket/client/server_detail.html:264
 #: templates/booket/client/server_detail.html:304
@@ -90,23 +91,23 @@ msgstr "Mutaxassis"
 msgid "Next"
 msgstr "Keyingi"
 
-#: templates/booket/client/index.html:290
-#: templates/booket/client/index.html:354 templates/booket/client/main.html:326
+#: templates/booket/client/index.html:293
+#: templates/booket/client/index.html:357 templates/booket/client/main.html:326
 #: templates/booket/client/server_detail.html:285
 #: templates/booket/client/server_detail.html:345
 msgid "Estimated duration"
 msgstr "Davomiyligi"
 
-#: templates/booket/client/index.html:290
-#: templates/booket/client/index.html:354 templates/booket/client/main.html:304
+#: templates/booket/client/index.html:293
+#: templates/booket/client/index.html:357 templates/booket/client/main.html:304
 #: templates/booket/client/main.html:327
 #: templates/booket/client/server_detail.html:285
 #: templates/booket/client/server_detail.html:345
 msgid "minutes"
 msgstr "daqiqa"
 
-#: templates/booket/client/index.html:309
-#: templates/booket/client/index.html:501 templates/booket/client/main.html:434
+#: templates/booket/client/index.html:312
+#: templates/booket/client/index.html:504 templates/booket/client/main.html:434
 #: templates/booket/client/main.html:437
 #: templates/booket/client/server_detail.html:207
 #: templates/booket/client/server_detail.html:302
@@ -119,7 +120,7 @@ msgstr "daqiqa"
 #: templates/booket/dashboard/provider_dashboard.html:144
 #: templates/booket/dashboard/provider_statistics.html:23
 #: templates/booket/dashboard/statistics.html:23
-#: templates/booket/provider_edit.html:207
+#: templates/booket/provider_edit.html:229
 #: templates/booket/provider_photo.html:117
 #: templates/booket/server_edit.html:92 templates/booket/service_add.html:81
 #: templates/booket/service_edit.html:101 templates/booket/service_type.html:60
@@ -136,12 +137,12 @@ msgstr "daqiqa"
 msgid "Back"
 msgstr "Ortga"
 
-#: templates/booket/client/index.html:344 templates/booket/client/main.html:290
+#: templates/booket/client/index.html:347 templates/booket/client/main.html:290
 #: templates/booket/client/server_detail.html:336
 msgid "Selected services"
 msgstr "Tanlangan xizmatlar"
 
-#: templates/booket/client/index.html:358 templates/booket/client/main.html:324
+#: templates/booket/client/index.html:361 templates/booket/client/main.html:324
 #: templates/booket/client/server_detail.html:349
 #: templates/booket/dashboard/provider_statistics.html:70
 #: templates/dent/treatement.html:734 templates/dent/treatment_edit.html:96
@@ -150,7 +151,7 @@ msgstr "Tanlangan xizmatlar"
 msgid "Total"
 msgstr "Jami"
 
-#: templates/booket/client/index.html:358
+#: templates/booket/client/index.html:361
 #: templates/booket/client/server_detail.html:349
 #: templates/dent/treatment_print.html:99
 #: templates/dent/treatment_print.html:111
@@ -159,27 +160,29 @@ msgstr "Jami"
 msgid "sum"
 msgstr "so'm"
 
-#: templates/booket/client/index.html:370 templates/booket/client/main.html:343
+#: templates/booket/client/index.html:373 templates/booket/client/main.html:343
 #: templates/booket/client/server_detail.html:359
 msgid "Confirm the appointment by"
 msgstr "Uchrashuvni tasdiqlash"
 
-#: templates/booket/client/index.html:374
-#: templates/booket/client/index.html:383 templates/booket/client/main.html:347
+#: templates/booket/client/index.html:377
+#: templates/booket/client/index.html:386 templates/booket/client/main.html:347
 #: templates/booket/client/server_detail.html:363
 #: templates/booket/client/server_detail.html:372
+#: templates/booket/dashboard/dashboard.html:298
 msgid "Phone number"
 msgstr "Telefon raqam"
 
-#: templates/booket/client/index.html:378
-#: templates/booket/client/index.html:402
-#: templates/booket/client/index.html:403 templates/booket/client/main.html:352
+#: templates/booket/client/index.html:381
+#: templates/booket/client/index.html:405
+#: templates/booket/client/index.html:406 templates/booket/client/main.html:352
 #: templates/booket/client/main.html:355
 #: templates/booket/client/server_detail.html:367
 #: templates/booket/client/server_detail.html:382
 #: templates/booket/client/server_detail.html:383
 #: templates/booket/dashboard/dashboard.html:59
 #: templates/booket/dashboard/dashboard.html:160
+#: templates/booket/dashboard/dashboard.html:301
 #: templates/booket/dashboard/history.html:56
 #: templates/booket/dashboard/provider_dashboard.html:67
 #: templates/booket/dashboard/provider_history.html:62
@@ -188,23 +191,23 @@ msgstr "Telefon raqam"
 msgid "Email"
 msgstr "Emayl"
 
-#: templates/booket/client/index.html:395
+#: templates/booket/client/index.html:398
 #: templates/booket/client/server_detail.html:377
 msgid "Enter exactly 9 digits after +998"
 msgstr "+998 dan keyin aniq 9 raqam kiriting"
 
-#: templates/booket/client/index.html:409
+#: templates/booket/client/index.html:412
 #: templates/booket/client/server_detail.html:389
 msgid "Enter client information"
 msgstr "Mijoz ma'lumotlarini kiriting"
 
-#: templates/booket/client/index.html:410 templates/booket/client/main.html:366
+#: templates/booket/client/index.html:413 templates/booket/client/main.html:366
 #: templates/booket/client/server_detail.html:390
 msgid "Client information exists."
 msgstr "Mijoz ma'lumotlari mavjud."
 
-#: templates/booket/client/index.html:413
-#: templates/booket/client/index.html:415 templates/booket/client/main.html:373
+#: templates/booket/client/index.html:416
+#: templates/booket/client/index.html:418 templates/booket/client/main.html:373
 #: templates/booket/client/server_detail.html:393
 #: templates/booket/client/server_detail.html:395
 #: templates/dent/add_patient.html:26 templates/dent/edit_patient.html:26
@@ -212,108 +215,112 @@ msgstr "Mijoz ma'lumotlari mavjud."
 msgid "Full name"
 msgstr "To'liq ismi"
 
-#: templates/booket/client/index.html:421 templates/booket/client/main.html:379
+#: templates/booket/client/index.html:424 templates/booket/client/main.html:379
 #: templates/booket/client/server_detail.html:401
 msgid "Date of birth"
 msgstr "Tug'ilgan sana"
 
-#: templates/booket/client/index.html:432 templates/booket/client/main.html:383
+#: templates/booket/client/index.html:435 templates/booket/client/main.html:383
 #: templates/booket/client/server_detail.html:412
 msgid "Gender"
 msgstr "Gender"
 
-#: templates/booket/client/index.html:434 templates/booket/client/main.html:385
+#: templates/booket/client/index.html:437 templates/booket/client/main.html:385
 #: templates/booket/client/server_detail.html:414
 #: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:36
 msgid "Male"
 msgstr "Erkak"
 
-#: templates/booket/client/index.html:435 templates/booket/client/main.html:386
+#: templates/booket/client/index.html:438 templates/booket/client/main.html:386
 #: templates/booket/client/server_detail.html:415
 #: templates/dent/add_patient.html:37 templates/dent/edit_patient.html:37
 msgid "Female"
 msgstr "Ayol"
 
-#: templates/booket/client/index.html:441
+#: templates/booket/client/index.html:444
 #: templates/booket/client/server_detail.html:421
 msgid "Comments (optional)"
 msgstr "Izohlar (ixtiyoriy)"
 
-#: templates/booket/client/index.html:449 templates/booket/client/main.html:399
+#: templates/booket/client/index.html:452 templates/booket/client/main.html:399
 #: templates/booket/client/server_detail.html:429
 msgid "Agree to terms of use"
 msgstr "Foydalanish shartlariga roziman"
 
-#: templates/booket/client/index.html:458
+#: templates/booket/client/index.html:461
 #: templates/booket/client/server_detail.html:437
 msgid "Enter confirmation code"
 msgstr "Tasdiqlash kodini kiriting"
 
-#: templates/booket/client/index.html:459
+#: templates/booket/client/index.html:462
 #: templates/booket/client/server_detail.html:438
 msgid "Code sent to"
 msgstr "Kod yuborildi"
 
-#: templates/booket/client/index.html:462
+#: templates/booket/client/index.html:465
 #: templates/booket/client/server_detail.html:440
 msgid "Demo code"
 msgstr "Demo kod"
 
-#: templates/booket/client/index.html:465
+#: templates/booket/client/index.html:468
 #: templates/booket/client/server_detail.html:443
 msgid "Confirmation code"
 msgstr "Tasdiqlash kodi"
 
-#: templates/booket/client/index.html:472
-#: templates/booket/client/index.html:504 templates/booket/client/main.html:401
+#: templates/booket/client/index.html:475
+#: templates/booket/client/index.html:507 templates/booket/client/main.html:401
 #: templates/booket/client/main.html:412
 #: templates/booket/client/server_detail.html:449
 #: templates/booket/client/server_detail.html:476
 msgid "Confirm"
 msgstr "Tasdiqlash"
 
-#: templates/booket/client/index.html:475
+#: templates/booket/client/index.html:478
 #: templates/booket/client/server_detail.html:451
 msgid "Resend in"
 msgstr "Qayta yuborish"
 
-#: templates/booket/client/index.html:475
+#: templates/booket/client/index.html:478
 #: templates/booket/client/server_detail.html:451
 msgid "sec"
 msgstr "soniya"
 
-#: templates/booket/client/index.html:479
+#: templates/booket/client/index.html:482
 #: templates/booket/client/server_detail.html:454
 msgid "Resend code"
 msgstr "Kodni qayta yuborish"
 
-#: templates/booket/client/index.html:487
+#: templates/booket/client/index.html:490
 #: templates/booket/client/server_detail.html:460
 msgid "Appointment confirmed!"
 msgstr "Uchrashuv tasdiqlandi!"
 
-#: templates/booket/client/index.html:490
+#: templates/booket/client/index.html:493
 #: templates/booket/client/server_detail.html:464
 msgid "Done"
 msgstr "Tayyor"
 
-#: templates/booket/client/index.html:543
+#: templates/booket/client/index.html:546
 msgid "Contacts"
 msgstr "Aloqa"
 
-#: templates/booket/client/index.html:553
+#: templates/booket/client/index.html:556
 msgid "Navigations"
 msgstr "Navigatsiya"
 
-#: templates/booket/client/index.html:571
+#: templates/booket/client/index.html:569
+msgid "Location not specified"
+msgstr ""
+
+#: templates/booket/client/index.html:578
 msgid "All Rights Reserved."
 msgstr "Barcha huquqlar himoyalangan."
 
-#: templates/booket/client/index.html:574
+#: templates/booket/client/index.html:581
 msgid "Privacy Policy"
 msgstr "Maxfiylik siyosati"
 
-#: templates/booket/client/index.html:576
+#: templates/booket/client/index.html:583
 msgid "Terms of Service"
 msgstr "Foydalanish shartlari"
 
@@ -341,6 +348,7 @@ msgstr "min"
 #: templates/booket/dashboard/dashboard.html:43
 #: templates/dent/calendar.html:132 templates/dent/calendar_list.html:48
 #: templates/dent/reception_calendar.html:142
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2529
 msgid "Time"
 msgstr "Vaqt"
 
@@ -372,7 +380,7 @@ msgstr "Qayta yuborish"
 
 #: templates/booket/client/main.html:428
 #: templates/booket/dashboard/dashboard.html:249
-#: templates/booket/dashboard/dashboard.html:295
+#: templates/booket/dashboard/dashboard.html:350
 #: templates/booket/dashboard/history.html:94
 #: templates/booket/dashboard/provider_dashboard.html:156
 #: templates/booket/dashboard/provider_dashboard.html:205
@@ -442,7 +450,6 @@ msgid "Upcoming appointment"
 msgstr "Yaqinlashayotgan uchrashuv"
 
 #: templates/booket/dashboard/dashboard.html:48
-#: templates/booket/dashboard/dashboard.html:277
 #: templates/booket/dashboard/provider_dashboard.html:187
 msgid "Client"
 msgstr "Mijoz"
@@ -469,7 +476,7 @@ msgstr "Eslatma"
 
 #: templates/booket/dashboard/dashboard.html:117
 #: templates/booket/dashboard/dashboard.html:183
-#: templates/booket/dashboard/dashboard.html:293
+#: templates/booket/dashboard/dashboard.html:351
 #: templates/booket/dashboard/history.html:76
 #: templates/booket/dashboard/my_config.html:106
 #: templates/booket/dashboard/my_config.html:180
@@ -491,6 +498,7 @@ msgstr "Saqlash"
 #: templates/dent/settings/dashboard.html:37
 #: templates/dent/settings/service/edit.html:63
 #: templates/dent/settings/user/edit.html:44
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:159
 msgid "Status"
 msgstr "Status"
 
@@ -544,7 +552,7 @@ msgstr "Mijoz sababsiz kelmadimi?"
 
 #: templates/booket/dashboard/dashboard.html:223
 #: templates/booket/dashboard/provider_dashboard.html:130
-#: templates/booket/provider_edit.html:205 templates/booket/server_edit.html:90
+#: templates/booket/provider_edit.html:227 templates/booket/server_edit.html:90
 #: templates/booket/service_type_edit.html:67
 msgid "Update"
 msgstr "Yangilash"
@@ -553,11 +561,13 @@ msgstr "Yangilash"
 #: templates/booket/dashboard/dashboard.html:235
 #: templates/booket/dashboard/provider_dashboard.html:136
 #: templates/booket/dashboard/provider_dashboard.html:142
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:801
 msgid "Yes"
 msgstr "Ha"
 
 #: templates/booket/dashboard/dashboard.html:241
 #: templates/booket/dashboard/provider_dashboard.html:148
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:463
 msgid "Change"
 msgstr "O'zgartirish"
 
@@ -573,39 +583,93 @@ msgstr "Bekor qilish"
 msgid "No-show"
 msgstr "Kelmagan"
 
+#: templates/booket/dashboard/dashboard.html:261
+msgid "Create Appointment"
+msgstr "Uchrashuv yaratish"
+
+#: templates/booket/dashboard/dashboard.html:270
+#: templates/booket/dashboard/provider_dashboard.html:188
+msgid "Guest"
+msgstr "Mehmon"
+
 #: templates/booket/dashboard/dashboard.html:271
+msgid "Existing Client"
+msgstr "Mavjud mijoz"
+
+#: templates/booket/dashboard/dashboard.html:272
+msgid "New Client"
+msgstr "Yangi mijoz"
+
+#: templates/booket/dashboard/dashboard.html:277
+msgid "Walk-in / no client record"
+msgstr "Yozuvsiz / mijoz ma'lumotlarsiz"
+
+#: templates/booket/dashboard/dashboard.html:283
+msgid "Phone or email…"
+msgstr "Telefon yoki email…"
+
+#: templates/booket/dashboard/dashboard.html:284
+msgid "Search"
+msgstr "Qidirish"
+
+#: templates/booket/dashboard/dashboard.html:295
+#, fuzzy
+#| msgid "Full name"
+msgid "Full name *"
+msgstr "To'liq ismi"
+
+#: templates/booket/dashboard/dashboard.html:305
+msgid "Send OTP to client"
+msgstr "Mijozga OTP yuborish"
+
+#: templates/booket/dashboard/dashboard.html:310
+msgid "Enter OTP code"
+msgstr "OTP kodni kiriting"
+
+#: templates/booket/dashboard/dashboard.html:311
+msgid "Verify"
+msgstr "Tasdiqlash"
+
+#: templates/booket/dashboard/dashboard.html:316
+msgid "Client identity verified"
+msgstr "Mijoz shaxsi tasdiqlandi"
+
+#: templates/booket/dashboard/dashboard.html:324
 #: templates/booket/dashboard/provider_dashboard.html:178
 #: templates/booket/dashboard/provider_history.html:52
 msgid "Server"
 msgstr "Mutaxassis"
 
-#: templates/booket/dashboard/dashboard.html:278
-#: templates/booket/dashboard/provider_dashboard.html:188
-msgid "Guest"
-msgstr "Mehmon"
-
-#: templates/booket/dashboard/dashboard.html:281
+#: templates/booket/dashboard/dashboard.html:329
 #: templates/booket/dashboard/provider_dashboard.html:191
 msgid "Starts at"
 msgstr "Boshlanishi"
 
-#: templates/booket/dashboard/dashboard.html:285
+#: templates/booket/dashboard/dashboard.html:333
+msgid "optional"
+msgstr "ixtiyoriy"
+
+#: templates/booket/dashboard/dashboard.html:337
 #: templates/booket/dashboard/provider_dashboard.html:195
 msgid "Ends at"
 msgstr "Tugashi"
 
-#: templates/booket/dashboard/dashboard.html:289
+#: templates/booket/dashboard/dashboard.html:339
+msgid "Auto-calculated from selected services"
+msgstr "Tanlangan xizmatlar bo'yicha avtomatik hisoblanadi"
+
+#: templates/booket/dashboard/dashboard.html:342
 #: templates/booket/dashboard/provider_dashboard.html:199
 msgid "Comment"
 msgstr "Izoh"
 
-#: templates/booket/dashboard/dashboard.html:390
+#: templates/booket/dashboard/dashboard.html:441
 #: templates/booket/dashboard/provider_dashboard.html:252
 msgid "Create"
 msgstr "Yaratish"
 
-#: templates/booket/dashboard/dashboard.html:615
-#: templates/booket/dashboard/dashboard.html:680
+#: templates/booket/dashboard/dashboard.html:666
+#: templates/booket/dashboard/dashboard.html:731
 #: templates/booket/dashboard/history.html:222
 #: templates/booket/dashboard/history.html:286
 #: templates/booket/dashboard/provider_dashboard.html:480
@@ -615,12 +679,52 @@ msgstr "Yaratish"
 msgid "No files attached."
 msgstr "Fayllar biriktirilmagan."
 
-#: templates/booket/dashboard/dashboard.html:640
+#: templates/booket/dashboard/dashboard.html:691
 #: templates/booket/dashboard/history.html:247
 #: templates/booket/dashboard/provider_dashboard.html:505
 #: templates/booket/dashboard/provider_history.html:255
 msgid "Please select at least one file."
 msgstr "Kamida bitta fayl tanlang."
+
+#: templates/booket/dashboard/dashboard.html:769
+msgid "No services configured"
+msgstr "Xizmatlar sozlanmagan"
+
+#: templates/booket/dashboard/dashboard.html:815
+msgid "Enter at least 3 characters"
+msgstr "Kamida 3 ta belgi kiriting"
+
+#: templates/booket/dashboard/dashboard.html:826
+msgid "No clients found"
+msgstr "Mijozlar topilmadi"
+
+#: templates/booket/dashboard/dashboard.html:859
+msgid "Provide phone or email to send OTP"
+msgstr "OTP yuborish uchun telefon yoki email kiriting"
+
+#: templates/booket/dashboard/dashboard.html:875
+msgid "OTP sent to client"
+msgstr "OTP mijozga yuborildi"
+
+#: templates/booket/dashboard/dashboard.html:896
+msgid "Client verified"
+msgstr "Mijoz tasdiqlandi"
+
+#: templates/booket/dashboard/dashboard.html:910
+msgid "Start time is required"
+msgstr "Boshlash vaqtini kiriting"
+
+#: templates/booket/dashboard/dashboard.html:926
+msgid "Please search and select a client first"
+msgstr "Avval mijozni qidiring va tanlang"
+
+#: templates/booket/dashboard/dashboard.html:933
+msgid "Please verify the client via OTP first"
+msgstr "Avval OTP orqali mijozni tasdiqlang"
+
+#: templates/booket/dashboard/dashboard.html:938
+msgid "Client name is required"
+msgstr "Mijoz ismi majburiy"
 
 #: templates/booket/dashboard/history.html:20
 #: templates/booket/dashboard/provider_history.html:20
@@ -675,6 +779,7 @@ msgid "Last name"
 msgstr "Familya"
 
 #: templates/booket/dashboard/my_config.html:42
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1915
 msgid "Email address"
 msgstr "Emayl"
 
@@ -691,30 +796,37 @@ msgid "Off days"
 msgstr "Dam olish kunlari"
 
 #: templates/booket/dashboard/my_config.html:67
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:16
 msgid "Mon"
 msgstr "Dush"
 
 #: templates/booket/dashboard/my_config.html:72
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:17
 msgid "Tue"
 msgstr "Sesh"
 
 #: templates/booket/dashboard/my_config.html:77
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:18
 msgid "Wed"
 msgstr "Chor"
 
 #: templates/booket/dashboard/my_config.html:82
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:19
 msgid "Thu"
 msgstr "Paysh"
 
 #: templates/booket/dashboard/my_config.html:87
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:20
 msgid "Fri"
 msgstr "Juma"
 
 #: templates/booket/dashboard/my_config.html:92
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:21
 msgid "Sat"
 msgstr "Shan"
 
 #: templates/booket/dashboard/my_config.html:97
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:22
 msgid "Sun"
 msgstr "Yak"
 
@@ -912,59 +1024,80 @@ msgid "Footer text"
 msgstr "Pastki qism matni"
 
 #: templates/booket/provider_edit.html:91
+#, fuzzy
+#| msgid "Location"
+msgid "Map Location"
+msgstr "Manzil"
+
+#: templates/booket/provider_edit.html:96
+msgid "Latitude (e.g. 41.299496)"
+msgstr ""
+
+#: templates/booket/provider_edit.html:103
+msgid "Longitude (e.g. 69.240073)"
+msgstr ""
+
+#: templates/booket/provider_edit.html:108
+msgid ""
+"Get coordinates: open openstreetmap.org, right-click your location → 'Show "
+"address', then copy the lat/lon numbers."
+msgstr ""
+
+#: templates/booket/provider_edit.html:113
 #: templates/booket/provider_photo.html:168
 msgid "Social Media"
 msgstr "Ijtimoiy tarmoqlar"
 
-#: templates/booket/provider_edit.html:107
-#: templates/booket/provider_edit.html:143
+#: templates/booket/provider_edit.html:129
+#: templates/booket/provider_edit.html:165
 #: templates/booket/provider_photo.html:180
 #: templates/booket/provider_photo.html:209
 msgid "Name or @username"
 msgstr "Ism yoki @username"
 
-#: templates/booket/provider_edit.html:109
-#: templates/booket/provider_edit.html:145
+#: templates/booket/provider_edit.html:131
+#: templates/booket/provider_edit.html:167
 #: templates/booket/provider_photo.html:181
 #: templates/booket/provider_photo.html:210
 msgid "Link (e.g., https://...)"
 msgstr "Havola (masalan, https://...)"
 
-#: templates/booket/provider_edit.html:112
-#: templates/booket/provider_edit.html:146
-#: templates/booket/provider_edit.html:162
-#: templates/booket/provider_edit.html:180
+#: templates/booket/provider_edit.html:134
+#: templates/booket/provider_edit.html:168
+#: templates/booket/provider_edit.html:184
+#: templates/booket/provider_edit.html:202
 #: templates/booket/provider_photo.html:182
 #: templates/booket/provider_photo.html:211
 #: templates/booket/provider_photo.html:227
 #: templates/booket/provider_photo.html:245 templates/dent/patient_list.html:12
 #: templates/dent/settings/user/list.html:25
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:499
 msgid "Delete"
 msgstr "O'chirish"
 
-#: templates/booket/provider_edit.html:119
+#: templates/booket/provider_edit.html:141
 #: templates/booket/provider_photo.html:189
 msgid "Add Social Media"
 msgstr "Ijtimoiy tarmoq qo'shish"
 
-#: templates/booket/provider_edit.html:155
+#: templates/booket/provider_edit.html:177
 #: templates/booket/provider_photo.html:221
 msgid "Phone Numbers"
 msgstr "Telefon raqamlar"
 
-#: templates/booket/provider_edit.html:160
-#: templates/booket/provider_edit.html:179
+#: templates/booket/provider_edit.html:182
+#: templates/booket/provider_edit.html:201
 #: templates/booket/provider_photo.html:226
 #: templates/booket/provider_photo.html:244
 msgid "Phone Number"
 msgstr "Telefon raqam"
 
-#: templates/booket/provider_edit.html:169
+#: templates/booket/provider_edit.html:191
 #: templates/booket/provider_photo.html:234
 msgid "Add Phone Number"
 msgstr "Telefon raqam qo'shish"
 
-#: templates/booket/provider_edit.html:188 templates/booket/server_edit.html:81
+#: templates/booket/provider_edit.html:210 templates/booket/server_edit.html:81
 #: templates/booket/service_edit.html:88
 #: templates/booket/service_type_edit.html:58
 #: templates/dent/settings/user/edit.html:46
@@ -972,19 +1105,19 @@ msgstr "Telefon raqam qo'shish"
 msgid "Active"
 msgstr "Faol"
 
-#: templates/booket/provider_edit.html:190 templates/booket/server_edit.html:83
+#: templates/booket/provider_edit.html:212 templates/booket/server_edit.html:83
 #: templates/booket/service_edit.html:90
 #: templates/booket/service_type_edit.html:60
 msgid "True"
 msgstr "Ha"
 
-#: templates/booket/provider_edit.html:191 templates/booket/server_edit.html:84
+#: templates/booket/provider_edit.html:213 templates/booket/server_edit.html:84
 #: templates/booket/service_edit.html:91
 #: templates/booket/service_type_edit.html:61
 msgid "False"
 msgstr "Yo‘q"
 
-#: templates/booket/provider_edit.html:195
+#: templates/booket/provider_edit.html:217
 msgid "Logo"
 msgstr "Logotip"
 
@@ -1015,6 +1148,7 @@ msgid "Info"
 msgstr "Ma'lumot"
 
 #: templates/booket/server_edit.html:74
+#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
 msgid "Image"
 msgstr "Rasm"
 
@@ -1584,6 +1718,7 @@ msgid "Treatment history"
 msgstr "Davolash tarixi"
 
 #: templates/dent/treatment_info.html:19
+#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:244
 msgid "File"
 msgstr "Fayl"
 
@@ -1611,11 +1746,1295 @@ msgstr "Moliya"
 msgid "Reception"
 msgstr "Qabul"
 
-#~ msgid "All"
-#~ msgstr "Barchasi"
+#: venv/lib/python3.12/site-packages/bitfield/admin.py:48
+msgid "All"
+msgstr "Barchasi"
 
-#~ msgid "Messages"
-#~ msgstr "Xabarlar"
+#: venv/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
+msgid "Messages"
+msgstr "Xabarlar"
+
+#: venv/lib/python3.12/site-packages/django/contrib/sitemaps/apps.py:8
+msgid "Site Maps"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/contrib/staticfiles/apps.py:9
+#, fuzzy
+#| msgid "Save File"
+msgid "Static Files"
+msgstr "Faylni saqlash"
+
+#: venv/lib/python3.12/site-packages/django/contrib/syndication/apps.py:7
+#, fuzzy
+#| msgid "Location"
+msgid "Syndication"
+msgstr "Manzil"
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:30
+msgid "…"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:32
+msgid "That page number is not an integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:33
+msgid "That page number is less than 1"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/paginator.py:34
+msgid "That page contains no results"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:22
+msgid "Enter a valid value."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:70
+msgid "Enter a valid domain name."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:152
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:768
+msgid "Enter a valid URL."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:213
+msgid "Enter a valid integer."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:224
+#, fuzzy
+#| msgid "Email address"
+msgid "Enter a valid email address."
+msgstr "Emayl"
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: venv/lib/python3.12/site-packages/django/core/validators.py:307
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:315
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:327
+#: venv/lib/python3.12/site-packages/django/core/validators.py:336
+#: venv/lib/python3.12/site-packages/django/core/validators.py:350
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2215
+#, python-format
+msgid "Enter a valid %(protocol)s address."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:329
+msgid "IPv4"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:338
+#: venv/lib/python3.12/site-packages/django/utils/ipv6.py:30
+msgid "IPv6"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:352
+msgid "IPv4 or IPv6"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:393
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:399
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:434
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:443
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:452
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:459
+#, python-format
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:491
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:509
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:532
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:359
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:398
+#, fuzzy
+#| msgid "Phone number"
+msgid "Enter a number."
+msgstr "Telefon raqam"
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:534
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:539
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:544
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:615
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/core/validators.py:677
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/base.py:1571
+#: venv/lib/python3.12/site-packages/django/forms/models.py:908
+msgid "and"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/base.py:1573
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/constraints.py:22
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:134
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:135
+msgid "This field cannot be null."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:136
+msgid "This field cannot be blank."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:137
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1156
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1157
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1159
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1209
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1211
+msgid "String (unlimited)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1320
+msgid "Comma-separated integers"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1421
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1425
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1560
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1429
+msgid "Date (without time)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1556
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1564
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1569
+#, fuzzy
+#| msgid "Date birth"
+msgid "Date (with time)"
+msgstr "Tug'ilgan sana"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1696
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1698
+#, fuzzy
+#| msgid "Phone number"
+msgid "Decimal number"
+msgstr "Telefon raqam"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1859
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1863
+#, fuzzy
+#| msgid "Duration(minutes)"
+msgid "Duration"
+msgstr "Davomiylik (daqiqa)"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1940
+#, fuzzy
+#| msgid "File"
+msgid "File path"
+msgstr "Fayl"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2018
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2020
+msgid "Floating point number"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2060
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2062
+msgid "Integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2158
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2175
+msgid "Small integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2183
+#, fuzzy
+#| msgid "Email address"
+msgid "IPv4 address"
+msgstr "Emayl"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2214
+#, fuzzy
+#| msgid "Address"
+msgid "IP address"
+msgstr "Manzil"
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2305
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2306
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2308
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2359
+msgid "Positive big integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2374
+msgid "Positive integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2389
+msgid "Positive small integer"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2405
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2441
+msgid "Text"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2521
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2525
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2637
+msgid "URL"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2661
+msgid "Raw binary data"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2726
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2728
+msgid "Universally unique identifier"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:24
+msgid "A JSON object"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:26
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:932
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:934
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1228
+msgid "One-to-one relationship"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1285
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1287
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1335
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: venv/lib/python3.12/site-packages/django/forms/boundfield.py:185
+msgid ":?.!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:95
+msgid "This field is required."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:308
+#, fuzzy
+#| msgid "Phone number"
+msgid "Enter a whole number."
+msgstr "Telefon raqam"
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:479
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1260
+msgid "Enter a valid date."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:502
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1261
+msgid "Enter a valid time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:529
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:563
+#, fuzzy
+#| msgid "Enter client information."
+msgid "Enter a valid duration."
+msgstr "Klient malumotlarini kiriting."
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:564
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:633
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:634
+#, fuzzy
+#| msgid "No files attached."
+msgid "No file was submitted."
+msgstr "Fayllar biriktirilmagan."
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:635
+msgid "The submitted file is empty."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:637
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:642
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:710
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:882
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:968
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1592
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:970
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1089
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1590
+msgid "Enter a list of values."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1090
+msgid "Enter a complete value."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1329
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/fields.py:1359
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: venv/lib/python3.12/site-packages/django/forms/forms.py:94
+msgid ":"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/forms.py:230
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:61
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:65
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:70
+#, fuzzy, python-format
+#| msgid "Please select at least one file."
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] "Kamida bitta fayl tanlang."
+
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:484
+#: venv/lib/python3.12/site-packages/django/forms/formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:901
+#, fuzzy, python-format
+#| msgid "Please select at least one file."
+msgid "Please correct the duplicate data for %(field)s."
+msgstr "Kamida bitta fayl tanlang."
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:906
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:913
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:922
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1359
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1450
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/models.py:1594
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/utils.py:227
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:461
+msgid "Clear"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:462
+#, fuzzy
+#| msgid "Currency"
+msgid "Currently"
+msgstr "Valyuta"
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:800
+msgid "Unknown"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/forms/widgets.py:802
+msgid "No"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:873
+msgid "yes,no,maybe"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:903
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:920
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:922
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:924
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:926
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:928
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:930
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:74
+msgid "p.m."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:75
+msgid "a.m."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:80
+msgid "PM"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:81
+#, fuzzy
+#| msgid "NAME"
+msgid "AM"
+msgstr "ISM"
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:153
+msgid "midnight"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:155
+msgid "noon"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:25
+msgid "January"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:26
+msgid "February"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:27
+msgid "March"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:28
+msgid "April"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:29
+msgid "May"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:30
+msgid "June"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:31
+msgid "July"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:32
+msgid "August"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:33
+msgid "September"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:34
+msgid "October"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:35
+#, fuzzy
+#| msgid "Phone number"
+msgid "November"
+msgstr "Telefon raqam"
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:36
+msgid "December"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:39
+msgid "jan"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:40
+msgid "feb"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:41
+msgid "mar"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:42
+msgid "apr"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:43
+msgid "may"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:44
+#, fuzzy
+#| msgid "Sun"
+msgid "jun"
+msgstr "Yak"
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:45
+msgid "jul"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:46
+msgid "aug"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:47
+#, fuzzy
+#| msgid "sec"
+msgid "sep"
+msgstr "soniya"
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:48
+msgid "oct"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:49
+msgid "nov"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:50
+#, fuzzy
+#| msgid "sec"
+msgid "dec"
+msgstr "soniya"
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:77
+#, fuzzy
+#| msgid "Phone number"
+msgctxt "alt. month"
+msgid "November"
+msgstr "Telefon raqam"
+
+#: venv/lib/python3.12/site-packages/django/utils/dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/text.py:75
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/text.py:286
+#, fuzzy
+#| msgid "More"
+msgid "or"
+msgstr "Ko'proq"
+
+#. Translators: This string is used as a separator between list elements
+#: venv/lib/python3.12/site-packages/django/utils/text.py:305
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:135
+msgid ", "
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/utils/timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:29
+msgid "Forbidden"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:30
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:34
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:40
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:45
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:54
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:60
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/csrf.py:66
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:64
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:115
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:214
+#, fuzzy
+#| msgid "Date of birth"
+msgid "Date out of range"
+msgstr "Tug'ilgan sana"
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:349
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:380
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:652
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:692
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/generic/list.py:169
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/static.py:49
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/static.py:51
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/static.py:68
+#: venv/lib/python3.12/site-packages/django/views/templates/directory_index.html:8
+#: venv/lib/python3.12/site-packages/django/views/templates/directory_index.html:11
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:7
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:204
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:217
+msgid "Django Documentation"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:218
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:226
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:227
+msgid "Get started with Django"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:235
+msgid "Django Community"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
+msgid "Connect, get help, or contribute"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:62
+msgid "Average Duration (sec)"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:81
+msgid "Could not find job {} in the database! Skipping execution..."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:105
+msgid ""
+"Maximum runtime of {} seconds exceeded! Not all jobs could be completed "
+"successfully. Pending jobs: {}"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:124
+msgid "Executed job '{}'!"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:132
+msgid "Run the selected django jobs"
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:160
+#, fuzzy
+#| msgid "Duration(minutes)"
+msgid "Duration (sec)"
+msgstr "Davomiylik (daqiqa)"
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:18
+msgid "Unique id for this job."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:26
+msgid "Date and time at which this job is scheduled to be executed next."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:72
+msgid "Unique ID for this job execution."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:78
+msgid "The job that this execution relates to."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:86
+msgid "The current status of this job execution."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:91
+msgid "Date and time at which this job was executed."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:101
+msgid "Total run time of this job (in seconds)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:109
+msgid "Timestamp at which this job was finished."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:116
+msgid "Details of exception that occurred during job execution (if any)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:123
+msgid "Traceback of exception that occurred during job execution (if any)."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/field.py:25
+#, python-format
+msgid "'%(value)s' value must be a positive integer or a valid Hashids string."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/field.py:26
+#, python-format
+msgid "'%(value)s' value must be a valid Hashids string."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/rest.py:24
+msgid "value must be a positive integer or a valid Hashids string."
+msgstr ""
+
+#: venv/lib/python3.12/site-packages/hashid_field/rest.py:25
+#, python-brace-format
+msgid "'{value}' value must be a valid Hashids string."
+msgstr ""
 
 #~ msgid "Treatments done(current month)"
 #~ msgstr "Qilingan proseduralar(joriy oy uchun)"

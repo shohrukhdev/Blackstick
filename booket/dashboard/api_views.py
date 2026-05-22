@@ -1,6 +1,10 @@
 import logging
 from datetime import datetime
 from urllib.parse import unquote
+from django.core.mail import send_mail
+from django.db import transaction
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -8,7 +12,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from booket.dashboard.serializers import AppointmentSerializer, AppointmentFileSerializer
-from booket.models import Appointment, AppointmentFile, Provider, Client, Server
+from booket.models import (
+    Appointment, AppointmentFile, AppointmentService, Provider, Client,
+    OTPVerification, ProviderClient, ProviderServerService, Service, Server,
+)
+from booket.sms_service import send_sms
+from booket.utils import mask_email, mask_phone_number
 
 logger = logging.getLogger(__name__)
 
@@ -239,4 +248,197 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
 
         except Exception as e:
             logger.exception("API error")
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    # ------------------------------------------------------------------
+    # Server-initiated appointment creation — new multi-mode endpoints
+    # ------------------------------------------------------------------
+
+    @action(detail=False, methods=['get'])
+    def search_client(self, request):
+        q = request.query_params.get('q', '').strip()
+        if len(q) < 3:
+            return Response([])
+        clients = Client.objects.filter(
+            Q(phone_number__icontains=q) | Q(email__icontains=q)
+        ).values('id', 'full_name', 'email', 'phone_number')[:10]
+        return Response(list(clients))
+
+    @action(detail=False, methods=['post'])
+    def send_new_client_otp(self, request):
+        contact_type = request.data.get('contact_type')
+        contact_value = (request.data.get('contact_value') or '').strip()
+        if not contact_value or contact_type not in ('phone', 'email'):
+            return Response({'error': 'contact_type and contact_value are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if contact_type == 'phone' and Client.objects.filter(phone_number=contact_value).exists():
+            return Response({'error': 'A client with this phone is already registered. Use Existing Client mode.'}, status=status.HTTP_400_BAD_REQUEST)
+        if contact_type == 'email' and Client.objects.filter(email=contact_value).exists():
+            return Response({'error': 'A client with this email is already registered. Use Existing Client mode.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        otp = OTPVerification.objects.create(
+            phone_number=contact_value if contact_type == 'phone' else None,
+            email=contact_value if contact_type == 'email' else None,
+            verification_method='p' if contact_type == 'phone' else 'e',
+            appointment=None,
+        )
+
+        lang = getattr(request, 'LANGUAGE_CODE', 'ru')
+        if lang == 'uz':
+            text = f"booket.uz platformasida ro'yxatdan o'tish kodi: {otp.otp_code}"
+        elif lang == 'ru':
+            text = f"Код регистрации на платформе booket.uz: {otp.otp_code}"
+        else:
+            text = f"Registration code for booket.uz: {otp.otp_code}"
+
+        if contact_type == 'phone':
+            send_sms(phone_number=contact_value, message=text)
+            masked = mask_phone_number(contact_value)
+        else:
+            send_mail("booket.uz confirmation code", text, "alphadevmanager@gmail.com", [contact_value], fail_silently=False)
+            masked = mask_email(contact_value)
+
+        return Response({'otp_id': otp.id, 'masked_contact': masked})
+
+    @action(detail=False, methods=['post'])
+    def verify_new_client_otp(self, request):
+        otp_id = request.data.get('otp_id')
+        otp_code = request.data.get('otp_code')
+        try:
+            otp = OTPVerification.objects.get(id=otp_id, is_verified=False, appointment=None)
+        except OTPVerification.DoesNotExist:
+            return Response({'success': False, 'message': 'OTP not found or already used.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if (timezone.now() - otp.created_at).total_seconds() > 600:
+            return Response({'success': False, 'message': 'OTP has expired.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if otp.attempts >= 5:
+            return Response({'success': False, 'message': 'Too many attempts. Request a new OTP.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if otp.otp_code != otp_code:
+            otp.attempts += 1
+            otp.save(update_fields=['attempts'])
+            remaining = 5 - otp.attempts
+            return Response({'success': False, 'message': f'Incorrect code. {remaining} attempt(s) remaining.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        otp.is_verified = True
+        otp.save(update_fields=['is_verified'])
+        return Response({'success': True})
+
+    @action(detail=False, methods=['post'])
+    def create_server_appointment(self, request):
+        try:
+            server = request.user.server_user
+        except AttributeError:
+            return Response({'error': 'Only server users can use this endpoint.'}, status=status.HTTP_403_FORBIDDEN)
+
+        if request.data.get('server_id'):
+            server = get_object_or_404(Server, pk=request.data['server_id'])
+
+        client_mode = request.data.get('client_mode', 'guest')
+        start_date_str = request.data.get('start_date')
+        end_date_str = request.data.get('end_date')
+        comment = request.data.get('comment', '')
+        service_ids = request.data.get('service_ids', [])
+
+        if not start_date_str:
+            return Response({'error': 'start_date is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            start_date = timezone.make_aware(datetime.fromisoformat(start_date_str))
+        except ValueError:
+            return Response({'error': 'Invalid start_date format.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Resolve client
+        if client_mode == 'guest':
+            client, _ = Client.objects.get_or_create(
+                email="guestclient@gmail.com",
+                defaults={"full_name": "Guest Client"},
+            )
+            otp = None
+        elif client_mode == 'existing':
+            client_id = request.data.get('client_id')
+            if not client_id:
+                return Response({'error': 'client_id is required for existing client mode.'}, status=status.HTTP_400_BAD_REQUEST)
+            client = get_object_or_404(Client, id=client_id, is_active=True)
+            otp = None
+        elif client_mode == 'new':
+            otp_id = request.data.get('otp_id')
+            client_data = request.data.get('client') or {}
+            if not otp_id:
+                return Response({'error': 'otp_id is required for new client mode.'}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                otp = OTPVerification.objects.get(id=otp_id, is_verified=True, appointment=None)
+            except OTPVerification.DoesNotExist:
+                return Response({'error': 'OTP not verified. Verify the client first.'}, status=status.HTTP_400_BAD_REQUEST)
+            full_name = (client_data.get('full_name') or '').strip()
+            if not full_name:
+                return Response({'error': 'Client full name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+            client = Client.objects.create(
+                full_name=full_name,
+                phone_number=client_data.get('phone_number') or None,
+                email=client_data.get('email') or None,
+            )
+        else:
+            return Response({'error': 'Invalid client_mode. Use guest, existing, or new.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Calculate end_date — from services if provided, otherwise from explicit value
+        end_date = None
+        if service_ids:
+            pss_qs = ProviderServerService.objects.filter(
+                service__id__in=service_ids,
+                provider_server__server=server,
+            )
+            total_minutes = sum(pss.duration for pss in pss_qs if pss.duration)
+            if total_minutes:
+                end_date = start_date + timezone.timedelta(minutes=total_minutes)
+
+        if end_date is None:
+            if not end_date_str:
+                return Response({'error': 'end_date is required when no services are selected.'}, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                end_date = timezone.make_aware(datetime.fromisoformat(end_date_str))
+            except ValueError:
+                return Response({'error': 'Invalid end_date format.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if start_date < timezone.now():
+            return Response({'error': 'start_date must be in the future.'}, status=status.HTTP_400_BAD_REQUEST)
+        if end_date <= start_date:
+            return Response({'error': 'end_date must be after start_date.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        ps = server.providerserver_set.first()
+        if ps and ps.day_starts_on and ps.day_ends_on:
+            if not (ps.day_starts_on <= start_date.time() < ps.day_ends_on):
+                return Response(
+                    {'error': f'Appointment must be within working hours ({ps.day_starts_on} - {ps.day_ends_on}).'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        if Appointment.objects.filter(server=server, start_datetime__lt=end_date, end_datetime__gt=start_date).exists():
+            return Response({'error': 'The selected time slot is not available.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            with transaction.atomic():
+                if client_mode != 'guest' and ps:
+                    ProviderClient.objects.get_or_create(provider=ps.provider, client=client)
+
+                appointment = Appointment.objects.create(
+                    server=server,
+                    client=client,
+                    start_datetime=start_date,
+                    end_datetime=end_date,
+                    comment=comment,
+                    status='ACCEPTED',
+                )
+
+                if service_ids:
+                    for svc in Service.objects.filter(id__in=service_ids):
+                        AppointmentService.objects.create(appointment=appointment, service=svc)
+
+                if otp is not None:
+                    otp.appointment = appointment
+                    otp.save(update_fields=['appointment'])
+
+            return Response({'success': 'Appointment created successfully.', 'appointment_id': appointment.id})
+        except Exception as e:
+            logger.exception("API error on create_server_appointment")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

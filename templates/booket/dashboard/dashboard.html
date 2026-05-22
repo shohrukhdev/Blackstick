@@ -254,48 +254,106 @@
   </div>
 
   <!-- The APPOINTMENT CREATION Modal -->
-  <div class="modal fade" id="createEventModal">
-    <div class="modal-dialog modal-dialog-centered">
+  <div class="modal fade" id="createAppointmentModal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
-        <!-- Modal Header -->
         <div class="modal-header">
-          <button type="button" class="btn-close" onclick="closeAddEventModal()"></button>
+          <h5 class="modal-title">{% trans "Create Appointment" %}</h5>
+          <button type="button" class="btn-close" onclick="closeCreateAppointmentModal()"></button>
         </div>
-
-        <!-- Modal body -->
-        <div class="modal-body" id="modal-body">
+        <div class="modal-body">
           <div class="card shadow">
             <div class="card-body">
-              <form>
-                <div class="mb-3 mt-3">
-                  <label for="server_name" class="form-label">{% trans "Server" %}:</label>
-                  <input type="hidden" value="{{ request.user.server_user.id }}" id="server_id">
-                  <input type="text" disabled class="form-control" id="server_name" name="server_name"
-                         value="{{ request.user.server_user }}">
+
+              <!-- Client mode selector -->
+              <div class="btn-group w-100 mb-3" role="group">
+                <button id="mode-btn-guest" type="button" class="btn btn-secondary" onclick="switchClientMode('guest')">{% trans "Guest" %}</button>
+                <button id="mode-btn-existing" type="button" class="btn btn-outline-secondary" onclick="switchClientMode('existing')">{% trans "Existing Client" %}</button>
+                <button id="mode-btn-new" type="button" class="btn btn-outline-secondary" onclick="switchClientMode('new')">{% trans "New Client" %}</button>
+              </div>
+
+              <!-- Guest section -->
+              <div id="client-section-guest" class="mb-3">
+                <p class="text-muted mb-0 small"><i class="fa-solid fa-user-slash me-1"></i>{% trans "Walk-in / no client record" %}</p>
+              </div>
+
+              <!-- Existing client section -->
+              <div id="client-section-existing" class="mb-3 d-none">
+                <div class="input-group mb-2">
+                  <input id="ca-client-search-input" type="text" class="form-control" placeholder="{% trans 'Phone or email…' %}">
+                  <button class="btn btn-outline-primary" type="button" onclick="searchClient()">{% trans "Search" %}</button>
                 </div>
-                <div class="mb-3 mt-3">
-                  <label for="server_name" class="form-label">{% trans "Client" %}:</label>
-                  <input type="text" disabled class="form-control" name="client_name" value="{% trans 'Guest' %}">
+                <div id="ca-client-search-results" class="list-group mb-2 d-none"></div>
+                <div id="ca-client-selected-info" class="alert alert-success py-2 mb-0 d-none">
+                  <i class="fa-solid fa-circle-check me-1"></i><span id="ca-selected-client-label"></span>
                 </div>
-                <div class="mb-3 mt-3">
-                  <label for="date_start" class="form-label">{% trans "Starts at" %}:</label>
-                  <input id="date_start" type="datetime-local" class="form-control" name="date_start">
+              </div>
+
+              <!-- New client section -->
+              <div id="client-section-new" class="mb-3 d-none">
+                <div class="mb-2">
+                  <input id="ca-new-name" type="text" class="form-control" placeholder="{% trans 'Full name *' %}">
                 </div>
-                <div class="mb-3 mt-3">
-                  <label for="date_end" class="form-label">{% trans "Ends at" %}:</label>
-                  <input id="date_end" type="datetime-local" class="form-control" name="date_end">
+                <div class="mb-2">
+                  <input id="ca-new-phone" type="text" class="form-control" placeholder="{% trans 'Phone number' %}">
                 </div>
-                <div class="mb-3 mt-3">
-                  <label for="date_end" class="form-label">{% trans "Comment" %}:</label>
-                  <textarea id="comment" class="form-control"></textarea>
+                <div class="mb-2">
+                  <input id="ca-new-email" type="email" class="form-control" placeholder="{% trans 'Email' %}">
                 </div>
-                <button type="button" onclick="createGuestAppointment()" class="btn btn-success"
-                        style="float: left">{% trans "Save" %}</button>
-                <button type="button" onclick="closeAddEventModal()" style="float: right;"
-                        class="btn btn-danger">{% trans "Close" %}</button>
-              </form>
+                <div id="ca-otp-send-area" class="mb-2">
+                  <button id="ca-send-otp-btn" type="button" class="btn btn-outline-secondary btn-sm" onclick="sendNewClientOTP()">
+                    <i class="fa-solid fa-paper-plane me-1"></i>{% trans "Send OTP to client" %}
+                  </button>
+                </div>
+                <div id="ca-otp-verify-area" class="mb-2 d-none">
+                  <div class="input-group mb-1">
+                    <input id="ca-otp-code-input" type="text" class="form-control" placeholder="{% trans 'Enter OTP code' %}" maxlength="6">
+                    <button class="btn btn-outline-primary" type="button" onclick="verifyNewClientOTP()">{% trans "Verify" %}</button>
+                  </div>
+                  <small class="text-muted" id="ca-otp-masked-contact"></small>
+                </div>
+                <div id="ca-client-verified-badge" class="alert alert-success py-2 mb-0 d-none">
+                  <i class="fa-solid fa-circle-check me-1"></i>{% trans "Client identity verified" %}
+                </div>
+              </div>
+
+              <hr>
+
+              <!-- Appointment details -->
+              <div class="mb-3">
+                <label class="form-label">{% trans "Server" %}:</label>
+                <input type="hidden" id="ca-server-id" value="{{ request.user.server_user.id }}">
+                <input type="text" class="form-control" disabled value="{{ request.user.server_user }}">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{% trans "Starts at" %}:</label>
+                <input id="ca-start" type="datetime-local" class="form-control" oninput="recalcEndTime()">
+              </div>
+              <div class="mb-3">
+                <a class="d-flex align-items-center text-decoration-none text-body small mb-1" data-bs-toggle="collapse" href="#ca-services-collapse" role="button" aria-expanded="false">
+                  <i class="fa-solid fa-chevron-right me-1" id="ca-services-chevron" style="transition:transform .2s;font-size:.75rem;"></i>
+                  {% trans "Services" %} <span class="text-muted ms-1">({% trans "optional" %})</span>
+                </a>
+                <div class="collapse" id="ca-services-collapse">
+                  <div id="ca-services-list" class="border rounded p-2" style="max-height:180px;overflow-y:auto;"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{% trans "Ends at" %}:</label>
+                <input id="ca-end" type="datetime-local" class="form-control">
+                <small id="ca-end-hint" class="text-muted d-none">{% trans "Auto-calculated from selected services" %}</small>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">{% trans "Comment" %}:</label>
+                <textarea id="ca-comment" class="form-control" rows="2"></textarea>
+              </div>
+
             </div>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" onclick="closeCreateAppointmentModal()">{% trans "Close" %}</button>
+          <button type="button" class="btn btn-success" onclick="createServerAppointment()">{% trans "Save" %}</button>
         </div>
       </div>
     </div>
@@ -311,58 +369,60 @@
       var lang_code = $(`#cur_lang`).val();
       var dayStartsAt = "{{ appointment.server.providerserver_set.first.day_starts_on|date:'H:i' }}"
       var selectedAppointment = {};
+      var serverServices = {{ server_services_json|default:"[]"|safe }};
+      var selectedClientId = null;
+      var newClientOtpId = null;
+      var currentClientMode = 'guest';
 
       $(document).ready(function () {
           activateNavItem('dashboard-nav-link');
           drawCalendar();
           $('#time_update').on('input', checkTimeUpdateButton);
+          var $chevron = $('#ca-services-chevron');
+          $('#ca-services-collapse')
+              .on('show.bs.collapse', function () { $chevron.css('transform', 'rotate(90deg)'); })
+              .on('hide.bs.collapse', function () { $chevron.css('transform', 'rotate(0deg)'); });
       });
 
-      function showAddEventModal(date_time) {
-          
-           // Clear the input fields
-          $('#date_start').val(''); // Clear the start date input
-          $('#date_end').val('');   // Clear the end date input
-          $('#comment').val('');    // Clear the comment textarea
-          
-          // If date_time is not provided, default to the current time
+      function showCreateAppointmentModal(date_time) {
+          // Reset state
+          selectedClientId = null;
+          newClientOtpId = null;
+
+          // Reset client search / new-client fields
+          $('#ca-client-search-input').val('');
+          $('#ca-client-search-results').addClass('d-none').empty();
+          $('#ca-client-selected-info').addClass('d-none');
+          $('#ca-selected-client-label').text('');
+          $('#ca-new-name, #ca-new-phone, #ca-new-email, #ca-otp-code-input').val('');
+          $('#ca-otp-verify-area').addClass('d-none');
+          $('#ca-otp-send-area').removeClass('d-none');
+          $('#ca-client-verified-badge').addClass('d-none');
+          $('#ca-otp-masked-contact').text('');
+          $('#ca-comment').val('');
+          $('#ca-end').prop('readonly', false);
+          $('#ca-end-hint').addClass('d-none');
+
+          switchClientMode('guest');
+          renderServicesList();
+
+          const pad = n => String(n).padStart(2, '0');
           const now = date_time ? new Date(date_time) : new Date();
-      
-          // Calculate the next 30-minute slice
-          const minutes = now.getMinutes();
-          const nextSlice = minutes < 30 ? 30 : 60;
-          now.setMinutes(nextSlice, 0, 0); // Set minutes to the next 30-minute slice and reset seconds and milliseconds
-      
-          // Format the date and time in the required format (YYYY-MM-DDTHH:MM)
-          const year = now.getFullYear();
-          const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-          const day = String(now.getDate()).padStart(2, '0');
-          const hours = String(now.getHours()).padStart(2, '0');
-          const minutesFormatted = String(now.getMinutes()).padStart(2, '0');
-      
-          const defaultDateTime = `${year}-${month}-${day}T${hours}:${minutesFormatted}`;
-      
-          // Set the default value for the date_start input field
-          $('#date_start').val(defaultDateTime);
-          
-          
-          // Calculate one hour after the defaultDateTime
-          const endDateTime = new Date(now);
-          endDateTime.setHours(endDateTime.getHours() + 1); // Add one hour
-      
-          // Format the end date and time in the required format (YYYY-MM-DDTHH:MM)
-          const endYear = endDateTime.getFullYear();
-          const endMonth = String(endDateTime.getMonth() + 1).padStart(2, '0');
-          const endDay = String(endDateTime.getDate()).padStart(2, '0');
-          const endHours = String(endDateTime.getHours()).padStart(2, '0');
-          const endMinutesFormatted = String(endDateTime.getMinutes()).padStart(2, '0');
-      
-          const defaultEndDateTime = `${endYear}-${endMonth}-${endDay}T${endHours}:${endMinutesFormatted}`;
-      
-          // Set the default value for the date_end input field
-          $('#date_end').val(defaultEndDateTime);
-          
-          $('#createEventModal').modal('show');
+          if (!date_time) {
+              const mins = now.getMinutes();
+              now.setMinutes(mins < 30 ? 30 : 60, 0, 0);
+          } else {
+              now.setSeconds(0, 0);
+          }
+          const startStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`;
+          $('#ca-start').val(startStr);
+
+          const end = new Date(now);
+          end.setHours(end.getHours() + 1);
+          const endStr = `${end.getFullYear()}-${pad(end.getMonth()+1)}-${pad(end.getDate())}T${pad(end.getHours())}:${pad(end.getMinutes())}`;
+          $('#ca-end').val(endStr);
+
+          $('#createAppointmentModal').modal('show');
       }
 
       function drawCalendar() {
@@ -389,7 +449,7 @@
                   createButton: {
                       text: " + {% trans "Create" %}",
                       click: function () {
-                          showAddEventModal();
+                          showCreateAppointmentModal();
                       }
                   }
               },
@@ -444,7 +504,7 @@
                   showEvent(apptmt);
               },
               dateClick: function (info) {
-                  showAddEventModal(info.dateStr)
+                  showCreateAppointmentModal(info.dateStr)
               },
           });
           calendar.render();
@@ -691,41 +751,225 @@
           showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
       }
 
-      function closeAddEventModal() {
-          // Clear the input fields
-          $('#date_start').val(''); // Clear the start date input
-          $('#date_end').val('');   // Clear the end date input
-          $('#comment').val('');    // Clear the comment textarea
-
-          // Close the modal
-          $('#createEventModal').modal('hide');
+      function closeCreateAppointmentModal() {
+          $('#createAppointmentModal').modal('hide');
       }
-      
-      function createGuestAppointment() {
-          const star_date = $('#date_start').val();
-          const end_date = $('#date_end').val();
-          const comment = $('#comment').val();
-          const postData = {
-              "start_date": star_date,
-              "end_date": end_date,
-              "comment": comment
+
+      function switchClientMode(mode) {
+          currentClientMode = mode;
+          ['guest', 'existing', 'new'].forEach(function (m) {
+              var $btn = $('#mode-btn-' + m);
+              if (m === mode) {
+                  $btn.removeClass('btn-outline-secondary').addClass('btn-secondary');
+              } else {
+                  $btn.removeClass('btn-secondary').addClass('btn-outline-secondary');
+              }
+          });
+          $('#client-section-guest, #client-section-existing, #client-section-new').addClass('d-none');
+          $('#client-section-' + mode).removeClass('d-none');
+          if (mode !== 'existing') selectedClientId = null;
+          if (mode !== 'new') newClientOtpId = null;
+      }
+
+      function renderServicesList() {
+          var $list = $('#ca-services-list');
+          $list.empty();
+          if (!serverServices || !serverServices.length) {
+              $list.html('<span class="text-muted small">{% trans "No services configured" %}</span>');
+              return;
+          }
+          serverServices.forEach(function (s) {
+              var name = s['service__name'] || s['service__name_ru'] || s['service__name_uz'] || 'Service';
+              var duration = s['duration'] || 60;
+              $list.append(
+                  '<div class="form-check">' +
+                  '<input class="form-check-input ca-service-check" type="checkbox"' +
+                  ' value="' + s['service__id'] + '"' +
+                  ' id="ca-svc-' + s['id'] + '"' +
+                  ' data-duration="' + duration + '"' +
+                  ' onchange="recalcEndTime()">' +
+                  '<label class="form-check-label small" for="ca-svc-' + s['id'] + '">' +
+                  name + ' <span class="text-muted">(' + duration + ' min)</span>' +
+                  '</label></div>'
+              );
+          });
+      }
+
+      function recalcEndTime() {
+          var startVal = $('#ca-start').val();
+          if (!startVal) return;
+          var durations = [];
+          $('.ca-service-check:checked').each(function () {
+              durations.push(parseInt($(this).data('duration'), 10));
+          });
+          if (!durations.length) {
+              $('#ca-end').prop('readonly', false);
+              $('#ca-end-hint').addClass('d-none');
+              return;
+          }
+          var total = durations.reduce(function (a, b) { return a + b; }, 0);
+          var start = new Date(startVal);
+          var end = new Date(start.getTime() + total * 60000);
+          var pad = function (n) { return String(n).padStart(2, '0'); };
+          $('#ca-end').val(
+              end.getFullYear() + '-' + pad(end.getMonth()+1) + '-' + pad(end.getDate()) +
+              'T' + pad(end.getHours()) + ':' + pad(end.getMinutes())
+          ).prop('readonly', true);
+          $('#ca-end-hint').removeClass('d-none');
+      }
+
+      function searchClient() {
+          var q = $('#ca-client-search-input').val().trim();
+          if (q.length < 3) {
+              showToast('{% trans "Enter at least 3 characters" %}', 'warning');
+              return;
           }
           $.ajax({
-              url: `/dashboard/api/appointments/create_guest_appointment/`,
-              type: 'POST',
-              data: JSON.stringify(postData),
-              contentType: 'application/json',
-              headers: {
-                  'X-CSRFToken': getCookie('csrftoken')
-              },
+              url: '/dashboard/api/appointments/search_client/?q=' + encodeURIComponent(q),
+              type: 'GET',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
               success: function (response) {
-                  console.log(response.success);
-                  $('#createEventModal').modal('hide');
-                  showToast(response.success, "success")
-                  calendar.refetchEvents();
+                  var $results = $('#ca-client-search-results');
+                  $results.empty();
+                  if (!response.length) {
+                      $results.append('<div class="list-group-item text-muted small">{% trans "No clients found" %}</div>');
+                  } else {
+                      response.forEach(function (c) {
+                          var contact = c.phone_number || c.email || '';
+                          var label = (c.full_name || '') + ' — ' + contact;
+                          $results.append(
+                              $('<button type="button" class="list-group-item list-group-item-action small"></button>')
+                                  .text(label)
+                                  .on('click', (function (client) {
+                                      return function () {
+                                          selectClient(client.id, client.full_name, client.email || '', client.phone_number || '');
+                                      };
+                                  })(c))
+                          );
+                      });
+                  }
+                  $results.removeClass('d-none');
               },
               error: handleAjaxError
-          })
+          });
+      }
+
+      function selectClient(id, name, email, phone) {
+          selectedClientId = id;
+          $('#ca-selected-client-label').text(name + ' — ' + (phone || email));
+          $('#ca-client-selected-info').removeClass('d-none');
+          $('#ca-client-search-results').addClass('d-none');
+      }
+
+      function sendNewClientOTP() {
+          var phone = $('#ca-new-phone').val().trim();
+          var email = $('#ca-new-email').val().trim();
+          if (!phone && !email) {
+              showToast('{% trans "Provide phone or email to send OTP" %}', 'warning');
+              return;
+          }
+          var contactType = phone ? 'phone' : 'email';
+          var contactValue = phone || email;
+          $.ajax({
+              url: '/dashboard/api/appointments/send_new_client_otp/',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ contact_type: contactType, contact_value: contactValue }),
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  newClientOtpId = response.otp_id;
+                  $('#ca-otp-masked-contact').text(response.masked_contact);
+                  $('#ca-otp-send-area').addClass('d-none');
+                  $('#ca-otp-verify-area').removeClass('d-none');
+                  showToast('{% trans "OTP sent to client" %}', 'success');
+              },
+              error: function (err) {
+                  var msg = err.responseJSON && err.responseJSON.error ? err.responseJSON.error : err.responseText;
+                  showToast(msg, 'error');
+              }
+          });
+      }
+
+      function verifyNewClientOTP() {
+          var code = $('#ca-otp-code-input').val().trim();
+          if (!code || !newClientOtpId) return;
+          $.ajax({
+              url: '/dashboard/api/appointments/verify_new_client_otp/',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify({ otp_id: newClientOtpId, otp_code: code }),
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function () {
+                  $('#ca-otp-verify-area').addClass('d-none');
+                  $('#ca-client-verified-badge').removeClass('d-none');
+                  showToast('{% trans "Client verified" %}', 'success');
+              },
+              error: function (err) {
+                  var msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : err.responseText;
+                  showToast(msg, 'error');
+              }
+          });
+      }
+
+      function createServerAppointment() {
+          var startDate = $('#ca-start').val();
+          var endDate = $('#ca-end').val();
+          var comment = $('#ca-comment').val();
+          if (!startDate) {
+              showToast('{% trans "Start time is required" %}', 'warning');
+              return;
+          }
+          var serviceIds = [];
+          $('.ca-service-check:checked').each(function () {
+              serviceIds.push(parseInt($(this).val(), 10));
+          });
+          var payload = {
+              client_mode: currentClientMode,
+              start_date: startDate,
+              end_date: endDate,
+              comment: comment,
+              service_ids: serviceIds,
+          };
+          if (currentClientMode === 'existing') {
+              if (!selectedClientId) {
+                  showToast('{% trans "Please search and select a client first" %}', 'warning');
+                  return;
+              }
+              payload.client_id = selectedClientId;
+          }
+          if (currentClientMode === 'new') {
+              if (!newClientOtpId || $('#ca-client-verified-badge').hasClass('d-none')) {
+                  showToast('{% trans "Please verify the client via OTP first" %}', 'warning');
+                  return;
+              }
+              var fullName = $('#ca-new-name').val().trim();
+              if (!fullName) {
+                  showToast('{% trans "Client name is required" %}', 'warning');
+                  return;
+              }
+              payload.otp_id = newClientOtpId;
+              payload.client = {
+                  full_name: fullName,
+                  phone_number: $('#ca-new-phone').val().trim(),
+                  email: $('#ca-new-email').val().trim(),
+              };
+          }
+          $.ajax({
+              url: '/dashboard/api/appointments/create_server_appointment/',
+              type: 'POST',
+              contentType: 'application/json',
+              data: JSON.stringify(payload),
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  closeCreateAppointmentModal();
+                  showToast(response.success, 'success');
+                  calendar.refetchEvents();
+              },
+              error: function (err) {
+                  var msg = err.responseJSON && err.responseJSON.error ? err.responseJSON.error : err.responseText;
+                  showToast(msg, 'error');
+              }
+          });
       }
   </script>
 
