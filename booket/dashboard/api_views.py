@@ -138,6 +138,37 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 appointment.save()
                 return Response({'success': 'Appointment marked as no-show.'})
 
+            elif action_type == 'complete':
+                if appointment.status not in ('ACCEPTED', 'CONFIRMED'):
+                    return Response({'error': 'Only ACCEPTED or CONFIRMED appointments can be completed.'}, status=status.HTTP_400_BAD_REQUEST)
+                if appointment.start_datetime > timezone.now():
+                    return Response({'error': 'Cannot complete an appointment that has not started yet.'}, status=status.HTTP_400_BAD_REQUEST)
+                total = appointment.compute_total()
+                appointment.status = 'COMPLETED'
+                appointment.total_amount = total
+                appointment.paid_amount = total
+                appointment.comment_by_server = comment_by_server
+                appointment.save()
+                return Response({'success': 'Appointment marked as completed.', 'total_amount': str(total)})
+
+            elif action_type == 'save_payment':
+                if appointment.status != 'COMPLETED':
+                    return Response({'error': 'Payment data can only be saved for completed appointments.'}, status=status.HTTP_400_BAD_REQUEST)
+                try:
+                    total_amount = int(request.data.get('total_amount', 0) or 0)
+                    paid_amount = int(request.data.get('paid_amount', 0) or 0)
+                except (ValueError, TypeError):
+                    return Response({'error': 'total_amount and paid_amount must be valid numbers.'}, status=status.HTTP_400_BAD_REQUEST)
+                if paid_amount < 0 or total_amount < 0:
+                    return Response({'error': 'Amounts cannot be negative.'}, status=status.HTTP_400_BAD_REQUEST)
+                if paid_amount > total_amount:
+                    return Response({'error': 'Paid amount cannot exceed total amount.'}, status=status.HTTP_400_BAD_REQUEST)
+                appointment.total_amount = total_amount
+                appointment.paid_amount = paid_amount
+                appointment.payment_note = request.data.get('payment_note', '') or ''
+                appointment.save(update_fields=['total_amount', 'paid_amount', 'payment_note'])
+                return Response({'success': 'Payment info saved.'})
+
             else:
                 return Response({'error': 'Invalid action type.'}, status=status.HTTP_400_BAD_REQUEST)
 

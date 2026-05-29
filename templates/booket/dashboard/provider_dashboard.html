@@ -23,6 +23,8 @@
       .no-show-event {
           background-color: darkgoldenrod;
       }
+      #myModal .list-group-item { padding: 0.35rem 1rem; }
+      #myModal .list-group { margin-bottom: 0.3rem; }
   </style>
   <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
   <script src="{% static 'fc/dist/index.global.min.js' %}"></script>
@@ -90,7 +92,7 @@
                   <i class="fa-solid fa-floppy-disk"></i> {% trans 'Save' %}
                 </button>
               </div>
-              <textarea class="form-control form-control-sm" id="server_comment" rows="3"></textarea>
+              <textarea class="form-control form-control-sm" id="server_comment" rows="2"></textarea>
             </li>
             <li class="list-group-item">
               <span><i class="fa-solid fa-paperclip"></i> {% trans 'Files' %}:</span>
@@ -103,6 +105,16 @@
               </div>
             </li>
           </ul>
+          <!-- Payment section (read-only for provider) — visible only for COMPLETED -->
+          <ul class="list-group mt-2 payment-section" style="display:none;">
+            <li class="list-group-item d-flex align-items-center gap-3 flex-wrap">
+              <span><i class="fa-solid fa-coins text-success"></i> <span class="fw-semibold small">{% trans 'Payment' %}</span></span>
+              <span class="text-muted small">{% trans 'Total' %} <strong id="pay_total_display"></strong></span>
+              <span class="text-muted small">{% trans 'Paid' %} <strong id="pay_paid_display"></strong></span>
+              <strong id="pay_debt_display" class="text-danger small ms-auto"></strong>
+            </li>
+          </ul>
+
           <ul class="list-group event-action" style="display: none;">
             <li class="list-group-item time-update" style="display: none;">
               <label
@@ -339,6 +351,8 @@
           $('.time-update').hide();
           $('.cancel-appointment').hide();
           $('.no-show').hide();
+          $('.payment-section').hide();
+          $('#pay_total_display, #pay_paid_display, #pay_debt_display').text('');
           $('#time-update').val('');
           $('#event_comments').text('');
           $('#server_comment').val('');
@@ -372,10 +386,21 @@
           selectedAppointment = appointment;
           const now = new Date();
           const eventStart = new Date(appointment.start_datetime);
-          if (eventStart < now) {
-              $('#btn_change, #btn_cancel').prop('disabled', true);
+
+          if (appointment.status === 'COMPLETED') {
+              $('#pay_total_display').text((parseFloat(appointment.total_amount) || 0).toLocaleString());
+              $('#pay_paid_display').text((parseFloat(appointment.paid_amount) || 0).toLocaleString());
+              $('#pay_debt_display').text((parseFloat(appointment.debt_amount) || 0).toLocaleString());
+              $('.payment-section').show();
+              $('.action-buttons').hide();
+          } else if (appointment.status === 'CANCELLED' || appointment.status === 'REJECTED' || appointment.status === 'NO_SHOW') {
+              $('.action-buttons').hide();
+          } else {
+              if (eventStart < now) {
+                  $('#btn_change, #btn_cancel').prop('disabled', true);
+              }
+              $('.action-buttons').show();
           }
-          $('.action-buttons').show();
           $('#myModal').modal('show');
       }
 

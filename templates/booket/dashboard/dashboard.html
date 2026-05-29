@@ -25,6 +25,8 @@
       }
 
       .tooltip { background-color: black; color: white; padding: 5px; border-radius: 3px; font-size: 12px; }
+      #myModal .list-group-item { padding: 0.35rem 1rem; }
+      #myModal .list-group { margin-bottom: 0.3rem; }
   </style>
   <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
   <script src="{% static 'fc/dist/index.global.min.js' %}"></script>
@@ -183,7 +185,7 @@
                   <i class="fa-solid fa-floppy-disk"></i> {% trans 'Save' %}
                 </button>
               </div>
-              <textarea class="form-control form-control-sm" id="server_comment" rows="3"></textarea>
+              <textarea class="form-control form-control-sm" id="server_comment" rows="2"></textarea>
             </li>
             <li class="list-group-item">
               <span><i class="fa-solid fa-paperclip"></i> {% trans 'Files' %}:</span>
@@ -196,6 +198,17 @@
               </div>
             </li>
           </ul>
+          <!-- Payment section — visible only for COMPLETED appointments -->
+          <ul class="list-group mt-2 payment-section" style="display:none;">
+            <li class="list-group-item d-flex align-items-center gap-2 flex-wrap">
+              <span><i class="fa-solid fa-coins text-success"></i> <span class="fw-semibold small">{% trans 'Payment' %}</span></span>
+              <input type="number" class="form-control form-control-sm" id="pay_total" min="0" placeholder="{% trans 'Total' %}" oninput="updateDebtDisplay()" style="max-width:90px;">
+              <input type="number" class="form-control form-control-sm" id="pay_paid" min="0" placeholder="{% trans 'Paid' %}" oninput="updateDebtDisplay()" style="max-width:90px;">
+              <strong id="pay_debt" class="text-danger small"></strong>
+              <button class="btn btn-sm btn-outline-success button-shadow ms-auto" onclick="savePayment()"><i class="fa-solid fa-floppy-disk"></i></button>
+            </li>
+          </ul>
+
           <ul class="list-group event-action" style="display: none;">
             <li class="list-group-item time-update" style="display: none;">
               <label
@@ -212,6 +225,9 @@
             </li>
             <li class="list-group-item no-show" style="display: none;">
               <span style="color: red;">{% trans "Client didn't come for no reason?" %}</span>
+            </li>
+            <li class="list-group-item complete-confirm" style="display: none;">
+              <span style="color: green;">{% trans 'Mark this appointment as completed?' %}</span>
             </li>
           </ul>
         </div>
@@ -236,6 +252,12 @@
             <button onclick="backToEventActions()" type="button"
                     class="btn btn-warning button-shadow">{% trans 'Back' %}</button>
           </div>
+          <div class="btn-group complete-confirm" style="display:none; float:left;">
+            <button onclick="updateAppointment('complete')" type="button"
+                    class="btn btn-success button-shadow">{% trans 'Yes' %}</button>
+            <button onclick="backToEventActions()" type="button"
+                    class="btn btn-warning button-shadow">{% trans 'Back' %}</button>
+          </div>
           <div class="btn-group action-buttons" style="float:left;">
             <button id="btn_change" onclick="onChangeButtonClick()" type="button"
                     class="btn btn-primary button-shadow">{% trans 'Change' %}</button>
@@ -243,6 +265,8 @@
                     class="btn btn-warning button-shadow">{% trans 'Cancel' %}</button>
             <button id="btn_no_show" onclick="onNoShowButtonClick()" type="button"
                     class="btn btn-secondary button-shadow">{% trans 'No-show' %}</button>
+            <button id="btn_complete" onclick="onCompleteButtonClick()" type="button"
+                    class="btn btn-success button-shadow" style="display:none;">{% trans 'Complete' %}</button>
           </div>
           <div style="float: right;">
             <button type="button" class="btn btn-danger button-shadow"
@@ -534,11 +558,17 @@
           $('.time-update').hide();
           $('.cancel-appointment').hide();
           $('.no-show').hide();
+          $('.complete-confirm').hide();
+          $('.payment-section').hide();
           $('#time-update').val('');
           $('#event_comments').text('');
           $('#server_comment').val('');
           $('#file_upload').val('');
+          $('#pay_total').val('');
+          $('#pay_paid').val('');
+          $('#pay_debt').text('');
           $('#btn_change, #btn_cancel, #btn_no_show').prop('disabled', false);
+          $('#btn_complete').hide();
           $(`#client_name`).text(appointment.client_full_name);
           $('#timeframe').text(appointment.start_datetime.slice(11, 16) + " - " + appointment.end_datetime.slice(11, 16));
           $('#event_date').text(formatDate(appointment.end_datetime.slice(0, 10)));
@@ -567,10 +597,25 @@
           selectedAppointment = appointment;
           const now = new Date();
           const eventStart = new Date(appointment.start_datetime);
-          if (eventStart < now) {
-              $('#btn_change, #btn_cancel').prop('disabled', true);
+          const status = appointment.status;
+
+          if (status === 'COMPLETED') {
+              $('.action-buttons').hide();
+              $('.payment-section').show();
+              $('#pay_total').val(appointment.total_amount || 0);
+              $('#pay_paid').val(appointment.paid_amount || 0);
+              updateDebtDisplay();
+          } else if (status === 'CANCELLED' || status === 'REJECTED' || status === 'NO_SHOW') {
+              $('.action-buttons').hide();
+          } else {
+              if (eventStart < now) {
+                  $('#btn_change, #btn_cancel').prop('disabled', true);
+                  if (status === 'ACCEPTED' || status === 'CONFIRMED') {
+                      $('#btn_complete').show();
+                  }
+              }
+              $('.action-buttons').show();
           }
-          $('.action-buttons').show();
           $('#myModal').modal('show');
       }
 
@@ -586,6 +631,7 @@
           $('.time-update').hide();
           $('.cancel-appointment').hide();
           $('.no-show').hide();
+          $('.complete-confirm').hide();
           $('.action-buttons').show();
       }
 
@@ -640,9 +686,22 @@
               contentType: 'application/json',
               headers: { 'X-CSRFToken': getCookie('csrftoken') },
               success: function (response) {
-                  $('#myModal').modal('hide');
                   showToast(response.success, "success");
                   calendar.refetchEvents();
+                  if (actionType === 'complete') {
+                      selectedAppointment.status = 'COMPLETED';
+                      selectedAppointment.total_amount = parseFloat(response.total_amount) || 0;
+                      selectedAppointment.paid_amount = selectedAppointment.total_amount;
+                      $('.complete-confirm').hide();
+                      $('.action-buttons').hide();
+                      $('#event_status').text('COMPLETED');
+                      $('#pay_total').val(selectedAppointment.total_amount);
+                      $('#pay_paid').val(selectedAppointment.paid_amount);
+                      updateDebtDisplay();
+                      $('.payment-section').show();
+                  } else {
+                      $('#myModal').modal('hide');
+                  }
               },
               error: handleAjaxError
           });
@@ -663,6 +722,48 @@
               success: function (response) {
                   showToast(response.success, "success");
                   selectedAppointment.comment_by_server = $('#server_comment').val();
+              },
+              error: handleAjaxError
+          });
+      }
+
+      function onCompleteButtonClick() {
+          $('.event-action').show();
+          $('.complete-confirm').show();
+          $('.action-buttons').hide();
+      }
+
+      function updateDebtDisplay() {
+          const total = parseFloat($('#pay_total').val()) || 0;
+          const paid = parseFloat($('#pay_paid').val()) || 0;
+          const debt = total - paid;
+          $('#pay_debt').text(debt.toLocaleString());
+      }
+
+      function savePayment() {
+          const appointmentId = selectedAppointment.id;
+          const total = parseInt($('#pay_total').val()) || 0;
+          const paid = parseInt($('#pay_paid').val()) || 0;
+          if (total < 0 || paid < 0) {
+              showToast('{% trans "Amounts cannot be negative." %}', 'error');
+              return;
+          }
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/update_appointment/`,
+              type: 'POST',
+              data: JSON.stringify({
+                  action_type: 'save_payment',
+                  total_amount: total,
+                  paid_amount: paid,
+                  payment_note: selectedAppointment.payment_note || '',
+                  appointment_id: appointmentId,
+              }),
+              contentType: 'application/json',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, 'success');
+                  selectedAppointment.total_amount = total;
+                  selectedAppointment.paid_amount = paid;
               },
               error: handleAjaxError
           });

@@ -237,10 +237,32 @@ class Appointment(models.Model):
     status = models.CharField(max_length=12, choices=STATUSES, null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
     comment_by_server = models.TextField(null=True, blank=True)
+    total_amount = models.DecimalField(max_digits=12, decimal_places=0, default=0)
+    paid_amount = models.DecimalField(max_digits=12, decimal_places=0, default=0)
+    payment_note = models.CharField(max_length=255, null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return f"{self.client} {self.server} {self.start_datetime} -- {self.end_datetime}"
+
+    @property
+    def debt_amount(self):
+        return self.total_amount - self.paid_amount
+
+    def compute_total(self):
+        from decimal import Decimal
+        total = Decimal(0)
+        for appt_svc in self.appointmentservice_set.select_related('service').all():
+            pss = appt_svc.service.providerserverservice_set.filter(
+                provider_server__server=self.server
+            ).first()
+            if pss:
+                price = pss.service_private_price if pss.service_private_price else pss.service.price
+            else:
+                price = appt_svc.service.price
+            if price:
+                total += Decimal(str(price))
+        return total
 
     class Meta:
         indexes = [

@@ -8,6 +8,9 @@
   <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
   <style>
       #appointments_table tbody tr { cursor: pointer; }
+      #appointments_table tbody tr.debt-row td { background-color: #fff3cd !important; }
+      #myModal .list-group-item { padding: 0.35rem 1rem; }
+      #myModal .list-group { margin-bottom: 0.3rem; }
   </style>
   <div class="container-fluid">
     <div class="row" style="margin-top: 10px">
@@ -76,7 +79,7 @@
                   <i class="fa-solid fa-floppy-disk"></i> {% trans 'Save' %}
                 </button>
               </div>
-              <textarea class="form-control form-control-sm" id="server_comment" rows="3"></textarea>
+              <textarea class="form-control form-control-sm" id="server_comment" rows="2"></textarea>
             </li>
             <li class="list-group-item">
               <span><i class="fa-solid fa-paperclip"></i> {% trans 'Files' %}:</span>
@@ -87,6 +90,16 @@
                   <i class="fa-solid fa-upload"></i>
                 </button>
               </div>
+            </li>
+          </ul>
+          <!-- Payment section — visible only for COMPLETED appointments -->
+          <ul class="list-group mt-2 payment-section" style="display:none;">
+            <li class="list-group-item d-flex align-items-center gap-2 flex-wrap">
+              <span><i class="fa-solid fa-coins text-success"></i> <span class="fw-semibold small">{% trans 'Payment' %}</span></span>
+              <input type="number" class="form-control form-control-sm" id="pay_total" min="0" placeholder="{% trans 'Total' %}" oninput="updateDebtDisplay()" style="max-width:90px;">
+              <input type="number" class="form-control form-control-sm" id="pay_paid" min="0" placeholder="{% trans 'Paid' %}" oninput="updateDebtDisplay()" style="max-width:90px;">
+              <strong id="pay_debt" class="text-danger small"></strong>
+              <button class="btn btn-sm btn-outline-success button-shadow ms-auto" onclick="savePayment()"><i class="fa-solid fa-floppy-disk"></i></button>
             </li>
           </ul>
         </div>
@@ -145,7 +158,15 @@
                   {"data": "client_phone", visible: false, name: "client.phone_number"},
                   {"data": "services", visible: false, searchable: false},
                   {"data": "files", visible: false, searchable: false},
+                  {"data": "total_amount", visible: false, searchable: false},
+                  {"data": "paid_amount", visible: false, searchable: false},
+                  {"data": "debt_amount", visible: false, searchable: false},
               ],
+              createdRow: function (row, data) {
+                  if (data.status === 'COMPLETED' && parseFloat(data.debt_amount) > 0) {
+                      $(row).addClass('debt-row');
+                  }
+              },
           });
 
           $('#appointments_table tbody').on('click', 'tr', function () {
@@ -160,9 +181,13 @@
           $('.client-phone').hide();
           $('.client-email').hide();
           $('.event-comment').hide();
+          $('.payment-section').hide();
           $('#event_comments').text('');
           $('#server_comment').val('');
           $('#file_upload').val('');
+          $('#pay_total').val('');
+          $('#pay_paid').val('');
+          $('#pay_debt').text('');
 
           $('#client_name').text(appointment.client_name);
           $('#timeframe').text(appointment.time_slot);
@@ -191,8 +216,50 @@
           $('#server_comment').val(appointment.comment_by_server || '');
           renderAppointmentFiles(appointment.files || []);
 
+          if (appointment.status === 'COMPLETED') {
+              $('#pay_total').val(appointment.total_amount || 0);
+              $('#pay_paid').val(appointment.paid_amount || 0);
+              updateDebtDisplay();
+              $('.payment-section').show();
+          }
+
           selectedAppointment = appointment;
           $('#myModal').modal('show');
+      }
+
+      function updateDebtDisplay() {
+          const total = parseFloat($('#pay_total').val()) || 0;
+          const paid = parseFloat($('#pay_paid').val()) || 0;
+          $('#pay_debt').text((total - paid).toLocaleString());
+      }
+
+      function savePayment() {
+          const appointmentId = selectedAppointment.id;
+          const total = parseInt($('#pay_total').val()) || 0;
+          const paid = parseInt($('#pay_paid').val()) || 0;
+          if (total < 0 || paid < 0) {
+              showToast('{% trans "Amounts cannot be negative." %}', 'error');
+              return;
+          }
+          $.ajax({
+              url: `/dashboard/api/appointments/${appointmentId}/update_appointment/`,
+              type: 'POST',
+              data: JSON.stringify({
+                  action_type: 'save_payment',
+                  total_amount: total,
+                  paid_amount: paid,
+                  payment_note: selectedAppointment.payment_note || '',
+                  appointment_id: appointmentId,
+              }),
+              contentType: 'application/json',
+              headers: { 'X-CSRFToken': getCookie('csrftoken') },
+              success: function (response) {
+                  showToast(response.success, 'success');
+                  selectedAppointment.total_amount = total;
+                  selectedAppointment.paid_amount = paid;
+              },
+              error: handleAjaxError
+          });
       }
 
       function saveServerNote() {

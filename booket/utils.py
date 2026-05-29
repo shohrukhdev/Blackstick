@@ -92,11 +92,19 @@ def complete_old_appointments(days_back: int = 0):
             end_datetime__lt=now,
         ).update(status="CANCELLED")
 
-        completed_count = Appointment.objects.filter(
+        to_complete = Appointment.objects.filter(
             **base_filter,
             status__in=["CONFIRMED", "PENDING", "ACCEPTED"],
             end_datetime__lt=now,
-        ).update(status="COMPLETED")
+        )
+        completed_count = 0
+        for appointment in to_complete:
+            total = appointment.compute_total()
+            appointment.status = "COMPLETED"
+            appointment.total_amount = total
+            appointment.paid_amount = total
+            appointment.save(update_fields=["status", "total_amount", "paid_amount"])
+            completed_count += 1
 
         logger.info(
             f"[complete_old_appointments] {cancelled_count} unconfirmed → CANCELLED, "

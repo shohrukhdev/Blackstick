@@ -8,6 +8,9 @@
   <link href="{% static 'dt/datatables.min.css' %}" rel="stylesheet">
   <style>
       #appointments_table tbody tr { cursor: pointer; }
+      #appointments_table tbody tr.debt-row td { background-color: #fff3cd !important; }
+      #myModal .list-group-item { padding: 0.35rem 1rem; }
+      #myModal .list-group { margin-bottom: 0.3rem; }
   </style>
   <div class="container-fluid">
     <div class="row" style="margin-top: 10px">
@@ -82,7 +85,7 @@
                   <i class="fa-solid fa-floppy-disk"></i> {% trans 'Save' %}
                 </button>
               </div>
-              <textarea class="form-control form-control-sm" id="server_comment" rows="3"></textarea>
+              <textarea class="form-control form-control-sm" id="server_comment" rows="2"></textarea>
             </li>
             <li class="list-group-item">
               <span><i class="fa-solid fa-paperclip"></i> {% trans 'Files' %}:</span>
@@ -93,6 +96,15 @@
                   <i class="fa-solid fa-upload"></i>
                 </button>
               </div>
+            </li>
+          </ul>
+          <!-- Payment section (read-only for provider) — visible only for COMPLETED -->
+          <ul class="list-group mt-2 payment-section" style="display:none;">
+            <li class="list-group-item d-flex align-items-center gap-3 flex-wrap">
+              <span><i class="fa-solid fa-coins text-success"></i> <span class="fw-semibold small">{% trans 'Payment' %}</span></span>
+              <span class="text-muted small">{% trans 'Total' %} <strong id="pay_total_display"></strong></span>
+              <span class="text-muted small">{% trans 'Paid' %} <strong id="pay_paid_display"></strong></span>
+              <strong id="pay_debt_display" class="text-danger small ms-auto"></strong>
             </li>
           </ul>
         </div>
@@ -152,7 +164,15 @@
                   {"data": "client_phone", visible: false, name: "client.phone_number"},
                   {"data": "services", visible: false, searchable: false},
                   {"data": "files", visible: false, searchable: false},
+                  {"data": "total_amount", visible: false, searchable: false},
+                  {"data": "paid_amount", visible: false, searchable: false},
+                  {"data": "debt_amount", visible: false, searchable: false},
               ],
+              createdRow: function (row, data) {
+                  if (data.status === 'COMPLETED' && parseFloat(data.debt_amount) > 0) {
+                      $(row).addClass('debt-row');
+                  }
+              },
           });
 
           $('#appointments_table tbody').on('click', 'tr', function () {
@@ -167,6 +187,8 @@
           $('.client-phone').hide();
           $('.client-email').hide();
           $('.event-comment').hide();
+          $('.payment-section').hide();
+          $('#pay_total_display, #pay_paid_display, #pay_debt_display').text('');
           $('#event_comments').text('');
           $('#server_comment').val('');
           $('#file_upload').val('');
@@ -198,6 +220,13 @@
           $('#event_status').text(appointment.status);
           $('#server_comment').val(appointment.comment_by_server || '');
           renderAppointmentFiles(appointment.files || []);
+
+          if (appointment.status === 'COMPLETED') {
+              $('#pay_total_display').text((parseFloat(appointment.total_amount) || 0).toLocaleString());
+              $('#pay_paid_display').text((parseFloat(appointment.paid_amount) || 0).toLocaleString());
+              $('#pay_debt_display').text((parseFloat(appointment.debt_amount) || 0).toLocaleString());
+              $('.payment-section').show();
+          }
 
           selectedAppointment = appointment;
           $('#myModal').modal('show');

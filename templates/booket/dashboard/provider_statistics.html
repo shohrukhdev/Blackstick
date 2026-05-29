@@ -2,216 +2,647 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
-{% block title %} {% trans "Provider Statistics" %}{% endblock %}
+{% block title %}{% trans "Provider Statistics" %}{% endblock %}
+
 {% block content %}
-  {% get_current_language as LANG_CODE %}
-  <div class="container-fluid">
-    <div class="row" style="margin-top: 10px">
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <div class="input-group mb-3">
-          <span class="input-group-text">{% trans 'From' %}:</span>
-          <input type="date" class="form-control" id="start_date" value="{{ start_date | date:'Y-m-d' }}">
-          <span class="input-group-text">{% trans 'To' %}:</span>
-          <input type="date" class="form-control" id="end_date" value="{{ end_date | date:'Y-m-d' }}">
-          <button class="btn btn-primary" onclick="reloadData()" type="button"><i
-            class="fa-solid fa-magnifying-glass"></i></button>
+{% get_current_language as LANG_CODE %}
+
+<style>
+  /* ── KPI cards ─────────────────────────────────────────────────────── */
+  .kpi-card { transition: box-shadow .2s; border-radius: .5rem; }
+  .kpi-card:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.12) !important; }
+  .kpi-label { font-size: .65rem; font-weight: 700; text-transform: uppercase;
+               letter-spacing: .08em; color: #6c757d; }
+  .kpi-value { font-size: 1.9rem; font-weight: 700; line-height: 1.1; }
+  /* ── Chart cards ───────────────────────────────────────────────────── */
+  .chart-card { border-radius: .5rem; }
+  .chart-card .card-header { font-size: .85rem; font-weight: 600; }
+  /* ── Tables ────────────────────────────────────────────────────────── */
+  .client-table td, .client-table th { vertical-align: middle; }
+  .staff-table th { font-size: .75rem; white-space: nowrap; }
+  .staff-table td { font-size: .82rem; white-space: nowrap; }
+  /* ── Preset buttons ────────────────────────────────────────────────── */
+  .preset-btn { font-size: .78rem; }
+  /* ── Responsive ────────────────────────────────────────────────────── */
+  @media (max-width: 576px) {
+    .kpi-value { font-size: 1.35rem; }
+    .kpi-label { font-size: .6rem; }
+  }
+</style>
+
+<div class="container-fluid py-3 px-3 px-md-4">
+
+  {# ── Date filter row ──────────────────────────────────────────────── #}
+  <div class="row g-2 mb-4 align-items-center">
+    <div class="col-12 col-md-auto d-flex flex-wrap gap-2 align-items-center">
+      <div class="input-group input-group-sm" style="max-width: 380px;">
+        <span class="input-group-text">{% trans "From" %}</span>
+        <input type="date" class="form-control" id="start_date" value="{{ start_date|date:'Y-m-d' }}">
+        <span class="input-group-text">{% trans "To" %}</span>
+        <input type="date" class="form-control" id="end_date" value="{{ end_date|date:'Y-m-d' }}">
+        <button class="btn btn-primary" onclick="reloadData()" type="button">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
+      <div class="btn-group btn-group-sm" role="group" aria-label="{% trans 'Date presets' %}">
+        <button type="button" class="btn btn-outline-secondary preset-btn" onclick="setPreset('today')">{% trans "Today" %}</button>
+        <button type="button" class="btn btn-outline-secondary preset-btn" onclick="setPreset('week')">{% trans "Week" %}</button>
+        <button type="button" class="btn btn-outline-secondary preset-btn" onclick="setPreset('month')">{% trans "Month" %}</button>
+        <button type="button" class="btn btn-outline-secondary preset-btn" onclick="setPreset('3months')">3M</button>
+      </div>
+    </div>
+    <div class="col-12 col-md-auto ms-md-auto d-flex gap-2 justify-content-start justify-content-md-end">
+      <button class="btn btn-sm btn-outline-secondary" onclick='location.href="{% url "provider_history" %}"'>
+        <i class="fa-solid fa-arrow-left me-1"></i>{% trans "Back" %}
+      </button>
+    </div>
+  </div>
+
+  {# ── KPI cards ────────────────────────────────────────────────────── #}
+  <div class="row g-3 mb-4">
+
+    <div class="col-6 col-md-4 col-xl-2">
+      <div class="card kpi-card border-0 shadow-sm h-100">
+        <div class="card-body text-center py-3 px-2">
+          <div class="kpi-label mb-2">{% trans "Total" %}</div>
+          <div class="kpi-value">{{ kpi_total }}</div>
+          <div class="text-muted mt-1" style="font-size:.7rem">{% trans "appointments" %}</div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-        <div style="float: right">
-          <button class="btn btn-danger"
-                  onclick='location.href="{% url 'provider_history' %}"'>{% trans 'Back' %}</button>
+    </div>
+
+    <div class="col-6 col-md-4 col-xl-2">
+      <div class="card kpi-card border-0 shadow-sm h-100 border-top border-3 border-success">
+        <div class="card-body text-center py-3 px-2">
+          <div class="kpi-label mb-2 text-success">{% trans "Completed" %}</div>
+          <div class="kpi-value text-success">{{ kpi_completed }}</div>
+          <span class="badge bg-success-subtle text-success rounded-pill mt-1">{{ rate_completed }}%</span>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-6">
-        <h3>{% trans "Top 5 Clients (Completed Appointments)" %}</h3>
-        <table class="table table-bordered">
-          <thead>
-          <tr class="table-success">
-            <th>{% trans "Client Name" %}</th>
-            <th>{% trans "Completed Appointments" %}</th>
-          </tr>
+
+    <div class="col-6 col-md-4 col-xl-2">
+      <div class="card kpi-card border-0 shadow-sm h-100" style="border-top: 3px solid #fd7e14 !important;">
+        <div class="card-body text-center py-3 px-2">
+          <div class="kpi-label mb-2" style="color:#fd7e14">{% trans "No-Show" %}</div>
+          <div class="kpi-value" style="color:#fd7e14">{{ kpi_no_show }}</div>
+          <span class="badge rounded-pill mt-1" style="background:rgba(253,126,20,.15);color:#fd7e14;">{{ rate_no_show }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-xl-2">
+      <div class="card kpi-card border-0 shadow-sm h-100 border-top border-3 border-secondary">
+        <div class="card-body text-center py-3 px-2">
+          <div class="kpi-label mb-2 text-secondary">{% trans "Cancelled" %}</div>
+          <div class="kpi-value text-secondary">{{ kpi_cancelled }}</div>
+          <span class="badge bg-secondary-subtle text-secondary rounded-pill mt-1">{{ rate_cancelled }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-xl-2">
+      <div class="card kpi-card border-0 shadow-sm h-100 border-top border-3 border-danger">
+        <div class="card-body text-center py-3 px-2">
+          <div class="kpi-label mb-2 text-danger">{% trans "Rejected" %}</div>
+          <div class="kpi-value text-danger">{{ kpi_rejected }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 col-md-4 col-xl-2">
+      <div class="card kpi-card border-0 shadow-sm h-100" style="border-top: 3px solid #6f42c1 !important;">
+        <div class="card-body text-center py-3 px-2">
+          <div class="kpi-label mb-2" style="color:#6f42c1">{% trans "Revenue" %}</div>
+          <div class="kpi-value" style="color:#6f42c1; font-size:1.3rem;">{{ kpi_total_paid }}</div>
+          <div class="text-muted mt-1" style="font-size:.68rem">{% trans "paid amount" %}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# ── Appointment trends (stacked bar) ─────────────────────────────── #}
+  <div class="card chart-card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0 pb-0 pt-3 px-3">
+      <i class="fa-solid fa-chart-column me-2 text-primary"></i>
+      <span>{% trans "Appointment Trends" %}</span>
+    </div>
+    <div class="card-body pt-2 pb-3">
+      <canvas id="trendChart" style="max-height: 300px;"></canvas>
+    </div>
+  </div>
+
+  {# ── Service distribution + New vs Returning clients ─────────────── #}
+  <div class="row g-3 mb-4">
+
+    <div class="col-12 col-lg-7">
+      <div class="card chart-card border-0 shadow-sm h-100">
+        <div class="card-header bg-transparent border-0 pb-0 pt-3 px-3">
+          <i class="fa-solid fa-scissors me-2 text-success"></i>
+          <span>{% trans "Service Distribution" %}</span>
+          <small class="text-muted ms-1">({% trans "completed only" %})</small>
+        </div>
+        <div class="card-body pt-2 pb-3">
+          {% if has_service_data %}
+            <canvas id="serviceChart" style="max-height: 280px;"></canvas>
+          {% else %}
+            <div class="d-flex flex-column align-items-center justify-content-center text-muted py-5">
+              <i class="fa-solid fa-chart-simple fa-2x mb-2"></i>
+              <span class="small">{% trans "No service data for this period." %}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-5">
+      <div class="card chart-card border-0 shadow-sm h-100">
+        <div class="card-header bg-transparent border-0 pb-0 pt-3 px-3">
+          <i class="fa-solid fa-users me-2 text-primary"></i>
+          <span>{% trans "New vs Returning Clients" %}</span>
+        </div>
+        <div class="card-body pt-2 pb-3 d-flex flex-column align-items-center">
+          {% if total_unique_clients %}
+            <canvas id="clientTypeChart" style="max-height: 230px; max-width: 230px;"></canvas>
+            <div class="row g-2 mt-3 w-100 text-center">
+              <div class="col-6">
+                <div class="fw-bold text-primary" style="font-size:1.3rem">{{ new_clients }}</div>
+                <div class="text-muted" style="font-size:.72rem">{% trans "New clients" %}</div>
+              </div>
+              <div class="col-6">
+                <div class="fw-bold text-success" style="font-size:1.3rem">{{ returning_clients }}</div>
+                <div class="text-muted" style="font-size:.72rem">{% trans "Returning clients" %}</div>
+              </div>
+            </div>
+          {% else %}
+            <div class="d-flex flex-column align-items-center justify-content-center text-muted py-5 w-100">
+              <i class="fa-solid fa-user-slash fa-2x mb-2"></i>
+              <span class="small">{% trans "No client data for this period." %}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# ── Day of week + Staff completions chart ────────────────────────── #}
+  <div class="row g-3 mb-4">
+
+    <div class="col-12 col-lg-5">
+      <div class="card chart-card border-0 shadow-sm h-100">
+        <div class="card-header bg-transparent border-0 pb-0 pt-3 px-3">
+          <i class="fa-solid fa-calendar-week me-2" style="color:#fd7e14"></i>
+          <span>{% trans "Busiest Days of Week" %}</span>
+        </div>
+        <div class="card-body pt-2 pb-3">
+          <canvas id="dowChart" style="max-height: 280px;"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-7">
+      <div class="card chart-card border-0 shadow-sm h-100">
+        <div class="card-header bg-transparent border-0 pb-0 pt-3 px-3">
+          <i class="fa-solid fa-person-digging me-2 text-success"></i>
+          <span>{% trans "Completed Appointments by Staff" %}</span>
+        </div>
+        <div class="card-body pt-2 pb-3">
+          {% if staff_performance %}
+            <canvas id="staffChart" style="max-height: 280px;"></canvas>
+          {% else %}
+            <div class="d-flex flex-column align-items-center justify-content-center text-muted py-5">
+              <i class="fa-solid fa-id-card-clip fa-2x mb-2"></i>
+              <span class="small">{% trans "No staff data for this period." %}</span>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# ── Top clients tables ────────────────────────────────────────────── #}
+  <div class="row g-3 mb-4">
+
+    <div class="col-12 col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-transparent border-bottom fw-semibold py-2 px-3" style="font-size:.85rem">
+          <i class="fa-solid fa-trophy me-2 text-warning"></i>{% trans "Top 5 Loyal Clients" %}
+        </div>
+        <div class="card-body p-0">
+          {% if top_completed_clients %}
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0 client-table">
+              <thead class="table-light">
+                <tr>
+                  <th style="width:34px">#</th>
+                  <th>{% trans "Client" %}</th>
+                  <th class="text-center" style="width:72px">{% trans "Visits" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for c in top_completed_clients %}
+                <tr>
+                  <td class="text-center">
+                    {% if forloop.counter == 1 %}🥇
+                    {% elif forloop.counter == 2 %}🥈
+                    {% elif forloop.counter == 3 %}🥉
+                    {% else %}<span class="text-muted small">{{ forloop.counter }}</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <div class="fw-semibold small">{{ c.client__full_name|default:"—" }}</div>
+                    {% if c.client__phone_number %}
+                      <div class="text-muted" style="font-size:.72rem;">
+                        <i class="fa-solid fa-phone fa-xs me-1"></i>{{ c.client__phone_number }}
+                      </div>
+                    {% elif c.client__email %}
+                      <div class="text-muted" style="font-size:.72rem;">
+                        <i class="fa-solid fa-envelope fa-xs me-1"></i>{{ c.client__email }}
+                      </div>
+                    {% endif %}
+                  </td>
+                  <td class="text-center">
+                    <span class="badge bg-success rounded-pill">{{ c.count }}</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="d-flex flex-column align-items-center justify-content-center text-muted py-4">
+            <i class="fa-solid fa-users-slash fa-lg mb-2"></i>
+            <span class="small">{% trans "No data for this period." %}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-header bg-transparent border-bottom fw-semibold py-2 px-3" style="font-size:.85rem">
+          <i class="fa-solid fa-ghost me-2" style="color:#fd7e14"></i>{% trans "Top 5 No-Show Clients" %}
+        </div>
+        <div class="card-body p-0">
+          {% if top_no_show_clients %}
+          <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0 client-table">
+              <thead class="table-light">
+                <tr>
+                  <th style="width:34px">#</th>
+                  <th>{% trans "Client" %}</th>
+                  <th class="text-center" style="width:80px">{% trans "No-Shows" %}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for c in top_no_show_clients %}
+                <tr>
+                  <td class="text-center">
+                    <span class="text-muted small">{{ forloop.counter }}</span>
+                  </td>
+                  <td>
+                    <div class="fw-semibold small">{{ c.client__full_name|default:"—" }}</div>
+                    {% if c.client__phone_number %}
+                      <div class="text-muted" style="font-size:.72rem;">
+                        <i class="fa-solid fa-phone fa-xs me-1"></i>{{ c.client__phone_number }}
+                      </div>
+                    {% elif c.client__email %}
+                      <div class="text-muted" style="font-size:.72rem;">
+                        <i class="fa-solid fa-envelope fa-xs me-1"></i>{{ c.client__email }}
+                      </div>
+                    {% endif %}
+                  </td>
+                  <td class="text-center">
+                    <span class="badge rounded-pill" style="background:rgba(253,126,20,.15);color:#fd7e14;">{{ c.count }}</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+          <div class="d-flex flex-column align-items-center justify-content-center text-muted py-4">
+            <i class="fa-solid fa-face-smile fa-lg mb-2 text-success"></i>
+            <span class="small">{% trans "No no-shows this period!" %}</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# ── Staff performance table ───────────────────────────────────────── #}
+  {% if staff_performance %}
+  <div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-bottom fw-semibold py-2 px-3" style="font-size:.85rem">
+      <i class="fa-solid fa-ranking-star me-2 text-primary"></i>{% trans "Staff Performance" %}
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-sm table-hover mb-0 staff-table">
+          <thead class="table-light">
+            <tr>
+              <th class="px-3">{% trans "Staff Member" %}</th>
+              <th class="text-center">{% trans "Total" %}</th>
+              <th class="text-center">{% trans "Completed" %}</th>
+              <th class="text-center">{% trans "No-Show" %}</th>
+              <th class="text-center">{% trans "Cancelled" %}</th>
+              <th class="text-center">{% trans "Rate" %}</th>
+              <th class="text-end px-3">{% trans "Revenue (paid)" %}</th>
+            </tr>
           </thead>
           <tbody>
-          {% for client in top_completed_clients %}
+            {% for s in staff_performance %}
             <tr>
-              <td>{{ client.client__full_name }}</td>
-              <td>{{ client.count }}</td>
+              <td class="px-3 fw-semibold">{{ s.name }}</td>
+              <td class="text-center">{{ s.total }}</td>
+              <td class="text-center">
+                <span class="badge bg-success rounded-pill">{{ s.completed }}</span>
+              </td>
+              <td class="text-center">
+                {% if s.no_show %}
+                  <span class="badge rounded-pill" style="background:rgba(253,126,20,.15);color:#fd7e14;">{{ s.no_show }}</span>
+                {% else %}
+                  <span class="text-muted">0</span>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                {% if s.cancelled %}
+                  <span class="badge bg-secondary-subtle text-secondary rounded-pill">{{ s.cancelled }}</span>
+                {% else %}
+                  <span class="text-muted">0</span>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                {% if s.completion_rate_num == 100 %}
+                  <span class="badge bg-success">{{ s.completion_rate }}%</span>
+                {% elif s.completion_rate_num >= 70 %}
+                  <span class="badge bg-success-subtle text-success">{{ s.completion_rate }}%</span>
+                {% else %}
+                  <span class="badge bg-danger-subtle text-danger">{{ s.completion_rate }}%</span>
+                {% endif %}
+              </td>
+              <td class="text-end px-3 fw-semibold" style="color:#6f42c1">{{ s.total_paid }}</td>
             </tr>
-          {% endfor %}
+            {% endfor %}
           </tbody>
         </table>
-      </div>
-
-      <div class="col-lg-6">
-        <h3>{% trans "Top 5 Clients (No-Show Appointments)" %}</h3>
-        <table class="table table-bordered">
-          <thead>
-          <tr class="table-danger">
-            <th>{% trans "Client Name" %}</th>
-            <th>{% trans "No-Show Appointments" %}</th>
-          </tr>
-          </thead>
-          <tbody>
-          {% for client in top_no_show_clients %}
-            <tr>
-              <td>{{ client.client__full_name }}</td>
-              <td>{{ client.count }}</td>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="row justify-content-center d-flex align-items-center" style="margin-top: 50px">
-      <h3 class="text-center">{% trans "Appointment Statistics" %}({% trans "Total" %}:{{ total_completed }})</h3>
-      <div class="col-lg-10 col-md-10 col-sm-21 col-xs-12">
-        <canvas id="appointmentLineChart"></canvas>
-      </div>
-    </div>
-
-    <div class="row justify-content-center d-flex align-items-center" style="margin-top: 50px">
-      <h3 class="text-center">{% trans "Service Distribution" %}</h3>
-      <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-        <canvas id="servicePieChart"></canvas>
-      </div>
-    </div>
-  
-    <div class="row justify-content-center d-flex align-items-center" style="margin-top: 50px">
-      <h3 class="text-center">{% trans "Completed Appointments per Server" %}</h3>
-      <div class="col-lg-10 col-md-10 col-sm-21 col-xs-12">
-        <canvas id="serverBarChart"></canvas>
       </div>
     </div>
   </div>
+  {% endif %}
+
+</div>
 {% endblock %}
 
 {% block js %}
-  {{ block.super }}
-  <script src="{% static 'chartjs/package/dist/chart.umd.js' %}"></script>
-  <script>
-  
-      $(document).ready(function () {
-          activateNavItem('provider-history-nav-link');
-      });
-      
-      function reloadData() {
-          const start_date = $('input[id="start_date"]').val()
-          const end_date = $('input[id="end_date"]').val()
-          let url = new URL(window.location.href);
-          url.searchParams.set('start_date', start_date);
-          url.searchParams.set('end_date', end_date);
-          window.location.href = url.toString();
-      }
-      
-      document.addEventListener('DOMContentLoaded', function () {
-          const ctx = document.getElementById('appointmentLineChart').getContext('2d');
-          const pieCtx = document.getElementById('servicePieChart').getContext('2d');
-          const labels = {{ labels|safe }};
-          const completedCounts = {{ completed_counts|safe }};
-          const serviceLabels = {{ service_labels|safe }};
-          const serviceData = {{ service_data|safe }};
-          const barCtx = document.getElementById('serverBarChart').getContext('2d');
-          const serverLabels = {{ server_labels|safe }};
-          const serverData = {{ server_data|safe }};
-          
+{{ block.super }}
+<script src="{% static 'chartjs/package/dist/chart.umd.js' %}"></script>
+<script>
+$(document).ready(function () {
+    activateNavItem('provider-history-nav-link');
+});
 
-          new Chart(ctx, {
-              type: 'bar',
-              data: {
-                  labels: labels,
-                  datasets: [{
-                      label: 'Completed Appointments',
-                      data: completedCounts,
-                      borderColor: 'rgba(75, 192, 192, 1)',
-                      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                      fill: false,
-                  }]
-              },
-              options: {
-                  responsive: true,
-                  scales: {
-                      x: {
-                          title: {
-                              display: true,
-                              text: 'Date'
-                          }
-                      },
-                      y: {
-                          title: {
-                              display: true,
-                              text: 'Count'
-                          },
-                          beginAtZero: true
-                      }
-                  }
-              }
-          });
-          
-          
-          // Pie Chart (New)
-          new Chart(pieCtx, {
-              type: 'pie',
-              data: {
-                  labels: serviceLabels,
-                  datasets: [{
-                      data: serviceData,
-                      hoverOffset: 5
-                  }]
-              },
-              options: {
-                  responsive: true,
-                  plugins: {
-                      tooltip: {
-                          callbacks: {
-                              label: function (tooltipItem) {
-                                  let total = serviceData.reduce((sum, val) => sum + val, 0);
-                                  let value = serviceData[tooltipItem.dataIndex];
-                                  let percentage = ((value / total) * 100).toFixed(2) + "%";
-                                  return `${serviceLabels[tooltipItem.dataIndex]}: ${value} (${percentage})`;
-                              }
-                          }
-                      }
-                  }
-              }
-          });
-          
-          new Chart(barCtx, {
-              type: 'bar',
-              data: {
-                  labels: serverLabels,
-                  datasets: [{
-                      label: 'Completed Appointments',
-                      data: serverData,
-                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                      borderColor: 'rgba(54, 162, 235, 1)',
-                      borderWidth: 1
-                  }]
-              },
-              options: {
-                  responsive: true,
-                  scales: {
-                      x: {
-                          title: {
-                              display: true,
-                              text: 'Server'
-                          }
-                      },
-                      y: {
-                          title: {
-                              display: true,
-                              text: 'Count'
-                          },
-                          beginAtZero: true
-                      }
-                  }
-              }
-          });
-          
-      });
+document.addEventListener('DOMContentLoaded', function () {
 
-  </script>
+    /* ── Shared colour palette ─────────────────────────────────────── */
+    const C = {
+        completed : '#198754',
+        noShow    : '#fd7e14',
+        cancelled : '#6c757d',
+        rejected  : '#dc3545',
+        newClient : '#0d6efd',
+        returning : '#198754',
+    };
+
+    /* ── Chart.js global defaults ──────────────────────────────────── */
+    Chart.defaults.font.family = "'Segoe UI', system-ui, -apple-system, sans-serif";
+    Chart.defaults.color = '#6c757d';
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+    Chart.defaults.plugins.legend.labels.boxWidth = 8;
+    Chart.defaults.plugins.legend.labels.padding = 14;
+
+    /* ── Data from Django ──────────────────────────────────────────── */
+    const labels        = {{ labels|safe }};
+    const completedData = {{ completed_counts|safe }};
+    const noShowData    = {{ no_show_counts|safe }};
+    const cancelledData = {{ cancelled_counts|safe }};
+    const rejectedData  = {{ rejected_counts|safe }};
+    const serviceLabels = {{ service_labels|safe }};
+    const serviceData   = {{ service_data|safe }};
+    const serverLabels  = {{ server_labels|safe }};
+    const serverData    = {{ server_data|safe }};
+    const dowData       = {{ dow_data|safe }};
+    const dowLabels     = [
+        '{% trans "Mon" %}', '{% trans "Tue" %}', '{% trans "Wed" %}',
+        '{% trans "Thu" %}', '{% trans "Fri" %}', '{% trans "Sat" %}', '{% trans "Sun" %}'
+    ];
+    const newClients       = {{ new_clients }};
+    const returningClients = {{ returning_clients }};
+
+    /* ── 1. Stacked bar — appointment trends ───────────────────────── */
+    new Chart(document.getElementById('trendChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                { label: '{% trans "Completed" %}',  data: completedData,  backgroundColor: C.completed, stack: 's' },
+                { label: '{% trans "No-Show" %}',    data: noShowData,     backgroundColor: C.noShow,    stack: 's' },
+                { label: '{% trans "Cancelled" %}',  data: cancelledData,  backgroundColor: C.cancelled, stack: 's' },
+                { label: '{% trans "Rejected" %}',   data: rejectedData,   backgroundColor: C.rejected,  stack: 's' },
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: { position: 'top' },
+                tooltip: { mode: 'index', intersect: false },
+            },
+            scales: {
+                x: { stacked: true, grid: { display: false }, ticks: { maxRotation: 45, font: { size: 11 } } },
+                y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, precision: 0 } },
+            }
+        }
+    });
+
+    /* ── 2. Horizontal bar — service distribution ──────────────────── */
+    {% if has_service_data %}
+    const palette = [
+        '#0d6efd','#198754','#0dcaf0','#ffc107','#6f42c1',
+        '#fd7e14','#20c997','#d63384','#6c757d','#0d3b66',
+    ];
+    new Chart(document.getElementById('serviceChart'), {
+        type: 'bar',
+        data: {
+            labels: serviceLabels,
+            datasets: [{
+                label: '{% trans "Appointments" %}',
+                data: serviceData,
+                backgroundColor: serviceLabels.map((_, i) => palette[i % palette.length]),
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const tot = serviceData.reduce((a, b) => a + b, 0);
+                            const pct = tot ? ((ctx.raw / tot) * 100).toFixed(1) : 0;
+                            return ` ${ctx.raw} (${pct}%)`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } },
+                y: { grid: { display: false } },
+            }
+        }
+    });
+    {% endif %}
+
+    /* ── 3. Doughnut — new vs returning clients ────────────────────── */
+    {% if total_unique_clients %}
+    new Chart(document.getElementById('clientTypeChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['{% trans "New clients" %}', '{% trans "Returning" %}'],
+            datasets: [{
+                data: [newClients, returningClients],
+                backgroundColor: [C.newClient, C.returning],
+                borderWidth: 2,
+                borderColor: '#fff',
+                hoverOffset: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '65%',
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => {
+                            const tot = newClients + returningClients;
+                            const pct = tot ? ((ctx.raw / tot) * 100).toFixed(1) : 0;
+                            return ` ${ctx.label}: ${ctx.raw} (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    {% endif %}
+
+    /* ── 4. Bar — day-of-week (intensity shading) ──────────────────── */
+    const dowMax = Math.max(...dowData, 1);
+    new Chart(document.getElementById('dowChart'), {
+        type: 'bar',
+        data: {
+            labels: dowLabels,
+            datasets: [{
+                label: '{% trans "Appointments" %}',
+                data: dowData,
+                backgroundColor: dowData.map(v => `rgba(13,110,253,${(0.25 + 0.75 * v / dowMax).toFixed(2)})`),
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { grid: { display: false } },
+                y: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } },
+            }
+        }
+    });
+
+    /* ── 5. Horizontal bar — staff completions ─────────────────────── */
+    {% if staff_performance %}
+    new Chart(document.getElementById('staffChart'), {
+        type: 'bar',
+        data: {
+            labels: serverLabels,
+            datasets: [{
+                label: '{% trans "Completed" %}',
+                data: serverData,
+                backgroundColor: C.completed,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 } },
+                y: { grid: { display: false } },
+            }
+        }
+    });
+    {% endif %}
+
+});
+
+/* ── Date helpers ──────────────────────────────────────────────────── */
+const _pad = n => String(n).padStart(2, '0');
+const _fmt = d => `${d.getFullYear()}-${_pad(d.getMonth()+1)}-${_pad(d.getDate())}`;
+
+function setPreset(preset) {
+    const today = new Date();
+    const end   = _fmt(today);
+    let start;
+    if (preset === 'today') {
+        start = end;
+    } else if (preset === 'week') {
+        const d = new Date(today); d.setDate(d.getDate() - 6); start = _fmt(d);
+    } else if (preset === 'month') {
+        start = _fmt(new Date(today.getFullYear(), today.getMonth(), 1));
+    } else if (preset === '3months') {
+        const d = new Date(today); d.setMonth(d.getMonth() - 3); start = _fmt(d);
+    }
+    document.getElementById('start_date').value = start;
+    document.getElementById('end_date').value   = end;
+    reloadData();
+}
+
+function highlightActivePreset() {
+    const today    = new Date();
+    const todayStr = _fmt(today);
+    const startVal = document.getElementById('start_date').value;
+    const endVal   = document.getElementById('end_date').value;
+    const weekStart = (() => { const d = new Date(today); d.setDate(d.getDate() - 6); return _fmt(d); })();
+    const monthStart = _fmt(new Date(today.getFullYear(), today.getMonth(), 1));
+    const threeMonthStart = (() => { const d = new Date(today); d.setMonth(d.getMonth() - 3); return _fmt(d); })();
+    const map = { 'today': todayStr, 'week': weekStart, 'month': monthStart, '3months': threeMonthStart };
+    document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+    if (endVal === todayStr) {
+        for (const [preset, start] of Object.entries(map)) {
+            if (startVal === start) {
+                const btn = document.querySelector(`.preset-btn[onclick="setPreset('${preset}')"]`);
+                if (btn) btn.classList.add('active');
+                break;
+            }
+        }
+    }
+}
+document.addEventListener('DOMContentLoaded', highlightActivePreset);
+
+function reloadData() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('start_date', document.getElementById('start_date').value);
+    url.searchParams.set('end_date',   document.getElementById('end_date').value);
+    window.location.href = url.toString();
+}
+</script>
 {% endblock %}

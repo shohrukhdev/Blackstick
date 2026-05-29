@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-20 18:52+0500\n"
+"POT-Creation-Date: 2026-05-28 18:30+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgstr "Home"
 
 #: templates/booket/client/index.html:36 templates/booket/client/index.html:559
 #: templates/booket/client/main.html:115
-#: templates/booket/dashboard/dashboard.html:333
+#: templates/booket/dashboard/dashboard.html:359
 #: templates/booket/provider.html:44 templates/booket/provider.html:79
 #: templates/booket/service_list.html:5 templates/dent/settings/main.html:50
 #: templates/dent/settings/service/list.html:5
@@ -45,11 +45,11 @@ msgid "Location"
 msgstr "Location"
 
 #: templates/booket/client/index.html:129 templates/booket/client/main.html:359
-#: templates/booket/dashboard/dashboard.html:53
-#: templates/booket/dashboard/dashboard.html:155
-#: templates/booket/dashboard/history.html:51
-#: templates/booket/dashboard/provider_dashboard.html:62
-#: templates/booket/dashboard/provider_history.html:57
+#: templates/booket/dashboard/dashboard.html:55
+#: templates/booket/dashboard/dashboard.html:157
+#: templates/booket/dashboard/history.html:54
+#: templates/booket/dashboard/provider_dashboard.html:64
+#: templates/booket/dashboard/provider_history.html:60
 #: templates/booket/server_edit.html:52 templates/dent/add_patient.html:30
 #: templates/dent/edit_patient.html:30
 msgid "Phone"
@@ -112,14 +112,15 @@ msgstr "minutes"
 #: templates/booket/client/server_detail.html:207
 #: templates/booket/client/server_detail.html:302
 #: templates/booket/client/server_detail.html:474
-#: templates/booket/dashboard/dashboard.html:225
-#: templates/booket/dashboard/dashboard.html:231
-#: templates/booket/dashboard/dashboard.html:237
-#: templates/booket/dashboard/provider_dashboard.html:132
-#: templates/booket/dashboard/provider_dashboard.html:138
+#: templates/booket/dashboard/dashboard.html:241
+#: templates/booket/dashboard/dashboard.html:247
+#: templates/booket/dashboard/dashboard.html:253
+#: templates/booket/dashboard/dashboard.html:259
 #: templates/booket/dashboard/provider_dashboard.html:144
-#: templates/booket/dashboard/provider_statistics.html:23
-#: templates/booket/dashboard/statistics.html:23
+#: templates/booket/dashboard/provider_dashboard.html:150
+#: templates/booket/dashboard/provider_dashboard.html:156
+#: templates/booket/dashboard/provider_statistics.html:56
+#: templates/booket/dashboard/statistics.html:55
 #: templates/booket/provider_edit.html:229
 #: templates/booket/provider_photo.html:117
 #: templates/booket/server_edit.html:92 templates/booket/service_add.html:81
@@ -144,7 +145,13 @@ msgstr "Selected services"
 
 #: templates/booket/client/index.html:361 templates/booket/client/main.html:324
 #: templates/booket/client/server_detail.html:349
-#: templates/booket/dashboard/provider_statistics.html:70
+#: templates/booket/dashboard/dashboard.html:205
+#: templates/booket/dashboard/history.html:99
+#: templates/booket/dashboard/provider_dashboard.html:112
+#: templates/booket/dashboard/provider_history.html:105
+#: templates/booket/dashboard/provider_statistics.html:67
+#: templates/booket/dashboard/provider_statistics.html:351
+#: templates/booket/dashboard/statistics.html:67
 #: templates/dent/treatement.html:734 templates/dent/treatment_edit.html:96
 #: templates/dent/treatment_info.html:99
 #: templates/dent/treatment_print.html:111
@@ -169,7 +176,7 @@ msgstr "Confirm the appointment by"
 #: templates/booket/client/index.html:386 templates/booket/client/main.html:347
 #: templates/booket/client/server_detail.html:363
 #: templates/booket/client/server_detail.html:372
-#: templates/booket/dashboard/dashboard.html:298
+#: templates/booket/dashboard/dashboard.html:322
 msgid "Phone number"
 msgstr "Phone number"
 
@@ -180,12 +187,12 @@ msgstr "Phone number"
 #: templates/booket/client/server_detail.html:367
 #: templates/booket/client/server_detail.html:382
 #: templates/booket/client/server_detail.html:383
-#: templates/booket/dashboard/dashboard.html:59
-#: templates/booket/dashboard/dashboard.html:160
-#: templates/booket/dashboard/dashboard.html:301
-#: templates/booket/dashboard/history.html:56
-#: templates/booket/dashboard/provider_dashboard.html:67
-#: templates/booket/dashboard/provider_history.html:62
+#: templates/booket/dashboard/dashboard.html:61
+#: templates/booket/dashboard/dashboard.html:162
+#: templates/booket/dashboard/dashboard.html:325
+#: templates/booket/dashboard/history.html:59
+#: templates/booket/dashboard/provider_dashboard.html:69
+#: templates/booket/dashboard/provider_history.html:65
 #: templates/dent/settings/user/add.html:32
 #: templates/dent/settings/user/edit.html:32
 msgid "Email"
@@ -345,7 +352,7 @@ msgid "min"
 msgstr "min"
 
 #: templates/booket/client/main.html:282
-#: templates/booket/dashboard/dashboard.html:43
+#: templates/booket/dashboard/dashboard.html:45
 #: templates/dent/calendar.html:132 templates/dent/calendar_list.html:48
 #: templates/dent/reception_calendar.html:142
 #: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2529
@@ -376,12 +383,12 @@ msgid "Resend"
 msgstr "Resend"
 
 #: templates/booket/client/main.html:428
-#: templates/booket/dashboard/dashboard.html:249
-#: templates/booket/dashboard/dashboard.html:350
-#: templates/booket/dashboard/history.html:94
-#: templates/booket/dashboard/provider_dashboard.html:156
-#: templates/booket/dashboard/provider_dashboard.html:205
-#: templates/booket/dashboard/provider_history.html:100
+#: templates/booket/dashboard/dashboard.html:273
+#: templates/booket/dashboard/dashboard.html:379
+#: templates/booket/dashboard/history.html:107
+#: templates/booket/dashboard/provider_dashboard.html:168
+#: templates/booket/dashboard/provider_dashboard.html:217
+#: templates/booket/dashboard/provider_history.html:112
 #: templates/dent/calendar.html:110 templates/dent/calendar.html:138
 #: templates/dent/calendar_list.html:100
 #: templates/dent/reception_calendar.html:120
@@ -442,44 +449,57 @@ msgstr "Logout"
 msgid "Operation completed successfully."
 msgstr "Operation completed successfully."
 
-#: templates/booket/dashboard/dashboard.html:37
+#: templates/booket/dashboard/dashboard.html:39
 msgid "Upcoming appointment"
 msgstr "Upcoming appointment"
 
-#: templates/booket/dashboard/dashboard.html:48
-#: templates/booket/dashboard/provider_dashboard.html:187
+#: templates/booket/dashboard/dashboard.html:50
+#: templates/booket/dashboard/provider_dashboard.html:199
+#: templates/booket/dashboard/provider_statistics.html:241
+#: templates/booket/dashboard/provider_statistics.html:297
+#: templates/booket/dashboard/statistics.html:216
+#: templates/booket/dashboard/statistics.html:260
+#: templates/booket/dashboard/statistics.html:300
 msgid "Client"
 msgstr "Client"
 
-#: templates/booket/dashboard/dashboard.html:90
+#: templates/booket/dashboard/dashboard.html:92
+#: templates/booket/dashboard/provider_statistics.html:48
+#: templates/booket/dashboard/statistics.html:47
 msgid "Today"
 msgstr "Today"
 
-#: templates/booket/dashboard/dashboard.html:94
+#: templates/booket/dashboard/dashboard.html:96
+#: templates/booket/dashboard/provider_statistics.html:77
+#: templates/booket/dashboard/provider_statistics.html:352
+#: templates/booket/dashboard/provider_statistics.html:454
+#: templates/booket/dashboard/provider_statistics.html:577
+#: templates/booket/dashboard/statistics.html:78
+#: templates/booket/dashboard/statistics.html:380
 msgid "Completed"
 msgstr "Completed"
 
-#: templates/booket/dashboard/dashboard.html:98
+#: templates/booket/dashboard/dashboard.html:100
 msgid "All appointments"
 msgstr "All appointments"
 
-#: templates/booket/dashboard/dashboard.html:102
+#: templates/booket/dashboard/dashboard.html:104
 msgid "No-show appointments"
 msgstr "No-show appointments"
 
-#: templates/booket/dashboard/dashboard.html:111
+#: templates/booket/dashboard/dashboard.html:113
 msgid "Reminder"
 msgstr "Reminder"
 
-#: templates/booket/dashboard/dashboard.html:117
-#: templates/booket/dashboard/dashboard.html:183
-#: templates/booket/dashboard/dashboard.html:351
-#: templates/booket/dashboard/history.html:76
+#: templates/booket/dashboard/dashboard.html:119
+#: templates/booket/dashboard/dashboard.html:185
+#: templates/booket/dashboard/dashboard.html:380
+#: templates/booket/dashboard/history.html:79
 #: templates/booket/dashboard/my_config.html:106
 #: templates/booket/dashboard/my_config.html:180
-#: templates/booket/dashboard/provider_dashboard.html:90
-#: templates/booket/dashboard/provider_dashboard.html:203
-#: templates/booket/dashboard/provider_history.html:82
+#: templates/booket/dashboard/provider_dashboard.html:92
+#: templates/booket/dashboard/provider_dashboard.html:215
+#: templates/booket/dashboard/provider_history.html:85
 #: templates/booket/server_service.html:112 templates/dent/report.html:51
 #: templates/dent/settings/clinic_details.html:48
 #: templates/dent/settings/dashboard.html:48
@@ -487,10 +507,10 @@ msgstr "Reminder"
 msgid "Save"
 msgstr "Save"
 
-#: templates/booket/dashboard/dashboard.html:168
-#: templates/booket/dashboard/history.html:63
-#: templates/booket/dashboard/provider_dashboard.html:75
-#: templates/booket/dashboard/provider_history.html:69
+#: templates/booket/dashboard/dashboard.html:170
+#: templates/booket/dashboard/history.html:66
+#: templates/booket/dashboard/provider_dashboard.html:77
+#: templates/booket/dashboard/provider_history.html:72
 #: templates/dent/settings/clinic_details.html:37
 #: templates/dent/settings/dashboard.html:37
 #: templates/dent/settings/service/edit.html:63
@@ -499,246 +519,282 @@ msgstr "Save"
 msgid "Status"
 msgstr "Status"
 
-#: templates/booket/dashboard/dashboard.html:172
-#: templates/booket/dashboard/history.html:67
-#: templates/booket/dashboard/provider_dashboard.html:79
-#: templates/booket/dashboard/provider_history.html:73
+#: templates/booket/dashboard/dashboard.html:174
+#: templates/booket/dashboard/history.html:70
+#: templates/booket/dashboard/provider_dashboard.html:81
+#: templates/booket/dashboard/provider_history.html:76
 msgid "Client comment"
 msgstr "Client comment"
 
-#: templates/booket/dashboard/dashboard.html:181
-#: templates/booket/dashboard/history.html:74
-#: templates/booket/dashboard/provider_dashboard.html:88
-#: templates/booket/dashboard/provider_history.html:80
+#: templates/booket/dashboard/dashboard.html:183
+#: templates/booket/dashboard/history.html:77
+#: templates/booket/dashboard/provider_dashboard.html:90
+#: templates/booket/dashboard/provider_history.html:83
 msgid "My notes"
 msgstr "My notes"
 
-#: templates/booket/dashboard/dashboard.html:189
-#: templates/booket/dashboard/history.html:82
-#: templates/booket/dashboard/provider_dashboard.html:96
-#: templates/booket/dashboard/provider_history.html:88
+#: templates/booket/dashboard/dashboard.html:191
+#: templates/booket/dashboard/history.html:85
+#: templates/booket/dashboard/provider_dashboard.html:98
+#: templates/booket/dashboard/provider_history.html:91
 #: templates/dent/treatment_edit.html:105
 #: templates/dent/treatment_info.html:104
 msgid "Files"
 msgstr "Files"
 
-#: templates/booket/dashboard/dashboard.html:202
-#: templates/booket/dashboard/provider_dashboard.html:109
+#: templates/booket/dashboard/dashboard.html:204
+#: templates/booket/dashboard/history.html:98
+#: templates/booket/dashboard/provider_dashboard.html:111
+#: templates/booket/dashboard/provider_history.html:104
+#, fuzzy
+#| msgid "Payments"
+msgid "Payment"
+msgstr "Payments"
+
+#: templates/booket/dashboard/dashboard.html:206
+#: templates/booket/dashboard/history.html:100
+#: templates/booket/dashboard/provider_dashboard.html:113
+#: templates/booket/dashboard/provider_history.html:106
+#: templates/dent/treatement.html:751 templates/dent/treatment_edit.html:99
+#: templates/dent/treatment_history.html:41
+#: templates/dent/treatment_info.html:101
+#: templates/dent/treatment_print.html:113
+msgid "Paid"
+msgstr "Paid"
+
+#: templates/booket/dashboard/dashboard.html:215
+#: templates/booket/dashboard/provider_dashboard.html:121
 msgid "Make sure client has informed about the update!"
 msgstr "Make sure client has informed about the update!"
 
-#: templates/booket/dashboard/dashboard.html:204
-#: templates/booket/dashboard/provider_dashboard.html:111
+#: templates/booket/dashboard/dashboard.html:217
+#: templates/booket/dashboard/provider_dashboard.html:123
 msgid "New time"
 msgstr "New time"
 
-#: templates/booket/dashboard/dashboard.html:210
-#: templates/booket/dashboard/provider_dashboard.html:117
+#: templates/booket/dashboard/dashboard.html:223
+#: templates/booket/dashboard/provider_dashboard.html:129
 msgid "CANCEL THE APPOINTMENT?"
 msgstr "CANCEL THE APPOINTMENT?"
 
-#: templates/booket/dashboard/dashboard.html:211
-#: templates/booket/dashboard/provider_dashboard.html:118
+#: templates/booket/dashboard/dashboard.html:224
+#: templates/booket/dashboard/provider_dashboard.html:130
 msgid "Inform client about cancellation!"
 msgstr "Inform client about cancellation!"
 
-#: templates/booket/dashboard/dashboard.html:214
-#: templates/booket/dashboard/provider_dashboard.html:121
+#: templates/booket/dashboard/dashboard.html:227
+#: templates/booket/dashboard/provider_dashboard.html:133
 msgid "Client didn't come for no reason?"
 msgstr "Client didn't come for no reason?"
 
-#: templates/booket/dashboard/dashboard.html:223
-#: templates/booket/dashboard/provider_dashboard.html:130
+#: templates/booket/dashboard/dashboard.html:230
+msgid "Mark this appointment as completed?"
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:239
+#: templates/booket/dashboard/provider_dashboard.html:142
 #: templates/booket/provider_edit.html:227 templates/booket/server_edit.html:90
 #: templates/booket/service_type_edit.html:67
 msgid "Update"
 msgstr "Update"
 
-#: templates/booket/dashboard/dashboard.html:229
-#: templates/booket/dashboard/dashboard.html:235
-#: templates/booket/dashboard/provider_dashboard.html:136
-#: templates/booket/dashboard/provider_dashboard.html:142
+#: templates/booket/dashboard/dashboard.html:245
+#: templates/booket/dashboard/dashboard.html:251
+#: templates/booket/dashboard/dashboard.html:257
+#: templates/booket/dashboard/provider_dashboard.html:148
+#: templates/booket/dashboard/provider_dashboard.html:154
 #: venv/lib/python3.12/site-packages/django/forms/widgets.py:801
 msgid "Yes"
 msgstr "Yes"
 
-#: templates/booket/dashboard/dashboard.html:241
-#: templates/booket/dashboard/provider_dashboard.html:148
+#: templates/booket/dashboard/dashboard.html:263
+#: templates/booket/dashboard/provider_dashboard.html:160
 #: venv/lib/python3.12/site-packages/django/forms/widgets.py:463
 msgid "Change"
 msgstr "Change"
 
-#: templates/booket/dashboard/dashboard.html:243
-#: templates/booket/dashboard/provider_dashboard.html:150
+#: templates/booket/dashboard/dashboard.html:265
+#: templates/booket/dashboard/provider_dashboard.html:162
 #: templates/dent/calendar.html:139 templates/dent/calendar_list.html:46
 #: templates/dent/reception_calendar.html:149
 msgid "Cancel"
 msgstr "Cancel"
 
-#: templates/booket/dashboard/dashboard.html:245
-#: templates/booket/dashboard/provider_dashboard.html:152
+#: templates/booket/dashboard/dashboard.html:267
+#: templates/booket/dashboard/provider_dashboard.html:164
 msgid "No-show"
 msgstr "No-show"
 
-#: templates/booket/dashboard/dashboard.html:261
+#: templates/booket/dashboard/dashboard.html:269
+#, fuzzy
+#| msgid "Completed"
+msgid "Complete"
+msgstr "Completed"
+
+#: templates/booket/dashboard/dashboard.html:285
 #, fuzzy
 #| msgid "Completed Appointments"
 msgid "Create Appointment"
 msgstr "Completed Appointments"
 
-#: templates/booket/dashboard/dashboard.html:270
-#: templates/booket/dashboard/provider_dashboard.html:188
+#: templates/booket/dashboard/dashboard.html:294
+#: templates/booket/dashboard/provider_dashboard.html:200
 msgid "Guest"
 msgstr "Guest"
 
-#: templates/booket/dashboard/dashboard.html:271
+#: templates/booket/dashboard/dashboard.html:295
 msgid "Existing Client"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:272
+#: templates/booket/dashboard/dashboard.html:296
 #, fuzzy
 #| msgid "New clients"
 msgid "New Client"
 msgstr "New clients"
 
-#: templates/booket/dashboard/dashboard.html:277
+#: templates/booket/dashboard/dashboard.html:301
 msgid "Walk-in / no client record"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:283
+#: templates/booket/dashboard/dashboard.html:307
 msgid "Phone or email…"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:284
+#: templates/booket/dashboard/dashboard.html:308
 msgid "Search"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:295
+#: templates/booket/dashboard/dashboard.html:319
 #, fuzzy
 #| msgid "Full name"
 msgid "Full name *"
 msgstr "Full name"
 
-#: templates/booket/dashboard/dashboard.html:305
+#: templates/booket/dashboard/dashboard.html:329
 msgid "Send OTP to client"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:310
+#: templates/booket/dashboard/dashboard.html:334
 msgid "Enter OTP code"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:311
+#: templates/booket/dashboard/dashboard.html:335
 msgid "Verify"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:316
+#: templates/booket/dashboard/dashboard.html:340
 msgid "Client identity verified"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:324
-#: templates/booket/dashboard/provider_dashboard.html:178
-#: templates/booket/dashboard/provider_history.html:52
+#: templates/booket/dashboard/dashboard.html:348
+#: templates/booket/dashboard/provider_dashboard.html:190
+#: templates/booket/dashboard/provider_history.html:55
 msgid "Server"
 msgstr "Server"
 
-#: templates/booket/dashboard/dashboard.html:329
-#: templates/booket/dashboard/provider_dashboard.html:191
+#: templates/booket/dashboard/dashboard.html:353
+#: templates/booket/dashboard/provider_dashboard.html:203
 msgid "Starts at"
 msgstr "Starts at"
 
-#: templates/booket/dashboard/dashboard.html:333
+#: templates/booket/dashboard/dashboard.html:359
 #, fuzzy
 #| msgid "Location"
 msgid "optional"
 msgstr "Location"
 
-#: templates/booket/dashboard/dashboard.html:337
-#: templates/booket/dashboard/provider_dashboard.html:195
+#: templates/booket/dashboard/dashboard.html:366
+#: templates/booket/dashboard/provider_dashboard.html:207
 msgid "Ends at"
 msgstr "Ends at"
 
-#: templates/booket/dashboard/dashboard.html:339
+#: templates/booket/dashboard/dashboard.html:368
 msgid "Auto-calculated from selected services"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:342
-#: templates/booket/dashboard/provider_dashboard.html:199
+#: templates/booket/dashboard/dashboard.html:371
+#: templates/booket/dashboard/provider_dashboard.html:211
 msgid "Comment"
 msgstr "Comment"
 
-#: templates/booket/dashboard/dashboard.html:441
-#: templates/booket/dashboard/provider_dashboard.html:252
+#: templates/booket/dashboard/dashboard.html:474
+#: templates/booket/dashboard/provider_dashboard.html:264
 msgid "Create"
 msgstr "Create"
 
-#: templates/booket/dashboard/dashboard.html:666
-#: templates/booket/dashboard/dashboard.html:731
-#: templates/booket/dashboard/history.html:222
-#: templates/booket/dashboard/history.html:286
-#: templates/booket/dashboard/provider_dashboard.html:480
-#: templates/booket/dashboard/provider_dashboard.html:544
-#: templates/booket/dashboard/provider_history.html:230
-#: templates/booket/dashboard/provider_history.html:294
+#: templates/booket/dashboard/dashboard.html:748
+#: templates/booket/dashboard/history.html:241
+msgid "Amounts cannot be negative."
+msgstr ""
+
+#: templates/booket/dashboard/dashboard.html:776
+#: templates/booket/dashboard/dashboard.html:841
+#: templates/booket/dashboard/history.html:289
+#: templates/booket/dashboard/history.html:353
+#: templates/booket/dashboard/provider_dashboard.html:505
+#: templates/booket/dashboard/provider_dashboard.html:569
+#: templates/booket/dashboard/provider_history.html:259
+#: templates/booket/dashboard/provider_history.html:323
 msgid "No files attached."
 msgstr "No files attached."
 
-#: templates/booket/dashboard/dashboard.html:691
-#: templates/booket/dashboard/history.html:247
-#: templates/booket/dashboard/provider_dashboard.html:505
-#: templates/booket/dashboard/provider_history.html:255
+#: templates/booket/dashboard/dashboard.html:801
+#: templates/booket/dashboard/history.html:314
+#: templates/booket/dashboard/provider_dashboard.html:530
+#: templates/booket/dashboard/provider_history.html:284
 msgid "Please select at least one file."
 msgstr "Please select at least one file."
 
-#: templates/booket/dashboard/dashboard.html:769
+#: templates/booket/dashboard/dashboard.html:879
 msgid "No services configured"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:815
+#: templates/booket/dashboard/dashboard.html:925
 msgid "Enter at least 3 characters"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:826
+#: templates/booket/dashboard/dashboard.html:936
 #, fuzzy
 #| msgid "No debtor patients found"
 msgid "No clients found"
 msgstr "No debtor patients found"
 
-#: templates/booket/dashboard/dashboard.html:859
+#: templates/booket/dashboard/dashboard.html:969
 msgid "Provide phone or email to send OTP"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:875
+#: templates/booket/dashboard/dashboard.html:985
 msgid "OTP sent to client"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:896
+#: templates/booket/dashboard/dashboard.html:1006
 #, fuzzy
 #| msgid "Client Name"
 msgid "Client verified"
 msgstr "Client Name"
 
-#: templates/booket/dashboard/dashboard.html:910
+#: templates/booket/dashboard/dashboard.html:1020
 #, fuzzy
 #| msgid "Start time"
 msgid "Start time is required"
 msgstr "Start time"
 
-#: templates/booket/dashboard/dashboard.html:926
+#: templates/booket/dashboard/dashboard.html:1036
 #, fuzzy
 #| msgid "Please select at least one file."
 msgid "Please search and select a client first"
 msgstr "Please select at least one file."
 
-#: templates/booket/dashboard/dashboard.html:933
+#: templates/booket/dashboard/dashboard.html:1043
 msgid "Please verify the client via OTP first"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:938
+#: templates/booket/dashboard/dashboard.html:1048
 msgid "Client name is required"
 msgstr ""
 
-#: templates/booket/dashboard/history.html:20
-#: templates/booket/dashboard/provider_history.html:20
+#: templates/booket/dashboard/history.html:23
+#: templates/booket/dashboard/provider_history.html:23
 #: templates/booket/provider_edit.html:54 templates/dent/patient_list.html:26
 #: templates/dent/settings/finance_board.html:95
 #: templates/dent/settings/treatment_list.html:22
@@ -746,23 +802,23 @@ msgstr ""
 msgid "ID"
 msgstr "ID"
 
-#: templates/booket/dashboard/history.html:21
-#: templates/booket/dashboard/provider_history.html:21
+#: templates/booket/dashboard/history.html:24
+#: templates/booket/dashboard/provider_history.html:24
 msgid "CLIENT"
 msgstr "CLIENT"
 
-#: templates/booket/dashboard/history.html:22
-#: templates/booket/dashboard/provider_history.html:23
+#: templates/booket/dashboard/history.html:25
+#: templates/booket/dashboard/provider_history.html:26
 msgid "DATE"
 msgstr "DATE"
 
-#: templates/booket/dashboard/history.html:23
-#: templates/booket/dashboard/provider_history.html:24
+#: templates/booket/dashboard/history.html:26
+#: templates/booket/dashboard/provider_history.html:27
 msgid "TIME"
 msgstr "TIME"
 
-#: templates/booket/dashboard/history.html:24
-#: templates/booket/dashboard/provider_history.html:25
+#: templates/booket/dashboard/history.html:27
+#: templates/booket/dashboard/provider_history.html:28
 #: templates/dent/settings/service/list.html:40
 #: templates/dent/settings/user/list.html:42
 msgid "STATUS"
@@ -807,36 +863,50 @@ msgid "Off days"
 msgstr "Off days"
 
 #: templates/booket/dashboard/my_config.html:67
+#: templates/booket/dashboard/provider_statistics.html:442
+#: templates/booket/dashboard/statistics.html:370
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:16
 msgid "Mon"
 msgstr "Mon"
 
 #: templates/booket/dashboard/my_config.html:72
+#: templates/booket/dashboard/provider_statistics.html:442
+#: templates/booket/dashboard/statistics.html:370
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:17
 msgid "Tue"
 msgstr "Tue"
 
 #: templates/booket/dashboard/my_config.html:77
+#: templates/booket/dashboard/provider_statistics.html:442
+#: templates/booket/dashboard/statistics.html:370
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:18
 msgid "Wed"
 msgstr "Wed"
 
 #: templates/booket/dashboard/my_config.html:82
+#: templates/booket/dashboard/provider_statistics.html:443
+#: templates/booket/dashboard/statistics.html:371
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:19
 msgid "Thu"
 msgstr "Thu"
 
 #: templates/booket/dashboard/my_config.html:87
+#: templates/booket/dashboard/provider_statistics.html:443
+#: templates/booket/dashboard/statistics.html:371
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:20
 msgid "Fri"
 msgstr "Fri"
 
 #: templates/booket/dashboard/my_config.html:92
+#: templates/booket/dashboard/provider_statistics.html:443
+#: templates/booket/dashboard/statistics.html:371
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:21
 msgid "Sat"
 msgstr "Sat"
 
 #: templates/booket/dashboard/my_config.html:97
+#: templates/booket/dashboard/provider_statistics.html:443
+#: templates/booket/dashboard/statistics.html:371
 #: venv/lib/python3.12/site-packages/django/utils/dates.py:22
 msgid "Sun"
 msgstr "Sun"
@@ -874,11 +944,11 @@ msgstr "Service active"
 msgid "Provider Dashboard"
 msgstr "Provider Dashboard"
 
-#: templates/booket/dashboard/provider_dashboard.html:625
+#: templates/booket/dashboard/provider_dashboard.html:650
 msgid "Please select a server."
 msgstr "Please select a server."
 
-#: templates/booket/dashboard/provider_history.html:22
+#: templates/booket/dashboard/provider_history.html:25
 msgid "SERVER"
 msgstr "SERVER"
 
@@ -886,60 +956,223 @@ msgstr "SERVER"
 msgid "Provider Statistics"
 msgstr "Provider Statistics"
 
-#: templates/booket/dashboard/provider_statistics.html:12
-#: templates/booket/dashboard/statistics.html:12
+#: templates/booket/dashboard/provider_statistics.html:39
+#: templates/booket/dashboard/statistics.html:38
 msgid "From"
 msgstr "From"
 
-#: templates/booket/dashboard/provider_statistics.html:14
-#: templates/booket/dashboard/statistics.html:14
+#: templates/booket/dashboard/provider_statistics.html:41
+#: templates/booket/dashboard/statistics.html:40
 msgid "To"
 msgstr "To"
 
-#: templates/booket/dashboard/provider_statistics.html:29
-#: templates/booket/dashboard/statistics.html:29
-msgid "Top 5 Clients (Completed Appointments)"
-msgstr "Top 5 Clients (Completed Appointments)"
-
-#: templates/booket/dashboard/provider_statistics.html:33
-#: templates/booket/dashboard/provider_statistics.html:53
-#: templates/booket/dashboard/statistics.html:33
-#: templates/booket/dashboard/statistics.html:53
-msgid "Client Name"
-msgstr "Client Name"
-
-#: templates/booket/dashboard/provider_statistics.html:34
-#: templates/booket/dashboard/statistics.html:34
-msgid "Completed Appointments"
-msgstr "Completed Appointments"
+#: templates/booket/dashboard/provider_statistics.html:47
+#: templates/booket/dashboard/statistics.html:46
+#, fuzzy
+#| msgid "Date birth"
+msgid "Date presets"
+msgstr "Date birth"
 
 #: templates/booket/dashboard/provider_statistics.html:49
+#: templates/booket/dashboard/statistics.html:48
+msgid "Week"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:50
 #: templates/booket/dashboard/statistics.html:49
-msgid "Top 5 Clients (No-Show Appointments)"
-msgstr "Top 5 Clients (No-Show Appointments)"
+msgid "Month"
+msgstr ""
 
-#: templates/booket/dashboard/provider_statistics.html:54
-#: templates/booket/dashboard/statistics.html:54
-msgid "No-Show Appointments"
-msgstr "No-Show Appointments"
+#: templates/booket/dashboard/provider_statistics.html:69
+#: templates/booket/dashboard/statistics.html:69
+#, fuzzy
+#| msgid "All appointments"
+msgid "appointments"
+msgstr "All appointments"
 
-#: templates/booket/dashboard/provider_statistics.html:70
-#: templates/booket/dashboard/statistics.html:70
-msgid "Appointment Statistics"
-msgstr "Appointment Statistics"
+#: templates/booket/dashboard/provider_statistics.html:87
+#: templates/booket/dashboard/provider_statistics.html:353
+#: templates/booket/dashboard/provider_statistics.html:455
+#: templates/booket/dashboard/statistics.html:89
+#: templates/booket/dashboard/statistics.html:192
+#: templates/booket/dashboard/statistics.html:381
+msgid "No-Show"
+msgstr ""
 
-#: templates/booket/dashboard/provider_statistics.html:77
-#: templates/booket/dashboard/statistics.html:77
+#: templates/booket/dashboard/provider_statistics.html:97
+#: templates/booket/dashboard/provider_statistics.html:354
+#: templates/booket/dashboard/provider_statistics.html:456
+#: templates/booket/dashboard/statistics.html:100
+#: templates/booket/dashboard/statistics.html:382
+#, fuzzy
+#| msgid "Cancel"
+msgid "Cancelled"
+msgstr "Cancel"
+
+#: templates/booket/dashboard/provider_statistics.html:107
+#: templates/booket/dashboard/provider_statistics.html:457
+#: templates/booket/dashboard/statistics.html:111
+#: templates/booket/dashboard/statistics.html:383
+msgid "Rejected"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:116
+#: templates/booket/dashboard/statistics.html:121
+msgid "Revenue"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:118
+#: templates/booket/dashboard/statistics.html:123
+#, fuzzy
+#| msgid "Total Amount"
+msgid "paid amount"
+msgstr "Total Amount"
+
+#: templates/booket/dashboard/provider_statistics.html:129
+#: templates/booket/dashboard/statistics.html:134
+#, fuzzy
+#| msgid "Appointment confirmed!"
+msgid "Appointment Trends"
+msgstr "Appointment confirmed!"
+
+#: templates/booket/dashboard/provider_statistics.html:143
+#: templates/booket/dashboard/statistics.html:148
 msgid "Service Distribution"
 msgstr "Service Distribution"
 
-#: templates/booket/dashboard/provider_statistics.html:84
-msgid "Completed Appointments per Server"
-msgstr "Completed Appointments per Server"
+#: templates/booket/dashboard/provider_statistics.html:144
+#: templates/booket/dashboard/statistics.html:149
+#, fuzzy
+#| msgid "Completed"
+msgid "completed only"
+msgstr "Completed"
 
-#: templates/booket/dashboard/statistics.html:5
+#: templates/booket/dashboard/provider_statistics.html:152
+#: templates/booket/dashboard/statistics.html:157
+msgid "No service data for this period."
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:163
+msgid "New vs Returning Clients"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:171
+#: templates/booket/dashboard/provider_statistics.html:519
+#: templates/dent/settings/finance_board.html:57
+msgid "New clients"
+msgstr "New clients"
+
+#: templates/booket/dashboard/provider_statistics.html:175
+#, fuzzy
+#| msgid "New clients"
+msgid "Returning clients"
+msgstr "New clients"
+
+#: templates/booket/dashboard/provider_statistics.html:181
+msgid "No client data for this period."
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:197
+#: templates/booket/dashboard/statistics.html:168
+msgid "Busiest Days of Week"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:209
+#, fuzzy
+#| msgid "Completed Appointments"
+msgid "Completed Appointments by Staff"
+msgstr "Completed Appointments"
+
+#: templates/booket/dashboard/provider_statistics.html:217
+msgid "No staff data for this period."
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:232
+msgid "Top 5 Loyal Clients"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:242
+#: templates/booket/dashboard/statistics.html:217
+msgid "Visits"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:278
+#: templates/booket/dashboard/statistics.html:247
+msgid "No data for this period."
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:288
+#, fuzzy
+#| msgid "Top 5 Clients (No-Show Appointments)"
+msgid "Top 5 No-Show Clients"
+msgstr "Top 5 Clients (No-Show Appointments)"
+
+#: templates/booket/dashboard/provider_statistics.html:298
+#: templates/booket/dashboard/statistics.html:261
+msgid "No-Shows"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:330
+#: templates/booket/dashboard/statistics.html:287
+msgid "No no-shows this period!"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:343
+#, fuzzy
+#| msgid "Staff management"
+msgid "Staff Performance"
+msgstr "Staff management"
+
+#: templates/booket/dashboard/provider_statistics.html:350
+#, fuzzy
+#| msgid "Staff management"
+msgid "Staff Member"
+msgstr "Staff management"
+
+#: templates/booket/dashboard/provider_statistics.html:355
+msgid "Rate"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:356
+msgid "Revenue (paid)"
+msgstr ""
+
+#: templates/booket/dashboard/provider_statistics.html:485
+#: templates/booket/dashboard/provider_statistics.html:554
+#: templates/booket/dashboard/statistics.html:411
+#: templates/booket/dashboard/statistics.html:447
+#, fuzzy
+#| msgid "All appointments"
+msgid "Appointments"
+msgstr "All appointments"
+
+#: templates/booket/dashboard/provider_statistics.html:519
+#, fuzzy
+#| msgid "Remaining"
+msgid "Returning"
+msgstr "Remaining"
+
+#: templates/booket/dashboard/statistics.html:6
 msgid "Statistics"
 msgstr "Statistics"
+
+#: templates/booket/dashboard/statistics.html:185
+msgid "Top Loyal"
+msgstr ""
+
+#: templates/booket/dashboard/statistics.html:199
+#, fuzzy
+#| msgid "Debtor patients"
+msgid "Debtors"
+msgstr "Debtor patients"
+
+#: templates/booket/dashboard/statistics.html:301
+msgid "Debt"
+msgstr ""
+
+#: templates/booket/dashboard/statistics.html:327
+msgid "No outstanding debts this period!"
+msgstr ""
 
 #: templates/booket/login.html:54 templates/booket/login.html:69
 msgid "Login"
@@ -1453,10 +1686,6 @@ msgstr "Apply"
 msgid "Treatments"
 msgstr "Treatments"
 
-#: templates/dent/settings/finance_board.html:57
-msgid "New clients"
-msgstr "New clients"
-
 #: templates/dent/settings/finance_board.html:70
 msgid "Payments"
 msgstr "Payments"
@@ -1673,13 +1902,6 @@ msgstr "Diagnosis"
 #: templates/dent/treatment_info.html:56
 msgid "Tooth"
 msgstr "Tooth"
-
-#: templates/dent/treatement.html:751 templates/dent/treatment_edit.html:99
-#: templates/dent/treatment_history.html:41
-#: templates/dent/treatment_info.html:101
-#: templates/dent/treatment_print.html:113
-msgid "Paid"
-msgstr "Paid"
 
 #: templates/dent/treatement.html:754 templates/dent/treatment_edit.html:92
 #: templates/dent/treatment_info.html:95
@@ -3061,3 +3283,18 @@ msgstr ""
 #, python-brace-format
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
+
+#~ msgid "Top 5 Clients (Completed Appointments)"
+#~ msgstr "Top 5 Clients (Completed Appointments)"
+
+#~ msgid "Client Name"
+#~ msgstr "Client Name"
+
+#~ msgid "No-Show Appointments"
+#~ msgstr "No-Show Appointments"
+
+#~ msgid "Appointment Statistics"
+#~ msgstr "Appointment Statistics"
+
+#~ msgid "Completed Appointments per Server"
+#~ msgstr "Completed Appointments per Server"

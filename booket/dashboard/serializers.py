@@ -69,6 +69,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     services = AppointmentServiceSerializer(many=True, read_only=True, source="appointmentservice_set")
     server = ServerSerializer(many=False, read_only=True)
     files = AppointmentFileSerializer(many=True, read_only=True)
+    debt_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = Appointment
@@ -86,10 +87,17 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "status",
             "server",
             "files",
+            "total_amount",
+            "paid_amount",
+            "debt_amount",
+            "payment_note",
         ]
 
     def get_title(self, obj):
         return obj.client.full_name if obj.client else "Guest"
+
+    def get_debt_amount(self, obj):
+        return obj.total_amount - obj.paid_amount
 
 
 class AppointmentDtSerializer(serializers.ModelSerializer):
@@ -105,6 +113,7 @@ class AppointmentDtSerializer(serializers.ModelSerializer):
     time_slot = serializers.SerializerMethodField()
     services = AppointmentServiceSerializer(many=True, read_only=True, source="appointmentservice_set")
     files = AppointmentFileSerializer(many=True, read_only=True)
+    debt_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = Appointment
@@ -123,7 +132,14 @@ class AppointmentDtSerializer(serializers.ModelSerializer):
             "server_name",
             "services",
             "files",
+            "total_amount",
+            "paid_amount",
+            "debt_amount",
+            "payment_note",
         ]
+
+    def get_debt_amount(self, obj):
+        return obj.total_amount - obj.paid_amount
 
     def get_time_slot(self, obj):
         if not obj.start_datetime or not obj.end_datetime:

@@ -5,7 +5,8 @@ from datetime import timedelta, datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Prefetch, Count
+from django.db.models import Prefetch, Count, Sum, Q, Min
+from django.db.models.functions import TruncDate, ExtractIsoWeekDay
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -222,107 +223,168 @@ def history(request):
 
 @login_required
 def statistics(request):
-    STATUSES = ["COMPLETED", "CANCELLED", "REJECTED", "NO_SHOW"]
+    TERMINAL_STATUSES = ["COMPLETED", "NO_SHOW", "CANCELLED", "REJECTED"]
     server = request.user.server_user
-    if request.method == "GET":
-        start_date_str = request.GET.get("start_date")
-        end_date_str = request.GET.get("end_date")
+    lang = getattr(request, 'LANGUAGE_CODE', 'en')
+
+    start_date_str = request.GET.get("start_date")
+    end_date_str = request.GET.get("end_date")
+    try:
         if start_date_str and end_date_str:
             start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
             end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
         else:
-            today = timezone.now().date()
-            first_day_of_month = today.replace(day=1)
-            start_date = first_day_of_month
-            end_date = today
+            raise ValueError
+    except ValueError:
+        today = timezone.now().date()
+        start_date = today.replace(day=1)
+        end_date = today
 
-            # Ensure start_date is not after end_date
-        if start_date > end_date:
-            start_date, end_date = end_date, start_date
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
 
-        # Get appointments within the date range and filter by status
-        appointments = Appointment.objects.filter(
-            server=server,
-            start_datetime__date__gte=start_date,
-            start_datetime__date__lte=end_date,
-            status__in=STATUSES
+    base_qs = Appointment.objects.filter(
+        server=server,
+        start_datetime__date__range=[start_date, end_date],
+        status__in=TERMINAL_STATUSES,
+    )
+
+    # ── KPI aggregates — single DB query ───────────────────────────────
+    kpi = base_qs.aggregate(
+        total=Count('id'),
+        completed=Count('id', filter=Q(status='COMPLETED')),
+        no_show=Count('id', filter=Q(status='NO_SHOW')),
+        cancelled=Count('id', filter=Q(status='CANCELLED')),
+        rejected=Count('id', filter=Q(status='REJECTED')),
+        total_paid=Sum('paid_amount', filter=Q(status='COMPLETED')),
+    )
+    total = kpi['total'] or 0
+    completed = kpi['completed'] or 0
+    no_show = kpi['no_show'] or 0
+    cancelled = kpi['cancelled'] or 0
+    rejected = kpi['rejected'] or 0
+    total_paid = int(kpi['total_paid'] or 0)
+
+    def pct(part, whole):
+        return f"{round(part / whole * 100, 1):.1f}" if whole else "0.0"
+
+    # ── Trend time-series — single aggregated DB query ─────────────────
+    trend_qs = (
+        base_qs
+        .annotate(appt_date=TruncDate('start_datetime'))
+        .values('appt_date', 'status')
+        .annotate(count=Count('id'))
+        .order_by('appt_date', 'status')
+    )
+    trend = defaultdict(lambda: dict.fromkeys(TERMINAL_STATUSES, 0))
+    for row in trend_qs:
+        trend[row['appt_date'].strftime("%Y-%m-%d")][row['status']] = row['count']
+
+    labels, completed_counts, no_show_counts, cancelled_counts, rejected_counts = [], [], [], [], []
+    cur = start_date
+    while cur <= end_date:
+        d = cur.strftime("%Y-%m-%d")
+        labels.append(d)
+        completed_counts.append(trend[d]['COMPLETED'])
+        no_show_counts.append(trend[d]['NO_SHOW'])
+        cancelled_counts.append(trend[d]['CANCELLED'])
+        rejected_counts.append(trend[d]['REJECTED'])
+        cur += timedelta(days=1)
+
+    # ── Service distribution — single DB query ─────────────────────────
+    service_qs = (
+        AppointmentService.objects
+        .filter(
+            appointment__server=server,
+            appointment__start_datetime__date__range=[start_date, end_date],
+            appointment__status='COMPLETED',
         )
+        .values('service__name', 'service__name_uz', 'service__name_ru')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
 
-        # Group appointments by date and status
-        data = defaultdict(lambda: {status: 0 for status in STATUSES})
+    def svc_label(row):
+        if lang == 'uz':
+            return row['service__name_uz'] or row['service__name'] or '—'
+        if lang == 'ru':
+            return row['service__name_ru'] or row['service__name'] or '—'
+        return row['service__name'] or '—'
 
-        for appointment in appointments:
-            date = appointment.start_datetime.date()
-            data[date][appointment.status] += 1
+    service_labels = [svc_label(r) for r in service_qs]
+    service_data = [r['count'] for r in service_qs]
 
-        # Format data for Chart.js
-        labels = []
-        completed_counts = []
-        rejected_counts = []
-        no_show_counts = []
-        cancelled_counts = []
+    GUEST_CLIENT_ID = 6
+    # ── Top clients — one query per status ─────────────────────────────
+    top_completed_clients = list(
+        Appointment.objects
+        .filter(server=server, start_datetime__date__range=[start_date, end_date],
+                status='COMPLETED', client__isnull=False)
+        .exclude(client_id=GUEST_CLIENT_ID)
+        .values('client__full_name', 'client__phone_number', 'client__email')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:5]
+    )
+    top_no_show_clients = list(
+        Appointment.objects
+        .filter(server=server, start_datetime__date__range=[start_date, end_date],
+                status='NO_SHOW', client__isnull=False)
+        .exclude(client_id=GUEST_CLIENT_ID)
+        .values('client__full_name', 'client__phone_number', 'client__email')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:5]
+    )
+    top_debtor_clients = list(
+        Appointment.objects
+        .filter(server=server, start_datetime__date__range=[start_date, end_date],
+                status='COMPLETED', client__isnull=False)
+        .exclude(client_id=GUEST_CLIENT_ID)
+        .values('client__full_name', 'client__phone_number', 'client__email')
+        .annotate(total_debt=Sum('total_amount') - Sum('paid_amount'))
+        .filter(total_debt__gt=0)
+        .order_by('-total_debt')[:5]
+    )
 
-        current_date = start_date
-        while current_date <= end_date:
-            labels.append(current_date.strftime("%Y-%m-%d"))
-            completed_counts.append(data[current_date]["COMPLETED"])
-            rejected_counts.append(data[current_date]["REJECTED"])
-            no_show_counts.append(data[current_date]["NO_SHOW"])
-            cancelled_counts.append(data[current_date]["CANCELLED"])
-            current_date += timedelta(days=1)
+    # ── Day-of-week distribution — single DB query — 1=Mon … 7=Sun ────
+    dow_qs = (
+        base_qs
+        .annotate(weekday=ExtractIsoWeekDay('start_datetime'))
+        .values('weekday')
+        .annotate(count=Count('id'))
+        .order_by('weekday')
+    )
+    dow_map = {r['weekday']: r['count'] for r in dow_qs}
+    dow_data = [dow_map.get(i, 0) for i in range(1, 8)]
 
-        # =================== Service Count for Pie Chart =================== #
-        service_counts = (
-            AppointmentService.objects
-            .filter(appointment__start_datetime__date__range=[start_date, end_date],
-                    appointment__server=server,
-                    appointment__status="COMPLETED")
-            .values('service__name')
-            .annotate(count=Count('id'))
-            .order_by('-count')  # Order by highest count
-        )
-
-        # =================== Top 5 Clients by Completed Appointments =================== #
-        top_completed_clients = (
-            Appointment.objects
-            .filter(start_datetime__date__range=[start_date, end_date],
-                    status="COMPLETED",
-                    server=server)
-            .values("client__full_name")
-            .annotate(count=Count("id"))
-            .order_by("-count")[:5]  # Top 5
-        )
-
-        # =================== Top 5 Clients by No-Show Appointments =================== #
-        top_no_show_clients = (
-            Appointment.objects
-            .filter(start_datetime__date__range=[start_date, end_date],
-                    status="NO_SHOW",
-                    server=server)
-            .values("client__full_name")
-            .annotate(count=Count("id"))
-            .order_by("-count")[:5]  # Top 5
-        )
-
-        # Prepare pie chart data
-        service_labels = [entry["service__name"] for entry in service_counts]
-        service_data = [entry["count"] for entry in service_counts]
-
-        context_data = {
-            "start_date": start_date,
-            "end_date": end_date,
-            "labels": json.dumps(labels),
-            "completed_counts": json.dumps(completed_counts),
-            "rejected_counts": json.dumps(rejected_counts),
-            "no_show_counts": json.dumps(no_show_counts),
-            "cancelled_counts": json.dumps(cancelled_counts),
-            "service_labels": json.dumps(service_labels),
-            "service_data": json.dumps(service_data),
-            "top_completed_clients": top_completed_clients,
-            "top_no_show_clients": top_no_show_clients,
-        }
-
-        return render(request, "booket/dashboard/statistics.html", context=context_data)
+    context_data = {
+        'start_date': start_date,
+        'end_date': end_date,
+        # KPIs
+        'kpi_total': total,
+        'kpi_completed': completed,
+        'kpi_no_show': no_show,
+        'kpi_cancelled': cancelled,
+        'kpi_rejected': rejected,
+        'kpi_total_paid': f"{total_paid:,}",
+        'rate_completed': pct(completed, total),
+        'rate_no_show': pct(no_show, total),
+        'rate_cancelled': pct(cancelled, total),
+        # Charts
+        'labels': json.dumps(labels),
+        'completed_counts': json.dumps(completed_counts),
+        'no_show_counts': json.dumps(no_show_counts),
+        'cancelled_counts': json.dumps(cancelled_counts),
+        'rejected_counts': json.dumps(rejected_counts),
+        'service_labels': json.dumps(service_labels),
+        'service_data': json.dumps(service_data),
+        'has_service_data': bool(service_data),
+        'dow_data': json.dumps(dow_data),
+        # Tables
+        'top_completed_clients': top_completed_clients,
+        'top_no_show_clients': top_no_show_clients,
+        'top_debtor_clients': top_debtor_clients,
+    }
+    return render(request, 'booket/dashboard/statistics.html', context=context_data)
 
 
 @login_required
@@ -344,104 +406,229 @@ def provider_history(request):
 
 @login_required
 def provider_statistics(request):
-    provider = Provider.objects.get(owner=request.user)
-    if request.method == "GET":
-        start_date_str = request.GET.get("start_date")
-        end_date_str = request.GET.get("end_date")
+    TERMINAL_STATUSES = ["COMPLETED", "NO_SHOW", "CANCELLED", "REJECTED"]
+    provider = get_object_or_404(Provider, owner=request.user)
+    lang = getattr(request, 'LANGUAGE_CODE', 'en')
+
+    start_date_str = request.GET.get("start_date")
+    end_date_str = request.GET.get("end_date")
+    try:
         if start_date_str and end_date_str:
             start_date = datetime.strptime(start_date_str, "%Y-%m-%d").date()
             end_date = datetime.strptime(end_date_str, "%Y-%m-%d").date()
         else:
-            today = timezone.now().date()
-            first_day_of_month = today.replace(day=1)
-            start_date = first_day_of_month
-            end_date = today
+            raise ValueError
+    except ValueError:
+        today = timezone.now().date()
+        start_date = today.replace(day=1)
+        end_date = today
 
-            # Ensure start_date is not after end_date
-        if start_date > end_date:
-            start_date, end_date = end_date, start_date
-        provider_server_ids = ProviderServer.objects.filter(provider=provider).values("server_id")
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
 
-        completed_appointments = (
+    # Subquery — no Python evaluation needed here
+    provider_server_ids = ProviderServer.objects.filter(provider=provider).values_list('server_id', flat=True)
+
+    base_qs = Appointment.objects.filter(
+        server_id__in=provider_server_ids,
+        start_datetime__date__range=[start_date, end_date],
+        status__in=TERMINAL_STATUSES,
+    )
+
+    # ── KPI aggregates — single DB query ───────────────────────────────
+    kpi = base_qs.aggregate(
+        total=Count('id'),
+        completed=Count('id', filter=Q(status='COMPLETED')),
+        no_show=Count('id', filter=Q(status='NO_SHOW')),
+        cancelled=Count('id', filter=Q(status='CANCELLED')),
+        rejected=Count('id', filter=Q(status='REJECTED')),
+        total_paid=Sum('paid_amount', filter=Q(status='COMPLETED')),
+    )
+    total = kpi['total'] or 0
+    completed = kpi['completed'] or 0
+    no_show = kpi['no_show'] or 0
+    cancelled = kpi['cancelled'] or 0
+    rejected = kpi['rejected'] or 0
+    total_paid = int(kpi['total_paid'] or 0)
+
+    def pct(part, whole):
+        return f"{round(part / whole * 100, 1):.1f}" if whole else "0.0"
+
+    # ── Trend time-series — single aggregated DB query ─────────────────
+    trend_qs = (
+        base_qs
+        .annotate(appt_date=TruncDate('start_datetime'))
+        .values('appt_date', 'status')
+        .annotate(count=Count('id'))
+        .order_by('appt_date', 'status')
+    )
+    trend = defaultdict(lambda: dict.fromkeys(TERMINAL_STATUSES, 0))
+    for row in trend_qs:
+        trend[row['appt_date'].strftime("%Y-%m-%d")][row['status']] = row['count']
+
+    labels, completed_counts, no_show_counts, cancelled_counts, rejected_counts = [], [], [], [], []
+    cur = start_date
+    while cur <= end_date:
+        d = cur.strftime("%Y-%m-%d")
+        labels.append(d)
+        completed_counts.append(trend[d]['COMPLETED'])
+        no_show_counts.append(trend[d]['NO_SHOW'])
+        cancelled_counts.append(trend[d]['CANCELLED'])
+        rejected_counts.append(trend[d]['REJECTED'])
+        cur += timedelta(days=1)
+
+    # ── Service distribution — single DB query ─────────────────────────
+    service_qs = (
+        AppointmentService.objects
+        .filter(
+            appointment__server_id__in=provider_server_ids,
+            appointment__start_datetime__date__range=[start_date, end_date],
+            appointment__status='COMPLETED',
+        )
+        .values('service__name', 'service__name_uz', 'service__name_ru')
+        .annotate(count=Count('id'))
+        .order_by('-count')
+    )
+
+    def svc_label(row):
+        if lang == 'uz':
+            return row['service__name_uz'] or row['service__name'] or '—'
+        if lang == 'ru':
+            return row['service__name_ru'] or row['service__name'] or '—'
+        return row['service__name'] or '—'
+
+    service_labels = [svc_label(r) for r in service_qs]
+    service_data = [r['count'] for r in service_qs]
+
+    GUEST_CLIENT_ID = 6
+    # ── Top clients — one query per status ─────────────────────────────
+    top_completed_clients = list(
+        Appointment.objects
+        .filter(server_id__in=provider_server_ids,
+                start_datetime__date__range=[start_date, end_date],
+                status='COMPLETED', client__isnull=False)
+        .exclude(client_id=GUEST_CLIENT_ID)
+        .values('client__full_name', 'client__phone_number', 'client__email')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:5]
+    )
+    top_no_show_clients = list(
+        Appointment.objects
+        .filter(server_id__in=provider_server_ids,
+                start_datetime__date__range=[start_date, end_date],
+                status='NO_SHOW', client__isnull=False)
+        .exclude(client_id=GUEST_CLIENT_ID)
+        .values('client__full_name', 'client__phone_number', 'client__email')
+        .annotate(count=Count('id'))
+        .order_by('-count')[:5]
+    )
+
+    # ── Staff performance — single aggregated DB query ─────────────────
+    staff_qs = (
+        base_qs
+        .values('server__id', 'server__user__first_name', 'server__user__last_name')
+        .annotate(
+            total=Count('id'),
+            completed=Count('id', filter=Q(status='COMPLETED')),
+            no_show=Count('id', filter=Q(status='NO_SHOW')),
+            cancelled=Count('id', filter=Q(status='CANCELLED')),
+            total_paid=Sum('paid_amount', filter=Q(status='COMPLETED')),
+        )
+        .order_by('-completed')
+    )
+    staff_performance = []
+    server_labels = []
+    server_data = []
+    for s in staff_qs:
+        s_total = s['total'] or 0
+        s_completed = s['completed'] or 0
+        name = f"{s['server__user__first_name'] or ''} {s['server__user__last_name'] or ''}".strip() or '—'
+        rate_num = round(s_completed / s_total * 100, 1) if s_total else 0.0
+        staff_performance.append({
+            'name': name,
+            'total': s_total,
+            'completed': s_completed,
+            'no_show': s['no_show'] or 0,
+            'cancelled': s['cancelled'] or 0,
+            'completion_rate': pct(s_completed, s_total),
+            'completion_rate_num': rate_num,
+            'total_paid': f"{int(s['total_paid'] or 0):,}",
+        })
+        server_labels.append(name)
+        server_data.append(s_completed)
+
+    # ── New vs returning clients — two targeted queries ─────────────────
+    local_tz = timezone.get_current_timezone()
+    # Step 1: distinct non-guest client IDs who had any terminal appointment in range
+    client_id_subquery = (
+        base_qs
+        .filter(client__isnull=False)
+        .exclude(client_id=GUEST_CLIENT_ID)
+        .values('client_id')
+        .distinct()
+    )
+    total_unique_clients = client_id_subquery.count()
+
+    if total_unique_clients:
+        # Step 2: for each of those clients find their very first visit to this provider.
+        # Use astimezone to compare against local dates (USE_TZ=True stores in UTC).
+        first_visits = list(
             Appointment.objects
-            .filter(start_datetime__date__range=[start_date, end_date],
-                    status="COMPLETED",
-                    server_id__in=provider_server_ids)
-            .values("start_datetime__date")
-            .annotate(count=Count("id"))
-            .order_by("start_datetime__date")
+            .filter(server_id__in=provider_server_ids, client_id__in=client_id_subquery)
+            .values('client_id')
+            .annotate(first_visit=Min('start_datetime'))
         )
-
-        completed_counts = {entry["start_datetime__date"].strftime("%Y-%m-%d"): entry["count"] for entry in completed_appointments}
-
-        # Generate labels for the date range
-        labels = []
-        current_date = start_date
-        while current_date <= end_date:
-            labels.append(current_date.strftime("%Y-%m-%d"))
-            current_date += timedelta(days=1)
-
-        # =================== Top 5 Clients by Completed Appointments =================== #
-        top_completed_clients = (
-            Appointment.objects
-            .filter(start_datetime__date__range=[start_date, end_date],
-                    status="COMPLETED",
-                    server_id__in=provider_server_ids)
-            .values("client__full_name")
-            .annotate(count=Count("id"))
-            .order_by("-count")[:5]  # Top 5
+        new_clients_count = sum(
+            1 for c in first_visits
+            if start_date <= c['first_visit'].astimezone(local_tz).date() <= end_date
         )
+    else:
+        new_clients_count = 0
+    returning_clients_count = total_unique_clients - new_clients_count
 
-        # =================== Top 5 Clients by No-Show Appointments =================== #
-        top_no_show_clients = (
-            Appointment.objects
-            .filter(start_datetime__date__range=[start_date, end_date],
-                    status="NO_SHOW",
-                    server_id__in=provider_server_ids)
-            .values("client__full_name")
-            .annotate(count=Count("id"))
-            .order_by("-count")[:5]  # Top 5
-        )
+    # ── Day-of-week distribution — single DB query — 1=Mon … 7=Sun ────
+    dow_qs = (
+        base_qs
+        .annotate(weekday=ExtractIsoWeekDay('start_datetime'))
+        .values('weekday')
+        .annotate(count=Count('id'))
+        .order_by('weekday')
+    )
+    dow_map = {r['weekday']: r['count'] for r in dow_qs}
+    dow_data = [dow_map.get(i, 0) for i in range(1, 8)]
 
-        # =================== Service Count for Pie Chart =================== #
-        service_counts = (
-            AppointmentService.objects
-            .filter(appointment__start_datetime__date__range=[start_date, end_date],
-                    appointment__server_id__in=provider_server_ids,
-                    appointment__status="COMPLETED")
-            .values('service__name')
-            .annotate(count=Count('id'))
-            .order_by('-count')  # Order by highest count
-        )
-        # Prepare pie chart data
-        service_labels = [entry["service__name"] for entry in service_counts]
-        service_data = [entry["count"] for entry in service_counts]
-
-        # =================== Server Count for Bar Chart =================== #
-        server_counts = (
-            Appointment.objects
-            .filter(start_datetime__date__range=[start_date, end_date],
-                    status="COMPLETED",
-                    server_id__in=provider_server_ids)
-            .values("server__user__first_name", "server__user__last_name", "server")
-            .annotate(count=Count("id"))
-            .order_by("server")
-        )
-
-        server_labels = [f'{entry["server__user__first_name"]} {entry["server__user__last_name"]}' for entry in server_counts]
-        server_data = [entry["count"] for entry in server_counts]
-
-        context_data = {
-            "start_date": start_date,
-            "end_date": end_date,
-            "labels": json.dumps(labels),
-            "service_labels": json.dumps(service_labels),
-            "service_data": json.dumps(service_data),
-            "total_completed": len(completed_counts),
-            "completed_counts": json.dumps(completed_counts),
-            "top_completed_clients": top_completed_clients,
-            "top_no_show_clients": top_no_show_clients,
-            "server_labels": json.dumps(server_labels),
-            "server_data": json.dumps(server_data),
-        }
-        return render(request, "booket/dashboard/provider_statistics.html", context=context_data)
+    context_data = {
+        'start_date': start_date,
+        'end_date': end_date,
+        # KPIs
+        'kpi_total': total,
+        'kpi_completed': completed,
+        'kpi_no_show': no_show,
+        'kpi_cancelled': cancelled,
+        'kpi_rejected': rejected,
+        'kpi_total_paid': f"{total_paid:,}",
+        'rate_completed': pct(completed, total),
+        'rate_no_show': pct(no_show, total),
+        'rate_cancelled': pct(cancelled, total),
+        # Clients
+        'new_clients': new_clients_count,
+        'returning_clients': returning_clients_count,
+        'total_unique_clients': total_unique_clients,
+        # Charts
+        'labels': json.dumps(labels),
+        'completed_counts': json.dumps(completed_counts),
+        'no_show_counts': json.dumps(no_show_counts),
+        'cancelled_counts': json.dumps(cancelled_counts),
+        'rejected_counts': json.dumps(rejected_counts),
+        'service_labels': json.dumps(service_labels),
+        'service_data': json.dumps(service_data),
+        'has_service_data': bool(service_data),
+        'server_labels': json.dumps(server_labels),
+        'server_data': json.dumps(server_data),
+        'dow_data': json.dumps(dow_data),
+        # Tables
+        'staff_performance': staff_performance,
+        'top_completed_clients': top_completed_clients,
+        'top_no_show_clients': top_no_show_clients,
+    }
+    return render(request, 'booket/dashboard/provider_statistics.html', context=context_data)
