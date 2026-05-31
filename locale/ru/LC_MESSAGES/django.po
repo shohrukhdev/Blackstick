@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 18:30+0500\n"
+"POT-Creation-Date: 2026-05-31 15:08+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,6 +71,7 @@ msgstr "Наши специалисты"
 
 #: templates/booket/client/index.html:248 templates/booket/client/main.html:212
 #: templates/booket/client/server_detail.html:229
+#: templates/landing/index.html:1028
 msgid "Book appointment"
 msgstr "Записаться"
 
@@ -415,6 +416,7 @@ msgstr "Информация не предоставлена."
 
 #: templates/booket/container.html:36
 #: templates/booket/dashboard/dashboard.html:5
+#: templates/landing/index.html:1260
 msgid "Dashboard"
 msgstr "Панель управления"
 
@@ -1940,6 +1942,824 @@ msgstr "Финансы"
 msgid "Reception"
 msgstr "Приём"
 
+#: templates/landing/index.html:9
+msgid ""
+"Online booking system for salons, clinics and studios in Uzbekistan. Free "
+"for 30 days. No credit card required."
+msgstr ""
+"Система онлайн-записи для салонов, клиник и студий в Узбекистане. 30 дней "
+"бесплатно. Карта не нужна."
+
+# Landing page translations
+#: templates/landing/index.html:10 templates/landing/index.html:12
+msgid "Online booking for your business"
+msgstr "Онлайн-запись для вашего бизнеса"
+
+#: templates/landing/index.html:11
+msgid ""
+"Let clients book themselves 24/7. SMS reminders. Staff schedules. Analytics."
+msgstr ""
+"Клиенты записываются сами 24/7. SMS-напоминания. Расписание сотрудников. "
+"Аналитика."
+
+#: templates/landing/index.html:948 templates/landing/index.html:1162
+#: templates/landing/index.html:1587
+msgid "Features"
+msgstr "Возможности"
+
+#: templates/landing/index.html:949 templates/landing/index.html:1589
+msgid "How it works"
+msgstr "Как работает"
+
+#: templates/landing/index.html:950 templates/landing/index.html:1368
+#: templates/landing/index.html:1588
+msgid "Pricing"
+msgstr "Цены"
+
+#: templates/landing/index.html:962 templates/landing/index.html:1555
+#: templates/landing/index.html:1594
+msgid "Log in"
+msgstr "Войти"
+
+#: templates/landing/index.html:977
+msgid "Built for Uzbekistan businesses"
+msgstr "Создано для бизнеса в Узбекистане"
+
+#: templates/landing/index.html:980
+msgid "Let clients book themselves"
+msgstr "Пусть клиенты записываются сами"
+
+#: templates/landing/index.html:981
+msgid "you focus on your work"
+msgstr "вы занимайтесь своим делом"
+
+# Landing page — business types & QR section
+#: templates/landing/index.html:984
+msgid ""
+"Online booking system for salons, clinics, studios and any appointment-based "
+"business. Works 24/7, sends SMS reminders, shows your analytics."
+msgstr ""
+"Система онлайн-записи для салонов, клиник, студий и любого бизнеса, "
+"работающего по записи. Работает 24/7, отправляет SMS-напоминания, показывает "
+"аналитику."
+
+#: templates/landing/index.html:988
+msgid "Start free for 30 days"
+msgstr "Начать бесплатно на 30 дней"
+
+#: templates/landing/index.html:991
+msgid "See how it works"
+msgstr "Посмотреть, как работает"
+
+#: templates/landing/index.html:995
+msgid "No credit card required"
+msgstr "Карта не нужна"
+
+#: templates/landing/index.html:996
+msgid "5-minute setup"
+msgstr "Настройка за 5 минут"
+
+#: templates/landing/index.html:997
+msgid "Support in Uzbek"
+msgstr "Поддержка на узбекском"
+
+#: templates/landing/index.html:1014
+msgid "Choose service"
+msgstr "Выберите услугу"
+
+#: templates/landing/index.html:1021
+msgid "Choose time"
+msgstr "Выберите время"
+
+#: templates/landing/index.html:1045
+msgid "Always available"
+msgstr "Всегда доступно"
+
+#: templates/landing/index.html:1051
+msgid "Languages (UZ, RU, EN)"
+msgstr "Языки (UZ, RU, EN)"
+
+#: templates/landing/index.html:1057
+msgid "Free trial days"
+msgstr "Дней бесплатно"
+
+#: templates/landing/index.html:1063
+msgid "Setup time"
+msgstr "Время настройки"
+
+#: templates/landing/index.html:1073
+msgid "Hair salons"
+msgstr "Салоны красоты"
+
+#: templates/landing/index.html:1074
+msgid "Dental clinics"
+msgstr "Стоматологические клиники"
+
+#: templates/landing/index.html:1075
+msgid "Beauty studios"
+msgstr "Студии красоты"
+
+#: templates/landing/index.html:1076
+msgid "Medical clinics"
+msgstr "Медицинские клиники"
+
+#: templates/landing/index.html:1077
+msgid "Fitness trainers"
+msgstr "Фитнес-тренеры"
+
+#: templates/landing/index.html:1078
+msgid "Nail studios"
+msgstr "Nail-студии"
+
+#: templates/landing/index.html:1079
+msgid "Photo studios"
+msgstr "Фото-студии"
+
+#: templates/landing/index.html:1080
+msgid "Tattoo & piercing"
+msgstr "Тату и пирсинг"
+
+#: templates/landing/index.html:1081
+msgid "And more..."
+msgstr "И другие..."
+
+#: templates/landing/index.html:1089
+msgid "The problem"
+msgstr "Проблема"
+
+#: templates/landing/index.html:1090
+msgid "Do these problems sound familiar?"
+msgstr "Эти проблемы вам знакомы?"
+
+#: templates/landing/index.html:1091
+msgid ""
+"Most salons and clinics face these daily challenges. Every missed call is a "
+"lost client."
+msgstr ""
+"Большинство салонов и клиник сталкиваются с этим ежедневно. Каждый "
+"пропущенный звонок — потерянный клиент."
+
+#: templates/landing/index.html:1097
+msgid "Non-stop phone calls"
+msgstr "Беспрерывные звонки"
+
+#: templates/landing/index.html:1098
+msgid ""
+"While serving a client, the phone rings again. If you don't answer, the "
+"booking is lost. If you do, your work stops."
+msgstr ""
+"Во время работы с клиентом телефон снова звонит. Не ответите — запись "
+"потеряна. Ответите — работа останавливается."
+
+#: templates/landing/index.html:1104
+msgid "Double bookings"
+msgstr "Двойные записи"
+
+#: templates/landing/index.html:1105
+msgid ""
+"Tracking appointments in a notebook or WhatsApp always leads to mistakes. "
+"Two clients booked at the same time."
+msgstr ""
+"Отслеживание записей в тетради или WhatsApp всегда ведёт к ошибкам. Двое "
+"клиентов на одно время."
+
+#: templates/landing/index.html:1111
+msgid "Clients who don't show up"
+msgstr "Клиенты, которые не приходят"
+
+#: templates/landing/index.html:1112
+msgid ""
+"The client forgot, didn't come. You're left with empty time you can't "
+"recover. No reminder was sent."
+msgstr ""
+"Клиент забыл, не пришёл. У вас пустое время, которое уже не вернуть. "
+"Напоминание не было отправлено."
+
+#: templates/landing/index.html:1123
+msgid "The solution"
+msgstr "Решение"
+
+#: templates/landing/index.html:1124
+msgid "Start in 3 simple steps"
+msgstr "Начните за 3 простых шага"
+
+#: templates/landing/index.html:1125
+msgid "From registration to your first online booking — under 15 minutes."
+msgstr "От регистрации до первой онлайн-записи — менее 15 минут."
+
+#: templates/landing/index.html:1132
+msgid "Create your business"
+msgstr "Создайте свой бизнес"
+
+#: templates/landing/index.html:1133
+msgid ""
+"Add your salon or clinic name, staff members, services and prices. All in "
+"one place."
+msgstr ""
+"Добавьте название салона или клиники, сотрудников, услуги и цены. Всё в "
+"одном месте."
+
+#: templates/landing/index.html:1141
+msgid "Share your link"
+msgstr "Поделитесь ссылкой"
+
+#: templates/landing/index.html:1142
+msgid ""
+"Send your personal booking link to clients via Instagram, WhatsApp, or add "
+"it to your profile bio."
+msgstr ""
+"Отправьте вашу личную ссылку для записи через Instagram, WhatsApp или "
+"добавьте в описание профиля."
+
+#: templates/landing/index.html:1150
+msgid "Receive bookings"
+msgstr "Принимайте записи"
+
+#: templates/landing/index.html:1151
+msgid ""
+"Clients book themselves, you get a notification. SMS reminders are sent "
+"automatically. No calls needed."
+msgstr ""
+"Клиенты записываются сами, вы получаете уведомление. SMS-напоминания "
+"отправляются автоматически. Звонки не нужны."
+
+#: templates/landing/index.html:1163
+msgid "Everything you need in one place"
+msgstr "Всё необходимое в одном месте"
+
+#: templates/landing/index.html:1164
+msgid ""
+"Built for real businesses in Uzbekistan. Nothing unnecessary, nothing "
+"missing."
+msgstr ""
+"Создано для реального бизнеса в Узбекистане. Ничего лишнего, ничего не "
+"хватает."
+
+#: templates/landing/index.html:1170
+msgid "24/7 Online booking"
+msgstr "Онлайн-запись 24/7"
+
+#: templates/landing/index.html:1171
+msgid "Clients can book at midnight. You sleep — your business keeps working."
+msgstr "Клиенты могут записаться в полночь. Вы спите — бизнес работает."
+
+#: templates/landing/index.html:1177
+msgid "SMS reminders"
+msgstr "SMS-напоминания"
+
+#: templates/landing/index.html:1178
+msgid "Automatic SMS before each appointment. No-shows drop significantly."
+msgstr ""
+"Автоматическое SMS перед каждой записью. Количество неявок резко снижается."
+
+#: templates/landing/index.html:1184
+msgid "Staff schedule management"
+msgstr "Управление расписанием сотрудников"
+
+#: templates/landing/index.html:1185
+msgid ""
+"Manage each staff member's schedule, working hours, and days off "
+"individually."
+msgstr ""
+"Управляйте расписанием каждого сотрудника, рабочими часами и выходными "
+"индивидуально."
+
+#: templates/landing/index.html:1191
+msgid "Analytics & reports"
+msgstr "Аналитика и отчёты"
+
+#: templates/landing/index.html:1192
+msgid ""
+"Revenue, popular services, top clients, staff performance — see it all at a "
+"glance."
+msgstr ""
+"Выручка, популярные услуги, лучшие клиенты, показатели сотрудников — всё с "
+"первого взгляда."
+
+#: templates/landing/index.html:1198
+msgid "Client history"
+msgstr "История клиента"
+
+#: templates/landing/index.html:1199
+msgid ""
+"Full visit history, notes, and files per client. Know your clients better."
+msgstr ""
+"Полная история посещений, заметки и файлы по каждому клиенту. Знайте своих "
+"клиентов лучше."
+
+#: templates/landing/index.html:1205 templates/landing/index.html:1409
+msgid "Payment tracking"
+msgstr "Отслеживание оплат"
+
+#: templates/landing/index.html:1206
+msgid ""
+"Track total charged, amount paid, and outstanding debts per appointment."
+msgstr ""
+"Отслеживайте итоговую сумму, оплаченную сумму и задолженности по каждой "
+"записи."
+
+#: templates/landing/index.html:1230
+msgid "QR code & links"
+msgstr "QR-код и ссылки"
+
+#: templates/landing/index.html:1231
+msgid "Your own link — shareable everywhere"
+msgstr "Ваша ссылка — делитесь везде"
+
+#: templates/landing/index.html:1233
+msgid ""
+"Every provider gets a unique personal booking page. Generate a QR code and "
+"put it anywhere your clients are — online and offline."
+msgstr ""
+"Каждый бизнес получает уникальную страницу для записи. Сгенерируйте QR-код и "
+"разместите его везде, где есть ваши клиенты — онлайн и офлайн."
+
+#: templates/landing/index.html:1236
+msgid "Business cards"
+msgstr "Визитные карточки"
+
+#: templates/landing/index.html:1237
+msgid "Instagram bio"
+msgstr "Bio в Instagram"
+
+#: templates/landing/index.html:1238
+msgid "Shop window sticker"
+msgstr "Стикер на витрину"
+
+#: templates/landing/index.html:1239
+msgid "Outdoor ad boards"
+msgstr "Наружная реклама"
+
+#: templates/landing/index.html:1240
+msgid "WhatsApp & Telegram"
+msgstr "WhatsApp и Telegram"
+
+#: templates/landing/index.html:1241
+msgid "Flyers & brochures"
+msgstr "Флаеры и брошюры"
+
+#: templates/landing/index.html:1246
+msgid "Individual staff links too."
+msgstr "У каждого сотрудника тоже своя ссылка."
+
+#: templates/landing/index.html:1247
+msgid ""
+"Each staff member gets their own personal booking link, so clients can go "
+"straight to their favourite specialist."
+msgstr ""
+"Каждый сотрудник получает личную ссылку для записи — клиенты могут сразу "
+"перейти к нужному специалисту."
+
+#: templates/landing/index.html:1261
+msgid "Know your business inside out"
+msgstr "Знайте свой бизнес досконально"
+
+#: templates/landing/index.html:1262
+msgid ""
+"Both providers and staff get their own dashboard tailored to what they need "
+"to see."
+msgstr ""
+"Владельцы бизнеса и сотрудники получают собственную панель, настроенную под "
+"их задачи."
+
+#: templates/landing/index.html:1272
+msgid "Provider analytics"
+msgstr "Аналитика владельца"
+
+#: templates/landing/index.html:1273
+msgid "Business owner view"
+msgstr "Для владельца бизнеса"
+
+#: templates/landing/index.html:1277
+msgid "Revenue: total charged, paid & outstanding debt"
+msgstr "Выручка: всего, оплачено и задолженность"
+
+#: templates/landing/index.html:1278
+msgid "Appointment trends over any date range"
+msgstr "Динамика записей за любой период"
+
+#: templates/landing/index.html:1279
+msgid "Top 5 loyal clients by visit count"
+msgstr "Топ-5 лояльных клиентов по количеству визитов"
+
+#: templates/landing/index.html:1280
+msgid "Top 5 no-show clients"
+msgstr "Топ-5 клиентов с неявками"
+
+#: templates/landing/index.html:1281
+msgid "Debtor list (clients with unpaid balances)"
+msgstr "Список должников (клиенты с неоплаченными остатками)"
+
+#: templates/landing/index.html:1282
+msgid "Staff performance: appointments, revenue, rate"
+msgstr "Показатели сотрудников: записи, выручка, коэффициент выполнения"
+
+#: templates/landing/index.html:1283
+msgid "Busiest days of the week"
+msgstr "Самые загруженные дни недели"
+
+#: templates/landing/index.html:1284
+msgid "New vs returning clients breakdown"
+msgstr "Анализ новых и возвращающихся клиентов"
+
+#: templates/landing/index.html:1295
+msgid "Staff analytics"
+msgstr "Аналитика сотрудника"
+
+#: templates/landing/index.html:1296
+msgid "Individual staff view"
+msgstr "Для сотрудника"
+
+#: templates/landing/index.html:1300
+msgid "Personal calendar: daily & weekly view"
+msgstr "Личный календарь: вид по дням и неделям"
+
+#: templates/landing/index.html:1301
+msgid "Full appointment history with statuses"
+msgstr "Полная история записей со статусами"
+
+#: templates/landing/index.html:1302
+msgid "Client notes and attached files per visit"
+msgstr "Заметки и прикреплённые файлы по каждому визиту"
+
+#: templates/landing/index.html:1303
+msgid "Payment tracking per appointment"
+msgstr "Отслеживание оплат по каждой записи"
+
+#: templates/landing/index.html:1304
+msgid "Personal stats: revenue, visits, completion rate"
+msgstr "Личная статистика: выручка, визиты, процент выполнения"
+
+#: templates/landing/index.html:1305
+msgid "Top loyal & no-show clients for their schedule"
+msgstr "Топ лояльных и клиентов-неявок в своём расписании"
+
+#: templates/landing/index.html:1306
+msgid "Appointment trends for their own bookings"
+msgstr "Динамика по своим записям"
+
+#: templates/landing/index.html:1307
+msgid "Busiest days breakdown"
+msgstr "Анализ загруженности по дням"
+
+#: templates/landing/index.html:1320
+msgid "Who it's for"
+msgstr "Для кого"
+
+#: templates/landing/index.html:1321
+msgid "Built for everyone in your business"
+msgstr "Создано для каждого в вашем бизнесе"
+
+#: templates/landing/index.html:1327
+msgid "Business owners"
+msgstr "Владельцы бизнеса"
+
+#: templates/landing/index.html:1329
+msgid "Manage multiple staff from one dashboard"
+msgstr "Управляйте несколькими сотрудниками из одной панели"
+
+#: templates/landing/index.html:1330
+msgid "See revenue and analytics"
+msgstr "Смотрите выручку и аналитику"
+
+#: templates/landing/index.html:1331
+msgid "Build your client database automatically"
+msgstr "Автоматически создавайте базу клиентов"
+
+#: templates/landing/index.html:1332
+msgid "Save hours on phone calls every week"
+msgstr "Экономьте часы на звонках каждую неделю"
+
+#: templates/landing/index.html:1339
+msgid "Staff & specialists"
+msgstr "Сотрудники и специалисты"
+
+#: templates/landing/index.html:1341
+msgid "See your own daily and weekly schedule"
+msgstr "Смотрите своё ежедневное и еженедельное расписание"
+
+#: templates/landing/index.html:1342
+msgid "Client history and personal notes"
+msgstr "История клиента и личные заметки"
+
+#: templates/landing/index.html:1343
+msgid "Clear view of who is coming and when"
+msgstr "Чёткое понимание, кто и когда придёт"
+
+#: templates/landing/index.html:1344
+msgid "No phone interruptions during work"
+msgstr "Никаких звонков во время работы"
+
+#: templates/landing/index.html:1351
+#, fuzzy
+#| msgid "Client"
+msgid "Clients"
+msgstr "Клиент"
+
+#: templates/landing/index.html:1353
+msgid "Book any time, from any device"
+msgstr "Записывайтесь в любое время с любого устройства"
+
+#: templates/landing/index.html:1354
+msgid "SMS confirmation and reminder"
+msgstr "SMS-подтверждение и напоминание"
+
+#: templates/landing/index.html:1355
+msgid "Easy cancellation or rescheduling"
+msgstr "Лёгкая отмена или перенос"
+
+#: templates/landing/index.html:1356
+msgid "No account registration required"
+msgstr "Регистрация не требуется"
+
+#: templates/landing/index.html:1369
+msgid "Simple, transparent pricing"
+msgstr "Простые и прозрачные цены"
+
+#: templates/landing/index.html:1370
+msgid "Start with a free trial. Pay only for what you use. No hidden fees."
+msgstr ""
+"Начните с бесплатного пробного периода. Платите только за то, что "
+"используете. Скрытых платежей нет."
+
+#: templates/landing/index.html:1377
+msgid "Trial"
+msgstr "Пробный"
+
+#: templates/landing/index.html:1378
+msgid "/ 30 days"
+msgstr "/ 30 дней"
+
+#: templates/landing/index.html:1379
+msgid "Full access for 30 days. No credit card. Cancel any time."
+msgstr "Полный доступ на 30 дней. Карта не нужна. Отмена в любое время."
+
+#: templates/landing/index.html:1381
+msgid "All features included"
+msgstr "Все функции включены"
+
+#: templates/landing/index.html:1382
+msgid "Unlimited bookings"
+msgstr "Неограниченные записи"
+
+#: templates/landing/index.html:1383
+msgid "SMS OTP confirmations"
+msgstr "SMS OTP-подтверждения"
+
+#: templates/landing/index.html:1384
+msgid "Analytics dashboard"
+msgstr "Панель аналитики"
+
+#: templates/landing/index.html:1385
+msgid "UZ / RU / EN support"
+msgstr "Поддержка UZ / RU / EN"
+
+#: templates/landing/index.html:1387
+msgid "Start free trial"
+msgstr "Начать бесплатно"
+
+#: templates/landing/index.html:1394
+msgid "Most popular"
+msgstr "Самый популярный"
+
+#: templates/landing/index.html:1395
+msgid "Standard"
+msgstr "Стандарт"
+
+#: templates/landing/index.html:1398
+msgid "UZS / server / month"
+msgstr "сум / сотрудник / мес"
+
+#: templates/landing/index.html:1400
+msgid "+ 700 UZS per completed appointment on top of the base fee."
+msgstr "+ 700 сум за каждую запись сверх базовой платы."
+
+#: templates/landing/index.html:1402
+msgid "Example:"
+msgstr "Пример:"
+
+#: templates/landing/index.html:1403
+msgid "1 staff member × 100 appointments = 20,000 + 70,000 = 90,000 UZS/month"
+msgstr "1 сотрудник × 100 записей = 20 000 + 70 000 = 90 000 сум/мес"
+
+#: templates/landing/index.html:1406
+msgid "Everything in Trial"
+msgstr "Всё из Пробного"
+
+#: templates/landing/index.html:1407
+msgid "Unlimited staff members"
+msgstr "Неограниченное число сотрудников"
+
+#: templates/landing/index.html:1408
+msgid "Full client history"
+msgstr "Полная история клиентов"
+
+#: templates/landing/index.html:1410
+msgid "File attachments"
+msgstr "Прикрепление файлов"
+
+#: templates/landing/index.html:1412 templates/landing/index.html:1547
+msgid "Get started"
+msgstr "Начать"
+
+#: templates/landing/index.html:1419
+msgid "Enterprise"
+msgstr "Корпоративный"
+
+#: templates/landing/index.html:1420
+msgid "Custom"
+msgstr "По договорённости"
+
+#: templates/landing/index.html:1421
+msgid "For businesses with 5 or more active staff members. Negotiated pricing."
+msgstr "Для бизнеса с 5 и более активными сотрудниками. Цена обговаривается."
+
+#: templates/landing/index.html:1423
+msgid "Everything in Standard"
+msgstr "Всё из Стандарта"
+
+#: templates/landing/index.html:1424
+msgid "5+ staff members"
+msgstr "5+ сотрудников"
+
+#: templates/landing/index.html:1425
+msgid "Volume-based discounts"
+msgstr "Скидки по объёму"
+
+#: templates/landing/index.html:1426
+msgid "Priority support"
+msgstr "Приоритетная поддержка"
+
+#: templates/landing/index.html:1427
+msgid "Dedicated onboarding"
+msgstr "Персональный онбординг"
+
+#: templates/landing/index.html:1429
+msgid "Contact us"
+msgstr "Связаться"
+
+#: templates/landing/index.html:1442
+msgid "Frequently asked questions"
+msgstr "Часто задаваемые вопросы"
+
+#: templates/landing/index.html:1451
+msgid "How does the free trial work?"
+msgstr "Как работает бесплатный пробный период?"
+
+#: templates/landing/index.html:1455
+msgid ""
+"After registration, you get 30 days of full access with no restrictions. No "
+"credit card is required. After the trial, you choose whether to continue "
+"with the Standard plan."
+msgstr ""
+"После регистрации вы получаете 30 дней полного доступа без ограничений. "
+"Карта не нужна. После окончания пробного периода вы сами решаете, переходить "
+"ли на тариф Стандарт."
+
+#: templates/landing/index.html:1462
+msgid "Do clients need to create an account?"
+msgstr "Нужно ли клиентам создавать аккаунт?"
+
+#: templates/landing/index.html:1466
+msgid ""
+"No. Clients book using just their name and phone number, then confirm with a "
+"one-time SMS code. No registration, no app download."
+msgstr ""
+"Нет. Клиенты записываются по имени и номеру телефона, затем подтверждают "
+"одноразовым SMS-кодом. Регистрация и скачивание приложения не нужны."
+
+#: templates/landing/index.html:1473
+msgid "How many staff members can I add?"
+msgstr "Сколько сотрудников можно добавить?"
+
+#: templates/landing/index.html:1477
+msgid ""
+"As many as you need. Each staff member gets their own schedule, services, "
+"and pricing. You pay 20,000 UZS per active staff member per month."
+msgstr ""
+"Сколько угодно. У каждого сотрудника своё расписание, услуги и цены. Вы "
+"платите 20 000 сум за каждого активного сотрудника в месяц."
+
+#: templates/landing/index.html:1484
+msgid "Does it work on mobile phones?"
+msgstr "Работает ли на мобильных телефонах?"
+
+#: templates/landing/index.html:1488
+msgid ""
+"Yes, fully. Both the booking page (for clients) and the management dashboard "
+"(for staff and owners) are mobile-friendly. No app download needed."
+msgstr ""
+"Да, полностью. Страница записи (для клиентов) и панель управления (для "
+"сотрудников и владельцев) адаптированы для мобильных. Приложение не нужно."
+
+#: templates/landing/index.html:1495
+msgid "How is payment handled?"
+msgstr "Как происходит оплата?"
+
+#: templates/landing/index.html:1499
+msgid ""
+"Currently billing is handled manually — contact us to discuss payment "
+"details. Online payment integration is coming soon."
+msgstr ""
+"Пока оплата происходит вручную — свяжитесь с нами для обсуждения деталей. "
+"Онлайн-оплата появится в ближайшее время."
+
+#: templates/landing/index.html:1506
+msgid "Can I cancel at any time?"
+msgstr "Могу ли я отменить в любое время?"
+
+#: templates/landing/index.html:1510
+msgid ""
+"Yes. No contracts, no lock-in. Cancel or pause your account whenever you "
+"want. Your data is always yours."
+msgstr ""
+"Да. Никаких договоров, никаких обязательств. Отменяйте или приостанавливайте "
+"аккаунт когда угодно. Ваши данные всегда ваши."
+
+#: templates/landing/index.html:1517
+msgid "Is my data secure?"
+msgstr "Безопасны ли мои данные?"
+
+#: templates/landing/index.html:1521
+msgid ""
+"Yes. All data is stored on encrypted servers. Client information and booking "
+"history are only accessible to you and your staff."
+msgstr ""
+"Да. Все данные хранятся на зашифрованных серверах. Информация о клиентах и "
+"история записей доступны только вам и вашим сотрудникам."
+
+#: templates/landing/index.html:1528
+msgid "Is there customer support?"
+msgstr "Есть ли служба поддержки?"
+
+#: templates/landing/index.html:1532
+msgid ""
+"Yes. Reach us via Telegram for fast support in Uzbek or Russian. We also "
+"help with the initial setup at no extra cost."
+msgstr ""
+"Да. Пишите нам в Telegram для быстрой поддержки на узбекском или русском "
+"языке. Также помогаем с первоначальной настройкой бесплатно."
+
+#: templates/landing/index.html:1548
+msgid "Ready to try it?"
+msgstr "Готовы попробовать?"
+
+#: templates/landing/index.html:1549
+msgid ""
+"Write to us on Telegram — we'll set up your account and walk you through the "
+"first steps personally."
+msgstr ""
+"Напишите нам в Telegram — мы настроим ваш аккаунт и лично проведём через "
+"первые шаги."
+
+#: templates/landing/index.html:1551
+msgid "Message us on Telegram"
+msgstr "Написать в Telegram"
+
+#: templates/landing/index.html:1554
+msgid "Or log in if you already have an account:"
+msgstr "Или войдите, если у вас уже есть аккаунт:"
+
+#: templates/landing/index.html:1565
+msgid "Stop losing bookings to missed calls"
+msgstr "Перестаньте терять записи из-за пропущенных звонков"
+
+#: templates/landing/index.html:1566
+msgid "30-day free trial. No card required. Cancel any time."
+msgstr "30-дневный бесплатный период. Карта не нужна. Отмена в любое время."
+
+#: templates/landing/index.html:1568
+msgid "Start for free today"
+msgstr "Начать бесплатно сегодня"
+
+#: templates/landing/index.html:1579
+msgid "Online booking system for Uzbekistan"
+msgstr "Система онлайн-записи для Узбекистана"
+
+#: templates/landing/index.html:1586
+msgid "Product"
+msgstr "Продукт"
+
+#: templates/landing/index.html:1593
+msgid "Account"
+msgstr "Аккаунт"
+
+#: templates/landing/index.html:1595
+msgid "Get access"
+msgstr "Получить доступ"
+
+#: templates/landing/index.html:1598
+msgid "Contact"
+msgstr "Контакты"
+
+#: templates/landing/index.html:1616
+msgid "All rights reserved."
+msgstr "Все права защищены."
+
+#: templates/landing/index.html:1617
+msgid "Made in Uzbekistan"
+msgstr "Сделано в Узбекистане"
+
 #: venv/lib/python3.12/site-packages/bitfield/admin.py:48
 msgid "All"
 msgstr "Все"
@@ -3275,402 +4095,12 @@ msgstr ""
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
 
-# Landing page translations
-msgid "Online booking for your business"
-msgstr "Онлайн-запись для вашего бизнеса"
-
-msgid "Online booking system for salons, clinics and studios in Uzbekistan. Free for 30 days. No credit card required."
-msgstr "Система онлайн-записи для салонов, клиник и студий в Узбекистане. 30 дней бесплатно. Карта не нужна."
-
-msgid "Let clients book themselves 24/7. SMS reminders. Staff schedules. Analytics."
-msgstr "Клиенты записываются сами 24/7. SMS-напоминания. Расписание сотрудников. Аналитика."
-
-msgid "Built for Uzbekistan businesses"
-msgstr "Создано для бизнеса в Узбекистане"
-
-msgid "Let clients book themselves"
-msgstr "Пусть клиенты записываются сами"
-
-msgid "you focus on your work"
-msgstr "вы занимайтесь своим делом"
-
-msgid "Online booking system for salons, clinics and studios. Works 24/7, sends SMS reminders, shows your analytics."
-msgstr "Система онлайн-записи для салонов, клиник и студий. Работает 24/7, отправляет SMS-напоминания, показывает аналитику."
-
-msgid "Start free for 30 days"
-msgstr "Начать бесплатно на 30 дней"
-
-msgid "See how it works"
-msgstr "Посмотреть, как работает"
-
-msgid "No credit card required"
-msgstr "Карта не нужна"
-
-msgid "5-minute setup"
-msgstr "Настройка за 5 минут"
-
-msgid "Support in Uzbek"
-msgstr "Поддержка на узбекском"
-
-msgid "Choose service"
-msgstr "Выберите услугу"
-
-msgid "Choose time"
-msgstr "Выберите время"
-
-msgid "Always available"
-msgstr "Всегда доступно"
-
-msgid "Languages (UZ, RU, EN)"
-msgstr "Языки (UZ, RU, EN)"
-
-msgid "Free trial days"
-msgstr "Дней бесплатно"
-
-msgid "Setup time"
-msgstr "Время настройки"
-
-msgid "The problem"
-msgstr "Проблема"
-
-msgid "Do these problems sound familiar?"
-msgstr "Эти проблемы вам знакомы?"
-
-msgid "Most salons and clinics face these daily challenges. Every missed call is a lost client."
-msgstr "Большинство салонов и клиник сталкиваются с этим ежедневно. Каждый пропущенный звонок — потерянный клиент."
-
-msgid "Non-stop phone calls"
-msgstr "Беспрерывные звонки"
-
-msgid "While serving a client, the phone rings again. If you don't answer, the booking is lost. If you do, your work stops."
-msgstr "Во время работы с клиентом телефон снова звонит. Не ответите — запись потеряна. Ответите — работа останавливается."
-
-msgid "Double bookings"
-msgstr "Двойные записи"
-
-msgid "Tracking appointments in a notebook or WhatsApp always leads to mistakes. Two clients booked at the same time."
-msgstr "Отслеживание записей в тетради или WhatsApp всегда ведёт к ошибкам. Двое клиентов на одно время."
-
-msgid "Clients who don't show up"
-msgstr "Клиенты, которые не приходят"
-
-msgid "The client forgot, didn't come. You're left with empty time you can't recover. No reminder was sent."
-msgstr "Клиент забыл, не пришёл. У вас пустое время, которое уже не вернуть. Напоминание не было отправлено."
-
-msgid "The solution"
-msgstr "Решение"
-
-msgid "Start in 3 simple steps"
-msgstr "Начните за 3 простых шага"
-
-msgid "From registration to your first online booking — under 15 minutes."
-msgstr "От регистрации до первой онлайн-записи — менее 15 минут."
-
-msgid "Create your business"
-msgstr "Создайте свой бизнес"
-
-msgid "Add your salon or clinic name, staff members, services and prices. All in one place."
-msgstr "Добавьте название салона или клиники, сотрудников, услуги и цены. Всё в одном месте."
-
-msgid "Share your link"
-msgstr "Поделитесь ссылкой"
-
-msgid "Send your personal booking link to clients via Instagram, WhatsApp, or add it to your profile bio."
-msgstr "Отправьте вашу личную ссылку для записи через Instagram, WhatsApp или добавьте в описание профиля."
-
-msgid "Receive bookings"
-msgstr "Принимайте записи"
-
-msgid "Clients book themselves, you get a notification. SMS reminders are sent automatically. No calls needed."
-msgstr "Клиенты записываются сами, вы получаете уведомление. SMS-напоминания отправляются автоматически. Звонки не нужны."
-
-msgid "Everything you need in one place"
-msgstr "Всё необходимое в одном месте"
-
-msgid "Built for real businesses in Uzbekistan. Nothing unnecessary, nothing missing."
-msgstr "Создано для реального бизнеса в Узбекистане. Ничего лишнего, ничего не хватает."
-
-msgid "24/7 Online booking"
-msgstr "Онлайн-запись 24/7"
-
-msgid "Clients can book at midnight. You sleep — your business keeps working."
-msgstr "Клиенты могут записаться в полночь. Вы спите — бизнес работает."
-
-msgid "SMS reminders"
-msgstr "SMS-напоминания"
-
-msgid "Automatic SMS before each appointment. No-shows drop significantly."
-msgstr "Автоматическое SMS перед каждой записью. Количество неявок резко снижается."
-
-msgid "Staff schedule management"
-msgstr "Управление расписанием сотрудников"
-
-msgid "Manage each staff member's schedule, working hours, and days off individually."
-msgstr "Управляйте расписанием каждого сотрудника, рабочими часами и выходными индивидуально."
-
-msgid "Analytics & reports"
-msgstr "Аналитика и отчёты"
-
-msgid "Revenue, popular services, top clients, staff performance — see it all at a glance."
-msgstr "Выручка, популярные услуги, лучшие клиенты, показатели сотрудников — всё с первого взгляда."
-
-msgid "Client history"
-msgstr "История клиента"
-
-msgid "Full visit history, notes, and files per client. Know your clients better."
-msgstr "Полная история посещений, заметки и файлы по каждому клиенту. Знайте своих клиентов лучше."
-
-msgid "Payment tracking"
-msgstr "Отслеживание оплат"
-
-msgid "Track total charged, amount paid, and outstanding debts per appointment."
-msgstr "Отслеживайте итоговую сумму, оплаченную сумму и задолженности по каждой записи."
-
-msgid "Who it's for"
-msgstr "Для кого"
-
-msgid "Built for everyone in your business"
-msgstr "Создано для каждого в вашем бизнесе"
-
-msgid "Business owners"
-msgstr "Владельцы бизнеса"
-
-msgid "Manage multiple staff from one dashboard"
-msgstr "Управляйте несколькими сотрудниками из одной панели"
-
-msgid "See revenue and analytics"
-msgstr "Смотрите выручку и аналитику"
-
-msgid "Build your client database automatically"
-msgstr "Автоматически создавайте базу клиентов"
-
-msgid "Save hours on phone calls every week"
-msgstr "Экономьте часы на звонках каждую неделю"
-
-msgid "Staff & specialists"
-msgstr "Сотрудники и специалисты"
-
-msgid "See your own daily and weekly schedule"
-msgstr "Смотрите своё ежедневное и еженедельное расписание"
-
-msgid "Client history and personal notes"
-msgstr "История клиента и личные заметки"
-
-msgid "Clear view of who is coming and when"
-msgstr "Чёткое понимание, кто и когда придёт"
-
-msgid "No phone interruptions during work"
-msgstr "Никаких звонков во время работы"
-
-msgid "Book any time, from any device"
-msgstr "Записывайтесь в любое время с любого устройства"
-
-msgid "SMS confirmation and reminder"
-msgstr "SMS-подтверждение и напоминание"
-
-msgid "Easy cancellation or rescheduling"
-msgstr "Лёгкая отмена или перенос"
-
-msgid "No account registration required"
-msgstr "Регистрация не требуется"
-
-msgid "Simple, transparent pricing"
-msgstr "Простые и прозрачные цены"
-
-msgid "Start with a free trial. Pay only for what you use. No hidden fees."
-msgstr "Начните с бесплатного пробного периода. Платите только за то, что используете. Скрытых платежей нет."
-
-msgid "Trial"
-msgstr "Пробный"
-
-msgid "/ 30 days"
-msgstr "/ 30 дней"
-
-msgid "Full access for 30 days. No credit card. Cancel any time."
-msgstr "Полный доступ на 30 дней. Карта не нужна. Отмена в любое время."
-
-msgid "All features included"
-msgstr "Все функции включены"
-
-msgid "Unlimited bookings"
-msgstr "Неограниченные записи"
-
-msgid "SMS OTP confirmations"
-msgstr "SMS OTP-подтверждения"
-
-msgid "Analytics dashboard"
-msgstr "Панель аналитики"
-
-msgid "UZ / RU / EN support"
-msgstr "Поддержка UZ / RU / EN"
-
-msgid "Start free trial"
-msgstr "Начать бесплатно"
-
-msgid "Standard"
-msgstr "Стандарт"
-
-msgid "UZS / server / month"
-msgstr "сум / сотрудник / мес"
-
-msgid "+ 700 UZS per completed appointment on top of the base fee."
-msgstr "+ 700 сум за каждую запись сверх базовой платы."
-
-msgid "Example:"
-msgstr "Пример:"
-
-msgid "1 staff member × 100 appointments = 20,000 + 70,000 = 90,000 UZS/month"
-msgstr "1 сотрудник × 100 записей = 20 000 + 70 000 = 90 000 сум/мес"
-
-msgid "Everything in Trial"
-msgstr "Всё из Пробного"
-
-msgid "Unlimited staff members"
-msgstr "Неограниченное число сотрудников"
-
-msgid "Full client history"
-msgstr "Полная история клиентов"
-
-msgid "File attachments"
-msgstr "Прикрепление файлов"
-
-msgid "Get started"
-msgstr "Начать"
-
-msgid "Enterprise"
-msgstr "Корпоративный"
-
-msgid "Custom"
-msgstr "По договорённости"
-
-msgid "For businesses with 5 or more active staff members. Negotiated pricing."
-msgstr "Для бизнеса с 5 и более активными сотрудниками. Цена обговаривается."
-
-msgid "Everything in Standard"
-msgstr "Всё из Стандарта"
-
-msgid "5+ staff members"
-msgstr "5+ сотрудников"
-
-msgid "Volume-based discounts"
-msgstr "Скидки по объёму"
-
-msgid "Priority support"
-msgstr "Приоритетная поддержка"
-
-msgid "Dedicated onboarding"
-msgstr "Персональный онбординг"
-
-msgid "Frequently asked questions"
-msgstr "Часто задаваемые вопросы"
-
-msgid "How does the free trial work?"
-msgstr "Как работает бесплатный пробный период?"
-
-msgid "After registration, you get 30 days of full access with no restrictions. No credit card is required. After the trial, you choose whether to continue with the Standard plan."
-msgstr "После регистрации вы получаете 30 дней полного доступа без ограничений. Карта не нужна. После окончания пробного периода вы сами решаете, переходить ли на тариф Стандарт."
-
-msgid "Do clients need to create an account?"
-msgstr "Нужно ли клиентам создавать аккаунт?"
-
-msgid "No. Clients book using just their name and phone number, then confirm with a one-time SMS code. No registration, no app download."
-msgstr "Нет. Клиенты записываются по имени и номеру телефона, затем подтверждают одноразовым SMS-кодом. Регистрация и скачивание приложения не нужны."
-
-msgid "How many staff members can I add?"
-msgstr "Сколько сотрудников можно добавить?"
-
-msgid "As many as you need. Each staff member gets their own schedule, services, and pricing. You pay 20,000 UZS per active staff member per month."
-msgstr "Сколько угодно. У каждого сотрудника своё расписание, услуги и цены. Вы платите 20 000 сум за каждого активного сотрудника в месяц."
-
-msgid "Does it work on mobile phones?"
-msgstr "Работает ли на мобильных телефонах?"
-
-msgid "Yes, fully. Both the booking page (for clients) and the management dashboard (for staff and owners) are mobile-friendly. No app download needed."
-msgstr "Да, полностью. Страница записи (для клиентов) и панель управления (для сотрудников и владельцев) адаптированы для мобильных. Приложение не нужно."
-
-msgid "How is payment handled?"
-msgstr "Как происходит оплата?"
-
-msgid "Currently billing is handled manually — contact us to discuss payment details. Online payment integration is coming soon."
-msgstr "Пока оплата происходит вручную — свяжитесь с нами для обсуждения деталей. Онлайн-оплата появится в ближайшее время."
-
-msgid "Can I cancel at any time?"
-msgstr "Могу ли я отменить в любое время?"
-
-msgid "Yes. No contracts, no lock-in. Cancel or pause your account whenever you want. Your data is always yours."
-msgstr "Да. Никаких договоров, никаких обязательств. Отменяйте или приостанавливайте аккаунт когда угодно. Ваши данные всегда ваши."
-
-msgid "Is my data secure?"
-msgstr "Безопасны ли мои данные?"
-
-msgid "Yes. All data is stored on encrypted servers. Client information and booking history are only accessible to you and your staff."
-msgstr "Да. Все данные хранятся на зашифрованных серверах. Информация о клиентах и история записей доступны только вам и вашим сотрудникам."
-
-msgid "Is there customer support?"
-msgstr "Есть ли служба поддержки?"
-
-msgid "Yes. Reach us via Telegram for fast support in Uzbek or Russian. We also help with the initial setup at no extra cost."
-msgstr "Да. Пишите нам в Telegram для быстрой поддержки на узбекском или русском языке. Также помогаем с первоначальной настройкой бесплатно."
-
-msgid "Ready to try it?"
-msgstr "Готовы попробовать?"
-
-msgid "Write to us on Telegram — we'll set up your account and walk you through the first steps personally."
-msgstr "Напишите нам в Telegram — мы настроим ваш аккаунт и лично проведём через первые шаги."
-
-msgid "Message us on Telegram"
-msgstr "Написать в Telegram"
-
-msgid "Or log in if you already have an account:"
-msgstr "Или войдите, если у вас уже есть аккаунт:"
-
-msgid "Stop losing bookings to missed calls"
-msgstr "Перестаньте терять записи из-за пропущенных звонков"
-
-msgid "30-day free trial. No card required. Cancel any time."
-msgstr "30-дневный бесплатный период. Карта не нужна. Отмена в любое время."
-
-msgid "Start for free today"
-msgstr "Начать бесплатно сегодня"
-
-msgid "Online booking system for Uzbekistan"
-msgstr "Система онлайн-записи для Узбекистана"
-
-msgid "All rights reserved."
-msgstr "Все права защищены."
-
-msgid "Made in Uzbekistan"
-msgstr "Сделано в Узбекистане"
-
-msgid "Most popular"
-msgstr "Самый популярный"
-
-msgid "Log in"
-msgstr "Войти"
-
-msgid "Get access"
-msgstr "Получить доступ"
-
-msgid "Contact us"
-msgstr "Связаться"
-
-msgid "Product"
-msgstr "Продукт"
-
-msgid "Account"
-msgstr "Аккаунт"
-
-msgid "Contact"
-msgstr "Контакты"
-
-msgid "Features"
-msgstr "Возможности"
-
-msgid "How it works"
-msgstr "Как работает"
-
-msgid "Pricing"
-msgstr "Цены"
+#~ msgid ""
+#~ "Online booking system for salons, clinics and studios. Works 24/7, sends "
+#~ "SMS reminders, shows your analytics."
+#~ msgstr ""
+#~ "Система онлайн-записи для салонов, клиник и студий. Работает 24/7, "
+#~ "отправляет SMS-напоминания, показывает аналитику."
 
 #~ msgid "Payment note"
 #~ msgstr "Примечание к оплате"

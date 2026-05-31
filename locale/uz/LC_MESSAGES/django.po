@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-28 18:30+0500\n"
+"POT-Creation-Date: 2026-05-31 15:09+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,6 +69,7 @@ msgstr "Bizning mutaxassislarimiz"
 
 #: templates/booket/client/index.html:248 templates/booket/client/main.html:212
 #: templates/booket/client/server_detail.html:229
+#: templates/landing/index.html:1028
 msgid "Book appointment"
 msgstr "Qabulga yozish"
 
@@ -413,6 +414,7 @@ msgstr "Ma'lumot mavjud emas."
 
 #: templates/booket/container.html:36
 #: templates/booket/dashboard/dashboard.html:5
+#: templates/landing/index.html:1260
 msgid "Dashboard"
 msgstr "Boshqaruv paneli"
 
@@ -1938,6 +1940,828 @@ msgstr "Moliya"
 msgid "Reception"
 msgstr "Qabul"
 
+#: templates/landing/index.html:9
+msgid ""
+"Online booking system for salons, clinics and studios in Uzbekistan. Free "
+"for 30 days. No credit card required."
+msgstr ""
+"Salonlar, klinikalar va studiyalar uchun onlayn yozilish tizimi. 30 kun "
+"bepul. Kredit karta kerak emas."
+
+# Landing page translations
+#: templates/landing/index.html:10 templates/landing/index.html:12
+msgid "Online booking for your business"
+msgstr "Biznesingiz uchun onlayn yozilish"
+
+#: templates/landing/index.html:11
+msgid ""
+"Let clients book themselves 24/7. SMS reminders. Staff schedules. Analytics."
+msgstr ""
+"Mijozlar 24/7 o'zlari yozilsin. SMS eslatmalar. Xodimlar jadvali. Statistika."
+
+#: templates/landing/index.html:948 templates/landing/index.html:1162
+#: templates/landing/index.html:1587
+msgid "Features"
+msgstr "Imkoniyatlar"
+
+#: templates/landing/index.html:949 templates/landing/index.html:1589
+msgid "How it works"
+msgstr "Qanday ishlaydi"
+
+#: templates/landing/index.html:950 templates/landing/index.html:1368
+#: templates/landing/index.html:1588
+msgid "Pricing"
+msgstr "Narxlar"
+
+#: templates/landing/index.html:962 templates/landing/index.html:1555
+#: templates/landing/index.html:1594
+msgid "Log in"
+msgstr "Kirish"
+
+#: templates/landing/index.html:977
+msgid "Built for Uzbekistan businesses"
+msgstr "O'zbekiston bizneslari uchun yaratilgan"
+
+#: templates/landing/index.html:980
+msgid "Let clients book themselves"
+msgstr "Mijozlar o'zlari yozilsin"
+
+#: templates/landing/index.html:981
+msgid "you focus on your work"
+msgstr "siz ishingizga e'tibor bering"
+
+# Landing page — business types & QR section
+#: templates/landing/index.html:984
+msgid ""
+"Online booking system for salons, clinics, studios and any appointment-based "
+"business. Works 24/7, sends SMS reminders, shows your analytics."
+msgstr ""
+"Salonlar, klinikalar, studiyalar va yozilish asosida ishlaydigan har qanday "
+"biznes uchun onlayn yozilish tizimi. 24/7 ishlaydi, SMS eslatmalar yuboradi, "
+"statistika ko'rsatadi."
+
+#: templates/landing/index.html:988
+msgid "Start free for 30 days"
+msgstr "30 kun bepul boshlang"
+
+#: templates/landing/index.html:991
+msgid "See how it works"
+msgstr "Qanday ishlashini ko'ring"
+
+#: templates/landing/index.html:995
+msgid "No credit card required"
+msgstr "Kredit karta kerak emas"
+
+#: templates/landing/index.html:996
+msgid "5-minute setup"
+msgstr "5 daqiqada sozlash"
+
+#: templates/landing/index.html:997
+msgid "Support in Uzbek"
+msgstr "O'zbek tilida yordam"
+
+#: templates/landing/index.html:1014
+msgid "Choose service"
+msgstr "Xizmat tanlang"
+
+#: templates/landing/index.html:1021
+msgid "Choose time"
+msgstr "Vaqt tanlang"
+
+#: templates/landing/index.html:1045
+msgid "Always available"
+msgstr "Har doim mavjud"
+
+#: templates/landing/index.html:1051
+msgid "Languages (UZ, RU, EN)"
+msgstr "Tillar (UZ, RU, EN)"
+
+#: templates/landing/index.html:1057
+msgid "Free trial days"
+msgstr "Bepul sinov kunlari"
+
+#: templates/landing/index.html:1063
+msgid "Setup time"
+msgstr "Sozlash vaqti"
+
+#: templates/landing/index.html:1073
+msgid "Hair salons"
+msgstr "Sartaroshxonalar"
+
+#: templates/landing/index.html:1074
+msgid "Dental clinics"
+msgstr "Stomatologiya klinikalar"
+
+#: templates/landing/index.html:1075
+msgid "Beauty studios"
+msgstr "Go'zallik studiyalar"
+
+#: templates/landing/index.html:1076
+msgid "Medical clinics"
+msgstr "Tibbiy klinikalar"
+
+#: templates/landing/index.html:1077
+msgid "Fitness trainers"
+msgstr "Fitnes trenerlar"
+
+#: templates/landing/index.html:1078
+msgid "Nail studios"
+msgstr "Nail studiyalar"
+
+#: templates/landing/index.html:1079
+msgid "Photo studios"
+msgstr "Foto studiyalar"
+
+#: templates/landing/index.html:1080
+msgid "Tattoo & piercing"
+msgstr "Tattoo va pirs"
+
+#: templates/landing/index.html:1081
+msgid "And more..."
+msgstr "Va boshqalar..."
+
+#: templates/landing/index.html:1089
+msgid "The problem"
+msgstr "Muammo"
+
+#: templates/landing/index.html:1090
+msgid "Do these problems sound familiar?"
+msgstr "Bu muammolar sizga tanishmi?"
+
+#: templates/landing/index.html:1091
+msgid ""
+"Most salons and clinics face these daily challenges. Every missed call is a "
+"lost client."
+msgstr ""
+"Ko'pgina salonlar va klinikalar har kuni shu qiyinchiliklar bilan duch "
+"keladi. Har bir javobsiz qo'ng'iroq — yo'qolgan mijoz."
+
+#: templates/landing/index.html:1097
+msgid "Non-stop phone calls"
+msgstr "To'xtovsiz telefon qo'ng'iroqlari"
+
+#: templates/landing/index.html:1098
+msgid ""
+"While serving a client, the phone rings again. If you don't answer, the "
+"booking is lost. If you do, your work stops."
+msgstr ""
+"Mijozni qabul qilayotganda telefon yana jiringlaydi. Javob bermasangiz — "
+"yozilish yo'qoladi. Javob bersangiz — ish to'xtaydi."
+
+#: templates/landing/index.html:1104
+msgid "Double bookings"
+msgstr "Ikki marta yozilish"
+
+#: templates/landing/index.html:1105
+msgid ""
+"Tracking appointments in a notebook or WhatsApp always leads to mistakes. "
+"Two clients booked at the same time."
+msgstr ""
+"Qog'oz daftar yoki WhatsApp orqali yozilishlarni kuzatish — xato va "
+"chalkashlik doim bor. Bir vaqtda ikki mijoz yoziladi."
+
+#: templates/landing/index.html:1111
+msgid "Clients who don't show up"
+msgstr "Kelmagan mijozlar"
+
+#: templates/landing/index.html:1112
+msgid ""
+"The client forgot, didn't come. You're left with empty time you can't "
+"recover. No reminder was sent."
+msgstr ""
+"Mijoz unutdi, kelmadi. Siz esa bo'sh qoldingiz. Eslatma yuborilmagan edi."
+
+#: templates/landing/index.html:1123
+msgid "The solution"
+msgstr "Yechim"
+
+#: templates/landing/index.html:1124
+msgid "Start in 3 simple steps"
+msgstr "3 oddiy qadamda boshlang"
+
+#: templates/landing/index.html:1125
+msgid "From registration to your first online booking — under 15 minutes."
+msgstr "Ro'yxatdan o'tishdan birinchi onlayn yozilishgacha — 15 daqiqadan kam."
+
+#: templates/landing/index.html:1132
+msgid "Create your business"
+msgstr "Biznesingizni yarating"
+
+#: templates/landing/index.html:1133
+msgid ""
+"Add your salon or clinic name, staff members, services and prices. All in "
+"one place."
+msgstr ""
+"Salon yoki klinikangiz nomini, xodimlar, xizmatlar va narxlarni qo'shing. "
+"Barchasi bir joyda."
+
+#: templates/landing/index.html:1141
+msgid "Share your link"
+msgstr "Havolangizni ulashing"
+
+#: templates/landing/index.html:1142
+msgid ""
+"Send your personal booking link to clients via Instagram, WhatsApp, or add "
+"it to your profile bio."
+msgstr ""
+"Shaxsiy yozilish havolangizni Instagram, WhatsApp orqali yuboring yoki "
+"bio'ga qo'shing."
+
+#: templates/landing/index.html:1150
+msgid "Receive bookings"
+msgstr "Yozilishlarni qabul qiling"
+
+#: templates/landing/index.html:1151
+msgid ""
+"Clients book themselves, you get a notification. SMS reminders are sent "
+"automatically. No calls needed."
+msgstr ""
+"Mijozlar o'zlari yoziladi, siz bildirishnoma olasiz. SMS eslatmalar "
+"avtomatik ketadi. Qo'ng'iroq kerak emas."
+
+#: templates/landing/index.html:1163
+msgid "Everything you need in one place"
+msgstr "Hamma kerakli narsa bir joyda"
+
+#: templates/landing/index.html:1164
+msgid ""
+"Built for real businesses in Uzbekistan. Nothing unnecessary, nothing "
+"missing."
+msgstr ""
+"O'zbekistondagi haqiqiy bizneslar uchun qurilgan. Ortiqcha narsa yo'q, "
+"yetishmaydigani ham yo'q."
+
+#: templates/landing/index.html:1170
+msgid "24/7 Online booking"
+msgstr "24/7 Onlayn yozilish"
+
+#: templates/landing/index.html:1171
+msgid "Clients can book at midnight. You sleep — your business keeps working."
+msgstr ""
+"Mijozlar tun yarmida ham yozilishi mumkin. Siz uxlaysiz — biznes ishlaydi."
+
+#: templates/landing/index.html:1177
+msgid "SMS reminders"
+msgstr "SMS eslatmalar"
+
+#: templates/landing/index.html:1178
+msgid "Automatic SMS before each appointment. No-shows drop significantly."
+msgstr ""
+"Har bir yozilishdan oldin avtomatik SMS. Kelmaganlar soni keskin kamayadi."
+
+#: templates/landing/index.html:1184
+msgid "Staff schedule management"
+msgstr "Xodimlar jadvali boshqaruvi"
+
+#: templates/landing/index.html:1185
+msgid ""
+"Manage each staff member's schedule, working hours, and days off "
+"individually."
+msgstr ""
+"Har bir xodimning jadvalini, ish vaqtini va dam olish kunlarini alohida "
+"boshqaring."
+
+#: templates/landing/index.html:1191
+msgid "Analytics & reports"
+msgstr "Statistika va hisobotlar"
+
+#: templates/landing/index.html:1192
+msgid ""
+"Revenue, popular services, top clients, staff performance — see it all at a "
+"glance."
+msgstr ""
+"Daromad, ommabop xizmatlar, eng faol mijozlar, xodimlar ko'rsatkichlari — "
+"hammasini bir joyda ko'ring."
+
+#: templates/landing/index.html:1198
+msgid "Client history"
+msgstr "Mijoz tarixi"
+
+#: templates/landing/index.html:1199
+msgid ""
+"Full visit history, notes, and files per client. Know your clients better."
+msgstr ""
+"Har bir mijozning to'liq tashrif tarixi, izohlar va fayllar. Mijozlaringizni "
+"yaxshiroq biling."
+
+#: templates/landing/index.html:1205 templates/landing/index.html:1409
+msgid "Payment tracking"
+msgstr "To'lovlarni kuzatish"
+
+#: templates/landing/index.html:1206
+msgid ""
+"Track total charged, amount paid, and outstanding debts per appointment."
+msgstr ""
+"Har bir yozilish uchun jami summa, to'langan miqdor va qolgan qarzni "
+"kuzating."
+
+#: templates/landing/index.html:1230
+msgid "QR code & links"
+msgstr "QR kod va havolalar"
+
+#: templates/landing/index.html:1231
+msgid "Your own link — shareable everywhere"
+msgstr "O'z havolangiz — hamma joyda ulashing"
+
+#: templates/landing/index.html:1233
+msgid ""
+"Every provider gets a unique personal booking page. Generate a QR code and "
+"put it anywhere your clients are — online and offline."
+msgstr ""
+"Har bir biznes noyob shaxsiy yozilish sahifasini oladi. QR kodni yarating va "
+"mijozlaringiz bo'lgan hamma joyga qo'ying — onlayn va oflayn."
+
+#: templates/landing/index.html:1236
+msgid "Business cards"
+msgstr "Vizitka kartochkalar"
+
+#: templates/landing/index.html:1237
+msgid "Instagram bio"
+msgstr "Instagram bio"
+
+#: templates/landing/index.html:1238
+msgid "Shop window sticker"
+msgstr "Do'kon derazasiga stiker"
+
+#: templates/landing/index.html:1239
+msgid "Outdoor ad boards"
+msgstr "Tashqi reklama taxtachalar"
+
+#: templates/landing/index.html:1240
+msgid "WhatsApp & Telegram"
+msgstr "WhatsApp va Telegram"
+
+#: templates/landing/index.html:1241
+msgid "Flyers & brochures"
+msgstr "Flyerlar va broshyuralar"
+
+#: templates/landing/index.html:1246
+msgid "Individual staff links too."
+msgstr "Har bir xodim uchun ham alohida havola."
+
+#: templates/landing/index.html:1247
+msgid ""
+"Each staff member gets their own personal booking link, so clients can go "
+"straight to their favourite specialist."
+msgstr ""
+"Har bir xodim o'z shaxsiy yozilish havolasiga ega — mijozlar bevosita "
+"o'zlari yoqtirgan mutaxassisga yozilishi mumkin."
+
+#: templates/landing/index.html:1261
+msgid "Know your business inside out"
+msgstr "Biznesingizni ichidan biling"
+
+#: templates/landing/index.html:1262
+msgid ""
+"Both providers and staff get their own dashboard tailored to what they need "
+"to see."
+msgstr ""
+"Biznes egalari ham, xodimlar ham o'z ehtiyojlariga moslashtirilgan alohida "
+"boshqaruv paneliga ega."
+
+#: templates/landing/index.html:1272
+msgid "Provider analytics"
+msgstr "Biznes egasi analitikasi"
+
+#: templates/landing/index.html:1273
+msgid "Business owner view"
+msgstr "Biznes egasi ko'rinishi"
+
+#: templates/landing/index.html:1277
+msgid "Revenue: total charged, paid & outstanding debt"
+msgstr "Daromad: jami, to'langan va qarzdorlik"
+
+#: templates/landing/index.html:1278
+msgid "Appointment trends over any date range"
+msgstr "Istalgan davr uchun yozilishlar dinamikasi"
+
+#: templates/landing/index.html:1279
+msgid "Top 5 loyal clients by visit count"
+msgstr "Tashrif soni bo'yicha top 5 sodiq mijoz"
+
+#: templates/landing/index.html:1280
+msgid "Top 5 no-show clients"
+msgstr "Top 5 kelmaydigan mijozlar"
+
+#: templates/landing/index.html:1281
+msgid "Debtor list (clients with unpaid balances)"
+msgstr "Qarzdorlar ro'yxati (to'lanmagan qoldiqlari bo'lgan mijozlar)"
+
+#: templates/landing/index.html:1282
+msgid "Staff performance: appointments, revenue, rate"
+msgstr "Xodimlar ko'rsatkichlari: yozilishlar, daromad, bajarilish nisbati"
+
+#: templates/landing/index.html:1283
+msgid "Busiest days of the week"
+msgstr "Haftaning eng band kunlari"
+
+#: templates/landing/index.html:1284
+msgid "New vs returning clients breakdown"
+msgstr "Yangi va qayta kelgan mijozlar tahlili"
+
+#: templates/landing/index.html:1295
+msgid "Staff analytics"
+msgstr "Xodim analitikasi"
+
+#: templates/landing/index.html:1296
+msgid "Individual staff view"
+msgstr "Xodim ko'rinishi"
+
+#: templates/landing/index.html:1300
+msgid "Personal calendar: daily & weekly view"
+msgstr "Shaxsiy kalendar: kunlik va haftalik ko'rinish"
+
+#: templates/landing/index.html:1301
+msgid "Full appointment history with statuses"
+msgstr "Statuslar bilan to'liq yozilish tarixi"
+
+#: templates/landing/index.html:1302
+msgid "Client notes and attached files per visit"
+msgstr "Har bir tashrif uchun mijoz izohlari va biriktirilgan fayllar"
+
+#: templates/landing/index.html:1303
+msgid "Payment tracking per appointment"
+msgstr "Har bir yozilish uchun to'lovlarni kuzatish"
+
+#: templates/landing/index.html:1304
+msgid "Personal stats: revenue, visits, completion rate"
+msgstr "Shaxsiy statistika: daromad, tashriflar, bajarilish nisbati"
+
+#: templates/landing/index.html:1305
+msgid "Top loyal & no-show clients for their schedule"
+msgstr "O'z jadvalidagi top sodiq va kelmaydigan mijozlar"
+
+#: templates/landing/index.html:1306
+msgid "Appointment trends for their own bookings"
+msgstr "O'z yozilishlari bo'yicha dinamika"
+
+#: templates/landing/index.html:1307
+msgid "Busiest days breakdown"
+msgstr "Eng band kunlar tahlili"
+
+#: templates/landing/index.html:1320
+msgid "Who it's for"
+msgstr "Kim uchun"
+
+#: templates/landing/index.html:1321
+msgid "Built for everyone in your business"
+msgstr "Biznesingizdagi har kim uchun yaratilgan"
+
+#: templates/landing/index.html:1327
+msgid "Business owners"
+msgstr "Biznes egalari"
+
+#: templates/landing/index.html:1329
+msgid "Manage multiple staff from one dashboard"
+msgstr "Bir dashboarddan ko'p xodimni boshqaring"
+
+#: templates/landing/index.html:1330
+msgid "See revenue and analytics"
+msgstr "Daromad va statistikani ko'ring"
+
+#: templates/landing/index.html:1331
+msgid "Build your client database automatically"
+msgstr "Mijozlar bazasini avtomatik to'plang"
+
+#: templates/landing/index.html:1332
+msgid "Save hours on phone calls every week"
+msgstr "Har hafta soatlab telefon qo'ng'iroqlaridan qutiling"
+
+#: templates/landing/index.html:1339
+msgid "Staff & specialists"
+msgstr "Xodimlar va mutaxassislar"
+
+#: templates/landing/index.html:1341
+msgid "See your own daily and weekly schedule"
+msgstr "O'z kunlik va haftalik jadvalini ko'ring"
+
+#: templates/landing/index.html:1342
+msgid "Client history and personal notes"
+msgstr "Mijoz tarixi va shaxsiy izohlar"
+
+#: templates/landing/index.html:1343
+msgid "Clear view of who is coming and when"
+msgstr "Kim va qachon kelishi aniq ko'rinadi"
+
+#: templates/landing/index.html:1344
+msgid "No phone interruptions during work"
+msgstr "Ish paytida telefon qo'ng'iroqlari yo'q"
+
+#: templates/landing/index.html:1351
+#, fuzzy
+#| msgid "Client"
+msgid "Clients"
+msgstr "Mijoz"
+
+#: templates/landing/index.html:1353
+msgid "Book any time, from any device"
+msgstr "Istalgan vaqtda, istalgan qurilmadan yoziling"
+
+#: templates/landing/index.html:1354
+msgid "SMS confirmation and reminder"
+msgstr "SMS tasdiqlash va eslatma"
+
+#: templates/landing/index.html:1355
+msgid "Easy cancellation or rescheduling"
+msgstr "Bekor qilish yoki ko'chirish oson"
+
+#: templates/landing/index.html:1356
+msgid "No account registration required"
+msgstr "Ro'yxatdan o'tish talab qilinmaydi"
+
+#: templates/landing/index.html:1369
+msgid "Simple, transparent pricing"
+msgstr "Oddiy va shaffof narxlar"
+
+#: templates/landing/index.html:1370
+msgid "Start with a free trial. Pay only for what you use. No hidden fees."
+msgstr ""
+"Bepul sinov bilan boshlang. Faqat foydalangan narsangiz uchun to'lang. "
+"Yashirin to'lovlar yo'q."
+
+#: templates/landing/index.html:1377
+msgid "Trial"
+msgstr "Sinov"
+
+#: templates/landing/index.html:1378
+msgid "/ 30 days"
+msgstr "/ 30 kun"
+
+#: templates/landing/index.html:1379
+msgid "Full access for 30 days. No credit card. Cancel any time."
+msgstr ""
+"30 kun to'liq kirish. Kredit karta kerak emas. Istalgan vaqtda bekor qilish "
+"mumkin."
+
+#: templates/landing/index.html:1381
+msgid "All features included"
+msgstr "Barcha imkoniyatlar kiritilgan"
+
+#: templates/landing/index.html:1382
+msgid "Unlimited bookings"
+msgstr "Cheklovsiz yozilishlar"
+
+#: templates/landing/index.html:1383
+msgid "SMS OTP confirmations"
+msgstr "SMS OTP tasdiqlashlar"
+
+#: templates/landing/index.html:1384
+msgid "Analytics dashboard"
+msgstr "Statistika paneli"
+
+#: templates/landing/index.html:1385
+msgid "UZ / RU / EN support"
+msgstr "UZ / RU / EN qo'llab-quvvatlash"
+
+#: templates/landing/index.html:1387
+msgid "Start free trial"
+msgstr "Bepul sinov boshlash"
+
+#: templates/landing/index.html:1394
+msgid "Most popular"
+msgstr "Eng mashhur"
+
+#: templates/landing/index.html:1395
+msgid "Standard"
+msgstr "Standart"
+
+#: templates/landing/index.html:1398
+msgid "UZS / server / month"
+msgstr "so'm / xodim / oy"
+
+#: templates/landing/index.html:1400
+msgid "+ 700 UZS per completed appointment on top of the base fee."
+msgstr "Asosiy to'lovga qo'shimcha har bir yozilish uchun 700 so'm."
+
+#: templates/landing/index.html:1402
+msgid "Example:"
+msgstr "Misol:"
+
+#: templates/landing/index.html:1403
+msgid "1 staff member × 100 appointments = 20,000 + 70,000 = 90,000 UZS/month"
+msgstr "1 xodim × 100 yozilish = 20 000 + 70 000 = 90 000 so'm/oy"
+
+#: templates/landing/index.html:1406
+msgid "Everything in Trial"
+msgstr "Sinovdagi hamma narsa"
+
+#: templates/landing/index.html:1407
+msgid "Unlimited staff members"
+msgstr "Cheklovsiz xodimlar"
+
+#: templates/landing/index.html:1408
+msgid "Full client history"
+msgstr "To'liq mijoz tarixi"
+
+#: templates/landing/index.html:1410
+msgid "File attachments"
+msgstr "Fayllarni biriktirish"
+
+#: templates/landing/index.html:1412 templates/landing/index.html:1547
+msgid "Get started"
+msgstr "Boshlash"
+
+#: templates/landing/index.html:1419
+msgid "Enterprise"
+msgstr "Korporativ"
+
+#: templates/landing/index.html:1420
+msgid "Custom"
+msgstr "Kelishiladi"
+
+#: templates/landing/index.html:1421
+msgid "For businesses with 5 or more active staff members. Negotiated pricing."
+msgstr ""
+"5 va undan ko'p faol xodimi bor bizneslar uchun. Alohida narx kelishiladi."
+
+#: templates/landing/index.html:1423
+msgid "Everything in Standard"
+msgstr "Standartdagi hamma narsa"
+
+#: templates/landing/index.html:1424
+msgid "5+ staff members"
+msgstr "5+ xodim"
+
+#: templates/landing/index.html:1425
+msgid "Volume-based discounts"
+msgstr "Hajmga asoslangan chegirmalar"
+
+#: templates/landing/index.html:1426
+msgid "Priority support"
+msgstr "Ustuvor yordam"
+
+#: templates/landing/index.html:1427
+msgid "Dedicated onboarding"
+msgstr "Shaxsiy onboarding"
+
+#: templates/landing/index.html:1429
+msgid "Contact us"
+msgstr "Bog'laning"
+
+#: templates/landing/index.html:1442
+msgid "Frequently asked questions"
+msgstr "Ko'p so'raladigan savollar"
+
+#: templates/landing/index.html:1451
+msgid "How does the free trial work?"
+msgstr "Bepul sinov qanday ishlaydi?"
+
+#: templates/landing/index.html:1455
+msgid ""
+"After registration, you get 30 days of full access with no restrictions. No "
+"credit card is required. After the trial, you choose whether to continue "
+"with the Standard plan."
+msgstr ""
+"Ro'yxatdan o'tgandan so'ng 30 kun davomida cheklovsiz to'liq kirish olasiz. "
+"Kredit karta talab qilinmaydi. Sinov tugagandan so'ng Standart tarifga "
+"o'tish yoki to'xtatish o'zingizga bog'liq."
+
+#: templates/landing/index.html:1462
+msgid "Do clients need to create an account?"
+msgstr "Mijozlar ro'yxatdan o'tishi kerakmi?"
+
+#: templates/landing/index.html:1466
+msgid ""
+"No. Clients book using just their name and phone number, then confirm with a "
+"one-time SMS code. No registration, no app download."
+msgstr ""
+"Yo'q. Mijozlar faqat ism va telefon raqam bilan yoziladi, so'ng bir martalik "
+"SMS kod bilan tasdiqlaydi. Ro'yxatdan o'tish va ilova yuklab olish shart "
+"emas."
+
+#: templates/landing/index.html:1473
+msgid "How many staff members can I add?"
+msgstr "Nechta xodim qo'shish mumkin?"
+
+#: templates/landing/index.html:1477
+msgid ""
+"As many as you need. Each staff member gets their own schedule, services, "
+"and pricing. You pay 20,000 UZS per active staff member per month."
+msgstr ""
+"Xohlagancha. Har bir xodimning o'z jadvali, xizmatlari va narxlari bo'ladi. "
+"Har bir faol xodim uchun oyiga 20 000 so'm to'lanadi."
+
+#: templates/landing/index.html:1484
+msgid "Does it work on mobile phones?"
+msgstr "Mobil telefonda ishlaydi?"
+
+#: templates/landing/index.html:1488
+msgid ""
+"Yes, fully. Both the booking page (for clients) and the management dashboard "
+"(for staff and owners) are mobile-friendly. No app download needed."
+msgstr ""
+"Ha, to'liq. Yozilish sahifasi (mijozlar uchun) ham, boshqaruv paneli "
+"(xodimlar va egalar uchun) ham mobil qurilmalarga moslashtirilgan. Ilova "
+"yuklab olish shart emas."
+
+#: templates/landing/index.html:1495
+msgid "How is payment handled?"
+msgstr "To'lov qanday amalga oshiriladi?"
+
+#: templates/landing/index.html:1499
+msgid ""
+"Currently billing is handled manually — contact us to discuss payment "
+"details. Online payment integration is coming soon."
+msgstr ""
+"Hozircha to'lov qo'lda amalga oshiriladi — to'lov tafsilotlari uchun biz "
+"bilan bog'laning. Tez orada onlayn to'lov qo'shiladi."
+
+#: templates/landing/index.html:1506
+msgid "Can I cancel at any time?"
+msgstr "Istalgan vaqtda bekor qila olamanmi?"
+
+#: templates/landing/index.html:1510
+msgid ""
+"Yes. No contracts, no lock-in. Cancel or pause your account whenever you "
+"want. Your data is always yours."
+msgstr ""
+"Ha. Shartnoma yo'q, majburiyat yo'q. Istalgan vaqtda bekor qiling yoki "
+"to'xtatib qo'ying. Ma'lumotlaringiz har doim sizniki."
+
+#: templates/landing/index.html:1517
+msgid "Is my data secure?"
+msgstr "Ma'lumotlarim xavfsizmi?"
+
+#: templates/landing/index.html:1521
+msgid ""
+"Yes. All data is stored on encrypted servers. Client information and booking "
+"history are only accessible to you and your staff."
+msgstr ""
+"Ha. Barcha ma'lumotlar shifrlangan serverlarda saqlanadi. Mijoz ma'lumotlari "
+"va yozilish tarixi faqat siz va xodimlaringizga ko'rinadi."
+
+#: templates/landing/index.html:1528
+msgid "Is there customer support?"
+msgstr "Mijozlarga xizmat ko'rsatish bormi?"
+
+#: templates/landing/index.html:1532
+msgid ""
+"Yes. Reach us via Telegram for fast support in Uzbek or Russian. We also "
+"help with the initial setup at no extra cost."
+msgstr ""
+"Ha. Tez yordam uchun Telegram orqali murojaat qiling (o'zbek yoki rus "
+"tilida). Boshlang'ich sozlashda ham bepul yordam beramiz."
+
+#: templates/landing/index.html:1548
+msgid "Ready to try it?"
+msgstr "Sinab ko'rishga tayyormisiz?"
+
+#: templates/landing/index.html:1549
+msgid ""
+"Write to us on Telegram — we'll set up your account and walk you through the "
+"first steps personally."
+msgstr ""
+"Telegram orqali yozing — hisobingizni sozlaymiz va birinchi qadamlarda "
+"shaxsan yordam beramiz."
+
+#: templates/landing/index.html:1551
+msgid "Message us on Telegram"
+msgstr "Telegram orqali yozing"
+
+#: templates/landing/index.html:1554
+msgid "Or log in if you already have an account:"
+msgstr "Yoki allaqachon hisobingiz bo'lsa, kiring:"
+
+#: templates/landing/index.html:1565
+msgid "Stop losing bookings to missed calls"
+msgstr "Javobsiz qo'ng'iroqlar sababli yozilishlarni yo'qotishni to'xtating"
+
+#: templates/landing/index.html:1566
+msgid "30-day free trial. No card required. Cancel any time."
+msgstr "30 kunlik bepul sinov. Karta kerak emas. Istalgan vaqtda bekor qiling."
+
+#: templates/landing/index.html:1568
+msgid "Start for free today"
+msgstr "Bugun bepul boshlang"
+
+#: templates/landing/index.html:1579
+msgid "Online booking system for Uzbekistan"
+msgstr "O'zbekiston uchun onlayn yozilish tizimi"
+
+#: templates/landing/index.html:1586
+msgid "Product"
+msgstr "Mahsulot"
+
+#: templates/landing/index.html:1593
+msgid "Account"
+msgstr "Hisob"
+
+#: templates/landing/index.html:1595
+msgid "Get access"
+msgstr "Kirish olish"
+
+#: templates/landing/index.html:1598
+msgid "Contact"
+msgstr "Aloqa"
+
+#: templates/landing/index.html:1616
+msgid "All rights reserved."
+msgstr "Barcha huquqlar himoyalangan."
+
+#: templates/landing/index.html:1617
+msgid "Made in Uzbekistan"
+msgstr "O'zbekistonda yaratilgan"
+
 #: venv/lib/python3.12/site-packages/bitfield/admin.py:48
 msgid "All"
 msgstr "Barchasi"
@@ -3228,402 +4052,12 @@ msgstr ""
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
 
-# Landing page translations
-msgid "Online booking for your business"
-msgstr "Biznesingiz uchun onlayn yozilish"
-
-msgid "Online booking system for salons, clinics and studios in Uzbekistan. Free for 30 days. No credit card required."
-msgstr "Salonlar, klinikalar va studiyalar uchun onlayn yozilish tizimi. 30 kun bepul. Kredit karta kerak emas."
-
-msgid "Let clients book themselves 24/7. SMS reminders. Staff schedules. Analytics."
-msgstr "Mijozlar 24/7 o'zlari yozilsin. SMS eslatmalar. Xodimlar jadvali. Statistika."
-
-msgid "Built for Uzbekistan businesses"
-msgstr "O'zbekiston bizneslari uchun yaratilgan"
-
-msgid "Let clients book themselves"
-msgstr "Mijozlar o'zlari yozilsin"
-
-msgid "you focus on your work"
-msgstr "siz ishingizga e'tibor bering"
-
-msgid "Online booking system for salons, clinics and studios. Works 24/7, sends SMS reminders, shows your analytics."
-msgstr "Salonlar, klinikalar va studiyalar uchun onlayn yozilish tizimi. 24/7 ishlaydi, SMS eslatmalar yuboradi, statistika ko'rsatadi."
-
-msgid "Start free for 30 days"
-msgstr "30 kun bepul boshlang"
-
-msgid "See how it works"
-msgstr "Qanday ishlashini ko'ring"
-
-msgid "No credit card required"
-msgstr "Kredit karta kerak emas"
-
-msgid "5-minute setup"
-msgstr "5 daqiqada sozlash"
-
-msgid "Support in Uzbek"
-msgstr "O'zbek tilida yordam"
-
-msgid "Choose service"
-msgstr "Xizmat tanlang"
-
-msgid "Choose time"
-msgstr "Vaqt tanlang"
-
-msgid "Always available"
-msgstr "Har doim mavjud"
-
-msgid "Languages (UZ, RU, EN)"
-msgstr "Tillar (UZ, RU, EN)"
-
-msgid "Free trial days"
-msgstr "Bepul sinov kunlari"
-
-msgid "Setup time"
-msgstr "Sozlash vaqti"
-
-msgid "The problem"
-msgstr "Muammo"
-
-msgid "Do these problems sound familiar?"
-msgstr "Bu muammolar sizga tanishmi?"
-
-msgid "Most salons and clinics face these daily challenges. Every missed call is a lost client."
-msgstr "Ko'pgina salonlar va klinikalar har kuni shu qiyinchiliklar bilan duch keladi. Har bir javobsiz qo'ng'iroq — yo'qolgan mijoz."
-
-msgid "Non-stop phone calls"
-msgstr "To'xtovsiz telefon qo'ng'iroqlari"
-
-msgid "While serving a client, the phone rings again. If you don't answer, the booking is lost. If you do, your work stops."
-msgstr "Mijozni qabul qilayotganda telefon yana jiringlaydi. Javob bermasangiz — yozilish yo'qoladi. Javob bersangiz — ish to'xtaydi."
-
-msgid "Double bookings"
-msgstr "Ikki marta yozilish"
-
-msgid "Tracking appointments in a notebook or WhatsApp always leads to mistakes. Two clients booked at the same time."
-msgstr "Qog'oz daftar yoki WhatsApp orqali yozilishlarni kuzatish — xato va chalkashlik doim bor. Bir vaqtda ikki mijoz yoziladi."
-
-msgid "Clients who don't show up"
-msgstr "Kelmagan mijozlar"
-
-msgid "The client forgot, didn't come. You're left with empty time you can't recover. No reminder was sent."
-msgstr "Mijoz unutdi, kelmadi. Siz esa bo'sh qoldingiz. Eslatma yuborilmagan edi."
-
-msgid "The solution"
-msgstr "Yechim"
-
-msgid "Start in 3 simple steps"
-msgstr "3 oddiy qadamda boshlang"
-
-msgid "From registration to your first online booking — under 15 minutes."
-msgstr "Ro'yxatdan o'tishdan birinchi onlayn yozilishgacha — 15 daqiqadan kam."
-
-msgid "Create your business"
-msgstr "Biznesingizni yarating"
-
-msgid "Add your salon or clinic name, staff members, services and prices. All in one place."
-msgstr "Salon yoki klinikangiz nomini, xodimlar, xizmatlar va narxlarni qo'shing. Barchasi bir joyda."
-
-msgid "Share your link"
-msgstr "Havolangizni ulashing"
-
-msgid "Send your personal booking link to clients via Instagram, WhatsApp, or add it to your profile bio."
-msgstr "Shaxsiy yozilish havolangizni Instagram, WhatsApp orqali yuboring yoki bio'ga qo'shing."
-
-msgid "Receive bookings"
-msgstr "Yozilishlarni qabul qiling"
-
-msgid "Clients book themselves, you get a notification. SMS reminders are sent automatically. No calls needed."
-msgstr "Mijozlar o'zlari yoziladi, siz bildirishnoma olasiz. SMS eslatmalar avtomatik ketadi. Qo'ng'iroq kerak emas."
-
-msgid "Everything you need in one place"
-msgstr "Hamma kerakli narsa bir joyda"
-
-msgid "Built for real businesses in Uzbekistan. Nothing unnecessary, nothing missing."
-msgstr "O'zbekistondagi haqiqiy bizneslar uchun qurilgan. Ortiqcha narsa yo'q, yetishmaydigani ham yo'q."
-
-msgid "24/7 Online booking"
-msgstr "24/7 Onlayn yozilish"
-
-msgid "Clients can book at midnight. You sleep — your business keeps working."
-msgstr "Mijozlar tun yarmida ham yozilishi mumkin. Siz uxlaysiz — biznes ishlaydi."
-
-msgid "SMS reminders"
-msgstr "SMS eslatmalar"
-
-msgid "Automatic SMS before each appointment. No-shows drop significantly."
-msgstr "Har bir yozilishdan oldin avtomatik SMS. Kelmaganlar soni keskin kamayadi."
-
-msgid "Staff schedule management"
-msgstr "Xodimlar jadvali boshqaruvi"
-
-msgid "Manage each staff member's schedule, working hours, and days off individually."
-msgstr "Har bir xodimning jadvalini, ish vaqtini va dam olish kunlarini alohida boshqaring."
-
-msgid "Analytics & reports"
-msgstr "Statistika va hisobotlar"
-
-msgid "Revenue, popular services, top clients, staff performance — see it all at a glance."
-msgstr "Daromad, ommabop xizmatlar, eng faol mijozlar, xodimlar ko'rsatkichlari — hammasini bir joyda ko'ring."
-
-msgid "Client history"
-msgstr "Mijoz tarixi"
-
-msgid "Full visit history, notes, and files per client. Know your clients better."
-msgstr "Har bir mijozning to'liq tashrif tarixi, izohlar va fayllar. Mijozlaringizni yaxshiroq biling."
-
-msgid "Payment tracking"
-msgstr "To'lovlarni kuzatish"
-
-msgid "Track total charged, amount paid, and outstanding debts per appointment."
-msgstr "Har bir yozilish uchun jami summa, to'langan miqdor va qolgan qarzni kuzating."
-
-msgid "Who it's for"
-msgstr "Kim uchun"
-
-msgid "Built for everyone in your business"
-msgstr "Biznesingizdagi har kim uchun yaratilgan"
-
-msgid "Business owners"
-msgstr "Biznes egalari"
-
-msgid "Manage multiple staff from one dashboard"
-msgstr "Bir dashboarddan ko'p xodimni boshqaring"
-
-msgid "See revenue and analytics"
-msgstr "Daromad va statistikani ko'ring"
-
-msgid "Build your client database automatically"
-msgstr "Mijozlar bazasini avtomatik to'plang"
-
-msgid "Save hours on phone calls every week"
-msgstr "Har hafta soatlab telefon qo'ng'iroqlaridan qutiling"
-
-msgid "Staff & specialists"
-msgstr "Xodimlar va mutaxassislar"
-
-msgid "See your own daily and weekly schedule"
-msgstr "O'z kunlik va haftalik jadvalini ko'ring"
-
-msgid "Client history and personal notes"
-msgstr "Mijoz tarixi va shaxsiy izohlar"
-
-msgid "Clear view of who is coming and when"
-msgstr "Kim va qachon kelishi aniq ko'rinadi"
-
-msgid "No phone interruptions during work"
-msgstr "Ish paytida telefon qo'ng'iroqlari yo'q"
-
-msgid "Book any time, from any device"
-msgstr "Istalgan vaqtda, istalgan qurilmadan yoziling"
-
-msgid "SMS confirmation and reminder"
-msgstr "SMS tasdiqlash va eslatma"
-
-msgid "Easy cancellation or rescheduling"
-msgstr "Bekor qilish yoki ko'chirish oson"
-
-msgid "No account registration required"
-msgstr "Ro'yxatdan o'tish talab qilinmaydi"
-
-msgid "Simple, transparent pricing"
-msgstr "Oddiy va shaffof narxlar"
-
-msgid "Start with a free trial. Pay only for what you use. No hidden fees."
-msgstr "Bepul sinov bilan boshlang. Faqat foydalangan narsangiz uchun to'lang. Yashirin to'lovlar yo'q."
-
-msgid "Trial"
-msgstr "Sinov"
-
-msgid "/ 30 days"
-msgstr "/ 30 kun"
-
-msgid "Full access for 30 days. No credit card. Cancel any time."
-msgstr "30 kun to'liq kirish. Kredit karta kerak emas. Istalgan vaqtda bekor qilish mumkin."
-
-msgid "All features included"
-msgstr "Barcha imkoniyatlar kiritilgan"
-
-msgid "Unlimited bookings"
-msgstr "Cheklovsiz yozilishlar"
-
-msgid "SMS OTP confirmations"
-msgstr "SMS OTP tasdiqlashlar"
-
-msgid "Analytics dashboard"
-msgstr "Statistika paneli"
-
-msgid "UZ / RU / EN support"
-msgstr "UZ / RU / EN qo'llab-quvvatlash"
-
-msgid "Start free trial"
-msgstr "Bepul sinov boshlash"
-
-msgid "Standard"
-msgstr "Standart"
-
-msgid "UZS / server / month"
-msgstr "so'm / xodim / oy"
-
-msgid "+ 700 UZS per completed appointment on top of the base fee."
-msgstr "Asosiy to'lovga qo'shimcha har bir yozilish uchun 700 so'm."
-
-msgid "Example:"
-msgstr "Misol:"
-
-msgid "1 staff member × 100 appointments = 20,000 + 70,000 = 90,000 UZS/month"
-msgstr "1 xodim × 100 yozilish = 20 000 + 70 000 = 90 000 so'm/oy"
-
-msgid "Everything in Trial"
-msgstr "Sinovdagi hamma narsa"
-
-msgid "Unlimited staff members"
-msgstr "Cheklovsiz xodimlar"
-
-msgid "Full client history"
-msgstr "To'liq mijoz tarixi"
-
-msgid "File attachments"
-msgstr "Fayllarni biriktirish"
-
-msgid "Get started"
-msgstr "Boshlash"
-
-msgid "Enterprise"
-msgstr "Korporativ"
-
-msgid "Custom"
-msgstr "Kelishiladi"
-
-msgid "For businesses with 5 or more active staff members. Negotiated pricing."
-msgstr "5 va undan ko'p faol xodimi bor bizneslar uchun. Alohida narx kelishiladi."
-
-msgid "Everything in Standard"
-msgstr "Standartdagi hamma narsa"
-
-msgid "5+ staff members"
-msgstr "5+ xodim"
-
-msgid "Volume-based discounts"
-msgstr "Hajmga asoslangan chegirmalar"
-
-msgid "Priority support"
-msgstr "Ustuvor yordam"
-
-msgid "Dedicated onboarding"
-msgstr "Shaxsiy onboarding"
-
-msgid "Frequently asked questions"
-msgstr "Ko'p so'raladigan savollar"
-
-msgid "How does the free trial work?"
-msgstr "Bepul sinov qanday ishlaydi?"
-
-msgid "After registration, you get 30 days of full access with no restrictions. No credit card is required. After the trial, you choose whether to continue with the Standard plan."
-msgstr "Ro'yxatdan o'tgandan so'ng 30 kun davomida cheklovsiz to'liq kirish olasiz. Kredit karta talab qilinmaydi. Sinov tugagandan so'ng Standart tarifga o'tish yoki to'xtatish o'zingizga bog'liq."
-
-msgid "Do clients need to create an account?"
-msgstr "Mijozlar ro'yxatdan o'tishi kerakmi?"
-
-msgid "No. Clients book using just their name and phone number, then confirm with a one-time SMS code. No registration, no app download."
-msgstr "Yo'q. Mijozlar faqat ism va telefon raqam bilan yoziladi, so'ng bir martalik SMS kod bilan tasdiqlaydi. Ro'yxatdan o'tish va ilova yuklab olish shart emas."
-
-msgid "How many staff members can I add?"
-msgstr "Nechta xodim qo'shish mumkin?"
-
-msgid "As many as you need. Each staff member gets their own schedule, services, and pricing. You pay 20,000 UZS per active staff member per month."
-msgstr "Xohlagancha. Har bir xodimning o'z jadvali, xizmatlari va narxlari bo'ladi. Har bir faol xodim uchun oyiga 20 000 so'm to'lanadi."
-
-msgid "Does it work on mobile phones?"
-msgstr "Mobil telefonda ishlaydi?"
-
-msgid "Yes, fully. Both the booking page (for clients) and the management dashboard (for staff and owners) are mobile-friendly. No app download needed."
-msgstr "Ha, to'liq. Yozilish sahifasi (mijozlar uchun) ham, boshqaruv paneli (xodimlar va egalar uchun) ham mobil qurilmalarga moslashtirilgan. Ilova yuklab olish shart emas."
-
-msgid "How is payment handled?"
-msgstr "To'lov qanday amalga oshiriladi?"
-
-msgid "Currently billing is handled manually — contact us to discuss payment details. Online payment integration is coming soon."
-msgstr "Hozircha to'lov qo'lda amalga oshiriladi — to'lov tafsilotlari uchun biz bilan bog'laning. Tez orada onlayn to'lov qo'shiladi."
-
-msgid "Can I cancel at any time?"
-msgstr "Istalgan vaqtda bekor qila olamanmi?"
-
-msgid "Yes. No contracts, no lock-in. Cancel or pause your account whenever you want. Your data is always yours."
-msgstr "Ha. Shartnoma yo'q, majburiyat yo'q. Istalgan vaqtda bekor qiling yoki to'xtatib qo'ying. Ma'lumotlaringiz har doim sizniki."
-
-msgid "Is my data secure?"
-msgstr "Ma'lumotlarim xavfsizmi?"
-
-msgid "Yes. All data is stored on encrypted servers. Client information and booking history are only accessible to you and your staff."
-msgstr "Ha. Barcha ma'lumotlar shifrlangan serverlarda saqlanadi. Mijoz ma'lumotlari va yozilish tarixi faqat siz va xodimlaringizga ko'rinadi."
-
-msgid "Is there customer support?"
-msgstr "Mijozlarga xizmat ko'rsatish bormi?"
-
-msgid "Yes. Reach us via Telegram for fast support in Uzbek or Russian. We also help with the initial setup at no extra cost."
-msgstr "Ha. Tez yordam uchun Telegram orqali murojaat qiling (o'zbek yoki rus tilida). Boshlang'ich sozlashda ham bepul yordam beramiz."
-
-msgid "Ready to try it?"
-msgstr "Sinab ko'rishga tayyormisiz?"
-
-msgid "Write to us on Telegram — we'll set up your account and walk you through the first steps personally."
-msgstr "Telegram orqali yozing — hisobingizni sozlaymiz va birinchi qadamlarda shaxsan yordam beramiz."
-
-msgid "Message us on Telegram"
-msgstr "Telegram orqali yozing"
-
-msgid "Or log in if you already have an account:"
-msgstr "Yoki allaqachon hisobingiz bo'lsa, kiring:"
-
-msgid "Stop losing bookings to missed calls"
-msgstr "Javobsiz qo'ng'iroqlar sababli yozilishlarni yo'qotishni to'xtating"
-
-msgid "30-day free trial. No card required. Cancel any time."
-msgstr "30 kunlik bepul sinov. Karta kerak emas. Istalgan vaqtda bekor qiling."
-
-msgid "Start for free today"
-msgstr "Bugun bepul boshlang"
-
-msgid "Online booking system for Uzbekistan"
-msgstr "O'zbekiston uchun onlayn yozilish tizimi"
-
-msgid "All rights reserved."
-msgstr "Barcha huquqlar himoyalangan."
-
-msgid "Made in Uzbekistan"
-msgstr "O'zbekistonda yaratilgan"
-
-msgid "Most popular"
-msgstr "Eng mashhur"
-
-msgid "Log in"
-msgstr "Kirish"
-
-msgid "Get access"
-msgstr "Kirish olish"
-
-msgid "Contact us"
-msgstr "Bog'laning"
-
-msgid "Product"
-msgstr "Mahsulot"
-
-msgid "Account"
-msgstr "Hisob"
-
-msgid "Contact"
-msgstr "Aloqa"
-
-msgid "Features"
-msgstr "Imkoniyatlar"
-
-msgid "How it works"
-msgstr "Qanday ishlaydi"
-
-msgid "Pricing"
-msgstr "Narxlar"
+#~ msgid ""
+#~ "Online booking system for salons, clinics and studios. Works 24/7, sends "
+#~ "SMS reminders, shows your analytics."
+#~ msgstr ""
+#~ "Salonlar, klinikalar va studiyalar uchun onlayn yozilish tizimi. 24/7 "
+#~ "ishlaydi, SMS eslatmalar yuboradi, statistika ko'rsatadi."
 
 #~ msgid "Payment note"
 #~ msgstr "To'lov izohi"

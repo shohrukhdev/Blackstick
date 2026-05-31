@@ -783,6 +783,143 @@
     }
     .footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); }
 
+    /* ── BUSINESS TYPES STRIP ───────────────────────────── */
+    .biz-types-strip {
+      background: #fff;
+      padding: 0.875rem 0;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .biz-types-inner {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+    .biz-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--bg-light);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .biz-tag i { font-size: 0.7rem; color: var(--primary); }
+
+    /* ── QR & LINKS SECTION ──────────────────────────────── */
+    .qr-showcase {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .qr-frame {
+      background: #fff;
+      border-radius: 24px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1), 0 0 0 1px var(--border);
+      text-align: center;
+      display: inline-block;
+    }
+    .qr-icon { font-size: 7.5rem; color: #1e293b; line-height: 1; }
+    .qr-url-chip {
+      background: #f0f4ff;
+      border-radius: 30px;
+      padding: 8px 18px;
+      font-size: 0.82rem;
+      color: var(--primary-dark);
+      font-weight: 600;
+      font-family: 'Courier New', monospace;
+      margin-top: 0.75rem;
+      display: inline-block;
+    }
+    .qr-url-chip span { color: var(--accent-dark); }
+    .use-case-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.25rem 0;
+    }
+    .use-case-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 14px;
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .use-case-tag i { color: var(--primary); font-size: 0.78rem; }
+    .server-link-card {
+      background: linear-gradient(135deg, #f0f4ff, #e8f5ff);
+      border: 1.5px solid #c7d2fe;
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .server-link-card i { color: var(--primary); margin-top: 2px; flex-shrink: 0; }
+    .server-link-card p { font-size: 0.875rem; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+    /* ── INSIGHTS SECTION ────────────────────────────────── */
+    .insights-card {
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      height: 100%;
+    }
+    .insights-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .insights-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .ii-indigo { background: #eef2ff; color: var(--primary); }
+    .ii-green  { background: #ecfdf5; color: var(--accent-dark); }
+    .insights-title { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+    .insights-subtitle { font-size: 0.78rem; color: var(--text-muted); }
+    .insights-list { list-style: none; padding: 0; margin: 0; }
+    .insights-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+    .insights-list li:last-child { border-bottom: none; }
+    .insights-list li i {
+      width: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
     /* ── UTILS ───────────────────────────────────────────── */
     .text-primary-custom { color: var(--primary) !important; }
     .bg-light-custom { background: var(--bg-light); }
@@ -844,7 +981,7 @@
           <span class="highlight">{% trans "you focus on your work" %}</span>
         </h1>
         <p class="hero-sub">
-          {% trans "Online booking system for salons, clinics and studios. Works 24/7, sends SMS reminders, shows your analytics." %}
+          {% trans "Online booking system for salons, clinics, studios and any appointment-based business. Works 24/7, sends SMS reminders, shows your analytics." %}
         </p>
         <div class="d-flex flex-wrap gap-3">
           <a href="#contact" class="btn-hero-primary">
@@ -927,6 +1064,21 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ════════════════════════ BUSINESS TYPES ═══════════════════════ -->
+<div class="biz-types-strip">
+  <div class="biz-types-inner">
+    <span class="biz-tag"><i class="fa-solid fa-scissors"></i> {% trans "Hair salons" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-tooth"></i> {% trans "Dental clinics" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-spa"></i> {% trans "Beauty studios" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-user-nurse"></i> {% trans "Medical clinics" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-dumbbell"></i> {% trans "Fitness trainers" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-hand-sparkles"></i> {% trans "Nail studios" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-camera"></i> {% trans "Photo studios" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-person-dots-from-line"></i> {% trans "Tattoo & piercing" %}</span>
+    <span class="biz-tag"><i class="fa-solid fa-ellipsis"></i> {% trans "And more..." %}</span>
   </div>
 </div>
 
@@ -1054,6 +1206,109 @@
           <div class="feature-desc">{% trans "Track total charged, amount paid, and outstanding debts per appointment." %}</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ QR & LINKS ═══════════════════════════ -->
+<section class="section-py" id="qr-links">
+  <div class="container">
+    <div class="row align-items-center g-5">
+
+      <!-- Visual -->
+      <div class="col-lg-5 text-center">
+        <div class="qr-showcase">
+          <div class="qr-frame">
+            <i class="fa-solid fa-qrcode qr-icon"></i>
+            <div class="qr-url-chip">booket.uz/<span>yournailstudio</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="col-lg-7">
+        <div class="section-label">{% trans "QR code & links" %}</div>
+        <h2 class="section-title">{% trans "Your own link — shareable everywhere" %}</h2>
+        <p class="text-muted mb-3" style="font-size:0.97rem; line-height:1.7;">
+          {% trans "Every provider gets a unique personal booking page. Generate a QR code and put it anywhere your clients are — online and offline." %}
+        </p>
+        <div class="use-case-tags">
+          <span class="use-case-tag"><i class="fa-solid fa-id-card"></i> {% trans "Business cards" %}</span>
+          <span class="use-case-tag"><i class="fa-brands fa-instagram"></i> {% trans "Instagram bio" %}</span>
+          <span class="use-case-tag"><i class="fa-solid fa-store"></i> {% trans "Shop window sticker" %}</span>
+          <span class="use-case-tag"><i class="fa-solid fa-billboard"></i> {% trans "Outdoor ad boards" %}</span>
+          <span class="use-case-tag"><i class="fa-brands fa-whatsapp"></i> {% trans "WhatsApp & Telegram" %}</span>
+          <span class="use-case-tag"><i class="fa-solid fa-print"></i> {% trans "Flyers & brochures" %}</span>
+        </div>
+        <div class="server-link-card">
+          <i class="fa-solid fa-link fa-sm"></i>
+          <p>
+            <strong>{% trans "Individual staff links too." %}</strong>
+            {% trans "Each staff member gets their own personal booking link, so clients can go straight to their favourite specialist." %}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════ INSIGHTS ═════════════════════════════ -->
+<section class="section-py bg-light-custom" id="insights">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="section-label">{% trans "Dashboard" %}</div>
+      <h2 class="section-title">{% trans "Know your business inside out" %}</h2>
+      <p class="section-sub">{% trans "Both providers and staff get their own dashboard tailored to what they need to see." %}</p>
+    </div>
+    <div class="row g-4">
+
+      <!-- Provider insights -->
+      <div class="col-md-6">
+        <div class="insights-card">
+          <div class="insights-header">
+            <div class="insights-icon ii-indigo"><i class="fa-solid fa-briefcase"></i></div>
+            <div>
+              <div class="insights-title">{% trans "Provider analytics" %}</div>
+              <div class="insights-subtitle">{% trans "Business owner view" %}</div>
+            </div>
+          </div>
+          <ul class="insights-list">
+            <li><i class="fa-solid fa-coins"></i> {% trans "Revenue: total charged, paid & outstanding debt" %}</li>
+            <li><i class="fa-solid fa-chart-line"></i> {% trans "Appointment trends over any date range" %}</li>
+            <li><i class="fa-solid fa-trophy"></i> {% trans "Top 5 loyal clients by visit count" %}</li>
+            <li><i class="fa-solid fa-ghost"></i> {% trans "Top 5 no-show clients" %}</li>
+            <li><i class="fa-solid fa-file-invoice-dollar"></i> {% trans "Debtor list (clients with unpaid balances)" %}</li>
+            <li><i class="fa-solid fa-users-line"></i> {% trans "Staff performance: appointments, revenue, rate" %}</li>
+            <li><i class="fa-solid fa-calendar-week"></i> {% trans "Busiest days of the week" %}</li>
+            <li><i class="fa-solid fa-rotate"></i> {% trans "New vs returning clients breakdown" %}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Server insights -->
+      <div class="col-md-6">
+        <div class="insights-card">
+          <div class="insights-header">
+            <div class="insights-icon ii-green"><i class="fa-solid fa-scissors"></i></div>
+            <div>
+              <div class="insights-title">{% trans "Staff analytics" %}</div>
+              <div class="insights-subtitle">{% trans "Individual staff view" %}</div>
+            </div>
+          </div>
+          <ul class="insights-list">
+            <li><i class="fa-solid fa-calendar-days"></i> {% trans "Personal calendar: daily & weekly view" %}</li>
+            <li><i class="fa-solid fa-list-check"></i> {% trans "Full appointment history with statuses" %}</li>
+            <li><i class="fa-solid fa-note-sticky"></i> {% trans "Client notes and attached files per visit" %}</li>
+            <li><i class="fa-solid fa-coins"></i> {% trans "Payment tracking per appointment" %}</li>
+            <li><i class="fa-solid fa-chart-bar"></i> {% trans "Personal stats: revenue, visits, completion rate" %}</li>
+            <li><i class="fa-solid fa-trophy"></i> {% trans "Top loyal & no-show clients for their schedule" %}</li>
+            <li><i class="fa-solid fa-chart-line"></i> {% trans "Appointment trends for their own bookings" %}</li>
+            <li><i class="fa-solid fa-calendar-week"></i> {% trans "Busiest days breakdown" %}</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
