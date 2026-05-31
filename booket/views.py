@@ -10,6 +10,10 @@ import io
 from booket.models import Provider, Server, ProviderPhotos
 
 
+def landing(request):
+    return render(request, 'landing/index.html')
+
+
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")

@@ -3275,6 +3275,403 @@ msgstr ""
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
 
+# Landing page translations
+msgid "Online booking for your business"
+msgstr "Онлайн-запись для вашего бизнеса"
+
+msgid "Online booking system for salons, clinics and studios in Uzbekistan. Free for 30 days. No credit card required."
+msgstr "Система онлайн-записи для салонов, клиник и студий в Узбекистане. 30 дней бесплатно. Карта не нужна."
+
+msgid "Let clients book themselves 24/7. SMS reminders. Staff schedules. Analytics."
+msgstr "Клиенты записываются сами 24/7. SMS-напоминания. Расписание сотрудников. Аналитика."
+
+msgid "Built for Uzbekistan businesses"
+msgstr "Создано для бизнеса в Узбекистане"
+
+msgid "Let clients book themselves"
+msgstr "Пусть клиенты записываются сами"
+
+msgid "you focus on your work"
+msgstr "вы занимайтесь своим делом"
+
+msgid "Online booking system for salons, clinics and studios. Works 24/7, sends SMS reminders, shows your analytics."
+msgstr "Система онлайн-записи для салонов, клиник и студий. Работает 24/7, отправляет SMS-напоминания, показывает аналитику."
+
+msgid "Start free for 30 days"
+msgstr "Начать бесплатно на 30 дней"
+
+msgid "See how it works"
+msgstr "Посмотреть, как работает"
+
+msgid "No credit card required"
+msgstr "Карта не нужна"
+
+msgid "5-minute setup"
+msgstr "Настройка за 5 минут"
+
+msgid "Support in Uzbek"
+msgstr "Поддержка на узбекском"
+
+msgid "Choose service"
+msgstr "Выберите услугу"
+
+msgid "Choose time"
+msgstr "Выберите время"
+
+msgid "Always available"
+msgstr "Всегда доступно"
+
+msgid "Languages (UZ, RU, EN)"
+msgstr "Языки (UZ, RU, EN)"
+
+msgid "Free trial days"
+msgstr "Дней бесплатно"
+
+msgid "Setup time"
+msgstr "Время настройки"
+
+msgid "The problem"
+msgstr "Проблема"
+
+msgid "Do these problems sound familiar?"
+msgstr "Эти проблемы вам знакомы?"
+
+msgid "Most salons and clinics face these daily challenges. Every missed call is a lost client."
+msgstr "Большинство салонов и клиник сталкиваются с этим ежедневно. Каждый пропущенный звонок — потерянный клиент."
+
+msgid "Non-stop phone calls"
+msgstr "Беспрерывные звонки"
+
+msgid "While serving a client, the phone rings again. If you don't answer, the booking is lost. If you do, your work stops."
+msgstr "Во время работы с клиентом телефон снова звонит. Не ответите — запись потеряна. Ответите — работа останавливается."
+
+msgid "Double bookings"
+msgstr "Двойные записи"
+
+msgid "Tracking appointments in a notebook or WhatsApp always leads to mistakes. Two clients booked at the same time."
+msgstr "Отслеживание записей в тетради или WhatsApp всегда ведёт к ошибкам. Двое клиентов на одно время."
+
+msgid "Clients who don't show up"
+msgstr "Клиенты, которые не приходят"
+
+msgid "The client forgot, didn't come. You're left with empty time you can't recover. No reminder was sent."
+msgstr "Клиент забыл, не пришёл. У вас пустое время, которое уже не вернуть. Напоминание не было отправлено."
+
+msgid "The solution"
+msgstr "Решение"
+
+msgid "Start in 3 simple steps"
+msgstr "Начните за 3 простых шага"
+
+msgid "From registration to your first online booking — under 15 minutes."
+msgstr "От регистрации до первой онлайн-записи — менее 15 минут."
+
+msgid "Create your business"
+msgstr "Создайте свой бизнес"
+
+msgid "Add your salon or clinic name, staff members, services and prices. All in one place."
+msgstr "Добавьте название салона или клиники, сотрудников, услуги и цены. Всё в одном месте."
+
+msgid "Share your link"
+msgstr "Поделитесь ссылкой"
+
+msgid "Send your personal booking link to clients via Instagram, WhatsApp, or add it to your profile bio."
+msgstr "Отправьте вашу личную ссылку для записи через Instagram, WhatsApp или добавьте в описание профиля."
+
+msgid "Receive bookings"
+msgstr "Принимайте записи"
+
+msgid "Clients book themselves, you get a notification. SMS reminders are sent automatically. No calls needed."
+msgstr "Клиенты записываются сами, вы получаете уведомление. SMS-напоминания отправляются автоматически. Звонки не нужны."
+
+msgid "Everything you need in one place"
+msgstr "Всё необходимое в одном месте"
+
+msgid "Built for real businesses in Uzbekistan. Nothing unnecessary, nothing missing."
+msgstr "Создано для реального бизнеса в Узбекистане. Ничего лишнего, ничего не хватает."
+
+msgid "24/7 Online booking"
+msgstr "Онлайн-запись 24/7"
+
+msgid "Clients can book at midnight. You sleep — your business keeps working."
+msgstr "Клиенты могут записаться в полночь. Вы спите — бизнес работает."
+
+msgid "SMS reminders"
+msgstr "SMS-напоминания"
+
+msgid "Automatic SMS before each appointment. No-shows drop significantly."
+msgstr "Автоматическое SMS перед каждой записью. Количество неявок резко снижается."
+
+msgid "Staff schedule management"
+msgstr "Управление расписанием сотрудников"
+
+msgid "Manage each staff member's schedule, working hours, and days off individually."
+msgstr "Управляйте расписанием каждого сотрудника, рабочими часами и выходными индивидуально."
+
+msgid "Analytics & reports"
+msgstr "Аналитика и отчёты"
+
+msgid "Revenue, popular services, top clients, staff performance — see it all at a glance."
+msgstr "Выручка, популярные услуги, лучшие клиенты, показатели сотрудников — всё с первого взгляда."
+
+msgid "Client history"
+msgstr "История клиента"
+
+msgid "Full visit history, notes, and files per client. Know your clients better."
+msgstr "Полная история посещений, заметки и файлы по каждому клиенту. Знайте своих клиентов лучше."
+
+msgid "Payment tracking"
+msgstr "Отслеживание оплат"
+
+msgid "Track total charged, amount paid, and outstanding debts per appointment."
+msgstr "Отслеживайте итоговую сумму, оплаченную сумму и задолженности по каждой записи."
+
+msgid "Who it's for"
+msgstr "Для кого"
+
+msgid "Built for everyone in your business"
+msgstr "Создано для каждого в вашем бизнесе"
+
+msgid "Business owners"
+msgstr "Владельцы бизнеса"
+
+msgid "Manage multiple staff from one dashboard"
+msgstr "Управляйте несколькими сотрудниками из одной панели"
+
+msgid "See revenue and analytics"
+msgstr "Смотрите выручку и аналитику"
+
+msgid "Build your client database automatically"
+msgstr "Автоматически создавайте базу клиентов"
+
+msgid "Save hours on phone calls every week"
+msgstr "Экономьте часы на звонках каждую неделю"
+
+msgid "Staff & specialists"
+msgstr "Сотрудники и специалисты"
+
+msgid "See your own daily and weekly schedule"
+msgstr "Смотрите своё ежедневное и еженедельное расписание"
+
+msgid "Client history and personal notes"
+msgstr "История клиента и личные заметки"
+
+msgid "Clear view of who is coming and when"
+msgstr "Чёткое понимание, кто и когда придёт"
+
+msgid "No phone interruptions during work"
+msgstr "Никаких звонков во время работы"
+
+msgid "Book any time, from any device"
+msgstr "Записывайтесь в любое время с любого устройства"
+
+msgid "SMS confirmation and reminder"
+msgstr "SMS-подтверждение и напоминание"
+
+msgid "Easy cancellation or rescheduling"
+msgstr "Лёгкая отмена или перенос"
+
+msgid "No account registration required"
+msgstr "Регистрация не требуется"
+
+msgid "Simple, transparent pricing"
+msgstr "Простые и прозрачные цены"
+
+msgid "Start with a free trial. Pay only for what you use. No hidden fees."
+msgstr "Начните с бесплатного пробного периода. Платите только за то, что используете. Скрытых платежей нет."
+
+msgid "Trial"
+msgstr "Пробный"
+
+msgid "/ 30 days"
+msgstr "/ 30 дней"
+
+msgid "Full access for 30 days. No credit card. Cancel any time."
+msgstr "Полный доступ на 30 дней. Карта не нужна. Отмена в любое время."
+
+msgid "All features included"
+msgstr "Все функции включены"
+
+msgid "Unlimited bookings"
+msgstr "Неограниченные записи"
+
+msgid "SMS OTP confirmations"
+msgstr "SMS OTP-подтверждения"
+
+msgid "Analytics dashboard"
+msgstr "Панель аналитики"
+
+msgid "UZ / RU / EN support"
+msgstr "Поддержка UZ / RU / EN"
+
+msgid "Start free trial"
+msgstr "Начать бесплатно"
+
+msgid "Standard"
+msgstr "Стандарт"
+
+msgid "UZS / server / month"
+msgstr "сум / сотрудник / мес"
+
+msgid "+ 700 UZS per completed appointment on top of the base fee."
+msgstr "+ 700 сум за каждую запись сверх базовой платы."
+
+msgid "Example:"
+msgstr "Пример:"
+
+msgid "1 staff member × 100 appointments = 20,000 + 70,000 = 90,000 UZS/month"
+msgstr "1 сотрудник × 100 записей = 20 000 + 70 000 = 90 000 сум/мес"
+
+msgid "Everything in Trial"
+msgstr "Всё из Пробного"
+
+msgid "Unlimited staff members"
+msgstr "Неограниченное число сотрудников"
+
+msgid "Full client history"
+msgstr "Полная история клиентов"
+
+msgid "File attachments"
+msgstr "Прикрепление файлов"
+
+msgid "Get started"
+msgstr "Начать"
+
+msgid "Enterprise"
+msgstr "Корпоративный"
+
+msgid "Custom"
+msgstr "По договорённости"
+
+msgid "For businesses with 5 or more active staff members. Negotiated pricing."
+msgstr "Для бизнеса с 5 и более активными сотрудниками. Цена обговаривается."
+
+msgid "Everything in Standard"
+msgstr "Всё из Стандарта"
+
+msgid "5+ staff members"
+msgstr "5+ сотрудников"
+
+msgid "Volume-based discounts"
+msgstr "Скидки по объёму"
+
+msgid "Priority support"
+msgstr "Приоритетная поддержка"
+
+msgid "Dedicated onboarding"
+msgstr "Персональный онбординг"
+
+msgid "Frequently asked questions"
+msgstr "Часто задаваемые вопросы"
+
+msgid "How does the free trial work?"
+msgstr "Как работает бесплатный пробный период?"
+
+msgid "After registration, you get 30 days of full access with no restrictions. No credit card is required. After the trial, you choose whether to continue with the Standard plan."
+msgstr "После регистрации вы получаете 30 дней полного доступа без ограничений. Карта не нужна. После окончания пробного периода вы сами решаете, переходить ли на тариф Стандарт."
+
+msgid "Do clients need to create an account?"
+msgstr "Нужно ли клиентам создавать аккаунт?"
+
+msgid "No. Clients book using just their name and phone number, then confirm with a one-time SMS code. No registration, no app download."
+msgstr "Нет. Клиенты записываются по имени и номеру телефона, затем подтверждают одноразовым SMS-кодом. Регистрация и скачивание приложения не нужны."
+
+msgid "How many staff members can I add?"
+msgstr "Сколько сотрудников можно добавить?"
+
+msgid "As many as you need. Each staff member gets their own schedule, services, and pricing. You pay 20,000 UZS per active staff member per month."
+msgstr "Сколько угодно. У каждого сотрудника своё расписание, услуги и цены. Вы платите 20 000 сум за каждого активного сотрудника в месяц."
+
+msgid "Does it work on mobile phones?"
+msgstr "Работает ли на мобильных телефонах?"
+
+msgid "Yes, fully. Both the booking page (for clients) and the management dashboard (for staff and owners) are mobile-friendly. No app download needed."
+msgstr "Да, полностью. Страница записи (для клиентов) и панель управления (для сотрудников и владельцев) адаптированы для мобильных. Приложение не нужно."
+
+msgid "How is payment handled?"
+msgstr "Как происходит оплата?"
+
+msgid "Currently billing is handled manually — contact us to discuss payment details. Online payment integration is coming soon."
+msgstr "Пока оплата происходит вручную — свяжитесь с нами для обсуждения деталей. Онлайн-оплата появится в ближайшее время."
+
+msgid "Can I cancel at any time?"
+msgstr "Могу ли я отменить в любое время?"
+
+msgid "Yes. No contracts, no lock-in. Cancel or pause your account whenever you want. Your data is always yours."
+msgstr "Да. Никаких договоров, никаких обязательств. Отменяйте или приостанавливайте аккаунт когда угодно. Ваши данные всегда ваши."
+
+msgid "Is my data secure?"
+msgstr "Безопасны ли мои данные?"
+
+msgid "Yes. All data is stored on encrypted servers. Client information and booking history are only accessible to you and your staff."
+msgstr "Да. Все данные хранятся на зашифрованных серверах. Информация о клиентах и история записей доступны только вам и вашим сотрудникам."
+
+msgid "Is there customer support?"
+msgstr "Есть ли служба поддержки?"
+
+msgid "Yes. Reach us via Telegram for fast support in Uzbek or Russian. We also help with the initial setup at no extra cost."
+msgstr "Да. Пишите нам в Telegram для быстрой поддержки на узбекском или русском языке. Также помогаем с первоначальной настройкой бесплатно."
+
+msgid "Ready to try it?"
+msgstr "Готовы попробовать?"
+
+msgid "Write to us on Telegram — we'll set up your account and walk you through the first steps personally."
+msgstr "Напишите нам в Telegram — мы настроим ваш аккаунт и лично проведём через первые шаги."
+
+msgid "Message us on Telegram"
+msgstr "Написать в Telegram"
+
+msgid "Or log in if you already have an account:"
+msgstr "Или войдите, если у вас уже есть аккаунт:"
+
+msgid "Stop losing bookings to missed calls"
+msgstr "Перестаньте терять записи из-за пропущенных звонков"
+
+msgid "30-day free trial. No card required. Cancel any time."
+msgstr "30-дневный бесплатный период. Карта не нужна. Отмена в любое время."
+
+msgid "Start for free today"
+msgstr "Начать бесплатно сегодня"
+
+msgid "Online booking system for Uzbekistan"
+msgstr "Система онлайн-записи для Узбекистана"
+
+msgid "All rights reserved."
+msgstr "Все права защищены."
+
+msgid "Made in Uzbekistan"
+msgstr "Сделано в Узбекистане"
+
+msgid "Most popular"
+msgstr "Самый популярный"
+
+msgid "Log in"
+msgstr "Войти"
+
+msgid "Get access"
+msgstr "Получить доступ"
+
+msgid "Contact us"
+msgstr "Связаться"
+
+msgid "Product"
+msgstr "Продукт"
+
+msgid "Account"
+msgstr "Аккаунт"
+
+msgid "Contact"
+msgstr "Контакты"
+
+msgid "Features"
+msgstr "Возможности"
+
+msgid "How it works"
+msgstr "Как работает"
+
+msgid "Pricing"
+msgstr "Цены"
+
 #~ msgid "Payment note"
 #~ msgstr "Примечание к оплате"
 
