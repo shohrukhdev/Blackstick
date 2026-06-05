@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('b/', include('booket.urls')),
     path('dashboard/', include('booket.dashboard.urls')),
+    path('orders/', include('orders.urls')),
     path('', landing, name='landing'),
     path('', include('booket.client.urls')),
 ]

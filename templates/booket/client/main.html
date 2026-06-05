@@ -1,1090 +1,1419 @@
-{% extends "booket/client/container.html" %}
 {% load static %}
 {% load i18n %}
 {% load l10n %}
 {% load humanize %}
-{% block title %} {% trans 'Main' %} {% endblock %}
-
-{% block content %}
+{% get_current_language as LANG_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANG_CODE|default:'en' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ provider.name }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  {% if provider.latitude and provider.longitude %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  {% endif %}
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
   <style>
-      @media (max-width: 768px) {
-          .container-main {
-              padding: 5px;
-          }
+    :root {
+      --accent:       #7c3aed;
+      --accent-hover: #6d28d9;
+      --accent-light: #8b5cf6;
+      --accent-bg:    #f5f3ff;
+      --accent-border:#ddd6fe;
+      --tx-primary:   #111827;
+      --tx-secondary: #6b7280;
+      --tx-muted:     #9ca3af;
+      --border:       #e5e7eb;
+      --surface:      #ffffff;
+      --bg:           #f9fafb;
+      --radius-sm:    0.625rem;
+      --radius:       1rem;
+      --radius-lg:    1.25rem;
+    }
 
-          .card-person {
-              margin-bottom: 7px;
-          }
-      }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--tx-primary); -webkit-font-smoothing: antialiased; }
 
-      @media (min-width: 768px) {
-          .container-main {
-              padding-bottom: 30px;
-              padding-left: 30px;
-              padding-right: 30px;
-          }
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 99px; }
 
-          .card-person {
-              margin: 25px;
-          }
-      }
+    /* ── NAVBAR ── */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1040;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color .25s, box-shadow .25s;
+      height: 64px;
+    }
+    .top-nav.scrolled { border-color: var(--border); box-shadow: 0 2px 24px rgba(0,0,0,.07); }
+    .top-nav .inner { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; height: 100%; display: flex; align-items: center; gap: 2rem; }
+    .nav-logo img { height: 40px; width: auto; object-fit: contain; }
+    .nav-links { display: flex; align-items: center; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a { font-size: .875rem; font-weight: 500; color: var(--tx-secondary); text-decoration: none; transition: color .15s; }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: .75rem; }
 
-      .service-row {
-          cursor: pointer; /* Change cursor to pointer on hover */
-      }
+    /* Language switcher */
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 10px; border-radius: var(--radius-sm);
+      background: none; border: 1px solid var(--border);
+      font-size: .8125rem; font-weight: 500; color: var(--tx-secondary);
+      cursor: pointer; transition: border-color .15s, background .15s;
+    }
+    .lang-btn:hover { border-color: var(--accent); background: var(--accent-bg); color: var(--accent); }
+    .lang-btn img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
+    .lang-dropdown {
+      position: absolute; top: calc(100% + 6px); right: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      min-width: 130px; overflow: hidden; display: none; z-index: 200;
+    }
+    .lang-dropdown.open { display: block; }
+    .lang-option {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 14px; font-size: .8125rem; font-weight: 500;
+      color: var(--tx-primary); cursor: pointer; transition: background .12s;
+      border: none; background: none; width: 100%; text-align: left;
+    }
+    .lang-option:hover { background: var(--accent-bg); color: var(--accent); }
+    .lang-option img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; }
 
-      .selected {
-          background-color: #c4bdbd; /* Light gray background for selected row */
-      }
+    /* Hamburger */
+    .hamburger { display: none; border: none; background: none; padding: 6px; border-radius: 8px; cursor: pointer; color: var(--tx-secondary); }
+    .hamburger:hover { background: var(--bg); }
+    .mobile-nav { display: none; border-top: 1px solid var(--border); background: var(--surface); padding: .5rem 1.25rem .75rem; }
+    .mobile-nav.open { display: block; }
+    .mobile-nav a { display: block; padding: 8px 10px; border-radius: var(--radius-sm); font-size: .9rem; font-weight: 500; color: var(--tx-secondary); text-decoration: none; }
+    .mobile-nav a:hover { color: var(--accent); background: var(--accent-bg); }
+    @media (max-width: 767px) {
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+    }
 
-      .price {
-          font-size: 15px;
-      }
+    /* ── HERO CAROUSEL ── */
+    .hero-wrap { position: relative; height: min(70vh, 640px); min-height: 360px; overflow: hidden; background: #1e1028; margin-top: 64px; }
+    .hero-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity .9s ease; }
+    .hero-slide.active { opacity: 1; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,.22) 0%, rgba(0,0,0,.62) 100%); }
+    .hero-content { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; z-index: 2; }
+    .hero-content h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; color: #fff; letter-spacing: -.02em; text-shadow: 0 2px 20px rgba(0,0,0,.35); margin-bottom: .75rem; }
+    .hero-content p { font-size: clamp(.9rem, 2vw, 1.1rem); color: rgba(255,255,255,.85); max-width: 520px; line-height: 1.65; margin-bottom: 2rem; }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff; font-weight: 600; font-size: .9375rem;
+      padding: 13px 28px; border-radius: var(--radius);
+      text-decoration: none; transition: background .2s, transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 20px rgba(124,58,237,.4);
+    }
+    .hero-cta:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,58,237,.45); color: #fff; }
+    .hero-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.18); color: #fff; backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      transition: background .15s;
+    }
+    .hero-arrow:hover { background: rgba(255,255,255,.35); }
+    .hero-arrow.prev { left: 16px; }
+    .hero-arrow.next { right: 16px; }
+    .hero-dots { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); z-index: 3; display: flex; gap: 6px; }
+    .hero-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.45); border: none; cursor: pointer; padding: 0; transition: background .2s, transform .2s; }
+    .hero-dot.active { background: #fff; transform: scale(1.3); }
 
-      .popover {
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adjust the shadow as needed */
-      }
+    /* ── CONTACT STRIP ── */
+    .contact-strip { background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.125rem 0; }
+    .contact-strip .inner { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.25rem 2rem; }
+    .contact-item { display: flex; align-items: center; gap: 10px; color: var(--tx-secondary); text-decoration: none; font-size: .875rem; font-weight: 500; }
+    .contact-item:hover { color: var(--accent); }
+    .contact-icon { width: 34px; height: 34px; border-radius: 9px; background: var(--accent-bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .contact-icon svg { width: 16px; height: 16px; color: var(--accent); }
+    .contact-icon img { width: 18px; height: 18px; }
 
-      .service-checkbox {
-          float: right;
-          width: 20px;
-      }
+    /* ── SECTION HEADING ── */
+    .section-head { text-align: center; margin-bottom: 3rem; }
+    .section-head h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 800; color: var(--tx-primary); letter-spacing: -.02em; margin-bottom: .5rem; }
+    .section-head .bar { width: 40px; height: 4px; background: var(--accent); border-radius: 99px; margin: 0 auto; }
 
-      .active-date {
-          color: yellow;
-          font-weight: bold;
-      }
+    /* ── SERVICES ── */
+    .section-services { padding: 5rem 0; }
+    .svc-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      transition: box-shadow .2s;
+    }
+    .svc-card:hover { box-shadow: 0 4px 24px rgba(0,0,0,.08); }
+    .svc-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.25rem; cursor: pointer; border: none; background: none; width: 100%; text-align: left;
+    }
+    .svc-head:hover { background: var(--bg); }
+    .svc-head h3 { font-size: .9375rem; font-weight: 600; color: var(--tx-primary); margin: 0; }
+    .svc-head svg { color: var(--tx-muted); transition: transform .25s; flex-shrink: 0; }
+    .svc-head.collapsed svg { transform: rotate(-90deg); }
+    .svc-list { border-top: 1px solid var(--border); }
+    .svc-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 1.25rem;
+      border-bottom: 1px solid #f3f4f6;
+      transition: background .12s;
+    }
+    .svc-row:last-child { border-bottom: none; }
+    .svc-row:hover { background: var(--accent-bg); }
+    .svc-name { font-size: .875rem; color: var(--tx-primary); }
+    .svc-desc { font-size: .75rem; color: var(--tx-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 280px; }
+    .svc-price { font-size: .875rem; font-weight: 600; color: var(--accent); white-space: nowrap; margin-left: 1rem; }
+
+    /* ── SPECIALISTS ── */
+    .section-specialists { padding: 5rem 0; background: var(--surface); }
+    .spec-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); overflow: hidden;
+      cursor: pointer; transition: transform .2s, box-shadow .2s;
+    }
+    .spec-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,.12); }
+    .spec-photo { position: relative; aspect-ratio: 4/3; overflow: hidden; background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+    .spec-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .spec-photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .spec-photo-placeholder svg { width: 60px; height: 60px; color: #c4b5fd; }
+    .spec-body { padding: 1.125rem; }
+    .spec-name { font-size: 1rem; font-weight: 700; color: var(--tx-primary); margin-bottom: 3px; }
+    .spec-title { font-size: .8125rem; color: var(--accent); font-weight: 500; margin-bottom: 1rem; }
+    .btn-book {
+      display: block; width: 100%; padding: 10px; border-radius: var(--radius-sm);
+      background: var(--accent); color: #fff; font-size: .875rem; font-weight: 600;
+      text-align: center; border: none; cursor: pointer;
+      transition: background .15s;
+    }
+    .btn-book:hover { background: var(--accent-hover); }
+
+    /* ── BOOKING MODAL ── */
+    .modal-content { border: none !important; border-radius: var(--radius-lg) !important; overflow: hidden; }
+    .modal-backdrop { --bs-backdrop-opacity: .55; }
+    .bk-header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 1rem 1.375rem; display: flex; align-items: center; justify-content: space-between;
+    }
+    .bk-steps { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .step-dot { width: 9px; height: 9px; border-radius: 50%; background: #e5e7eb; transition: background .25s; }
+    .step-dot.active { background: var(--accent); }
+    .step-dot.done { background: #a78bfa; }
+    .bk-step-label { font-size: .75rem; color: var(--tx-muted); }
+    .bk-title { font-size: .9375rem; font-weight: 600; color: var(--tx-primary); margin: 0; }
+    .bk-close {
+      width: 32px; height: 32px; border-radius: 50%; border: none;
+      background: none; display: flex; align-items: center; justify-content: center;
+      color: var(--tx-muted); cursor: pointer; transition: background .15s; flex-shrink: 0;
+    }
+    .bk-close:hover { background: var(--bg); color: var(--tx-primary); }
+    .bk-footer {
+      border-top: 1px solid var(--border); padding: .875rem 1.375rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface);
+    }
+    .bk-footer.end { justify-content: flex-end; }
+
+    /* Step panels */
+    .step-panel { padding: 1.375rem; }
+    .step-panel.confirm-panel { padding: 0; }
+
+    /* Service selection (step 1) */
+    .svc-type-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: .75rem; }
+    .svc-type-head { padding: .5rem 1rem; background: var(--bg); border-bottom: 1px solid var(--border); }
+    .svc-type-head span { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--tx-muted); }
+    .svc-pick-row {
+      display: flex; align-items: center; gap: .875rem;
+      padding: .75rem 1rem; border-bottom: 1px solid #f3f4f6; cursor: pointer;
+      transition: background .12s;
+    }
+    .svc-pick-row:last-child { border-bottom: none; }
+    .svc-pick-row:hover { background: var(--accent-bg); }
+    .svc-pick-row.checked { background: var(--accent-bg); }
+    .svc-pick-row input[type="checkbox"] { width: 17px; height: 17px; border-radius: 5px; accent-color: var(--accent); cursor: pointer; flex-shrink: 0; }
+    .svc-pick-name { flex: 1; font-size: .875rem; color: var(--tx-primary); }
+    .svc-pick-price { font-size: .8125rem; font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+    /* Date/time step */
+    .duration-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent-bg); border: 1px solid var(--accent-border);
+      border-radius: 99px; padding: 5px 14px; font-size: .8125rem;
+      color: var(--accent); font-weight: 500; margin-bottom: 1.125rem;
+    }
+    .date-nav { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+    .date-nav-btn {
+      width: 36px; height: 36px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: none; color: var(--tx-secondary);
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      flex-shrink: 0; transition: border-color .15s, color .15s;
+    }
+    .date-nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .date-scroll { flex: 1; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .date-scroll::-webkit-scrollbar { height: 0; }
+    .date-row { display: flex; gap: 6px; padding-bottom: 2px; }
+    .date-btn {
+      flex-shrink: 0; padding: 6px 14px; border-radius: 99px;
+      border: 1px solid var(--border); background: none;
+      font-size: .8125rem; font-weight: 500; color: var(--tx-secondary);
+      cursor: pointer; transition: all .15s; white-space: nowrap;
+    }
+    .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .date-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .selected-date-label { font-size: .8125rem; font-weight: 500; color: var(--tx-secondary); margin-bottom: .75rem; }
+    .time-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .time-btn {
+      padding: 7px 16px; border-radius: var(--radius-sm);
+      border: 1px solid var(--border); background: none;
+      font-size: .875rem; font-weight: 500; color: var(--tx-primary);
+      cursor: pointer; transition: all .15s;
+    }
+    .time-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+    .time-btn.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+    /* Confirm step */
+    .confirm-split { display: flex; min-height: 0; }
+    .confirm-left { width: 44%; background: var(--bg); border-right: 1px solid var(--border); padding: 1.25rem; flex-shrink: 0; }
+    .confirm-right { flex: 1; padding: 1.25rem; overflow-y: auto; max-height: 72vh; }
+    @media (max-width: 575px) {
+      .confirm-split { flex-direction: column; }
+      .confirm-left { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+      .confirm-right { max-height: none; }
+    }
+    .summary-tile {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: .75rem 1rem; text-align: center; flex: 1;
+    }
+    .summary-tile .label { font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--tx-muted); margin-bottom: 4px; }
+    .summary-tile .value { font-size: .9375rem; font-weight: 700; color: var(--tx-primary); }
+    .summary-svc-list { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; max-height: 150px; overflow-y: auto; }
+    .summary-svc-item { display: flex; justify-content: space-between; padding: 8px 12px; border-bottom: 1px solid #f3f4f6; font-size: .8125rem; }
+    .summary-svc-item:last-child { border-bottom: none; }
+    .summary-row { display: flex; justify-content: space-between; font-size: .8125rem; color: var(--tx-secondary); margin-top: 8px; }
+    .summary-total { font-size: .9375rem; font-weight: 700; color: var(--accent); }
+
+    /* Form fields */
+    .form-label-sm { font-size: .75rem; font-weight: 500; color: var(--tx-secondary); margin-bottom: 6px; display: block; }
+    .form-input {
+      width: 100%; padding: 9px 13px; font-size: .875rem;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: var(--surface); color: var(--tx-primary); outline: none;
+      transition: border-color .15s; font-family: inherit;
+    }
+    .form-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+    .phone-wrap { display: flex; border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; transition: border-color .15s; }
+    .phone-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+    .phone-prefix { padding: 9px 12px; background: var(--bg); border-right: 1px solid var(--border); font-size: .875rem; font-weight: 500; color: var(--tx-secondary); white-space: nowrap; }
+    .phone-wrap input { flex: 1; padding: 9px 12px; border: none; outline: none; font-size: .875rem; background: transparent; font-family: inherit; color: var(--tx-primary); }
+    .tab-switcher { display: flex; background: var(--bg); border-radius: var(--radius-sm); padding: 3px; margin-bottom: 1.125rem; }
+    .tab-btn {
+      flex: 1; padding: 7px 12px; border: none; border-radius: calc(var(--radius-sm) - 2px);
+      font-size: .8125rem; font-weight: 500; color: var(--tx-muted); background: none;
+      cursor: pointer; transition: all .15s;
+    }
+    .tab-btn.active { background: var(--surface); color: var(--tx-primary); box-shadow: 0 1px 6px rgba(0,0,0,.1); }
+    .form-hint { font-size: .7rem; color: var(--tx-muted); margin-top: 4px; }
+    .agree-row { display: flex; align-items: flex-start; gap: 8px; margin-top: 6px; }
+    .agree-row input { width: 16px; height: 16px; margin-top: 1px; accent-color: var(--accent); flex-shrink: 0; }
+    .agree-row label { font-size: .8125rem; color: var(--tx-secondary); line-height: 1.4; }
+    .agree-row a { color: var(--accent); }
+
+    /* OTP input */
+    .otp-input {
+      width: 100%; padding: 12px; text-align: center;
+      font-size: 1.5rem; font-family: monospace; letter-spacing: .4em;
+      font-weight: 700; border: 2px solid var(--border); border-radius: var(--radius-sm);
+      outline: none; background: var(--surface); color: var(--tx-primary);
+      transition: border-color .15s;
+    }
+    .otp-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,58,237,.1); }
+
+    /* Buttons */
+    .btn-accent {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 20px; background: var(--accent); color: #fff;
+      border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: .875rem;
+      cursor: pointer; transition: background .15s; font-family: inherit;
+    }
+    .btn-accent:hover { background: var(--accent-hover); }
+    .btn-accent:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 20px; background: none; color: var(--tx-secondary);
+      border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 500; font-size: .875rem;
+      cursor: pointer; transition: all .15s; font-family: inherit;
+    }
+    .btn-ghost:hover { border-color: #9ca3af; color: var(--tx-primary); }
+    .btn-text { background: none; border: none; color: var(--accent); font-size: .8125rem; font-weight: 500; cursor: pointer; padding: 0; font-family: inherit; }
+    .btn-text:hover { text-decoration: underline; }
+
+    /* Success screen */
+    .success-screen { text-align: center; padding: 3rem 1.5rem; }
+    .success-icon { width: 64px; height: 64px; border-radius: 50%; background: #dcfce7; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
+    .success-icon svg { width: 32px; height: 32px; color: #16a34a; }
+
+    /* Toast */
+    .toast-container { z-index: 99999 !important; }
+
+    /* ── FOOTER ── */
+    .site-footer { background: #0f0a1e; color: #e2d9f3; padding: 4rem 0 2rem; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 1.25rem; }
+    .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2.5rem; margin-bottom: 3rem; }
+    .footer-logo img { height: 36px; width: auto; object-fit: contain; filter: brightness(0) invert(1); opacity: .9; margin-bottom: 1rem; }
+    .footer-text { font-size: .8125rem; color: #9d8ec7; line-height: 1.6; }
+    .footer-socials { display: flex; gap: .5rem; margin-top: 1rem; }
+    .footer-social-btn {
+      width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s; text-decoration: none;
+    }
+    .footer-social-btn:hover { background: var(--accent); }
+    .footer-social-btn img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
+    .footer-col h4 { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #fff; margin-bottom: .875rem; }
+    .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+    .footer-col li { font-size: .8125rem; color: #9d8ec7; }
+    .footer-col a { color: #9d8ec7; text-decoration: none; transition: color .15s; }
+    .footer-col a:hover { color: var(--accent-light); }
+    .footer-divider { border-top: 1px solid rgba(255,255,255,.08); padding-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; }
+    .footer-copy { font-size: .75rem; color: #6b5a8a; }
+    .footer-links { display: flex; gap: 1.25rem; }
+    .footer-links a { font-size: .75rem; color: #6b5a8a; text-decoration: none; }
+    .footer-links a:hover { color: #9d8ec7; }
+
+    /* Misc */
+    .notice-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; background: var(--accent-bg); border: 1px solid var(--accent-border); font-size: .75rem; font-weight: 600; color: var(--accent); }
   </style>
-  {% get_current_language as LANG_CODE %}
-  <div class="container-fluid container-main">
-  <div class="row">
-    <div class="col-12">
-      <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
-        {% csrf_token %}
-        <div class="input-group input-group-sm mb-3">
-          <div class="input-group-prepend">
-            <span class="input-group-text" id="basic-addon1">{% trans "Language:" %}</span>
-          </div>
-          <input type="hidden" name="text" value="{{ redirect_to }}">
-          <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
-            {% get_available_languages as LANGUAGES %}
-            {% get_language_info_list for LANGUAGES as languages %}
-            {% for language in languages %}
-              <option class="form-control" value="{{ language.code }}"
-                {% if language.code == LANG_CODE %} selected {% endif %}>
-                {{ language.name_local }}
-              </option>
-            {% endfor %}
-          </select>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="row">
-  <div class="col-lg-6 col-md-12 col-sm-12">
-    <!-- Carousel -->
-    <div id="caruso" class="carousel slide shadow" data-bs-ride="carousel">
-      <!-- The slideshow/carousel -->
-      <div class="carousel-inner">
-        {% for f in provider.providerphotos_set.all %}
-          <div class="carousel-item {% if forloop.counter == 1 %} active {% endif %}">
-            <img class="d-block w-100 rounded" src="{{ f.photo.url }}" alt="{{ f.id }}" style="object-fit: cover;">
-          </div>
-        {% endfor %}
-      </div>
+</head>
+<body>
 
-      <!-- Left and right controls/icons -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#caruso" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#caruso" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-      </button>
+  <!-- Hidden state inputs -->
+  <input type="hidden" id="provider_identifier" value="{{ provider.identifier }}">
+  <input type="hidden" id="signature" value="{{ signature }}">
+
+  <!-- Toast container -->
+  <div class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+  <!-- Language switch form (hidden) -->
+  <form id="setlangform" action="{% url 'set_language' %}" method="post" style="display:none">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    <input type="hidden" id="lang_input" name="language" value="{{ LANG_CODE }}">
+  </form>
+
+  <!-- ════════════════════════════════
+       NAVBAR
+  ════════════════════════════════ -->
+  <nav class="top-nav" id="mainNav">
+    <div class="inner">
+      <a class="nav-logo" href="#home">
+        <img src="{{ provider.logo.url }}" alt="{{ provider.name }}">
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home">{% trans 'Home' %}</a></li>
+        <li><a href="#services">{% trans 'Services' %}</a></li>
+        <li><a href="#specialists">{% trans 'Specialists' %}</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <!-- Language Switcher -->
+        <div style="position:relative" id="langWidget">
+          <button class="lang-btn" onclick="toggleLang(event)">
+            <img id="flagImg"
+              src="{% if LANG_CODE == 'uz' %}{% static 'design/images/uzbekistan.svg' %}{% elif LANG_CODE == 'ru' %}{% static 'design/images/russia.svg' %}{% else %}{% static 'design/images/usa.svg' %}{% endif %}"
+              alt="">
+            <span>{{ LANG_CODE|upper }}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="lang-dropdown" id="langMenu">
+            <button class="lang-option" onclick="switchLang('uz')">
+              <img src="{% static 'design/images/uzbekistan.svg' %}" alt=""> Uzbek
+            </button>
+            <button class="lang-option" onclick="switchLang('ru')">
+              <img src="{% static 'design/images/russia.svg' %}" alt=""> Русский
+            </button>
+            <button class="lang-option" onclick="switchLang('en')">
+              <img src="{% static 'design/images/usa.svg' %}" alt=""> English
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button class="hamburger" onclick="toggleMobile()" aria-label="Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
     </div>
-  </div>
-  <div class="col-lg-6 col-md-12 col-sm-12">
-    <div class="container">
-      <h3 style="text-align: center; padding: 10px; text-shadow: 2px 2px 5px darkgrey">{{ provider.name }}</h3>
-      {{ provider.description|safe }}
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#home" onclick="closeMobile()">{% trans 'Home' %}</a>
+      <a href="#services" onclick="closeMobile()">{% trans 'Services' %}</a>
+      <a href="#specialists" onclick="closeMobile()">{% trans 'Specialists' %}</a>
     </div>
-  </div>
-  <div class="container>" style="margin-top: 20px">
-  <div class="card shadow">
-  <div class="card-header">
-    <div class="card-title">
-      <h5 class="text-center">{% trans 'Services' %}</h5>
+  </nav>
+
+  <!-- ════════════════════════════════
+       HERO CAROUSEL
+  ════════════════════════════════ -->
+  <section class="hero-wrap" id="home">
+    {% for item in provider.providerphotos_set.all %}
+    <div class="hero-slide{% if forloop.first %} active{% endif %}"
+         style="background-image:url('{{ item.photo.url }}')"></div>
+    {% empty %}
+    <div class="hero-slide active" style="background: linear-gradient(135deg,#2e1065,#4c1d95);"></div>
+    {% endfor %}
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1>{{ provider.name }}</h1>
+      <p>{{ provider.description|striptags|truncatewords:30 }}</p>
+      <a href="#specialists" class="hero-cta">
+        {% trans 'Book appointment' %}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
-  </div>
-  <div class="card-body">
-  <div class="row">
-    {% for tip in provider.service_type.all %}
-      {% if tip.is_active == True %}
-        {% if provider.service_type.all|length == 1 %}
-          <div class="col-lg-12 col-md-6 col-sm-12 text-center">
-        {% elif provider.service_type.all|length == 2 %}
-          <div class="col-lg-6 col-md-6 col-sm-12">
-        {% elif provider.service_type.all|length == 3 %}
-          <div class="col-lg-4 col-md-6 col-sm-12">
-        {% else %}
-          <div class="col-lg-3 col-md-6 col-sm-12">
-        {% endif %}
-      <table class="table table-sm table-hover thead-dark">
-        <thead>
-        <tr>
-          {% if LANG_CODE == "uz" %}
-            <th>{{ tip.name_uz }}</th>
-          {% elif LANG_CODE == "ru" %}
-            <th>{{ tip.name_ru }}</th>
-          {% else %}
-            <th>{{ tip.name }}</th>
-          {% endif %}
-          <th style="text-align: right;"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for service in tip.service_set.all %}
-          <!-- Service Row -->
-          <tr class="service-row" data-service-id="{{ service.id }}">
-            {% if LANG_CODE == "uz" %}
-              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name_uz }}
-                <i class="price">
-                  <span class="badge bg-primary rounded-pill">( {{ service.price|intcomma }} dan)</span>
-                </i>
-              </td>
-            {% elif LANG_CODE == "ru" %}
-              <td><i class="fa-solid fa-caret-left fa-lg"></i>{{ service.name_ru }}
-                <i class="price">
-                  <span class="badge bg-primary rounded-pill">( от {{ service.price|intcomma }})</span>
-                </i>
-              </td>
-            {% else %}
-              <td><i class="fa-solid fa-caret-left fa-lg" style="color: #0052be"></i> {{ service.name }}
-                <i class="price">
-                  <span class="badge bg-primary rounded-pill">(from {{ service.price|intcomma }})</span>
-                </i>
-              </td>
-            {% endif %}
-            <td style="text-align: right;">
-              <button class="btn btn-outline-primary btn-sm" data-bs-toggle="popover" data-bs-trigger="focus"
-                      data-bs-content="{{ service.description|safe }}">
-                <i class="fa-solid fa-circle-info"></i>
-              </button>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+
+    {% with cnt=provider.providerphotos_set.count %}{% if cnt > 1 %}
+    <button class="hero-arrow prev" onclick="carouselPrev()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="hero-arrow next" onclick="carouselNext()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <div class="hero-dots" id="heroDots"></div>
+    {% endif %}{% endwith %}
+  </section>
+
+  <!-- ════════════════════════════════
+       CONTACT STRIP
+  ════════════════════════════════ -->
+  <div class="contact-strip">
+    <div class="inner">
+      {% if provider.address %}
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <span>{{ provider.address|striptags }}</span>
       </div>
       {% endif %}
-    {% endfor %}
-    </div>
-    </div>
+
+      {% for phone in provider.phone_numbers %}
+      <div class="contact-item">
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498A1 1 0 0121 19v1a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <span>{{ phone }}</span>
+      </div>
+      {% endfor %}
+
+      {% for item in provider.social_media %}
+      <a class="contact-item" href="{{ item.link }}" target="_blank" rel="noopener noreferrer">
+        <div class="contact-icon">
+          {% if item.type == 'telegram' %}<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram">
+          {% elif item.type == 'instagram' %}<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
+          {% elif item.type == 'facebook' %}<img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" alt="Facebook">
+          {% elif item.type == 'youtube' %}<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="YouTube">
+          {% elif item.type == 'whatsapp' %}<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+          {% else %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+          {% endif %}
+        </div>
+        <span>{{ item.name|safe }}</span>
+      </a>
+      {% endfor %}
     </div>
   </div>
-  <div class="container-fluid" style="margin-top: 15px">
-    <div class="card shadow">
-      <div class="card-header">
-        <div class="card-title">
-          <h5 class="text-center">{% trans 'Specialists' %}</h5>
+
+  <!-- ════════════════════════════════
+       SERVICES
+  ════════════════════════════════ -->
+  <section class="section-services" id="services">
+    <div style="max-width:1200px;margin:0 auto;padding:0 1.25rem">
+      <div class="section-head">
+        <h2>{% trans 'Our Services' %}</h2>
+        <div class="bar"></div>
+      </div>
+      <div class="row g-4">
+        {% for tip in provider.service_type.all %}
+        <div class="col-12 col-md-6">
+          <div class="svc-card">
+            <button class="svc-head" onclick="toggleSvcCard(this)">
+              <h3>
+                {% if LANG_CODE == 'uz' %}{{ tip.name_uz }}
+                {% elif LANG_CODE == 'ru' %}{{ tip.name_ru }}
+                {% else %}{{ tip.name }}{% endif %}
+              </h3>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="svc-list">
+              {% for service in tip.service_set.all %}
+              <div class="svc-row">
+                <div style="flex:1;min-width:0">
+                  <div class="svc-name">
+                    {% if LANG_CODE == 'uz' %}{{ service.name_uz }}
+                    {% elif LANG_CODE == 'ru' %}{{ service.name_ru }}
+                    {% else %}{{ service.name }}{% endif %}
+                  </div>
+                  {% if service.description %}<div class="svc-desc">{{ service.description|striptags|truncatewords:10 }}</div>{% endif %}
+                </div>
+                <div class="svc-price">{{ service.price|intcomma }}</div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            {% for ps in provider.providerserver_set.all %}
-              <div class="col-lg-3 col-md-6 col-sm-12 text-center">
-                <div class="card shadow card-person">
-                  {% if ps.server.image %}
-                  <img class="card-img-top" src="{{ ps.server.image.url }}" alt="Card image" style="width:100%; max-height: 300px; object-fit: cover">
-                  {% endif %}
-                  <div class="card-body">
-                    <h4 class="card-title">{{ ps.server.user.get_full_name }}</h4>
-                    <div style="max-height: 2em !important; overflow: hidden; position: relative;"
-                         id="server-info-{{ forloop.counter }}">
-                      {{ ps.server.info|safe }}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       SPECIALISTS
+  ════════════════════════════════ -->
+  <section class="section-specialists" id="specialists">
+    <div style="max-width:1200px;margin:0 auto;padding:0 1.25rem">
+      <div class="section-head">
+        <h2>{% trans 'Our Specialists' %}</h2>
+        {% if provider.specialists_section_text %}
+        <p style="color:var(--tx-secondary);margin-top:.5rem;font-size:.9375rem">{{ provider.specialists_section_text }}</p>
+        {% endif %}
+        <div class="bar" style="margin-top:.75rem"></div>
+      </div>
+      <div class="row g-4">
+        {% for ps in provider.providerserver_set.all %}
+        <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+          <div class="spec-card"
+               onclick="location.href='{% url 'server_detail_page' identifier=provider.identifier ps_id=ps.id %}'">
+            <div class="spec-photo">
+              {% if ps.server.image %}
+              <img src="{{ ps.server.image.url }}" alt="{{ ps.server.user.get_full_name }}">
+              {% else %}
+              <div class="spec-photo-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+              {% endif %}
+            </div>
+            <div class="spec-body">
+              <div class="spec-name">{{ ps.server.user.get_full_name }}</div>
+              <div class="spec-title">
+                {% if LANG_CODE == 'uz' %}{{ ps.server.title_uz }}
+                {% elif LANG_CODE == 'ru' %}{{ ps.server.title_ru }}
+                {% else %}{{ ps.server.title }}{% endif %}
+              </div>
+              <button class="btn-book"
+                onclick="event.stopPropagation(); selectServer('{{ ps.id }}', '{{ ps.server.user.get_full_name|escapejs }}')">
+                {% trans 'Book appointment' %}
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════
+       BOOKING MODAL
+  ════════════════════════════════ -->
+  <div class="modal fade" id="bookingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <!-- Header -->
+        <div class="bk-header">
+          <div>
+            <div class="bk-steps">
+              <div class="step-dot active" id="dot1"></div>
+              <div class="step-dot" id="dot2"></div>
+              <div class="step-dot" id="dot3"></div>
+              <span class="bk-step-label ms-1" id="stepLabel"></span>
+            </div>
+            <p class="bk-title">{% trans "Specialist" %}: <span id="serverNameDisplay"></span></p>
+          </div>
+          <button class="bk-close" onclick="closeModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body p-0" style="overflow:hidden">
+
+          <!-- Step 1: Services -->
+          <div id="step1" class="step-panel">
+            <p style="font-size:.8125rem;color:var(--tx-muted);margin-bottom:1rem">{% trans "Select one or more services" %}</p>
+            <div id="ps_services"></div>
+          </div>
+
+          <!-- Step 2: Date & Time -->
+          <div id="step2" class="step-panel" style="display:none">
+            <div class="duration-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              {% trans "Estimated duration" %}: <strong><span id="duration">0</span> {% trans "min" %}</strong>
+            </div>
+
+            <div class="date-nav">
+              <button class="date-nav-btn" id="prevDateBtn" onclick="getDates('prev')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <div class="date-scroll">
+                <div class="date-row" id="dateContainer"></div>
+              </div>
+              <button class="date-nav-btn" id="nextDateBtn" onclick="getDates('next')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+            </div>
+
+            <div id="selectedDateText" class="selected-date-label"></div>
+            <div class="time-grid" id="timeSlots"></div>
+          </div>
+
+          <!-- Step 3: Confirm -->
+          <div id="step3" style="display:none">
+            <div class="confirm-split">
+
+              <!-- Left: Summary -->
+              <div class="confirm-left">
+                <div style="display:flex;gap:8px;margin-bottom:1rem">
+                  <div class="summary-tile">
+                    <div class="label">{% trans "Time" %}</div>
+                    <div class="value" id="appointment_time">—</div>
+                  </div>
+                  <div class="summary-tile">
+                    <div class="label">{% trans "Date" %}</div>
+                    <div class="value" id="appointment_date">—</div>
+                  </div>
+                </div>
+                <p style="font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--tx-muted);margin-bottom:6px">{% trans "Selected services" %}</p>
+                <div class="summary-svc-list">
+                  <ul id="appointment_services" style="list-style:none;padding:0;margin:0"></ul>
+                </div>
+                <div class="summary-row" style="margin-top:10px">
+                  <span>{% trans "Estimated duration" %}</span>
+                  <strong><span id="appointment_duration">0</span> {% trans "min" %}</strong>
+                </div>
+                <div class="summary-row summary-total">
+                  <span>{% trans "Total" %}</span>
+                  <span><span id="appointment_total">0</span> {% trans "sum" %}</span>
+                </div>
+              </div>
+
+              <!-- Right: Form / OTP / Success -->
+              <div class="confirm-right">
+
+                <!-- Client form -->
+                <form id="clientConfirmationForm">
+                  {% csrf_token %}
+                  <input type="hidden" id="provider_id" name="provider_id" value="{{ provider.id }}">
+
+                  <p style="font-size:.875rem;font-weight:600;margin-bottom:.875rem">{% trans "Confirm the appointment by" %}</p>
+
+                  <div class="tab-switcher">
+                    <button type="button" class="tab-btn active" id="tabPhone" onclick="selectConfirmByPhone()">{% trans "Phone number" %}</button>
+                    <button type="button" class="tab-btn" id="tabEmail" onclick="selectConfirmByEmail()">{% trans "Email" %}</button>
+                  </div>
+
+                  <div id="phone_field" class="mb-3">
+                    <label class="form-label-sm">{% trans "Phone number" %}</label>
+                    <div class="phone-wrap">
+                      <span class="phone-prefix">+998</span>
+                      <input type="tel" id="phone" name="phone" placeholder="XX1234567"
+                             inputmode="numeric" maxlength="9" pattern="\d{9}"
+                             title="{% trans 'Enter exactly 9 digits after +998' %}">
                     </div>
-                    <button class="btn btn-sm more-info shadow" data-target="#server-info-{{ forloop.counter }}"
-                            style="display: block; text-align: center; width: 100%; background-color: darkgrey;">
-                      {% trans "More" %}
-                      <i class="fa-solid fa-angles-down"></i>
+                  </div>
+
+                  <div id="email_field" class="mb-3" style="display:none">
+                    <label class="form-label-sm">{% trans "Email" %}</label>
+                    <input type="email" class="form-input" id="email" name="email" placeholder="{% trans 'Email' %}">
+                  </div>
+
+                  <input type="hidden" id="client_id" name="client_id" value="">
+
+                  <div id="client_form_field" style="display:none">
+                    <div id="enter_text" class="notice-badge mb-3" style="display:none;background:#fffbeb;border-color:#fcd34d;color:#92400e">
+                      {% trans "Enter client information" %}
+                    </div>
+                    <div id="clientFound" class="notice-badge mb-3" style="display:none;background:#f0fdf4;border-color:#86efac;color:#166534">
+                      {% trans "Client information exists." %}
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label-sm">{% trans "Full name" %}</label>
+                      <input type="text" class="form-input" id="full_name" name="full_name" placeholder="{% trans 'Full name' %}">
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem" class="mb-3">
+                      <div>
+                        <label class="form-label-sm">{% trans "Date of birth" %}</label>
+                        <input type="text" class="form-input" id="dob" name="dob" placeholder="dd.mm.yyyy" readonly>
+                      </div>
+                      <div>
+                        <label class="form-label-sm">{% trans "Gender" %}</label>
+                        <select class="form-input" id="sex" name="sex">
+                          <option value="m">{% trans "Male" %}</option>
+                          <option value="f">{% trans "Female" %}</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <label class="form-label-sm">{% trans "Comments (optional)" %}</label>
+                      <textarea class="form-input" id="comments" name="comments" rows="2" style="resize:none"></textarea>
+                    </div>
+
+                    <div class="agree-row mb-2">
+                      <input type="checkbox" id="agree" name="agree">
+                      <label for="agree"><a href="#">{% trans "Agree to terms of use" %}</a></label>
+                    </div>
+                  </div>
+                </form>
+
+                <!-- OTP section -->
+                <div id="confirmationCodeSection" style="display:none">
+                  <p style="font-size:.875rem;font-weight:600;margin-bottom:.375rem">{% trans "Enter confirmation code" %}</p>
+                  <p style="font-size:.8125rem;color:var(--tx-muted);margin-bottom:1.125rem">
+                    {% trans "Code sent to" %} <strong><span id="confirmation_destination"></span></strong>
+                  </p>
+                  <div id="demo_otp_banner" class="mb-3 p-3" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--radius-sm);font-size:.875rem;color:#1d4ed8">
+                    {% trans "Demo code" %}: <strong id="demo_otp_code"></strong>
+                  </div>
+                  <div class="mb-4">
+                    <input type="text" class="otp-input" id="otp_code" maxlength="6"
+                           placeholder="——————" inputmode="numeric" autocomplete="one-time-code">
+                  </div>
+                  <div style="display:flex;align-items:center;gap:.875rem;flex-wrap:wrap">
+                    <button id="otpConfirmBtn" type="button" onclick="confirmOTP()" disabled class="btn-accent">
+                      {% trans "Confirm" %}
                     </button>
-                    <button class="btn btn-sm btn-primary shadow"
-                            onclick="selectServer('{{ ps.server.id }}', '{{ ps.server.user.first_name }}')"
-                            style="width: 100%; text-align: center; margin-top: 3px;">
-                      {% trans "Book appointment" %}
-                      <i class="fa-solid fa-calendar-check"></i>
+                    <span id="resend_timer" style="font-size:.8125rem;color:var(--tx-muted)">
+                      {% trans "Resend in" %} <strong id="timer">60</strong> {% trans "sec" %}
+                    </span>
+                    <button id="resendBtn" type="button" onclick="resendOTP()" style="display:none" class="btn-text">
+                      {% trans "Resend code" %}
                     </button>
                   </div>
                 </div>
-              </div>
+
+                <!-- Success -->
+                <div class="confirmationSuccess" style="display:none">
+                  <div class="success-screen">
+                    <div class="success-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+                    </div>
+                    <h3 style="font-size:1.125rem;font-weight:700;margin-bottom:.375rem">{% trans "Appointment confirmed!" %}</h3>
+                    <p id="successAppointmentId" style="font-size:.875rem;color:var(--tx-muted)"></p>
+                    <p id="successStatusDescription" style="font-size:.875rem;color:var(--tx-muted);margin-bottom:1.5rem"></p>
+                    <button onclick="closeModal()" class="btn-accent">{% trans "Done" %}</button>
+                  </div>
+                </div>
+
+              </div>{# /confirm-right #}
+            </div>{# /confirm-split #}
+          </div>{# /step3 #}
+
+        </div>{# /modal-body #}
+
+        <!-- Footer -->
+        <div class="bk-footer end" id="footer1">
+          <button id="goToDateSelectBtn" onclick="goToDateTimeSelect()" disabled class="btn-accent">
+            {% trans 'Next' %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="bk-footer" id="footer2" style="display:none">
+          <button onclick="goBackToServiceSelect()" class="btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            {% trans "Back" %}
+          </button>
+          <button id="goToConfirmBtn" onclick="goToConfirm()" disabled class="btn-accent">
+            {% trans "Next" %}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+        <div class="bk-footer" id="footer3" style="display:none">
+          <button id="confirmBackBtn" onclick="goBackToDateTime()" class="btn-ghost">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            {% trans "Back" %}
+          </button>
+          <button id="confirmBtn" onclick="sendToConfirm()" disabled class="btn-accent">{% trans "Confirm" %}</button>
+        </div>
+
+      </div>{# /modal-content #}
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       FOOTER
+  ════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <!-- Logo + desc -->
+        <div>
+          <div class="footer-logo"><img src="{{ provider.logo.url }}" alt="{{ provider.name }}"></div>
+          {% if provider.footer_text %}
+          <p class="footer-text">{{ provider.footer_text|striptags }}</p>
+          {% endif %}
+          {% if provider.social_media %}
+          <div class="footer-socials">
+            {% for item in provider.social_media %}
+            <a class="footer-social-btn" href="{{ item.link }}" target="_blank" rel="noopener noreferrer">
+              {% if item.type == 'telegram' %}<img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="">
+              {% elif item.type == 'instagram' %}<img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="">
+              {% elif item.type == 'facebook' %}<img src="https://upload.wikimedia.org/wikipedia/commons/b/b9/2023_Facebook_icon.svg" alt="">
+              {% elif item.type == 'whatsapp' %}<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="">
+              {% elif item.type == 'youtube' %}<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" alt="">
+              {% endif %}
+            </a>
             {% endfor %}
           </div>
+          {% endif %}
+        </div>
+        <!-- Contacts -->
+        <div class="footer-col">
+          <h4>{% trans 'Contacts' %}</h4>
+          <ul>{% for phone in provider.phone_numbers %}<li>{{ phone }}</li>{% endfor %}</ul>
+        </div>
+        <!-- Navigation -->
+        <div class="footer-col">
+          <h4>{% trans 'Navigations' %}</h4>
+          <ul>
+            <li><a href="#home">{% trans 'Home' %}</a></li>
+            <li><a href="#services">{% trans 'Services' %}</a></li>
+            <li><a href="#specialists">{% trans 'Specialists' %}</a></li>
+          </ul>
+        </div>
+        <!-- Map -->
+        <div>
+          {% if provider.latitude and provider.longitude %}
+          <div id="provider-map" style="width:100%;height:180px;border-radius:var(--radius);overflow:hidden"></div>
+          {% else %}
+          <p style="font-size:.8125rem;color:#6b5a8a">{% trans "Location not specified" %}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="footer-divider">
+        <p class="footer-copy">&copy; 2026 <strong style="color:#e2d9f3">BooketUz</strong>. {% trans 'All Rights Reserved.' %}</p>
+        <div class="footer-links">
+          <a href="#">{% trans 'Privacy Policy' %}</a>
+          <a href="#">{% trans 'Terms of Service' %}</a>
         </div>
       </div>
     </div>
-  </div>
-  <!-- The Modal -->
-  <div class="modal modal-lg fade" id="customModal" data-bs-keyboard="false" data-bs-backdrop="static">
-  <div class="modal-dialog">
-    <div class="modal-content">
+  </footer>
 
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h5 class="modal-title">{% trans "Specialist" %} <i class="fa-solid fa-clipboard-user"></i> <span
-          id="server_name">Server Name</span></h5>
-        <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm btn-close"
-                data-bs-dismiss="modal"></button>
-      </div>
+  <!-- ════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════ -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  {% if provider.latitude and provider.longitude %}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  {% endif %}
 
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div id="service_list" class="serviceList">
-          <div class="row" id="service_row">
-          </div>
-        </div>
-        <div id="time_slots" class="timeSlot" style="display: none">
-          <div class="d-flex mb-3">
-            <div class="p-2 flex-grow-1 bg-primary">
-              <span style="float: left; color: white;">{% trans "Select date and time!" %}</span>
-              <span style="float: right; color: yellow;">{% trans "Estimated service time" %}:
-                <i class="fa-solid fa-clock"></i>
-                <span id="estimatedDuration">60</span>{% trans "min" %}
-              </span>
-            </div>
-          </div>
-          <div class="row" id="time_slot_row" style="width: 100%;">
-            <!-- Date Selection -->
-            <div class="col-12 text-center">
-              <div class="btn-group">
-                <button class="btn btn-warning btn-outline-primary" type="button" onclick="getDates('previous')" id="prevDate"
-                        style="width: 45px;">&lt;&lt;
-                </button>
-                <div id="dateList" class="btn-group">
-                  <button class="btn btn-outline-primary">DATE</button>
-                  <button class="btn btn-outline-primary">DATE2</button>
-
-                </div>
-                <button class="btn btn-warning btn-outline-primary" type="button" onclick="getDates('next')" id="nextDate"
-                        style="width: 45px;">&gt;&gt;
-                </button>
-              </div>
-            </div>
-          </div>
-          <!-- Time Slot Selection -->
-          <div id="timeSlots" class="d-flex flex-wrap gap-2" style="margin-top: 15px;">
-          </div>
-        </div>
-        <!-- Confirmation panel -->
-        <div id="confirmation" class="confirmation" style="display: none;">
-          <div class="card shadow">
-            <div class="card-body">
-              <table class="table table-hover table-striped table-responsive">
-                <tbody>
-                <tr class="table-primary">
-                  <td>{% trans "Time" %}</td>
-                  <td id="appointmentDateTime">
-                    <i class="fa-solid fa-clock"></i><b><span id="appointmentTime"></span></b>
-                    <span id="appointmentDate"></span>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2" class="text-center"><b><i
-                    class="fa-solid fa-list-ul"></i> {% trans "Selected services" %}
-                  </b></td>
-                </tr>
-                </tbody>
-                <tbody id="selectedServiceList">
-                <tr>
-                  <td colspan="2">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <span style="float: left">Service name</span> <span style="float: right"><i
-                        class="fa-solid fa-money-bills"></i> 120,000</span>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <span>estimated duration</span> <span style="float: right"><i
-                        class="fa-solid fa-hourglass-half"></i> 60 {% trans 'minutes' %}</span>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="2">
-                    <div class="row">
-                      <div class="col-lg-3 col-md-6 col-sm-12">
-                        Service name 2<i class="fa-solid fa-money-bills"></i> 100,000
-                      </div>
-                      <div class="col-lg-3 col-md-6 col-sm-12">
-                        Estimated duration <i class="fa-solid fa-hourglass-half"></i> 60 minut
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                </tbody>
-                <tfoot id="tableFooter" class="tfooter" style="display: none;">
-                <tr class="table-dark">
-                  <td><i class="fa-solid fa-money-check-dollar fa-fade"></i> {% trans "Total" %}: <span id="totalSum"> 230,000</span>
-                  </td>
-                  <td><i class="fa-solid fa-clock fa-spin"></i> {% trans "Estimated duration" %}: <span
-                    id="totalDuration"> 130 </span>{% trans "minutes" %}
-                  </td>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-          </div>
-          <div class="card shadow" id="confirmationWindow">
-            <div class="card-body text-center d-flex justify-content-center">
-              <div class="confirmationSuccess" style="display: none;">
-                <i class="fa-solid fa-circle-check fa-beat fa-lg" style="color: green; width: 50px; height: 50px; margin-bottom: 20px"></i>
-                <h6>{% trans "Your appointment confirmed successfully! Please be on time. If you want to cancel or change appointment please use the link from the SMS or contact the provider." %}</h6>
-              </div>
-              <form id="clientConfirmationForm">
-                {% csrf_token %}
-                <input type="hidden" id="provider_id" name="provider_id" value="{{ provider.id }}">
-                <h6>{% trans "Confirm the appointment by" %}</h6>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="confirmation_method" id="phoneRadio"
-                         value="p" checked>
-                  <label class="form-check-label" for="phoneRadio">{% trans "Phone number" %}</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="confirmation_method" id="emailRadio"
-                         value="e">
-                  <label class="form-check-label" for="emailRadio">{% trans "Email" %}</label>
-                </div>
-                <div id="emailInput" class="mb-3 mt-3" style="max-width: 350px; display: none;">
-                  <label for="email" class="form-label" style="float: left;">{% trans "Email" %}:</label>
-                  <input type="email" class="form-control form-control-sm" id="email" name="email" required>
-                </div>
-                <div id="phoneInput" class="mb-3 mt-3" style="max-width: 350px;">
-                  <label for="phone" class="form-label" style="float: left;">{% trans "Phone" %}:</label>
-                  <div class="input-group input-group-sm">
-                    <span class="input-group-text">+998</span>
-                    <input type="number" class="form-control form-control-sm" maxlength="9" id="phone" name="phone" required>
-                  </div>
-                </div>
-                <div id="clientFound" class="text-center" style="display:none;">
-                  <h6>{% trans "Client information exists." %}</h6>
-                </div>
-                <div id="clientNotFound" class="text-center" style="display:none;">
-                  <h6>{% trans "Enter client information." %}</h6>
-                </div>
-                <div class="client_info_input" style="display: none;">
-                  <div class="mb-3 mt-3" style="max-width: 350px;">
-                    <label for="full_name" class="form-label" style="float: left;">{% trans "Full name" %}:</label>
-                    <input type="text" class="form-control form-control-sm" id="full_name" name="full_name">
-                    <input type="hidden" id="client_id" name="client_id">
-                  </div>
-                  <div class="row mt-2">
-                    <div class="col-6">
-                      <label for="dob" class="form-label">{% trans "Date of birth" %}:</label>
-                      <input type="date" class="form-control form-control-sm" id="dob" name="dob">
-                    </div>
-                    <div class="col-6">
-                      <label for="sex" class="form-label">{% trans "Gender" %}:</label>
-                      <select class="form-select form-select-sm" id="sex" name="sex">
-                        <option value="m">{% trans "Male" %}</option>
-                        <option value="f">{% trans "Female" %}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div id="comments" class="mb-3 mt-3" style="max-width: 350px;">
-                    <label for="comments" class="form-label" style="float: left;">{% trans "Comments(optional)" %}:</label>
-                    <textarea class="form-control form-control-sm" id="commentary" name="comments"></textarea>
-                  </div>
-                </div>
-                <!-- Confirmation Button -->
-                <div class="mb-3" style="margin-top: 12px;">
-                  <div class="form-group">
-                    <input class="form-check-input" type="checkbox" id="agree" name="agree" value="agree" required>
-                    <label class="form-check-label" for="agree"><span style="color: red">* </span><a href="#">{% trans "Agree to terms of use" %}</a></label>
-                  </div>
-                  <button type="button" disabled class="btn btn-success" onclick="sendToConfirm()" id="confirmBtn">{% trans "Confirm" %}</button>
-                </div>
-              </form>
-              <form id="confirmationCodeInput" style="display: none">
-                <!-- Confirmation Code Input -->
-                <div style="display: block;" class="confirmation_code_input">
-                  <div class="input-group mb-3 text-center" style="max-width: 350px;">
-                    <label for="confirmation_code" class="form-label">{% trans "Confirmation code was sent to" %}: <span id="confirmation_destination">sd***fv@gmail.com</span></label>
-                    <div class="input-group">
-                      <input type="text" class="form-control" id="otp_code" name="otp_code"
-                             placeholder="Enter Code">
-                      <button class="btn btn-success shadow" id="otpConfirmBtn" type="button" onclick="confirmOTP()" disabled>{% trans "Confirm" %} (<span id="timer">60</span>)</button>
-                    </div>
-                  </div>
-                  <button class="btn btn-primary shadow" id="resendBtn" onclick="resendOTPCode()" style="display: none;" type="button" disabled>{% trans "Resend" %}</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-primary btn-sm shadow serviceList" disabled id="nextBtn"
-                  onclick="transitionToTimeSlots()">{% trans 'Next' %}</button>
-          <button type="button" onclick="closeModal()" class="btn btn-danger btn-sm shadow serviceList confirmationSuccess"
-                  data-bs-dismiss="modal">{% trans "Close" %}</button>
-
-
-          <button id="nextBtn2" type="button" class="btn btn-success btn-sm shadow timeSlot"
-                  onclick="transitionToConfirmation()" style="display: none;" disabled>{% trans 'Next' %}</button>
-          <button type="button" class="btn btn-warning btn-sm shadow timeSlot" style="display: none;"
-                  onclick="backToServices()">{% trans 'Back' %}</button>
-
-          <button type="button" id="backToTimeSlots" class="btn btn-danger btn-sm shadow confirmation"
-                  onclick="transitionToTimeSlots()" style="display: none;">{% trans 'Back' %}</button>
-
-        </div>
-      </div>
-    </div>
-  </div>
-{% endblock %}
-{% block js %}
-  {{ block.super }}
-<script>
-    // Global variables for managing appointment data and related operations
+  <script>
+    /* ── Globals ─────────────────────────────────────────────────── */
     const appointment = { services: [] };
-    appointment.provider_identifier = "{{ provider.identifier }}"
+    appointment.provider_identifier = "{{ provider.identifier }}";
+    const signature  = "{{ signature }}";
+    const cur_lang   = "{{ LANG_CODE }}";
     let responseData = {};
-    let lastDate;
-    let firstDate;
-    const cur_lang = document.getElementById('cur_lang').value;
-    const signature = "{{ signature }}";
-    const LOCALE_FORMAT = {
-        uz: "YYYY-MM-DD",
-        ru: "YYYY-MM-DD",
-        en: "YYYY-MM-DD",
+    let lastDate, firstDate;
+    let timerInterval;
+    let bsModal;
+
+    /* ── getCookie ───────────────────────────────────────────────── */
+    function getCookie(name) {
+      const v = `; ${document.cookie}`.split(`; ${name}=`);
+      return v.length === 2 ? decodeURIComponent(v.pop().split(';').shift()) : null;
     }
-    // Utility function to show error or success messages
-    function showToast(message, type = "info") {
-        // Define Bootstrap toast classes for different types
-        const toastClasses = {
-            success: "bg-success text-white",
-            error: "bg-danger text-white",
-            info: "bg-primary text-white",
-            warning: "bg-warning text-dark"
-        };
 
-        // Remove existing toasts to prevent stacking issues
-        $(".toast-container .toast").remove();
-
-        // Create the toast dynamically
-        const toastHTML = `
-    <div class="toast align-items-center ${toastClasses[type] || toastClasses.info} border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
-      <div class="d-flex">
-        <div class="toast-body">
-          ${message}
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>`;
-
-        // Append the toast container if not already present
-        if ($(".toast-container").length === 0) {
-            $("body").append('<div class="toast-container position-fixed top-0 end-0 p-3"></div>');
-        }
-
-        // Append the toast inside the container
-        $(".toast-container").append(toastHTML);
-
-        // Initialize and show the toast
-        var toastElement = $(".toast").last();
-        var toast = new bootstrap.Toast(toastElement[0]);
-        toast.show();
+    /* ── showToast ───────────────────────────────────────────────── */
+    function showToast(message, type) {
+      type = type || "info";
+      const cls = { success:"bg-success text-white", error:"bg-danger text-white", info:"bg-primary text-white", warning:"bg-warning text-dark" };
+      $(".toast-container .toast").remove();
+      const html = `<div class="toast align-items-center ${cls[type]||cls.info} border-0 shadow" role="alert" aria-atomic="true" data-bs-autohide="true" data-bs-delay="6000">
+        <div class="d-flex"><div class="toast-body">${message}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>`;
+      $(".toast-container").append(html);
+      new bootstrap.Toast($(".toast-container .toast").last()[0], { delay: 6000 }).show();
     }
-    $(document).ready(function () {
-        // Initialize Bootstrap popovers globally
-        $('[data-bs-toggle="popover"]').popover();
 
-        // Event Delegation: Handle Service Checkbox Changes
-        $(document).on('change', '.service-checkbox', handleServiceCheckboxChange);
+    /* ── Carousel ────────────────────────────────────────────────── */
+    let slideIdx = 0;
+    const slides = document.querySelectorAll('.hero-slide');
+    const dotsEl = document.getElementById('heroDots');
 
-        // Handle "More Info" Button Clicks
-        $(".more-info").each(handleMoreInfoButtonClick);
+    function buildDots() {
+      if (!dotsEl || slides.length < 2) return;
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'hero-dot' + (i === 0 ? ' active' : '');
+        d.onclick = () => showSlide(i);
+        dotsEl.appendChild(d);
+      });
+    }
 
-        // Confirmation Method Select
-        $('input[name="confirmation_method"]').change(handleConfirmationMethodChange);
-        
-        // Add listeners for phone and email inputs
-        $('#phone').on('input', checkPhoneInput);
-        $('#email').on('input', checkEmailInput);
+    function showSlide(n) {
+      slides[slideIdx].classList.remove('active');
+      if (dotsEl) dotsEl.children[slideIdx]?.classList.remove('active');
+      slideIdx = (n + slides.length) % slides.length;
+      slides[slideIdx].classList.add('active');
+      if (dotsEl) dotsEl.children[slideIdx]?.classList.add('active');
+    }
 
-        $(document).on('input change', '#full_name, #dob, #sex, #agree', checkConfirmButton)
-        
-        // Enable/disable "Confirm" button based on form validity
-        $('#full_name, #dob, #sex, #agree').on('input', checkConfirmButton);
-        
-        // Enable/disable "Confirm" button based on OTP input
-        $('#otp_code').on('input', checkOTPConfirmButton);
-        
+    function carouselNext() { showSlide(slideIdx + 1); }
+    function carouselPrev() { showSlide(slideIdx - 1); }
+
+    buildDots();
+    if (slides.length > 1) setInterval(carouselNext, 5000);
+
+    /* ── Navbar scroll ───────────────────────────────────────────── */
+    window.addEventListener('scroll', () => {
+      document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 10);
     });
 
-    // Function to handle changes in service checkboxes
-    function handleServiceCheckboxChange() {
-        $('#nextBtn').prop('disabled', $('.service-checkbox:checked').length === 0);
-        const serviceId = $(this).data('id');
-        const price = $(this).data('price');
-        const duration = $(this).data('duration');
-        const serviceName = $(this).data('name');
+    /* ── Language switcher ───────────────────────────────────────── */
+    function toggleLang(e) { e.stopPropagation(); document.getElementById('langMenu').classList.toggle('open'); }
+    document.addEventListener('click', () => document.getElementById('langMenu').classList.remove('open'));
+    function switchLang(code) { document.getElementById('lang_input').value = code; document.getElementById('setlangform').submit(); }
 
-        if ($(this).is(':checked')) {
-            appointment.services.push({ service_id: serviceId, service_name: serviceName, price: price, duration: duration });
-        } else {
-            appointment.services = appointment.services.filter(service => service.service_id !== serviceId);
-        }
+    /* ── Mobile nav ──────────────────────────────────────────────── */
+    function toggleMobile() { document.getElementById('mobileNav').classList.toggle('open'); }
+    function closeMobile()  { document.getElementById('mobileNav').classList.remove('open'); }
+
+    /* ── Service accordion ───────────────────────────────────────── */
+    function toggleSvcCard(btn) {
+      const list  = btn.nextElementSibling;
+      const arrow = btn.querySelector('svg');
+      const open  = list.style.display !== 'none';
+      list.style.display = open ? 'none' : '';
+      btn.classList.toggle('collapsed', open);
     }
 
-    // Function to handle clicks on the "More Info" button
-    function handleMoreInfoButtonClick() {
-        const $button = $(this);
-        const $textContainer = $("#" + $button.data("target").substring(1));
-        const initialHeight = $textContainer[0].scrollHeight;
-        const collapsedHeight = 2 * parseFloat(getComputedStyle($textContainer[0]).lineHeight);
+    /* ── Step management ─────────────────────────────────────────── */
+    const STEP_LABELS = {
+      1: "{% trans '1 / 3 — Services' %}",
+      2: "{% trans '2 / 3 — Date & Time' %}",
+      3: "{% trans '3 / 3 — Confirm' %}"
+    };
 
-        $textContainer.css("max-height", collapsedHeight);
+    function setStep(n) {
+      document.getElementById('step1').style.display   = n === 1 ? '' : 'none';
+      document.getElementById('step2').style.display   = n === 2 ? '' : 'none';
+      document.getElementById('step3').style.display   = n === 3 ? '' : 'none';
+      document.getElementById('footer1').style.display = n === 1 ? 'flex' : 'none';
+      document.getElementById('footer2').style.display = n === 2 ? 'flex' : 'none';
+      document.getElementById('footer3').style.display = n === 3 ? 'flex' : 'none';
+      [1, 2, 3].forEach(i => {
+        const d = document.getElementById('dot' + i);
+        d.classList.toggle('active', i === n);
+        d.classList.toggle('done', i < n);
+      });
+      document.getElementById('stepLabel').textContent = STEP_LABELS[n] || '';
+    }
 
-        if (initialHeight > collapsedHeight) {
-            $button.show();
-        }
+    /* ── Open modal ──────────────────────────────────────────────── */
+    function selectServer(ps_id, serverName) {
+      resetAll();
+      $('#serverNameDisplay').text(serverName);
+      $.ajax({
+        url: `/provider-server/${ps_id}/`,
+        type: 'GET',
+        headers: { 'X-Signature': signature, 'X-CSRFToken': getCookie('csrftoken') },
+        success(response) {
+          responseData = response;
+          appointment.server_id = ps_id;
+          fillServices(response.service_types, cur_lang);
+          renderDates(response.available_time_slots);
+          setStep(1);
+          bsModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+          bsModal.show();
+        },
+        error: handleAjaxError
+      });
+    }
 
-        $button.click(function (e) {
-            e.preventDefault();
-            if ($textContainer.css("max-height") === `${collapsedHeight}px`) {
-                $textContainer.css("max-height", initialHeight);
-                $button.html(`{% trans 'Less' %} <i class='fa-solid fa-angles-up'></i>`);
-            } else {
-                $textContainer.css("max-height", collapsedHeight);
-                $button.html(`{% trans 'More' %} <i class='fa-solid fa-angles-down'></i>`);
-            }
+    /* ── Fill services ───────────────────────────────────────────── */
+    function fillServices(serviceTypes, lang) {
+      const container = $('#ps_services').empty();
+      serviceTypes.forEach(st => {
+        const typeName = lang === 'uz' ? st.name_uz : lang === 'ru' ? st.name_ru : st.name;
+        let html = `<div class="svc-type-block">
+          <div class="svc-type-head"><span>${typeName}</span></div>`;
+        st.services.forEach(svc => {
+          const name  = lang === 'uz' ? svc.name_uz : lang === 'ru' ? svc.name_ru : svc.name;
+          const price = svc.service_private_price !== null ? svc.service_private_price : svc.price;
+          html += `<label class="svc-pick-row">
+            <input type="checkbox" class="svc-cb"
+              data-id="${svc.id}" data-name="${name.replace(/"/g,'&quot;')}"
+              data-price="${price}" data-duration="${svc.duration}">
+            <span class="svc-pick-name">${name}</span>
+            <span class="svc-pick-price">${Number(price).toLocaleString()}</span>
+          </label>`;
         });
+        html += `</div>`;
+        container.append(html);
+      });
+      container.on('change', '.svc-cb', onServiceCheck);
     }
 
-    // Function to handle changes in confirmation method (phone/email)
-    function handleConfirmationMethodChange() {
-        $('#phoneInput').toggle($('#phoneRadio').is(':checked'));
-        $('#emailInput').toggle($('#emailRadio').is(':checked'));
-        
-        // Clear input fields and hide client_info_input
-        if ($('#phoneRadio').is(':checked')) {
-            $('#email').val('');
-        } else {
-            $('#phone').val('');
+    function onServiceCheck() {
+      const $cb  = $(this);
+      const row  = $cb.closest('label');
+      const id   = $cb.data('id');
+      const name = $cb.data('name');
+      const price    = parseFloat($cb.data('price'));
+      const duration = parseInt($cb.data('duration'));
+
+      if ($cb.is(':checked')) {
+        row.addClass('checked');
+        appointment.services.push({ service_id: id, service_name: name, price, duration });
+      } else {
+        row.removeClass('checked');
+        appointment.services = appointment.services.filter(s => s.service_id !== id);
+      }
+      $('#goToDateSelectBtn').prop('disabled', appointment.services.length === 0);
+    }
+
+    /* ── Date / time rendering ───────────────────────────────────── */
+    function renderDates(slots) {
+      $('#dateContainer').empty();
+      $('#timeSlots').empty();
+      slots.forEach((item, idx) => {
+        const p = item.date.split('-');
+        const label = `${p[2]}.${p[1]}`;
+        const btn = $(`<button class="date-btn">${label}</button>`);
+        btn.on('click', function() {
+          $('.date-btn').removeClass('active');
+          $(this).addClass('active');
+          appointment.date = item.date;
+          appointment.time = null;
+          $('#goToConfirmBtn').prop('disabled', true);
+          renderTimeSlots(item.slots);
+          $('#selectedDateText').text(item.date);
+        });
+        if (idx === 0) {
+          btn.addClass('active');
+          appointment.date = item.date;
+          firstDate = item.date;
+          renderTimeSlots(item.slots);
+          $('#selectedDateText').text(item.date);
         }
-        // Clear common fields
-        $('#full_name').val('');
-        $('#dob').val('');
-        $('#sex').val('');
-        $('.client_info_input').hide();
+        lastDate = item.date;
+        $('#dateContainer').append(btn);
+      });
     }
 
-    // Function to close the modal and reset data
-    function closeModal() {
-        $('#customModal').modal('hide');
-        resetAppointmentData();
-        resetOTPInput();
-    }
-
-    // Utility function to reset appointment and response data
-    function resetAppointmentData() {
-        appointment.services = [];
-        responseData = {};
-    }
-
-    // Function to format a date from ISO to DD-MM format
-    function formatDate(isoDate) {
-        const dateParts = isoDate.split('-');
-        return `${dateParts[2]}-${dateParts[1]}`; // DD-MM format
-    }
-
-    // Function to format a date from ISO to DD.MM.YYYY
-    function formatDatetoDMY(isoDate) {
-        const date = new Date(isoDate);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
-    }
-
-    // Function to handle the transition to the confirmation panel
-    function transitionToConfirmation() {
-        $('.confirmationSuccess').hide()
-        $('#confirmationCodeInput').hide()
-        $('#appointmentTime').text(" " + appointment.time);
-        $('#appointmentDate').text("  " + formatDatetoDMY(appointment.date) + " ");
-        resetOTPInput();
-        $('#selectedServiceList').empty();
-        $.each(appointment.services, function (index, service) {
-            const trow = `<tr><td colspan="2"><div class="row">
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <span style="float: left">${service.service_name}</span>
-                          </div>
-                          <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <span><i class="fa-solid fa-money-bills"></i> ${service.price.toLocaleString()} sum</span>
-                            <span style="float: right"><i class="fa-solid fa-hourglass-half"></i> ${service.duration} minut</span>
-                          </div>
-                        </div></td></tr>`;
-            $('#selectedServiceList').append(trow);
-        });
-
-        if (appointment.services.length > 1) {
-            $('#totalDuration').text(calculateTotalDuration(appointment.services));
-            $('#totalSum').text(calculateTotalSum(appointment.services).toLocaleString());
-            $('#tableFooter').show();
-        }
-        
-        $('.timeSlot').hide();
-        $('#clientConfirmationForm').show()
-        $('.confirmation').show();
-    }
-
-    // Function to calculate the total duration of selected services
-    function calculateTotalDuration(services) {
-        const totalDuration = services.reduce((sum, service) => sum + service.duration, 0);
-        $("#estimatedDuration").text(totalDuration);
-        return totalDuration;
-    }
-
-    // Function to calculate the total sum of prices for selected services
-    function calculateTotalSum(services) {
-        return services.reduce((sum, service) => sum + service.price, 0);
-    }
-
-    // Function to fetch available dates based on direction (next/previous)
-    function getDates(direction) {
-        const date_param = modifyDate(lastDate, direction === "next" ? 1 : -9);
-        const endpoint = `/provider-server/${responseData.server_id}/available-slots/?start_date=${date_param}`;
-        $.ajax({
-            url: endpoint,
-            type: "GET",
-            dataType: "json",
-            headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
-            success: function (response){
-                renderDates(response.available_slots)
-            },
-            error: function (error){ 
-                handleAjaxError(error) 
-            }   
-        });
-    }
-
-    // Function to handle the transition to the time slot selection
-    function transitionToTimeSlots() {
-        calculateTotalDuration(appointment.services);
-        $('.serviceList').hide();
-        $('.confirmation').hide();
-        $('.timeSlot').show();
-    }
-
-    // Function to go back from time slots to services
-    function backToServices() {
-        resetOTPInput()
-        $('.timeSlot').hide();
-        $('.serviceList').show();
-    }
-
-    // Function to render available dates
-    function renderDates(available_time_slots) {
-        $("#dateList").empty();
-        $("#timeSlots").empty();
-
-        $.each(available_time_slots, function (index, item) {
-            const dateBtn = $("<button>")
-                .addClass("btn btn-outline-primary btn-sm")
-                .text(formatDate(item.date))
-                .on("click", function () {
-                    $("#dateList button").removeClass("btn-primary active-date");
-                    $(this).addClass("btn-primary active-date");
-                    appointment.date = item.date;
-                    renderTimeSlots(item.slots);
-                });
-
-            if (index === 0) {
-                dateBtn.addClass("btn-primary active-date");
-                renderTimeSlots(item.slots);
-                appointment.date = item.date;
-                firstDate = item.date;
-            }
-            lastDate = item.date;
-            $("#dateList").append(dateBtn);
-        });
-    }
-
-    // Function to render available time slots
     function renderTimeSlots(slots) {
-        $("#timeSlots").empty();
-
-        $.each(slots, function (index, time) {
-            const timeBtn = $("<button>")
-                .addClass("btn btn-outline-secondary px-3 py-2 rounded-3 shadow")
-                .text(time)
-                .on("click", function () {
-                    $("#timeSlots button").removeClass("btn-primary active-date");
-                    const totalDuration = calculateTotalDuration(appointment.services);
-                    const available = isSlotAvailable(time, totalDuration, slots);
-                    if (available) {
-                        $(this).addClass("btn-primary active-date");
-                        appointment.time = time;
-                        $('#nextBtn2').prop('disabled', false);
-                    } else {
-                        $('#nextBtn2').prop('disabled', true);
-                        let popoverMessage = "";
-                        if (cur_lang === "uz") {
-                            popoverMessage = "Umumiy xizmatlar davomiyligi <b>" + totalDuration +
-                                "</b> minut tanlangan vaqt <b>" + time + "</b> dan keyingi vaqt oraligi'ida mavjud emas. Iltimos boshqa vaqtni tanlang!."
-                        } else if (cur_lang === "ru") {
-                            popoverMessage = "Общая продолжительность услуги <b>" + totalDuration + "</b> минут не может быть выделена в промежуток времени с <b>" + time + "</b>. Пожалуйста, выберите другое время."
-                        } else {
-                            popoverMessage = "Total service duration <b>" + totalDuration +
-                                "</b> minutes cannot be allocated to timeframe from <b>" + time + "</b>. Please choose another slot."
-                        }
-
-                        // Hide all popovers before showing a new one
-                        $('[data-bs-toggle="popover"]').popover("hide"); // Hides all active popovers
-                        // Destroy existing popover before setting a new one
-                        $(this).popover("dispose").popover({
-                            content: popoverMessage, // Dynamic content
-                            html: true,
-                            placement: "top"
-                        }).popover("show");
-
-                        // Hide popover automatically after 5 seconds
-                        setTimeout(() => {
-                            $(this).popover("hide");
-                        }, 4000);
-                    }
-
-                });
-
-            $("#timeSlots").append(timeBtn);
+      $('#timeSlots').empty();
+      slots.forEach(time => {
+        const btn = $(`<button class="time-btn">${time}</button>`);
+        btn.on('click', function() {
+          const totalDur = calculateTotalDuration();
+          if (isSlotAvailable(time, totalDur, slots)) {
+            $('.time-btn').removeClass('selected');
+            $(this).addClass('selected');
+            appointment.time = time;
+            $('#goToConfirmBtn').prop('disabled', false);
+          } else {
+            const msgs = {
+              uz: `Umumiy davomiylik <b>${totalDur}</b> min. Boshqa vaqt tanlang.`,
+              ru: `Общая длительность <b>${totalDur}</b> мин. Выберите другое время.`,
+              en: `Total duration <b>${totalDur}</b> min. Please choose another slot.`
+            };
+            showToast(msgs[cur_lang] || msgs.en, 'warning');
+          }
         });
+        $('#timeSlots').append(btn);
+      });
     }
 
-    // Function to check if a time slot is available
-    function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
-        const startTime = moment(selectedTime, "HH:mm");
-        const endTime = startTime.clone().add(totalDuration, "minutes");
-        const requiredSlots = [];
+    function getDates(dir) {
+      const date = dir === 'next' ? modifyDate(lastDate, 1) : modifyDate(firstDate, -9);
+      $.ajax({
+        url: `/provider-server/${appointment.server_id}/available-slots/?start_date=${date}`,
+        type: 'GET',
+        headers: { 'X-Signature': signature, 'X-CSRFToken': getCookie('csrftoken') },
+        success(r) { renderDates(r.available_slots); },
+        error: handleAjaxError
+      });
+    }
 
-        let tempTime = startTime.clone();
-        while (tempTime.isBefore(endTime)) {
-            requiredSlots.push(tempTime.format("HH:mm"));
-            tempTime.add(30, "minutes");
+    /* ── Step transitions ────────────────────────────────────────── */
+    function goToDateTimeSelect() {
+      calculateTotalDuration();
+      setStep(2);
+    }
+    function goBackToServiceSelect() { setStep(1); }
+
+    function goToConfirm() {
+      const d   = new Date(appointment.date);
+      const fmt = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+      $('#appointment_time').text(appointment.time);
+      $('#appointment_date').text(fmt);
+
+      const list = $('#appointment_services').empty();
+      appointment.services.forEach(svc => {
+        list.append(`<li class="summary-svc-item">
+          <span>${svc.service_name}</span>
+          <span style="color:var(--accent);font-weight:600">${Number(svc.price).toLocaleString()}</span>
+        </li>`);
+      });
+
+      const totDur = appointment.services.reduce((s, x) => s + x.duration, 0);
+      const totAmt = appointment.services.reduce((s, x) => s + x.price, 0);
+      $('#appointment_duration').text(totDur);
+      $('#appointment_total').text(Number(totAmt).toLocaleString());
+
+      $('#clientConfirmationForm').show();
+      $('#confirmationCodeSection').hide();
+      $('.confirmationSuccess').hide();
+      setStep(3);
+    }
+    function goBackToDateTime() { setStep(2); }
+
+    /* ── Confirmation method tabs ────────────────────────────────── */
+    function selectConfirmByPhone() {
+      $('#phone_field').show(); $('#email_field').hide();
+      $('#tabPhone').addClass('active'); $('#tabEmail').removeClass('active');
+      $('#email').val(''); clearLookup();
+    }
+    function selectConfirmByEmail() {
+      $('#email_field').show(); $('#phone_field').hide();
+      $('#tabEmail').addClass('active'); $('#tabPhone').removeClass('active');
+      $('#phone').val(''); clearLookup();
+    }
+    function clearLookup() {
+      $('#client_id').val(''); $('#client_form_field').hide();
+      $('#full_name, #dob').val(''); $('#sex').val('m'); checkConfirmBtn();
+    }
+
+    /* ── Client lookup ───────────────────────────────────────────── */
+    function searchClient(data) {
+      $.ajax({
+        url: '/client/search/',
+        type: 'GET',
+        data,
+        headers: { 'X-Signature': signature, 'X-CSRFToken': getCookie('csrftoken') },
+        success(r) {
+          if (r.success) {
+            $('#full_name').val(r.client_full_name || '');
+            $('#dob').val(r.client_dob || '');
+            // Update flatpickr display
+            if (dobPicker) dobPicker.setDate(r.client_dob || '', false);
+            $('#sex').val(r.client_sex || 'm');
+            $('#client_id').val(r.client_id);
+            $('#enter_text').hide(); $('#clientFound').show();
+          }
+          $('#client_form_field').show(); checkConfirmBtn();
+        },
+        error() {
+          $('#full_name, #dob').val('');
+          if (dobPicker) dobPicker.clear();
+          $('#sex').val('m'); $('#client_id').val('');
+          $('#enter_text').show(); $('#clientFound').hide();
+          $('#client_form_field').show(); checkConfirmBtn();
         }
-
-        return requiredSlots.every(slot => availableSlots.includes(slot));
+      });
     }
 
-    // Function to fill services based on selected server and language
-    function fillServices(service_types, language_code) {
-        $('#service_row').empty();
-        $.each(service_types, function (index, service_type) {
-            const serviceTypeName = language_code === "uz" ? service_type.name_uz :
-                language_code === "ru" ? service_type.name_ru :
-                    service_type.name;
-            let table = `
-          <div class="col-lg-6 col-md-12 col-sm-12">
-              <table class="table table-sm table-hover">
-                  <thead class="table-dark">
-                      <tr>
-                          <th>${serviceTypeName}</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-      `;
-
-            $.each(service_type.services, function (i, service) {
-                const price = service.service_private_price !== null ? service.service_private_price : service.price;
-                const serviceName = language_code === "uz" ? service.name_uz :
-                    language_code === "ru" ? service.name_ru :
-                        service.name;
-
-                table += `
-              <tr>
-                  <td>${serviceName}
-                  <span class="badge bg-primary rounded-pill"><i>(${price.toLocaleString()})</i></span>
-                      <input type="checkbox" class="service-checkbox form-check"
-                             data-id="${service.id}"
-                             data-name="${serviceName}"
-                             data-price="${price}"
-                             data-duration="${service.duration}">
-                  </td>
-              </tr>
-          `;
-            });
-
-            table += `
-                  </tbody>
-              </table>
-          </div>
-      `;
-
-            $('#service_row').append(table);
-        });
+    /* ── Confirm button state ────────────────────────────────────── */
+    function checkConfirmBtn() {
+      const ok = $('#full_name').val() && $('#dob').val() && $('#sex').val() && $('#agree').is(':checked');
+      $('#confirmBtn').prop('disabled', !ok);
     }
 
-    // Function to select a server and fetch related data
-    function selectServer(p_server_id, server_name) {
-        resetOTPInput();
-        resetAppointmentData();
-        clearClientInfoInput();
-        $('.timeSlot .confirmation .tfooter .confirmationSuccess .client_info_input .confirmationCodeInput').hide();
-        $('#clientFound').hide()
-        $('.serviceList').show();
-        $('.confirmation').hide();
-        $('.timeSlot').hide();
-        const endpoint = `/provider-server/${p_server_id}/`;
-        const lang_code = $('#cur_lang').val();
-        $("#server_name").text(server_name);
-        $.ajax({
-            url: endpoint,
-            type: "GET",
-            dataType: "json",
-            headers: { 'X-CSRFToken': getCookie('csrftoken'), 'X-Signature': signature },
-            success: function (response) {
-                responseData = response;
-                appointment.server_id = p_server_id;
-                fillServices(response.service_types, lang_code);
-                renderDates(response.available_time_slots);
-                $('#customModal').modal('show');
-            },
-            error: function (error) {
-                handleAjaxError(error)
-            }
-        });
+    /* ── Send appointment ────────────────────────────────────────── */
+    function sendToConfirm() {
+      const byPhone = $('#phone_field').is(':visible');
+      appointment.provider_id   = $('#provider_id').val();
+      appointment.language_code = cur_lang;
+      appointment.client = {
+        client_id:           $('#client_id').val(),
+        full_name:           $('#full_name').val(),
+        dob:                 $('#dob').val(),
+        sex:                 $('#sex').val(),
+        confirmation_method: byPhone ? 'p' : 'e',
+        phone_number:        $('#phone').val(),
+        email:               $('#email').val()
+      };
+      $.ajax({
+        url: '/client/appointment/create/',
+        type: 'POST',
+        headers: { 'X-Signature': signature, 'X-CSRFToken': getCookie('csrftoken') },
+        data: JSON.stringify(appointment),
+        contentType: 'application/json',
+        success(r) {
+          $('#confirmation_destination').text(r.confirmation_method === 'p' ? r.masked_phone_number : r.masked_email);
+          if (r.is_demo) { $('#demo_otp_code').text(r.otp_code); $('#demo_otp_banner').show(); }
+          appointment.otp_id = r.otp_id;
+          startTimer();
+          $('#clientConfirmationForm').hide();
+          $('#confirmationCodeSection').show();
+          $('#footer3').hide();
+        },
+        error: handleAjaxError
+      });
     }
 
-    // Function to submit the language change form
-    function submitlang() {
-        $('#setlangform').submit();
-    }
-
-    // Function to modify date for next/previous date fetching
-    function modifyDate(dateStr, days) {
-        const date = new Date(dateStr);
-        date.setDate(date.getDate() + days);
-        return date.toISOString().split('T')[0];
-    }
-    
-        // API search method
-    function searchClient(search_data) {
-        const signature = "{{ signature }}";
-        $.ajax({
-            url: '/client/search/',
-            type: 'GET',
-            data: search_data,
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'X-Signature': signature
-            },
-            success: function (response) {
-                if (response.success) {
-                    //fill form inputs
-                    $('#full_name').val(response.client_full_name)
-                    $('#dob').val(response.client_dob)
-                    $('#sex').val(response.client_sex)
-                    $('#client_id').val(response.client_id)
-                    //show client info block
-                    $('#clientNotFound').hide()
-                    $('#clientFound').show()
-                    $('.client_info_input').show();
-                    
-                }
-            },
-            error: function (error) {
-                console.log(error.responseText)
-                $('#full_name').val("")
-                $('#dob').val("")
-                $('#sex').val("")
-                $('#client_id').val("")
-                $('#clientNotFound').show()
-                $('#clientFound').hide()
-                $('.client_info_input').show();
-           }
-        });
-    }
-    
-     // Check if the phone input is valid
-    function checkPhoneInput() {
-        const phoneValue = $(this).val();
-        if (phoneValue.length > 8) {
-            searchClient({phone_number: phoneValue});
-        } else {
-            $('.client_info_input').hide();
-        }
-    }
-
-    // Check if the email input is valid
-    function checkEmailInput() {
-        const emailValue = $(this).val();
-        if (isValidEmail(emailValue)) {
-            searchClient({email: emailValue});
-        } else {
-            $('.client_info_input').hide();
-        }
-    }
-    // Helper function to validate email
-    function isValidEmail(email) {
-        // Basic email validation regex
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-    
-    // Function to check and enable/disable the "Confirm" button
-    function checkConfirmButton() {
-        console.log("SHIT")
-        const fullNameValue = $('#full_name').val();
-        const dobValue = $('#dob').val();
-        const sexValue = $('#sex').val();
-        const agreeChecked = $('#agree').is(':checked');
-        console.log(fullNameValue, dobValue, sexValue, agreeChecked)
-
-        if (fullNameValue && dobValue && sexValue && agreeChecked) {
-            $('#confirmBtn').prop('disabled', false);
-        } else {
-            $('#confirmBtn').prop('disabled', true);
-        }
-    }
-
-    function sendToConfirm(){
-        
-        appointment.comments = $('#commentary').val()
-        appointment.provider_id = $('#provider_id').val()
-        appointment.language_code = cur_lang;
-        appointment.client = {
-            client_id: $('#client_id').val(),
-            full_name: $('#full_name').val(),
-            dob: $('#dob').val(),
-            sex: $('#sex').val(),
-            confirmation_method: $("input[name='confirmation_method']:checked").val(),
-            phone_number: $('#phone').val(),
-            email: $('#email').val()
-        };
-        $.ajax({
-            url: '/client/appointment/create/',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'X-Signature': signature
-            },
-            type: 'POST',
-            data: JSON.stringify(appointment),
-            contentType: 'application/json',
-            success: function (response){
-                if (response.confirmation_method === "p"){
-                    $('#confirmation_destination').text(response.masked_phone_number)
-                } else {
-                    $('#confirmation_destination').text(response.masked_email)
-                }
-                if (response.is_demo) {
-                    showToast("OTP Code:" + response.otp_code + " was sent to client.", "info")   
-                }
-                appointment.otp_id = response.otp_id
-                startTimer()
-                
-                $('#clientConfirmationForm').hide()
-                $('#confirmationCodeInput').show()
-            },
-            error: function (error) {
-                handleAjaxError(error)
-            }
-            
-            
-        })
-    }
-let timerInterval    
+    /* ── OTP ─────────────────────────────────────────────────────── */
     function startTimer() {
-        let timer = 60;
-        $('#timer').text(timer);
-        $('#otpConfirmBtn').prop('disabled', true);
-        $('#resendBtn').prop('disabled', true);
-        $('#otpConfirmBtn').show();
-        timerInterval = setInterval(() => {
-            timer--;
-            $('#timer').text(timer);
-            if (timer <= 0) {
-                clearInterval(timerInterval);
-                $('#otpConfirmBtn').prop('disabled', false);
-                $('#resendBtn').show()
-                $('#resendBtn').prop('disabled', false);
-            }
-        }, 1000);
+      clearInterval(timerInterval);
+      let t = 60;
+      $('#timer').text(t);
+      $('#otpConfirmBtn').prop('disabled', true);
+      $('#resendBtn').hide();
+      $('#resend_timer').show();
+      timerInterval = setInterval(() => {
+        t--;
+        $('#timer').text(t);
+        if (t <= 0) { clearInterval(timerInterval); $('#resend_timer').hide(); $('#resendBtn').show(); }
+      }, 1000);
     }
-    
-    // Function to check and enable/disable the "Confirm" button
-    function checkOTPConfirmButton() {
-        const otpCodeValue = $('#otp_code').val();
-        if (otpCodeValue) {
-            $('#otpConfirmBtn').prop('disabled', false);
-        } else {
-            $('#otpConfirmBtn').prop('disabled', true);
-        }
+
+    function confirmOTP() {
+      $.ajax({
+        url: '/client/appointment/confirm/',
+        type: 'POST',
+        headers: { 'X-Signature': signature, 'X-CSRFToken': getCookie('csrftoken') },
+        data: JSON.stringify({ otp_id: appointment.otp_id, otp_code: $('#otp_code').val(), provider_identifier: appointment.provider_identifier }),
+        contentType: 'application/json',
+        success() {
+          clearInterval(timerInterval);
+          $('#confirmationCodeSection').hide();
+          $('.confirmationSuccess').show();
+          $('#footer3').hide();
+        },
+        error: handleAjaxError
+      });
     }
-    
-    function confirmOTP(){
-        let otp_code = $('#otp_code').val()
-        $.ajax({
-            url: '/client/appointment/confirm/',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'X-Signature': signature
-            },
-            type: 'POST',
-            data: JSON.stringify({"otp_id": appointment.otp_id, "otp_code": otp_code, "provider_identifier": appointment.provider_identifier}),
-            contentType: 'application/json',
-            success: function (response){
-                $('#clientConfirmationForm').hide()
-                $('#confirmationCodeInput').hide()
-                $('#backToTimeSlots').hide()
-                $('.confirmationSuccess').show()
-            },
-            error: function (error) {
-                handleAjaxError(error);
-            }
-        })
-        resetOTPInput()
+
+    function resendOTP() {
+      $.ajax({
+        url: '/client/appointment/confirm/resend/',
+        type: 'POST',
+        headers: { 'X-Signature': signature, 'X-CSRFToken': getCookie('csrftoken') },
+        data: JSON.stringify({ otp_id: appointment.otp_id, provider_identifier: appointment.provider_identifier }),
+        contentType: 'application/json',
+        success() { startTimer(); },
+        error: handleAjaxError
+      });
     }
-    
-    function resendOTPCode(){
-        $.ajax({
-            url: '/client/appointment/confirm/resend/',
-            headers: {
-                'X-CSRFToken': getCookie('csrftoken'),
-                'X-Signature': signature
-            },
-            type: 'POST',
-            data: JSON.stringify({"otp_id": appointment.otp_id}),
-            contentType: 'application/json',
-            success: function (response){
-                $('#resendBtn').prop('disabled', true)
-                startTimer()
-            },
-            error: function (error) {
-                handleAjaxError(error);
-            }
-        })
+
+    /* ── Close / reset ───────────────────────────────────────────── */
+    function closeModal() {
+      bootstrap.Modal.getInstance(document.getElementById('bookingModal'))?.hide();
+      resetAll();
     }
-    
-    function handleAjaxError(error){
-        if (error.responseText.includes("Invalid request headers")){
-            location.reload();
-        }
-        showToast(`${error.status} ${error.statusText} /n ${error.responseText}`, "error");
+
+    function resetAll() {
+      appointment.services = [];
+      appointment.date     = null;
+      appointment.time     = null;
+      appointment.otp_id   = null;
+      responseData = {};
+      clearInterval(timerInterval);
+      $('#goToDateSelectBtn').prop('disabled', true);
+      $('#goToConfirmBtn').prop('disabled', true);
+      $('#confirmBtn').prop('disabled', true);
+      $('#otpConfirmBtn').prop('disabled', true);
+      $('#otp_code').val('');
+      $('#demo_otp_banner').hide();
+      $('#clientConfirmationForm')[0]?.reset();
+      $('#client_form_field, #clientFound, #enter_text').hide();
+      $('#confirmationCodeSection').hide();
+      $('.confirmationSuccess').hide();
+      $('#footer3').show();
     }
-    
-    function resetOTPInput(){
-        clearInterval(timerInterval); // Stop the timer
-        $('#otp_code').val(''); // Clear the OTP input   
-         $('#otpConfirmBtn').prop('disabled', true);
+
+    /* ── Helpers ─────────────────────────────────────────────────── */
+    function calculateTotalDuration() {
+      const t = appointment.services.reduce((s, x) => s + x.duration, 0);
+      $('#duration').text(t);
+      return t;
     }
-    
-    function clearClientInfoInput(){
-        $('#clientConfirmationForm').trigger('reset');
-        $('#clientFound').hide();
-        $('#clientNotFound').hide();
-        $('.client_info_input').hide();
+
+    function modifyDate(dateStr, days) {
+      const d = new Date(dateStr);
+      d.setDate(d.getDate() + days);
+      return d.toISOString().split('T')[0];
     }
-    
-    
-</script>
-{% endblock %}
+
+    function isSlotAvailable(selectedTime, totalDuration, availableSlots) {
+      const start = moment(selectedTime, 'HH:mm');
+      const end   = start.clone().add(totalDuration, 'minutes');
+      const needed = [];
+      let t = start.clone();
+      while (t.isBefore(end)) { needed.push(t.format('HH:mm')); t.add(30, 'minutes'); }
+      return needed.every(s => availableSlots.includes(s));
+    }
+
+    function handleAjaxError(err) {
+      if (err.responseText && err.responseText.includes('Invalid request headers')) { location.reload(); return; }
+      showToast(`${err.status} ${err.statusText}: ${err.responseText}`, 'error');
+    }
+
+    /* ── DOM ready ───────────────────────────────────────────────── */
+    let dobPicker;
+    $(function() {
+      // Flatpickr for date of birth
+      dobPicker = flatpickr('#dob', {
+        dateFormat: 'Y-m-d',
+        altInput: true,
+        altFormat: 'd.m.Y',
+        allowInput: false,
+        maxDate: 'today',
+        disableMobile: false,
+        onChange() { checkConfirmBtn(); }
+      });
+
+      // Phone lookup
+      $('#phone').on('input', function() {
+        const v = $(this).val().replace(/\D/g, '');
+        $(this).val(v.slice(0, 9));
+        if (v.length >= 9) searchClient({ phone_number: v.slice(0, 9) });
+        else $('#client_form_field').hide();
+      });
+
+      // Email lookup
+      $('#email').on('input', function() {
+        const v = $(this).val();
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) searchClient({ email: v });
+        else $('#client_form_field').hide();
+      });
+
+      // Confirm button gating
+      $(document).on('input change', '#full_name, #sex, #agree', checkConfirmBtn);
+
+      // OTP enable on input
+      $('#otp_code').on('input', function() {
+        $('#otpConfirmBtn').prop('disabled', $(this).val().length < 4);
+      });
+
+      {% if provider.latitude and provider.longitude %}
+      // Leaflet map
+      {% localize off %}
+      const lat = {{ provider.latitude }};
+      const lng = {{ provider.longitude }};
+      {% endlocalize %}
+      const map = L.map('provider-map', { zoomControl: false, scrollWheelZoom: false }).setView([lat, lng], 15);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+      L.marker([lat, lng]).addTo(map);
+      {% endif %}
+    });
+  </script>
+
+</body>
+</html>
