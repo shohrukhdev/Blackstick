@@ -28,6 +28,15 @@ def js_price(value):
 
 
 @register.filter
+def js_qty(value):
+    """Return a plain float string safe for embedding in JS (preserves decimals, no locale)."""
+    try:
+        return float(str(value))
+    except (ValueError, TypeError):
+        return 0
+
+
+@register.filter
 def desc_size_class(description):
     """Pick the largest Tailwind text size that realistically fits in a square card image."""
     n = len(description) if description else 0

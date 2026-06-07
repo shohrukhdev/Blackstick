@@ -16,3 +16,8 @@ def notify_client_order_accepted(order):
 def notify_client_order_declined(order):
     """Stub — Task 16."""
     pass
+
+
+def notify_client_prices_adjusted(order):
+    """Stub — Task 16."""
+    pass

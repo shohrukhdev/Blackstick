@@ -129,7 +129,7 @@ def generate_invite(supplier, expires_days=30):
     )
 
 
-# ── Orders ─────────────────────────────────────────────────────────────────
+# ── Orders ────────────────────────────────────────────────────────────────
 
 
 @transaction.atomic
@@ -178,6 +178,67 @@ def submit_order(client, supplier, cart_items, notes=''):
 
     notifications.notify_supplier_new_order(order)
     return order
+
+
+def update_order_note(order, note):
+    """Persist supplier_note on any non-DRAFT order. No status restriction."""
+    order.supplier_note = note.strip()
+    order.save(update_fields=['supplier_note'])
+    return order
+
+
+@transaction.atomic
+def accept_order(order, actor):
+    """Set order status to ACCEPTED. Raises ValueError if not currently SUBMITTED."""
+    from orders import notifications
+    if order.status != OrderStatus.SUBMITTED:
+        raise ValueError("Faqat yuborilgan buyurtmani qabul qilish mumkin.")
+    order.status = OrderStatus.ACCEPTED
+    order.accepted_at = timezone.now()
+    order.save(update_fields=['status', 'accepted_at'])
+    notifications.notify_client_order_accepted(order)
+    return order
+
+
+@transaction.atomic
+def decline_order(order, actor, note=''):
+    """Set order status to DECLINED. Raises ValueError if not currently SUBMITTED."""
+    from orders import notifications
+    if order.status != OrderStatus.SUBMITTED:
+        raise ValueError("Faqat yuborilgan buyurtmani rad etish mumkin.")
+    order.status = OrderStatus.DECLINED
+    order.supplier_note = note
+    order.save(update_fields=['status', 'supplier_note'])
+    notifications.notify_client_order_declined(order)
+    return order
+
+
+@transaction.atomic
+def adjust_order_item_price(order_item, new_retail_price, actor):
+    """
+    Set order_item.adjusted_retail_price. Marks order.prices_adjusted=True.
+    Raises ValueError if order is not ACCEPTED or price is not positive.
+    """
+    from orders import notifications
+    if order_item.order.status != OrderStatus.ACCEPTED:
+        raise ValueError("Narxni faqat qabul qilingan buyurtmada o'zgartirish mumkin.")
+    if new_retail_price <= 0:
+        raise ValueError("Narx musbat son bo'lishi kerak.")
+
+    was_first = not order_item.order.prices_adjusted
+
+    order_item.adjusted_retail_price = new_retail_price
+    order_item.save(update_fields=['adjusted_retail_price'])
+
+    Order.objects.filter(pk=order_item.order_id).update(
+        prices_adjusted=True,
+        updated_at=timezone.now(),
+    )
+
+    if was_first:
+        notifications.notify_client_prices_adjusted(order_item.order)
+
+    return order_item
 
 
 @transaction.atomic

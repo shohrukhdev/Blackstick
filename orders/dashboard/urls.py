@@ -14,6 +14,8 @@ urlpatterns = [
     path('orders/<int:pk>/', views.order_detail, name='order_detail'),
     path('orders/<int:pk>/accept/', views.order_accept, name='order_accept'),
     path('orders/<int:pk>/decline/', views.order_decline, name='order_decline'),
+    path('orders/<int:order_pk>/items/<int:item_pk>/adjust/', views.order_adjust_price, name='order_adjust_price'),
+    path('orders/<int:pk>/note/', views.order_update_note, name='order_update_note'),
 
     # Catalog — Task 04
     path('catalog/', views.catalog_management, name='catalog_home'),

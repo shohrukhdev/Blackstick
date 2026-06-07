@@ -1,9 +1,11 @@
+import json
 import logging
+from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
-from django.db.models import Count, DecimalField, ExpressionWrapper, F, Sum, Value
+from django.db.models import Case, Count, DecimalField, ExpressionWrapper, F, Sum, Value, When
 from django.db.models.functions import Coalesce
 from django.http import HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -13,11 +15,11 @@ from django.views.generic import TemplateView
 from orders.constants import OrderStatus
 from orders.decorators import SupplierLoginRequiredMixin, supplier_required
 from orders.forms import CategoryForm, ClientCreateForm, ItemForm
-from orders.models import Category, Item, Order
+from orders.models import Category, Item, Order, OrderItem
 from orders.services import (
-    archive_item, create_client_manually, delete_category,
-    generate_invite, get_active_invites, get_supplier_catalog,
-    get_supplier_clients, reactivate_item,
+    accept_order, adjust_order_item_price, archive_item, create_client_manually,
+    decline_order, delete_category, generate_invite, get_active_invites,
+    get_supplier_catalog, get_supplier_clients, reactivate_item, update_order_note,
 )
 
 logger = logging.getLogger(__name__)
@@ -63,8 +65,18 @@ _VALID_STATUS_FILTERS = {
     OrderStatus.DECLINED, OrderStatus.IN_SHIPMENT, OrderStatus.DELIVERED,
 }
 
+# Effective unit price per order item: adjusted if set, else original snapshot.
+_EFFECTIVE_UNIT_PRICE = Case(
+    When(
+        order_items__adjusted_retail_price__isnull=False,
+        then=F('order_items__adjusted_retail_price'),
+    ),
+    default=F('order_items__retail_price'),
+    output_field=DecimalField(max_digits=10, decimal_places=2),
+)
+
 _LINE_TOTAL = ExpressionWrapper(
-    F('order_items__retail_price') * F('order_items__quantity'),
+    _EFFECTIVE_UNIT_PRICE * F('order_items__quantity'),
     output_field=DecimalField(max_digits=12, decimal_places=2),
 )
 
@@ -118,20 +130,80 @@ def order_detail(request, pk):
 
 @supplier_required
 def order_accept(request, pk):
-    """Stub — logic implemented in Task 08."""
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
-    messages.info(request, "Qabul qilish funksiyasi tez orada qo'shiladi.")
+    supplier = request.user.supplier
+    order = get_object_or_404(Order, pk=pk, supplier=supplier)
+    try:
+        accept_order(order, request.user)
+        messages.success(request, f'Buyurtma #{pk} qabul qilindi.')
+    except ValueError as e:
+        messages.error(request, str(e))
     return redirect(reverse('orders_dashboard:order_detail', args=[pk]))
 
 
 @supplier_required
 def order_decline(request, pk):
-    """Stub — logic implemented in Task 08."""
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
-    messages.info(request, "Rad etish funksiyasi tez orada qo'shiladi.")
+    supplier = request.user.supplier
+    order = get_object_or_404(Order, pk=pk, supplier=supplier)
+    note = request.POST.get('note', '').strip()
+    try:
+        decline_order(order, request.user, note=note)
+        messages.success(request, f'Buyurtma #{pk} rad etildi.')
+    except ValueError as e:
+        messages.error(request, str(e))
     return redirect(reverse('orders_dashboard:order_detail', args=[pk]))
+
+
+@supplier_required
+def order_adjust_price(request, order_pk, item_pk):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+    supplier = request.user.supplier
+    order = get_object_or_404(Order, pk=order_pk, supplier=supplier)
+
+    try:
+        order_item = OrderItem.objects.get(pk=item_pk, order_id=order.pk)
+    except OrderItem.DoesNotExist:
+        return JsonResponse({'error': 'Tovar topilmadi.'}, status=404)
+
+    order_item.order = order  # attach loaded order to avoid an extra DB hit in service
+
+    try:
+        body = json.loads(request.body)
+        new_price = Decimal(str(body.get('new_price', '')))
+    except (json.JSONDecodeError, ValueError, InvalidOperation):
+        return JsonResponse({'error': "Noto'g'ri narx formati."}, status=400)
+
+    try:
+        order_item = adjust_order_item_price(order_item, new_price, request.user)
+    except ValueError as e:
+        return JsonResponse({'error': str(e)}, status=400)
+
+    line_total = order_item.effective_retail * order_item.quantity
+    return JsonResponse({
+        'ok': True,
+        'effective_retail': int(round(float(order_item.effective_retail))),
+        'line_total': int(round(float(line_total))),
+    })
+
+
+@supplier_required
+def order_update_note(request, pk):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    supplier = request.user.supplier
+    order = get_object_or_404(Order, pk=pk, supplier=supplier)
+    try:
+        body = json.loads(request.body)
+        note = str(body.get('note', ''))
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'error': "Noto'g'ri so'rov formati."}, status=400)
+    update_order_note(order, note)
+    return JsonResponse({'ok': True})
 
 
 # ── Catalog ────────────────────────────────────────────────────────────────
