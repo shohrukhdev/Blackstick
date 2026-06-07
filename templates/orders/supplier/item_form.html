@@ -1,0 +1,255 @@
+{% extends "orders/supplier/base.html" %}
+{% block title %}{% if is_new %}Yangi tovar{% else %}Tahrirlash: {{ item.name }}{% endif %} — {{ supplier.business_name }}{% endblock %}
+
+{% block supplier_content %}
+<div class="max-w-2xl mx-auto"
+     x-data="{
+       basePrice: {{ form.base_price.value|default:0 }},
+       profit:    {{ form.profit.value|default:0 }},
+       imagePreview: {% if not is_new and item.image %}'{{ item.image.url }}'{% else %}null{% endif %},
+       get retailPrice() {
+         const val = parseFloat(this.basePrice || 0) + parseFloat(this.profit || 0);
+         if (isNaN(val)) return '0';
+         return Math.round(val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+       },
+       previewImage(e) {
+         const f = e.target.files[0];
+         if (f) this.imagePreview = URL.createObjectURL(f);
+       }
+     }">
+
+  {# Back #}
+  <a href="{% url 'orders_dashboard:catalog_home' %}"
+     class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6 group">
+    <svg class="h-4 w-4 transition-transform group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+    </svg>
+    Katalogga qaytish
+  </a>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6">
+    <h1 class="text-xl font-bold text-gray-900 mb-6">
+      {% if is_new %}Yangi tovar{% else %}Tovarni tahrirlash{% endif %}
+    </h1>
+
+    {# Non-field errors #}
+    {% if form.non_field_errors %}
+      <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+        {% for error in form.non_field_errors %}
+          <p class="text-sm text-red-700">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+        {# ── Left column ── #}
+        <div class="sm:col-span-1 space-y-5">
+
+          {# Name #}
+          <div>
+            <label for="{{ form.name.id_for_label }}"
+                   class="block text-sm font-medium text-gray-700 mb-1.5">
+              {{ form.name.label }} <span class="text-red-500">*</span>
+            </label>
+            <input type="text"
+                   name="{{ form.name.html_name }}"
+                   id="{{ form.name.id_for_label }}"
+                   value="{{ form.name.value|default:'' }}"
+                   autofocus
+                   class="w-full rounded-xl border px-3.5 py-2.5 text-sm
+                          focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                          {% if form.name.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+            {% if form.name.errors %}
+              <p class="mt-1.5 text-xs text-red-600">{{ form.name.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          {# Category #}
+          <div>
+            <label for="{{ form.category.id_for_label }}"
+                   class="block text-sm font-medium text-gray-700 mb-1.5">
+              {{ form.category.label }}
+            </label>
+            <select name="{{ form.category.html_name }}"
+                    id="{{ form.category.id_for_label }}"
+                    class="w-full rounded-xl border px-3.5 py-2.5 text-sm bg-white
+                           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                           {% if form.category.errors %}border-red-400{% else %}border-gray-300{% endif %}">
+              {% for value, label in form.category.field.choices %}
+                <option value="{{ value }}" {% if form.category.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>
+                  {{ label }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          {# Unit #}
+          <div>
+            <label for="{{ form.unit.id_for_label }}"
+                   class="block text-sm font-medium text-gray-700 mb-1.5">
+              {{ form.unit.label }} <span class="text-red-500">*</span>
+            </label>
+            <select name="{{ form.unit.html_name }}"
+                    id="{{ form.unit.id_for_label }}"
+                    class="w-full rounded-xl border px-3.5 py-2.5 text-sm bg-white
+                           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                           {% if form.unit.errors %}border-red-400{% else %}border-gray-300{% endif %}">
+              {% for value, label in form.unit.field.choices %}
+                <option value="{{ value }}" {% if form.unit.value == value %}selected{% endif %}>
+                  {{ label }}
+                </option>
+              {% endfor %}
+            </select>
+            {% if form.unit.errors %}
+              <p class="mt-1.5 text-xs text-red-600">{{ form.unit.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          {# Description #}
+          <div>
+            <label for="{{ form.description.id_for_label }}"
+                   class="block text-sm font-medium text-gray-700 mb-1.5">
+              {{ form.description.label }}
+            </label>
+            <textarea name="{{ form.description.html_name }}"
+                      id="{{ form.description.id_for_label }}"
+                      rows="3"
+                      class="w-full rounded-xl border px-3.5 py-2.5 text-sm resize-none
+                             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                             {% if form.description.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">{{ form.description.value|default:'' }}</textarea>
+          </div>
+
+        </div>
+
+        {# ── Right column ── #}
+        <div class="sm:col-span-1 space-y-5">
+
+          {# Image upload + preview #}
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1.5">
+              {{ form.image.label }}
+              {% if is_new %}<span class="text-red-500">*</span>{% endif %}
+            </label>
+
+            {# Preview area #}
+            <div class="mb-3 aspect-square w-full max-w-xs mx-auto bg-gray-100 rounded-xl overflow-hidden border border-gray-200">
+              <img x-show="imagePreview" :src="imagePreview" x-cloak
+                   class="h-full w-full object-cover">
+              <div x-show="!imagePreview"
+                   class="h-full w-full flex flex-col items-center justify-center gap-2 text-gray-400">
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+                </svg>
+                <span class="text-xs">Rasm tanlanmagan</span>
+              </div>
+            </div>
+
+            <input type="file"
+                   name="{{ form.image.html_name }}"
+                   id="{{ form.image.id_for_label }}"
+                   accept="image/*"
+                   @change="previewImage($event)"
+                   class="block w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4
+                          file:rounded-lg file:border-0 file:text-sm file:font-medium
+                          file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100
+                          cursor-pointer">
+            {% if form.image.help_text %}
+              <p class="mt-1.5 text-xs text-gray-500">{{ form.image.help_text }}</p>
+            {% endif %}
+            {% if form.image.errors %}
+              <p class="mt-1.5 text-xs text-red-600">{{ form.image.errors|join:", " }}</p>
+            {% endif %}
+          </div>
+
+          {# Pricing block #}
+          <div class="rounded-xl border border-gray-200 p-4 space-y-4">
+            <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Narx</p>
+
+            {# Base price #}
+            <div>
+              <label for="{{ form.base_price.id_for_label }}"
+                     class="block text-sm font-medium text-gray-700 mb-1.5">
+                {{ form.base_price.label }} <span class="text-red-500">*</span>
+              </label>
+              <div class="relative">
+                <input type="number"
+                       name="{{ form.base_price.html_name }}"
+                       id="{{ form.base_price.id_for_label }}"
+                       x-model="basePrice"
+                       min="0" step="0.01"
+                       class="w-full rounded-xl border pr-14 px-3.5 py-2.5 text-sm
+                              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                              {% if form.base_price.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-xs text-gray-400 pointer-events-none">so'm</span>
+              </div>
+              {% if form.base_price.errors %}
+                <p class="mt-1.5 text-xs text-red-600">{{ form.base_price.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+
+            {# Profit #}
+            <div>
+              <label for="{{ form.profit.id_for_label }}"
+                     class="block text-sm font-medium text-gray-700 mb-1.5">
+                {{ form.profit.label }}
+              </label>
+              <div class="relative">
+                <input type="number"
+                       name="{{ form.profit.html_name }}"
+                       id="{{ form.profit.id_for_label }}"
+                       x-model="profit"
+                       min="0" step="0.01"
+                       class="w-full rounded-xl border pr-14 px-3.5 py-2.5 text-sm
+                              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                              {% if form.profit.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+                <span class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-xs text-gray-400 pointer-events-none">so'm</span>
+              </div>
+            </div>
+
+            {# Retail price — calculated #}
+            <div class="rounded-lg bg-brand-50 border border-brand-100 px-4 py-3 flex items-center justify-between">
+              <span class="text-sm font-medium text-brand-800">Sotuv narxi</span>
+              <span class="text-lg font-bold text-brand-700">
+                <span x-text="retailPrice"></span> so'm
+              </span>
+            </div>
+          </div>
+
+          {# Active toggle #}
+          <label class="flex items-center gap-3 cursor-pointer select-none">
+            <input type="checkbox"
+                   name="{{ form.is_active.html_name }}"
+                   id="{{ form.is_active.id_for_label }}"
+                   {% if form.is_active.value %}checked{% endif %}
+                   class="h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+            <span class="text-sm font-medium text-gray-700">{{ form.is_active.label }}</span>
+          </label>
+
+        </div>
+      </div>
+
+      {# Buttons #}
+      <div class="flex items-center gap-3 mt-6 pt-5 border-t border-gray-100">
+        <button type="submit"
+                class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold
+                       px-6 py-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+          {% if is_new %}Qo'shish{% else %}Saqlash{% endif %}
+        </button>
+        <a href="{% url 'orders_dashboard:catalog_home' %}"
+           class="rounded-xl border border-gray-300 bg-white hover:bg-gray-50 text-gray-700
+                  text-sm font-medium px-5 py-2.5 transition-colors">
+          Bekor qilish
+        </a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

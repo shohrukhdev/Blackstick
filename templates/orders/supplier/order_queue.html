@@ -1,0 +1,94 @@
+{% extends "orders/supplier/base.html" %}
+{% load orders_tags %}
+{% block title %}Buyurtmalar{% endblock %}
+
+{% block supplier_content %}
+
+<div class="flex items-center justify-between mb-5">
+  <h1 class="text-xl font-bold text-gray-900">Buyurtmalar</h1>
+</div>
+
+{# Status filter tabs #}
+<div class="flex gap-2 overflow-x-auto pb-1 mb-5" style="-webkit-overflow-scrolling:touch">
+  {% with tabs="all SUBMITTED ACCEPTED IN_SHIPMENT DELIVERED DECLINED" %}
+  <a href="?"
+     class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors
+            {% if not status_filter %}bg-gray-900 text-white border-gray-900{% else %}bg-white text-gray-600 border-gray-200 hover:border-gray-300{% endif %}">
+    Barchasi
+  </a>
+  <a href="?status=SUBMITTED"
+     class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors
+            {% if status_filter == 'SUBMITTED' %}bg-blue-600 text-white border-blue-600{% else %}bg-white text-gray-600 border-gray-200 hover:border-blue-200{% endif %}">
+    Yangi
+  </a>
+  <a href="?status=ACCEPTED"
+     class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors
+            {% if status_filter == 'ACCEPTED' %}bg-green-600 text-white border-green-600{% else %}bg-white text-gray-600 border-gray-200 hover:border-green-200{% endif %}">
+    Qabul qilindi
+  </a>
+  <a href="?status=IN_SHIPMENT"
+     class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors
+            {% if status_filter == 'IN_SHIPMENT' %}bg-amber-500 text-white border-amber-500{% else %}bg-white text-gray-600 border-gray-200 hover:border-amber-200{% endif %}">
+    Jo'natmada
+  </a>
+  <a href="?status=DELIVERED"
+     class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors
+            {% if status_filter == 'DELIVERED' %}bg-emerald-600 text-white border-emerald-600{% else %}bg-white text-gray-600 border-gray-200 hover:border-emerald-200{% endif %}">
+    Yetkazildi
+  </a>
+  <a href="?status=DECLINED"
+     class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors
+            {% if status_filter == 'DECLINED' %}bg-red-600 text-white border-red-600{% else %}bg-white text-gray-600 border-gray-200 hover:border-red-200{% endif %}">
+    Rad etildi
+  </a>
+  {% endwith %}
+</div>
+
+{# Orders list #}
+{% if orders %}
+<div class="space-y-3">
+  {% for order in orders %}
+  <a href="{% url 'orders_dashboard:order_detail' order.pk %}"
+     class="block bg-white rounded-2xl border border-gray-200 p-4
+            hover:shadow-md hover:border-gray-300 transition-all duration-150">
+    <div class="flex items-start justify-between gap-3">
+      <div class="min-w-0">
+        <p class="font-semibold text-gray-900 truncate">{{ order.client.company_name }}</p>
+        <p class="text-sm text-gray-500 mt-0.5">
+          {{ order.item_count }} ta tovar
+          &middot;
+          {{ order.order_total|uz_money }} so'm
+        </p>
+      </div>
+      <span class="shrink-0 inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold
+                   {{ order.status|status_badge_class }}">
+        {{ order.get_status_display }}
+      </span>
+    </div>
+    <p class="text-xs text-gray-400 mt-2.5">
+      {{ order.submitted_at|date:"d.m.Y H:i" }}
+    </p>
+  </a>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="flex flex-col items-center justify-center py-24 text-center">
+  <div class="h-16 w-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
+    <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+    </svg>
+  </div>
+  <p class="font-semibold text-gray-900">Buyurtmalar yo'q</p>
+  <p class="text-sm text-gray-500 mt-1">
+    {% if status_filter %}
+      Bu filtrdagi buyurtmalar topilmadi
+    {% else %}
+      Mijozlar buyurtma yuborganida bu yerda ko'rinadi
+    {% endif %}
+  </p>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,339 @@
+{% extends "orders/client/base.html" %}
+{% load orders_tags %}
+{% block title %}{{ supplier.business_name }}{% endblock %}
+
+{% block page_bg %}bg-gradient-to-br from-sky-100 via-white to-blue-50{% endblock %}
+
+{% block top_bar_class %}bg-white/80 backdrop-blur-xl border-b border-white/50 shadow-sm{% endblock %}
+
+{% block extra_head %}
+<script>window._SUPPLIER_ID = {{ supplier.pk }};</script>
+{{ block.super }}
+{% endblock %}
+
+{% block client_content %}
+<div x-data="catalogPage()">
+
+  <div class="sticky top-14 z-10 bg-white/75 backdrop-blur-xl border-b border-white/50 shadow-sm">
+
+    <div class="flex items-center gap-2 px-4 py-2.5 border-b border-gray-100/70">
+      <span class="text-xs font-medium text-gray-400 shrink-0">Ta'minotchi:</span>
+      {% if supplier_links|length > 1 %}
+      <div class="flex gap-1.5 overflow-x-auto" style="-webkit-overflow-scrolling:touch;scrollbar-width:none">
+        {% for sc in supplier_links %}
+        <a href="?supplier={{ sc.supplier.pk }}"
+           class="shrink-0 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200
+                  {% if sc.supplier.pk == supplier.pk %}
+                    bg-gradient-to-r from-brand-400 to-brand-600 text-white shadow-sm
+                  {% else %}
+                    bg-white/70 backdrop-blur-sm border border-gray-200/70 text-gray-600 hover:bg-white hover:border-brand-200 hover:text-brand-600
+                  {% endif %}">
+          {{ sc.supplier.business_name }}
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <span class="text-sm font-semibold text-gray-900">{{ supplier.business_name }}</span>
+      {% endif %}
+    </div>
+
+    {% if categories or uncategorised %}
+    <div class="overflow-x-auto" style="-webkit-overflow-scrolling:touch">
+      <div class="flex gap-1.5 px-3 py-2.5" x-ref="tabBar">
+        {% for category in categories %}{% if category.active_items %}
+        <button data-tab-id="{{ category.pk }}"
+                @click="scrollTo({{ category.pk }})"
+                class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200"
+                :class="activeTab == {{ category.pk }}
+                  ? 'bg-gradient-to-r from-brand-400 to-brand-600 text-white shadow-sm'
+                  : 'bg-white/70 backdrop-blur-sm border border-gray-200/70 text-gray-600 hover:bg-white hover:border-brand-200 hover:text-brand-600'">
+          {{ category.name }}
+        </button>
+        {% endif %}{% endfor %}
+        {% if uncategorised %}
+        <button data-tab-id="uncat" @click="scrollTo('uncat')"
+                class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200"
+                :class="activeTab == 'uncat'
+                  ? 'bg-gradient-to-r from-brand-400 to-brand-600 text-white shadow-sm'
+                  : 'bg-white/70 backdrop-blur-sm border border-gray-200/70 text-gray-600 hover:bg-white hover:border-brand-200 hover:text-brand-600'">
+          Boshqalar
+        </button>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="pb-28">
+
+    {% for category in categories %}{% if category.active_items %}
+    <div data-cat-id="{{ category.pk }}" id="cat-{{ category.pk }}">
+      <h2 class="px-4 pt-6 pb-3 text-base font-bold text-gray-800">{{ category.name }}</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 px-3">
+        {% for item in category.active_items %}
+          {% include "orders/client/_item_card.html" with item=item %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}{% endfor %}
+
+    {% if uncategorised %}
+    <div data-cat-id="uncat" id="cat-uncat">
+      <h2 class="px-4 pt-6 pb-3 text-base font-bold text-gray-800">Boshqalar</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 px-3">
+        {% for item in uncategorised %}
+          {% include "orders/client/_item_card.html" with item=item %}
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if not categories and not uncategorised %}
+    <div class="flex flex-col items-center justify-center py-24 text-center px-4">
+      <div class="h-16 w-16 rounded-2xl bg-white/70 backdrop-blur-sm border border-white/60 shadow-md
+                  flex items-center justify-center mb-4">
+        <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+        </svg>
+      </div>
+      <p class="font-semibold text-gray-900">Katalog hali bo'sh</p>
+      <p class="text-sm text-gray-500 mt-1">Ta'minotchi tovarlarni qo'shganda ko'rinadi</p>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div class="fixed bottom-0 inset-x-0 z-20
+              bg-white/85 backdrop-blur-xl border-t border-white/50 shadow-2xl"
+       style="padding-bottom: env(safe-area-inset-bottom)"
+       x-show="$store.cart.count > 0"
+       x-cloak
+       x-transition:enter="transition-transform duration-200 ease-out"
+       x-transition:enter-start="translate-y-full"
+       x-transition:enter-end="translate-y-0"
+       x-transition:leave="transition-transform duration-150 ease-in"
+       x-transition:leave-start="translate-y-0"
+       x-transition:leave-end="translate-y-full">
+    <div class="flex items-center gap-4 px-4 py-3 max-w-2xl mx-auto">
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold text-gray-900">
+          <span x-text="$store.cart.count"></span> ta tovar
+        </p>
+        <p class="text-xs text-gray-500">
+          <span x-text="$store.cart.fmtTotal"></span> so'm
+        </p>
+      </div>
+      <button @click="cartOpen = true"
+              class="shrink-0 inline-flex items-center gap-2 rounded-xl
+                     bg-gradient-to-r from-brand-400 to-brand-600 text-white text-sm font-semibold
+                     px-5 py-2.5 shadow-md shadow-brand-500/30
+                     hover:shadow-lg hover:shadow-brand-500/40 hover:from-brand-300 hover:to-brand-500
+                     transition-all duration-200">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/>
+        </svg>
+        Savatni ko'rish
+      </button>
+    </div>
+  </div>
+
+  <div x-show="cartOpen" x-cloak
+       class="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+       @keydown.escape.window="cartOpen = false">
+
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-md"
+         @click="cartOpen = false"
+         x-transition:enter="transition-opacity duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition-opacity duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+    </div>
+
+    <div class="relative w-full sm:max-w-lg max-h-[92vh] flex flex-col
+                bg-white/95 backdrop-blur-2xl
+                rounded-t-3xl sm:rounded-3xl shadow-2xl border border-white/60 overflow-hidden"
+         style="padding-bottom: env(safe-area-inset-bottom)"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95"
+         x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+         x-transition:leave-end="opacity-0 translate-y-8 sm:translate-y-0 sm:scale-95">
+
+      <div class="flex justify-center pt-3 pb-1 shrink-0 sm:hidden">
+        <div class="w-10 h-1 bg-gray-300/80 rounded-full"></div>
+      </div>
+
+      <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100/80 shrink-0">
+        <div>
+          <h2 class="font-bold text-gray-900 text-lg">Savat</h2>
+          <p class="text-xs text-gray-400 mt-0.5" x-text="`${$store.cart.count} ta tovar`"></p>
+        </div>
+        <button @click="cartOpen = false"
+                class="p-2 rounded-xl text-gray-400
+                       bg-gray-100/70 hover:bg-gray-100 hover:text-gray-700
+                       transition-all duration-200">
+          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto px-5 py-2 min-h-0">
+        <template x-for="item in $store.cart.list" :key="item.id">
+          <div class="flex items-start gap-3 py-3.5 border-b border-gray-100/80 last:border-0">
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-gray-900 leading-snug" x-text="item.name"></p>
+              <p class="text-xs text-gray-400 mt-0.5" x-text="item.unit"></p>
+              <p class="text-sm font-bold text-brand-600 mt-1"
+                 x-text="$store.cart.fmt(item.price * item.quantity) + ' so\'m'"></p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button @click="$store.cart.decrement(item.id)"
+                      class="h-9 w-9 rounded-xl
+                             bg-gray-100/80 border border-gray-200/60
+                             text-gray-600 hover:bg-red-50 hover:border-red-200 hover:text-red-500
+                             flex items-center justify-center font-bold text-lg
+                             transition-all duration-200">
+                −
+              </button>
+              <input type="number"
+                     :value="item.quantity"
+                     @change="$store.cart.setQty(item.id, $event.target.value)"
+                     @focus="$event.target.select()"
+                     min="1" step="1"
+                     class="w-12 text-center text-sm font-bold text-gray-900 tabular-nums
+                            bg-white/70 border border-gray-200/80 rounded-xl py-1.5
+                            focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent
+                            transition-all duration-200">
+              <button @click="$store.cart.increment(item.id)"
+                      class="h-9 w-9 rounded-xl
+                             bg-gradient-to-br from-brand-400 to-brand-600 text-white
+                             flex items-center justify-center font-bold text-lg
+                             shadow-sm shadow-brand-500/25
+                             hover:from-brand-300 hover:to-brand-500
+                             transition-all duration-200">
+                +
+              </button>
+            </div>
+          </div>
+        </template>
+      </div>
+
+      <div class="px-5 py-4 border-t border-gray-100/80 space-y-3 shrink-0">
+        <textarea x-model="notes" @input="saveNotes()"
+                  placeholder="Izoh (ixtiyoriy)" rows="2"
+                  class="w-full rounded-xl border border-gray-200/80 bg-white/70
+                         px-3.5 py-2.5 text-sm resize-none
+                         focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent
+                         placeholder-gray-400 transition-all duration-200">
+        </textarea>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-xs text-gray-400">Jami summa</p>
+            <p class="text-2xl font-extrabold text-gray-900">
+              <span x-text="$store.cart.fmtTotal"></span>
+              <span class="text-sm font-normal text-gray-500"> so'm</span>
+            </p>
+          </div>
+          <button @click="submitOrder()"
+                  :disabled="submitting"
+                  class="shrink-0 rounded-xl
+                         bg-gradient-to-r from-brand-400 to-brand-600 text-white font-semibold
+                         px-6 py-3 shadow-md shadow-brand-500/30
+                         hover:shadow-lg hover:shadow-brand-500/40 hover:from-brand-300 hover:to-brand-500
+                         disabled:opacity-60 transition-all duration-200">
+            <span x-text="submitting ? 'Yuborilmoqda...' : 'Buyurtma yuborish'"></span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function catalogPage() {
+  return {
+    activeTab: null,
+    cartOpen: false,
+    notes: '',
+    submitting: false,
+
+    init() {
+      const key = window._SUPPLIER_ID ? `cart_notes_${window._SUPPLIER_ID}` : null;
+      if (key) this.notes = localStorage.getItem(key) || '';
+      this.$nextTick(() => this.setupScrollSpy());
+    },
+
+    setupScrollSpy() {
+      if (!window.IntersectionObserver) return;
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const id = e.target.dataset.catId;
+            this.activeTab = isNaN(id) ? id : Number(id);
+            const tab = this.$refs.tabBar?.querySelector(`[data-tab-id="${id}"]`);
+            if (tab) tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          }
+        });
+      }, { rootMargin: '-15% 0px -65% 0px', threshold: 0 });
+      document.querySelectorAll('[data-cat-id]').forEach(el => obs.observe(el));
+    },
+
+    scrollTo(catId) {
+      this.activeTab = catId;
+      const el = document.getElementById(`cat-${catId}`);
+      if (!el) return;
+      const offset = 120;
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    },
+
+    saveNotes() {
+      if (window._SUPPLIER_ID)
+        localStorage.setItem(`cart_notes_${window._SUPPLIER_ID}`, this.notes);
+    },
+
+    async submitOrder() {
+      if (this.$store.cart.count === 0 || this.submitting) return;
+      this.submitting = true;
+      try {
+        const resp = await fetch('{% url "orders_client:submit_order" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || '',
+          },
+          body: JSON.stringify({
+            supplier_id: window._SUPPLIER_ID,
+            items: this.$store.cart.list.map(i => ({ item_id: i.id, quantity: i.quantity })),
+            notes: this.notes,
+          }),
+        });
+        if (resp.ok) {
+          const data = await resp.json();
+          this.$store.cart.clear();
+          this.notes = '';
+          this.cartOpen = false;
+          if (data.redirect_url) window.location.href = data.redirect_url;
+        } else {
+          const err = await resp.json().catch(() => ({}));
+          alert(err.error || "Xato yuz berdi. Qayta urinib ko'ring.");
+        }
+      } catch {
+        alert("Ulanish xatosi. Internet aloqasini tekshiring.");
+      } finally {
+        this.submitting = false;
+      }
+    },
+  };
+}
+</script>
+{% endblock %}

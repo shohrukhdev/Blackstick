@@ -1,6 +1,108 @@
 {% extends "orders/base.html" %}
 {% block title %}Kirish — Ta'minotchi{% endblock %}
 {% block content %}
-<!-- Supplier login form — built in Task 03 -->
-<p>Login placeholder</p>
+
+<div class="min-h-screen bg-gradient-to-br from-brand-50 to-gray-100 flex items-center justify-center px-4 py-12">
+  <div class="w-full max-w-sm">
+
+    {# Card #}
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+
+      {# Header #}
+      <div class="mb-8 text-center">
+        <div class="inline-flex items-center justify-center h-12 w-12 rounded-xl bg-brand-600 mb-4">
+          <svg class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0"/>
+          </svg>
+        </div>
+        <h1 class="text-xl font-bold text-gray-900">Buyurtma tizimi</h1>
+        <p class="mt-1 text-sm text-gray-500">Ta'minotchi hisobiga kiring</p>
+      </div>
+
+      {# Non-field errors #}
+      {% if form.non_field_errors %}
+        <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-700">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {# Form #}
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        {# Username #}
+        <div class="mb-4">
+          <label for="{{ form.username.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            Foydalanuvchi nomi
+          </label>
+          <input type="text"
+                 name="{{ form.username.html_name }}"
+                 id="{{ form.username.id_for_label }}"
+                 value="{{ form.username.value|default:'' }}"
+                 autocomplete="username"
+                 autofocus
+                 class="w-full rounded-xl border px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
+                        transition-shadow
+                        {% if form.username.errors %}border-red-400 bg-red-50{% else %}border-gray-300 bg-white{% endif %}">
+          {% if form.username.errors %}
+            <p class="mt-1 text-xs text-red-600">{{ form.username.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        {# Password #}
+        <div class="mb-6" x-data="{ show: false }">
+          <label for="{{ form.password.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            Parol
+          </label>
+          <div class="relative">
+            <input :type="show ? 'text' : 'password'"
+                   name="{{ form.password.html_name }}"
+                   id="{{ form.password.id_for_label }}"
+                   autocomplete="current-password"
+                   class="w-full rounded-xl border pr-10 px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400
+                          focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
+                          transition-shadow
+                          {% if form.password.errors %}border-red-400 bg-red-50{% else %}border-gray-300 bg-white{% endif %}">
+            <button type="button" @click="show = !show" tabindex="-1"
+                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600">
+              <svg x-show="!show" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              <svg x-show="show" x-cloak class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </button>
+          </div>
+          {% if form.password.errors %}
+            <p class="mt-1 text-xs text-red-600">{{ form.password.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        <button type="submit"
+                class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 active:bg-brand-800
+                       text-white text-sm font-semibold py-2.5 px-4
+                       transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+          Kirish
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
 {% endblock %}

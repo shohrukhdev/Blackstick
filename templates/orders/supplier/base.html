@@ -1,5 +1,116 @@
 {% extends "orders/base.html" %}
 {% block content %}
-<!-- Supplier dashboard shell — built in Task 03 -->
-{% block supplier_content %}{% endblock %}
+
+{% with url_name=nav_section|default:request.resolver_match.url_name %}
+
+{# ── Desktop sidebar + main layout ───────────────────────────── #}
+<div class="min-h-screen flex bg-gray-50">
+
+  {# ── Sidebar (lg+) ──────────────────────────────────────────── #}
+  <aside class="hidden lg:flex flex-col w-64 bg-white border-r border-gray-200 fixed inset-y-0 z-30">
+
+    {# Logo / business name #}
+    <div class="flex items-center gap-3 h-16 px-5 border-b border-gray-200 shrink-0">
+      {% if supplier.logo %}
+        <img src="{{ supplier.logo.url }}" alt="" class="h-8 w-8 rounded-lg object-cover shrink-0">
+      {% else %}
+        <div class="h-8 w-8 rounded-lg bg-brand-600 flex items-center justify-center shrink-0">
+          <span class="text-white font-bold text-sm leading-none">
+            {{ supplier.business_name|first|upper }}
+          </span>
+        </div>
+      {% endif %}
+      <span class="font-semibold text-gray-900 truncate text-sm">{{ supplier.business_name }}</span>
+    </div>
+
+    {# Navigation #}
+    <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:dashboard_home" name="dashboard_home" label="Buyurtmalar" %}
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:catalog_home" name="catalog_home" label="Katalog" %}
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:client_list" name="client_list" label="Mijozlar" %}
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:shipment_list" name="shipment_list" label="Jo'natmalar" %}
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:expense_list" name="expense_list" label="Xarajatlar" %}
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:analytics" name="analytics" label="Tahlil" %}
+
+    </nav>
+
+    {# Logout #}
+    <div class="px-3 py-4 border-t border-gray-200 shrink-0">
+      <form method="post" action="{% url 'orders_dashboard:supplier_logout' %}">
+        {% csrf_token %}
+        <button type="submit"
+          class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-gray-600
+                 hover:bg-red-50 hover:text-red-600 transition-colors group">
+          {# Logout icon #}
+          <svg class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/>
+          </svg>
+          Chiqish
+        </button>
+      </form>
+    </div>
+
+  </aside>
+
+  {# ── Main content area ──────────────────────────────────────── #}
+  <div class="flex-1 lg:ml-64 flex flex-col min-w-0">
+
+    {# Mobile top bar #}
+    <header class="lg:hidden sticky top-0 z-20 bg-white border-b border-gray-200 h-14 flex items-center px-4 gap-3">
+      {% if supplier.logo %}
+        <img src="{{ supplier.logo.url }}" alt="" class="h-7 w-7 rounded-md object-cover shrink-0">
+      {% else %}
+        <div class="h-7 w-7 rounded-md bg-brand-600 flex items-center justify-center shrink-0">
+          <span class="text-white font-bold text-xs leading-none">{{ supplier.business_name|first|upper }}</span>
+        </div>
+      {% endif %}
+      <span class="font-semibold text-sm text-gray-900 truncate">{{ supplier.business_name }}</span>
+    </header>
+
+    {# Page content — block supplier_content lives here #}
+    <main class="flex-1 p-4 lg:p-6 pb-24 lg:pb-6">
+
+      {# Flash messages #}
+      {% if messages %}
+        <div class="mb-4 space-y-2">
+          {% for message in messages %}
+            <div x-data="{ show: true }" x-show="show" x-cloak
+              class="flex items-start gap-3 rounded-xl px-4 py-3 text-sm
+                     {% if message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200
+                     {% elif message.tags == 'danger' or message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200
+                     {% elif message.tags == 'warning' %}bg-amber-50 text-amber-800 border border-amber-200
+                     {% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+              <span class="flex-1">{{ message }}</span>
+              <button @click="show = false" class="shrink-0 opacity-60 hover:opacity-100">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% block supplier_content %}{% endblock %}
+    </main>
+
+  </div>
+</div>
+
+{# ── Mobile bottom tab bar ──────────────────────────────────── #}
+<nav class="lg:hidden fixed bottom-0 inset-x-0 z-30 bg-white border-t border-gray-200
+            flex items-stretch safe-bottom"
+     style="padding-bottom: env(safe-area-inset-bottom);">
+
+  {% include "orders/supplier/_tab_item.html" with href="orders_dashboard:dashboard_home" name="dashboard_home" label="Buyurtmalar" %}
+  {% include "orders/supplier/_tab_item.html" with href="orders_dashboard:catalog_home" name="catalog_home" label="Katalog" %}
+  {% include "orders/supplier/_tab_item.html" with href="orders_dashboard:client_list" name="client_list" label="Mijozlar" %}
+  {% include "orders/supplier/_tab_item.html" with href="orders_dashboard:shipment_list" name="shipment_list" label="Jo'natma" %}
+  {% include "orders/supplier/_tab_item.html" with href="orders_dashboard:analytics" name="analytics" label="Tahlil" %}
+
+</nav>
+
+{% endwith %}
 {% endblock %}

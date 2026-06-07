@@ -1,0 +1,24 @@
+{% extends "orders/base.html" %}
+{% block title %}Havola yaroqsiz{% endblock %}
+{% block content %}
+<div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+  <div class="text-center max-w-sm">
+    <div class="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-red-100 mb-4">
+      <svg class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+      </svg>
+    </div>
+    {% if reason == 'used' %}
+      <h1 class="text-xl font-bold text-gray-900">Havola ishlatilgan</h1>
+      <p class="mt-2 text-sm text-gray-500">Bu taklif havolasi allaqachon ishlatilgan.</p>
+    {% elif reason == 'expired' %}
+      <h1 class="text-xl font-bold text-gray-900">Havola muddati o'tgan</h1>
+      <p class="mt-2 text-sm text-gray-500">Yangi havola olish uchun ta'minotchi bilan bog'laning.</p>
+    {% else %}
+      <h1 class="text-xl font-bold text-gray-900">Havola topilmadi</h1>
+      <p class="mt-2 text-sm text-gray-500">Havola noto'g'ri yoki o'chirilgan bo'lishi mumkin.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

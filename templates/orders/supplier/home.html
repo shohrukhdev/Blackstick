@@ -1,0 +1,35 @@
+{% extends "orders/supplier/base.html" %}
+{% block title %}Bosh sahifa — {{ supplier.business_name }}{% endblock %}
+
+{% block supplier_content %}
+<div class="max-w-3xl mx-auto">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Xush kelibsiz 👋</h1>
+    <p class="mt-1 text-sm text-gray-500">{{ supplier.business_name }}</p>
+  </div>
+
+  {# Placeholder cards — will be replaced with live data in Task 07 #}
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Yangi buyurtmalar</p>
+      <p class="mt-2 text-3xl font-bold text-gray-900">—</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Qabul qilingan</p>
+      <p class="mt-2 text-3xl font-bold text-gray-900">—</p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-5 col-span-2 sm:col-span-1">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Jo'natmada</p>
+      <p class="mt-2 text-3xl font-bold text-gray-900">—</p>
+    </div>
+
+  </div>
+
+  <p class="mt-6 text-sm text-gray-400 text-center">
+    Bosh sahifa Task 07 da to'ldiriladi.
+  </p>
+</div>
+{% endblock %}

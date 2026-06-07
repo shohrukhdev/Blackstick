@@ -1,0 +1,161 @@
+{% extends "orders/supplier/base.html" %}
+{% block title %}Mijozlar — {{ supplier.business_name }}{% endblock %}
+
+{% block supplier_content %}
+<div x-data="clientsPage()" @keydown.escape="invitePanel = false">
+
+  {# ── Header ─────────────────────────────────────────────── #}
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Mijozlar</h1>
+    <div class="flex gap-2">
+      <button @click="generateInvite()"
+              :disabled="generating"
+              class="inline-flex items-center gap-1.5 rounded-xl border border-gray-300 bg-white
+                     px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors
+                     disabled:opacity-60 disabled:cursor-not-allowed">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+        </svg>
+        <span x-text="generating ? 'Yaratilmoqda...' : 'Taklif havolasi'"></span>
+      </button>
+      <a href="{% url 'orders_dashboard:client_create' %}"
+         class="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700
+                px-3.5 py-2 text-sm font-semibold text-white transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+        </svg>
+        Qo'shish
+      </a>
+    </div>
+  </div>
+
+  {# ── Generated invite banner ─────────────────────────────── #}
+  <div x-show="newInviteUrl" x-cloak x-transition
+       class="mb-5 rounded-xl bg-green-50 border border-green-200 p-4">
+    <p class="text-sm font-medium text-green-800 mb-2">
+      Yangi taklif havolasi tayyor. Mijozga yuboring:
+    </p>
+    <div class="flex gap-2">
+      <input type="text" :value="newInviteUrl" readonly
+             class="flex-1 rounded-lg border border-green-300 bg-white px-3 py-2 text-xs font-mono
+                    text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-400 min-w-0">
+      <button @click="copyInvite()"
+              class="shrink-0 rounded-lg border border-green-300 bg-white px-3 py-2 text-xs
+                     font-medium text-green-700 hover:bg-green-50 transition-colors">
+        <span x-text="copied ? 'Nusxalandi ✓' : 'Nusxalash'"></span>
+      </button>
+    </div>
+    <button @click="newInviteUrl = ''" class="mt-2 text-xs text-green-600 hover:text-green-800">
+      Yopish
+    </button>
+  </div>
+
+  {# ── Active pending invites ───────────────────────────────── #}
+  {% if active_invites %}
+  <div class="mb-5 bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
+      <p class="text-sm font-semibold text-gray-700">Kutilayotgan taklif havolalari</p>
+      <span class="text-xs text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">
+        {{ active_invites|length }}
+      </span>
+    </div>
+    <ul class="divide-y divide-gray-100">
+      {% for invite in active_invites %}
+      <li class="flex items-center gap-3 px-5 py-3">
+        <span class="flex-1 text-xs font-mono text-gray-500 truncate"
+              x-data
+              @click="navigator.clipboard.writeText('{{ request.scheme }}://{{ request.get_host }}{% url 'orders_client:invite_register' invite.token %}').then(() => $el.textContent = 'Nusxalandi ✓').catch(() => {})">
+          {{ request.scheme }}://{{ request.get_host }}{% url 'orders_client:invite_register' invite.token %}
+        </span>
+        <span class="shrink-0 text-xs text-gray-400">{{ invite.created_at|date:"d.m" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {# ── Client list ─────────────────────────────────────────── #}
+  {% if supplier_clients %}
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <ul class="divide-y divide-gray-100">
+      {% for sc in supplier_clients %}
+      <li class="flex items-center gap-4 px-5 py-4">
+        <div class="h-10 w-10 rounded-full bg-brand-100 flex items-center justify-center shrink-0">
+          <span class="text-brand-700 font-bold text-sm">
+            {{ sc.client.company_name|first|upper }}
+          </span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-900 truncate">{{ sc.client.company_name }}</p>
+          <p class="text-xs text-gray-500">{{ sc.client.phone }}</p>
+        </div>
+        {% if sc.client.has_location %}
+        <a href="{{ sc.client.maps_url }}" target="_blank" rel="noopener"
+           title="Xaritada ko'rish"
+           class="p-1.5 rounded-lg text-gray-400 hover:text-brand-600 hover:bg-brand-50 transition-colors">
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+          </svg>
+        </a>
+        {% endif %}
+        <span class="text-xs text-gray-400 shrink-0">{{ sc.joined_at|date:"d.m.Y" }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% else %}
+  <div class="text-center py-20">
+    <div class="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gray-100 mb-4">
+      <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+      </svg>
+    </div>
+    <p class="font-semibold text-gray-900">Hali mijozlar yo'q</p>
+    <p class="text-sm text-gray-500 mt-1 mb-5">Qo'lda qo'shing yoki taklif havolasi yuboring</p>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function clientsPage() {
+  return {
+    generating: false,
+    newInviteUrl: '',
+    copied: false,
+
+    async generateInvite() {
+      this.generating = true;
+      this.newInviteUrl = '';
+      try {
+        const resp = await fetch('{% url "orders_dashboard:invite_generate" %}', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await resp.json();
+        this.newInviteUrl = data.url;
+      } catch (e) {
+        alert("Xato yuz berdi. Qayta urinib ko'ring.");
+      } finally {
+        this.generating = false;
+      }
+    },
+
+    async copyInvite() {
+      try {
+        await navigator.clipboard.writeText(this.newInviteUrl);
+        this.copied = true;
+        setTimeout(() => { this.copied = false; }, 2000);
+      } catch (_) {}
+    },
+  };
+}
+</script>
+{% endblock %}
