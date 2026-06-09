@@ -3,7 +3,6 @@
 {% block title %}{{ supplier.business_name }}{% endblock %}
 
 {% block page_bg %}bg-gradient-to-br from-sky-100 via-white to-blue-50{% endblock %}
-
 {% block top_bar_class %}bg-white/80 backdrop-blur-xl border-b border-white/50 shadow-sm{% endblock %}
 
 {% block extra_head %}
@@ -64,7 +63,7 @@
     {% endif %}
   </div>
 
-  <div class="pb-28">
+  <div class="pb-36">
 
     {% for category in categories %}{% if category.active_items %}
     <div data-cat-id="{{ category.pk }}" id="cat-{{ category.pk }}">
@@ -104,7 +103,7 @@
 
   </div>
 
-  <div class="fixed bottom-0 inset-x-0 z-20
+  <div class="fixed bottom-16 inset-x-0 z-20
               bg-white/85 backdrop-blur-xl border-t border-white/50 shadow-2xl"
        style="padding-bottom: env(safe-area-inset-bottom)"
        x-show="$store.cart.count > 0"

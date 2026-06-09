@@ -21,3 +21,13 @@ def notify_client_order_declined(order):
 def notify_client_prices_adjusted(order):
     """Stub — Task 16."""
     pass
+
+
+def notify_client_order_dispatched(order):
+    """Stub — Task 16."""
+    pass
+
+
+def notify_client_order_delivered(order):
+    """Stub — Task 16."""
+    pass

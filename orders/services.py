@@ -5,11 +5,17 @@ from decimal import Decimal
 
 from django.contrib.auth.models import User
 from django.db import transaction
-from django.db.models import Prefetch, Q
+from django.db.models import (
+    Case, Count, DecimalField, ExpressionWrapper, F, Prefetch, Q, Sum, Value, When,
+)
+from django.db.models.functions import Coalesce
 from django.utils import timezone
 
-from orders.constants import OrderStatus
-from orders.models import Category, Client, ClientInvite, Item, Order, OrderItem, SupplierClient
+from orders.constants import DeliveryStatus, OrderStatus, ShipmentStatus
+from orders.models import (
+    Category, Client, ClientInvite, Item, Order, OrderItem,
+    Shipment, ShipmentOrder, SupplierClient,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +135,45 @@ def generate_invite(supplier, expires_days=30):
     )
 
 
+def get_client_orders(client, supplier=None, statuses=None):
+    """
+    Return annotated Order queryset for the given client (excludes DRAFTs).
+    order_total uses effective retail price (adjusted when set, else snapshot).
+    """
+    effective_price = Case(
+        When(
+            order_items__adjusted_retail_price__isnull=False,
+            then=F('order_items__adjusted_retail_price'),
+        ),
+        default=F('order_items__retail_price'),
+        output_field=DecimalField(max_digits=10, decimal_places=2),
+    )
+    line_total = ExpressionWrapper(
+        effective_price * F('order_items__quantity'),
+        output_field=DecimalField(max_digits=12, decimal_places=2),
+    )
+    qs = (
+        Order.objects
+        .filter(client=client)
+        .exclude(status=OrderStatus.DRAFT)
+        .select_related('supplier')
+        .annotate(
+            item_count=Count('order_items', distinct=True),
+            order_total=Coalesce(
+                Sum(line_total),
+                Value(0),
+                output_field=DecimalField(max_digits=12, decimal_places=2),
+            ),
+        )
+        .order_by('-submitted_at')
+    )
+    if supplier is not None:
+        qs = qs.filter(supplier=supplier)
+    if statuses is not None:
+        qs = qs.filter(status__in=statuses)
+    return qs
+
+
 # ── Orders ────────────────────────────────────────────────────────────────
 
 
@@ -239,6 +284,134 @@ def adjust_order_item_price(order_item, new_retail_price, actor):
         notifications.notify_client_prices_adjusted(order_item.order)
 
     return order_item
+
+
+# ── Shipments ─────────────────────────────────────────────────────────────
+
+
+def create_shipment(supplier, scheduled_date=None, notes=''):
+    return Shipment.objects.create(
+        supplier=supplier,
+        scheduled_date=scheduled_date,
+        notes=notes,
+        status=ShipmentStatus.PREPARING,
+    )
+
+
+@transaction.atomic
+def create_shipment_with_orders(supplier, order_ids, scheduled_date=None, notes=''):
+    """Create a shipment and immediately assign orders atomically. Requires at least one order."""
+    if not order_ids:
+        raise ValueError("Kamida bitta buyurtma tanlang.")
+    shipment = create_shipment(supplier, scheduled_date=scheduled_date, notes=notes)
+    add_orders_to_shipment(shipment, order_ids)
+    return shipment
+
+
+@transaction.atomic
+def add_orders_to_shipment(shipment, order_ids):
+    """
+    Assign ACCEPTED orders to a shipment. Each order must belong to the shipment's
+    supplier and must not already be in an active shipment.
+    Transitions Order.status → IN_SHIPMENT.
+    Returns list of created ShipmentOrder instances.
+    """
+    supplier = shipment.supplier
+    orders = list(
+        Order.objects.filter(pk__in=order_ids, supplier=supplier, status=OrderStatus.ACCEPTED)
+        .select_related('supplier')
+    )
+    if len(orders) != len(order_ids):
+        raise ValueError("Ba'zi buyurtmalar mavjud emas yoki qabul qilingan emas.")
+
+    # Prevent an order from being assigned to two active shipments
+    already_assigned = ShipmentOrder.objects.filter(
+        order__in=orders,
+    ).exclude(delivery_status=DeliveryStatus.DELIVERED).values_list('order_id', flat=True)
+    if already_assigned:
+        raise ValueError("Ba'zi buyurtmalar allaqachon boshqa jo'natmada.")
+
+    shipment_orders = ShipmentOrder.objects.bulk_create([
+        ShipmentOrder(
+            shipment=shipment,
+            order=order,
+            delivery_status=DeliveryStatus.PENDING,
+        )
+        for order in orders
+    ])
+    Order.objects.filter(pk__in=order_ids).update(status=OrderStatus.IN_SHIPMENT)
+    return shipment_orders
+
+
+@transaction.atomic
+def update_shipment_order_status(shipment_order, new_status, actor):
+    """
+    Set a ShipmentOrder to any valid delivery status (bidirectional — allows correcting mistakes).
+    Syncs parent Order.status and Shipment.status accordingly.
+    """
+    from orders import notifications
+
+    valid = {DeliveryStatus.PENDING, DeliveryStatus.DISPATCHED, DeliveryStatus.DELIVERED}
+    if new_status not in valid:
+        raise ValueError(f"Noto'g'ri holat: '{new_status}'.")
+
+    old_status = shipment_order.delivery_status
+    if old_status == new_status:
+        return shipment_order
+
+    shipment_order.delivery_status = new_status
+
+    if new_status == DeliveryStatus.DELIVERED:
+        shipment_order.delivered_at = timezone.now()
+        Order.objects.filter(pk=shipment_order.order_id).update(status=OrderStatus.DELIVERED)
+        notifications.notify_client_order_delivered(shipment_order.order)
+    else:
+        shipment_order.delivered_at = None
+        if old_status == DeliveryStatus.DELIVERED:
+            # Reverting an accidental delivery — put order back to IN_SHIPMENT
+            Order.objects.filter(pk=shipment_order.order_id).update(status=OrderStatus.IN_SHIPMENT)
+        elif new_status == DeliveryStatus.DISPATCHED:
+            notifications.notify_client_order_dispatched(shipment_order.order)
+
+    shipment_order.save(update_fields=['delivery_status', 'delivered_at'])
+    _sync_shipment_status(shipment_order.shipment)
+    return shipment_order
+
+
+def _sync_shipment_status(shipment):
+    """
+    Recompute Shipment.status from its orders' delivery statuses.
+    All DELIVERED → DELIVERED; any DISPATCHED → DISPATCHED; all PENDING → PREPARING.
+    """
+    statuses = list(
+        ShipmentOrder.objects.filter(shipment=shipment).values_list('delivery_status', flat=True)
+    )
+    if not statuses:
+        return
+    status_set = set(statuses)
+    if status_set == {DeliveryStatus.DELIVERED}:
+        Shipment.objects.filter(pk=shipment.pk).update(
+            status=ShipmentStatus.DELIVERED,
+            delivered_at=timezone.now(),
+        )
+    elif DeliveryStatus.DISPATCHED in status_set:
+        Shipment.objects.filter(pk=shipment.pk).update(
+            status=ShipmentStatus.DISPATCHED,
+            delivered_at=None,
+        )
+        # Only stamp dispatched_at once
+        Shipment.objects.filter(pk=shipment.pk, dispatched_at__isnull=True).update(
+            dispatched_at=timezone.now(),
+        )
+    else:
+        Shipment.objects.filter(pk=shipment.pk).update(
+            status=ShipmentStatus.PREPARING,
+            dispatched_at=None,
+            delivered_at=None,
+        )
+
+
+# ── Invites ───────────────────────────────────────────────────────────────
 
 
 @transaction.atomic

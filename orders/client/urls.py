@@ -9,5 +9,7 @@ urlpatterns = [
     path('logout/', views.client_logout, name='client_logout'),
     path('invite/<uuid:token>/', views.invite_register, name='invite_register'),
     path('submit/', views.submit_order, name='submit_order'),
+    path('orders/', views.client_order_list, name='client_order_list'),
+    path('orders/<int:pk>/', views.client_order_detail, name='client_order_detail'),
     path('', views.CatalogView.as_view(), name='client_catalog'),
 ]

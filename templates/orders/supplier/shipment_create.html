@@ -1,0 +1,133 @@
+{% extends "orders/supplier/base.html" %}
+{% load orders_tags %}
+{% block title %}Yangi jo'natma{% endblock %}
+
+{% block supplier_content %}
+
+<div class="mb-6">
+  <a href="{% url 'orders_dashboard:shipment_list' %}"
+     class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 mb-4 transition-colors">
+    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+    </svg>
+    Jo'natmalar
+  </a>
+  <h1 class="text-xl font-bold text-gray-900">Yangi jo'natma</h1>
+  <p class="text-sm text-gray-500 mt-1">Avval buyurtmalarni tanlang, so'ng yetkazish sanasini belgilang.</p>
+</div>
+
+{% if available_orders %}
+
+<form method="post" action="{% url 'orders_dashboard:shipment_create' %}"
+      x-data="{ selected: [] }">
+  {% csrf_token %}
+
+  <div class="space-y-4">
+
+    {# ── Step 1: Select orders ─────────────────────────────────────── #}
+    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-gray-100 flex items-center justify-between">
+        <h2 class="font-semibold text-gray-900 text-sm">
+          Buyurtmalarni tanlang
+        </h2>
+        <span class="text-xs text-gray-400"
+              x-text="selected.length > 0 ? selected.length + ' ta tanlandi' : ''"></span>
+      </div>
+
+      <div class="divide-y divide-gray-50">
+        {% for order in available_orders %}
+        <label class="flex items-center gap-3 px-5 py-3.5 cursor-pointer hover:bg-gray-50 transition-colors">
+          <input type="checkbox" name="order_ids" value="{{ order.pk }}"
+                 @change="selected.includes({{ order.pk }})
+                          ? selected.splice(selected.indexOf({{ order.pk }}), 1)
+                          : selected.push({{ order.pk }})"
+                 class="h-4 w-4 rounded border-gray-300 text-brand-600
+                        focus:ring-brand-500 shrink-0">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-gray-900">{{ order.client.company_name }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">
+              Buyurtma #{{ order.pk }}
+              &middot; {{ order.submitted_at|date:"d.m.Y" }}
+            </p>
+          </div>
+          {% if order.client.phone %}
+          <span class="shrink-0 text-xs text-gray-400">{{ order.client.phone }}</span>
+          {% endif %}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+
+    {# ── Step 2: Optional date + notes ────────────────────────────── #}
+    <div class="bg-white rounded-2xl border border-gray-200 p-5">
+      <h2 class="font-semibold text-gray-900 text-sm mb-4">
+        Qo'shimcha ma'lumot <span class="text-gray-400 font-normal">(ixtiyoriy)</span>
+      </h2>
+      <div class="space-y-4">
+        <div>
+          <label for="scheduled_date" class="block text-sm font-medium text-gray-700 mb-1.5">
+            Rejalashtirilgan yetkazish sanasi
+          </label>
+          <input type="date" name="scheduled_date" id="scheduled_date"
+                 class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent
+                        transition-all duration-200">
+        </div>
+        <div>
+          <label for="notes" class="block text-sm font-medium text-gray-700 mb-1.5">
+            Izoh
+          </label>
+          <textarea name="notes" id="notes" rows="2"
+                    placeholder="Masalan: shimoliy tuman, sovutgichli mashina..."
+                    class="w-full rounded-xl border border-gray-200 px-3.5 py-2.5 text-sm resize-none
+                           focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent
+                           placeholder-gray-400 transition-all duration-200"></textarea>
+        </div>
+      </div>
+    </div>
+
+    {# ── Submit ───────────────────────────────────────────────────── #}
+    <div class="flex gap-3">
+      <button type="submit"
+              :disabled="selected.length === 0"
+              class="flex-1 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm
+                     font-semibold py-2.5 transition-colors shadow-sm
+                     disabled:opacity-40 disabled:cursor-not-allowed">
+        <span x-text="selected.length > 0
+                      ? 'Jo\'natma yaratish (' + selected.length + ' ta buyurtma)'
+                      : 'Buyurtma tanlang'"></span>
+      </button>
+      <a href="{% url 'orders_dashboard:shipment_list' %}"
+         class="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600
+                hover:bg-gray-50 text-sm font-medium transition-colors">
+        Bekor
+      </a>
+    </div>
+
+  </div>
+</form>
+
+{% else %}
+
+{# No accepted orders available #}
+<div class="flex flex-col items-center justify-center py-24 text-center">
+  <div class="h-16 w-16 rounded-2xl bg-amber-50 flex items-center justify-center mb-4">
+    <svg class="h-8 w-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+    </svg>
+  </div>
+  <p class="font-semibold text-gray-900">Qabul qilingan buyurtmalar yo'q</p>
+  <p class="text-sm text-gray-500 mt-1 max-w-xs">
+    Jo'natma yaratish uchun avval buyurtmalarni qabul qiling (ACCEPTED holatga o'tkazing).
+  </p>
+  <a href="{% url 'orders_dashboard:dashboard_home' %}"
+     class="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200
+            text-gray-700 text-sm font-medium hover:bg-gray-50 transition-colors">
+    Buyurtmalar sahifasiga o'tish
+  </a>
+</div>
+
+{% endif %}
+
+{% endblock %}

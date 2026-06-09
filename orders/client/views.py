@@ -5,14 +5,17 @@ from decimal import Decimal, InvalidOperation
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 
+from orders.constants import OrderStatus
 from orders.decorators import ClientLoginRequiredMixin, client_required
 from orders.forms import InviteRegisterForm
-from orders.models import ClientInvite, SupplierClient
-from orders.services import get_client_catalog, register_via_invite, submit_order as _submit_order
+from orders.models import ClientInvite, Order, SupplierClient
+from orders.services import (
+    get_client_catalog, get_client_orders, register_via_invite, submit_order as _submit_order,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -97,7 +100,7 @@ class CatalogView(ClientLoginRequiredMixin, View):
         )
 
         if not links.exists():
-            return render(request, 'orders/client/no_supplier.html')
+            return render(request, 'orders/client/no_supplier.html', {'client': client})
 
         if links.count() == 1:
             supplier = links.first().supplier
@@ -110,11 +113,13 @@ class CatalogView(ClientLoginRequiredMixin, View):
                     supplier = links.first().supplier
             else:
                 return render(request, 'orders/client/supplier_picker.html', {
+                    'client': client,
                     'supplier_links': links,
                 })
 
         categories, uncategorised = get_client_catalog(supplier)
         return render(request, 'orders/client/catalog.html', {
+            'client': client,
             'supplier': supplier,
             'supplier_links': links,
             'categories': categories,
@@ -176,5 +181,42 @@ def submit_order(request):
 
     return JsonResponse({
         'order_id': order.pk,
-        'redirect_url': reverse('orders_client:client_catalog'),
+        'redirect_url': reverse('orders_client:client_order_detail', args=[order.pk]),
+    })
+
+
+# ── Order history ──────────────────────────────────────────────────────────
+
+
+@client_required
+def client_order_list(request):
+    client = request.user.client
+    tab = request.GET.get('tab', 'active')
+    if tab == 'history':
+        orders = list(get_client_orders(client, statuses=OrderStatus.CLOSED))
+    else:
+        tab = 'active'
+        orders = list(get_client_orders(client, statuses=OrderStatus.ACTIVE))
+    return render(request, 'orders/client/order_list.html', {
+        'client': client,
+        'orders': orders,
+        'active_tab': tab,
+    })
+
+
+@client_required
+def client_order_detail(request, pk):
+    client = request.user.client
+    order = get_object_or_404(
+        Order.objects
+        .select_related('supplier')
+        .prefetch_related('order_items'),
+        pk=pk,
+        client=client,
+    )
+    if request.GET.get('partial') == '1':
+        return render(request, 'orders/client/_order_detail_content.html', {'order': order})
+    return render(request, 'orders/client/order_detail.html', {
+        'client': client,
+        'order': order,
     })

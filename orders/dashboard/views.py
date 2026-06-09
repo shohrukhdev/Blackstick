@@ -12,14 +12,15 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView
 
-from orders.constants import OrderStatus
+from orders.constants import DeliveryStatus, OrderStatus, ShipmentStatus
 from orders.decorators import SupplierLoginRequiredMixin, supplier_required
 from orders.forms import CategoryForm, ClientCreateForm, ItemForm
-from orders.models import Category, Item, Order, OrderItem
+from orders.models import Category, Item, Order, OrderItem, Shipment, ShipmentOrder
 from orders.services import (
-    accept_order, adjust_order_item_price, archive_item, create_client_manually,
-    decline_order, delete_category, generate_invite, get_active_invites,
-    get_supplier_catalog, get_supplier_clients, reactivate_item, update_order_note,
+    accept_order, add_orders_to_shipment, adjust_order_item_price, archive_item,
+    create_client_manually, create_shipment_with_orders, decline_order, delete_category,
+    generate_invite, get_active_invites, get_supplier_catalog, get_supplier_clients,
+    reactivate_item, update_order_note, update_shipment_order_status,
 )
 
 logger = logging.getLogger(__name__)
@@ -369,3 +370,156 @@ def invite_generate(request):
         reverse('orders_client:invite_register', args=[str(invite.token)])
     )
     return JsonResponse({'url': invite_url, 'token': str(invite.token)})
+
+
+# ── Shipments ──────────────────────────────────────────────────────────────
+
+
+@supplier_required
+def shipment_list(request):
+    supplier = request.user.supplier
+    status_filter = request.GET.get('status', '')
+    valid_statuses = {'PREPARING', 'DISPATCHED', 'DELIVERED'}
+
+    qs = (
+        Shipment.objects
+        .filter(supplier=supplier)
+        .prefetch_related('shipment_orders__order__client')
+        .order_by('-created_at')
+    )
+    if status_filter in valid_statuses:
+        qs = qs.filter(status=status_filter)
+    else:
+        # Default: active only (not delivered); delivered tab loads them explicitly
+        qs = qs.exclude(status=ShipmentStatus.DELIVERED)
+
+    shipments = list(qs)
+    for shipment in shipments:
+        seen = {}
+        for so in shipment.shipment_orders.all():
+            c = so.order.client
+            if c.pk not in seen:
+                seen[c.pk] = c
+        shipment.unique_clients = list(seen.values())
+
+    return render(request, 'orders/supplier/shipment_list.html', {
+        'shipments': shipments,
+        'status_filter': status_filter,
+        'nav_section': 'shipment_list',
+    })
+
+
+@supplier_required
+def shipment_create(request):
+    supplier = request.user.supplier
+    in_active_shipment_ids = (
+        ShipmentOrder.objects
+        .exclude(delivery_status=DeliveryStatus.DELIVERED)
+        .values_list('order_id', flat=True)
+    )
+    available_orders = (
+        Order.objects
+        .filter(supplier=supplier, status=OrderStatus.ACCEPTED)
+        .exclude(pk__in=in_active_shipment_ids)
+        .select_related('client')
+        .order_by('-submitted_at')
+    )
+    if request.method == 'POST':
+        order_ids = request.POST.getlist('order_ids')
+        if not order_ids:
+            messages.error(request, 'Kamida bitta buyurtma tanlang.')
+        else:
+            scheduled_date = request.POST.get('scheduled_date') or None
+            notes = request.POST.get('notes', '').strip()
+            try:
+                order_ids = [int(oid) for oid in order_ids]
+                shipment = create_shipment_with_orders(
+                    supplier, order_ids,
+                    scheduled_date=scheduled_date, notes=notes,
+                )
+                messages.success(request, f"Jo'natma #{shipment.pk} yaratildi.")
+                return redirect(reverse('orders_dashboard:shipment_detail', args=[shipment.pk]))
+            except (ValueError, TypeError) as e:
+                messages.error(request, str(e))
+    return render(request, 'orders/supplier/shipment_create.html', {
+        'available_orders': available_orders,
+        'nav_section': 'shipment_list',
+    })
+
+
+@supplier_required
+def shipment_detail(request, pk):
+    supplier = request.user.supplier
+    shipment = get_object_or_404(
+        Shipment.objects
+        .prefetch_related(
+            'shipment_orders__order__client',
+            'shipment_orders__order__order_items',
+        ),
+        pk=pk,
+        supplier=supplier,
+    )
+    # Assign UI only makes sense while still preparing
+    available_orders = []
+    if shipment.status == ShipmentStatus.PREPARING:
+        in_other_shipment_ids = (
+            ShipmentOrder.objects
+            .exclude(delivery_status=DeliveryStatus.DELIVERED)
+            .exclude(shipment=shipment)
+            .values_list('order_id', flat=True)
+        )
+        available_orders = list(
+            Order.objects
+            .filter(supplier=supplier, status=OrderStatus.ACCEPTED)
+            .exclude(pk__in=in_other_shipment_ids)
+            .select_related('client')
+            .order_by('-submitted_at')
+        )
+    shipment_orders = list(shipment.shipment_orders.all())
+    all_delivered = bool(shipment_orders) and all(
+        so.delivery_status == DeliveryStatus.DELIVERED for so in shipment_orders
+    )
+    return render(request, 'orders/supplier/shipment_detail.html', {
+        'shipment': shipment,
+        'shipment_orders': shipment_orders,
+        'available_orders': available_orders,
+        'all_delivered': all_delivered,
+        'DeliveryStatus': DeliveryStatus,
+        'ShipmentStatus': ShipmentStatus,
+        'nav_section': 'shipment_list',
+    })
+
+
+@supplier_required
+def shipment_assign_orders(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    shipment = get_object_or_404(Shipment, pk=pk, supplier=supplier)
+    order_ids = request.POST.getlist('order_ids')
+    if not order_ids:
+        messages.error(request, 'Kamida bitta buyurtma tanlang.')
+        return redirect(reverse('orders_dashboard:shipment_detail', args=[pk]))
+    try:
+        order_ids = [int(oid) for oid in order_ids]
+        add_orders_to_shipment(shipment, order_ids)
+        messages.success(request, f"{len(order_ids)} ta buyurtma jo'natmaga qo'shildi.")
+    except (ValueError, TypeError) as e:
+        messages.error(request, str(e))
+    return redirect(reverse('orders_dashboard:shipment_detail', args=[pk]))
+
+
+@supplier_required
+def shipment_order_update_status(request, shipment_pk, so_pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    shipment = get_object_or_404(Shipment, pk=shipment_pk, supplier=supplier)
+    so = get_object_or_404(ShipmentOrder, pk=so_pk, shipment=shipment)
+    new_status = request.POST.get('status', '')
+    try:
+        update_shipment_order_status(so, new_status, request.user)
+        messages.success(request, f'Buyurtma #{so.order_id} holati yangilandi.')
+    except ValueError as e:
+        messages.error(request, str(e))
+    return redirect(reverse('orders_dashboard:shipment_detail', args=[shipment_pk]))

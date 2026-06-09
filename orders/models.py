@@ -220,6 +220,10 @@ class OrderItem(models.Model):
         return self.effective_retail * self.quantity
 
     @property
+    def original_line_total(self):
+        return self.retail_price * self.quantity
+
+    @property
     def is_price_adjusted(self):
         return self.adjusted_retail_price is not None
 

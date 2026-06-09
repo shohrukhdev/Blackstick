@@ -32,8 +32,18 @@ urlpatterns = [
     path('clients/add/', views.client_create, name='client_create'),
     path('clients/invites/generate/', views.invite_generate, name='invite_generate'),
 
+    # Shipments — Task 10
+    path('shipments/', views.shipment_list, name='shipment_list'),
+    path('shipments/new/', views.shipment_create, name='shipment_create'),
+    path('shipments/<int:pk>/', views.shipment_detail, name='shipment_detail'),
+    path('shipments/<int:pk>/assign/', views.shipment_assign_orders, name='shipment_assign_orders'),
+    path(
+        'shipments/<int:shipment_pk>/orders/<int:so_pk>/status/',
+        views.shipment_order_update_status,
+        name='shipment_order_update_status',
+    ),
+
     # Stubs for future tasks
-    path('shipments/', views.DashboardHomeView.as_view(), name='shipment_list'),
     path('expenses/', views.DashboardHomeView.as_view(), name='expense_list'),
     path('analytics/', views.DashboardHomeView.as_view(), name='analytics'),
 ]
