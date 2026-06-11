@@ -6,15 +6,15 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.db.models import (
-    Case, Count, DecimalField, ExpressionWrapper, F, Prefetch, Q, Sum, Value, When,
+    Case, Count, DecimalField, ExpressionWrapper, F, Max, Prefetch, Q, Sum, Value, When,
 )
 from django.db.models.functions import Coalesce
 from django.utils import timezone
 
-from orders.constants import DeliveryStatus, OrderStatus, ShipmentStatus
+from orders.constants import DeliveryStatus, OrderStatus, PaymentStatus, ShipmentStatus
 from orders.models import (
     Category, Client, ClientInvite, Item, Order, OrderItem,
-    Shipment, ShipmentOrder, SupplierClient,
+    PaymentRecord, Shipment, ShipmentOrder, SupplierClient,
 )
 
 logger = logging.getLogger(__name__)
@@ -409,6 +409,204 @@ def _sync_shipment_status(shipment):
             dispatched_at=None,
             delivered_at=None,
         )
+
+
+# ── Invites ───────────────────────────────────────────────────────────────
+
+
+# ── Payments ──────────────────────────────────────────────────────────────
+
+
+def record_payment(supplier, client, amount, notes, date, order=None, created_by=None):
+    if amount <= 0:
+        raise ValueError("To'lov miqdori musbat bo'lishi kerak.")
+    return PaymentRecord.objects.create(
+        supplier=supplier,
+        client=client,
+        amount=amount,
+        notes=notes,
+        date=date,
+        order=order,
+        created_by=created_by,
+    )
+
+
+def update_payment(payment, amount, notes, date, order=None):
+    if amount <= 0:
+        raise ValueError("To'lov miqdori musbat bo'lishi kerak.")
+    payment.amount = amount
+    payment.notes = notes
+    payment.date = date
+    payment.order = order
+    payment.save(update_fields=['amount', 'notes', 'date', 'order'])
+    return payment
+
+
+def delete_payment(payment):
+    payment.delete()
+
+
+def _compute_order_effective_total(order):
+    """Single aggregate query for effective_retail * quantity across all order items."""
+    return order.order_items.aggregate(
+        total=Coalesce(
+            Sum(
+                ExpressionWrapper(
+                    Case(
+                        When(adjusted_retail_price__isnull=False, then=F('adjusted_retail_price')),
+                        default=F('retail_price'),
+                        output_field=DecimalField(max_digits=10, decimal_places=2),
+                    ) * F('quantity'),
+                    output_field=DecimalField(max_digits=12, decimal_places=2),
+                )
+            ),
+            Value(Decimal('0')),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        )
+    )['total']
+
+
+@transaction.atomic
+def mark_order_paid(order, supplier, actor):
+    """
+    Deduct order's effective total from client's account balance and mark as PAID.
+    Raises ValueError if order is not DELIVERED, already PAID, or balance insufficient.
+    """
+    if order.status != OrderStatus.DELIVERED:
+        raise ValueError("Faqat yetkazilgan buyurtmani to'langan deb belgilash mumkin.")
+    if order.payment_status == PaymentStatus.PAID:
+        raise ValueError("Bu buyurtma allaqachon to'langan.")
+
+    order_total = _compute_order_effective_total(order)
+    balance_data = get_client_balance(supplier, order.client)
+
+    if balance_data['balance'] < order_total:
+        shortfall = order_total - balance_data['balance']
+        raise ValueError(
+            f"Balans yetarli emas. Etishmovchi: {shortfall:,.0f} so'm. "
+            f"Avval mijoz balansini to'ldiring."
+        )
+
+    order.payment_status = PaymentStatus.PAID
+    order.paid_at = timezone.now()
+    order.paid_amount = order_total
+    order.save(update_fields=['payment_status', 'paid_at', 'paid_amount'])
+    return order
+
+
+@transaction.atomic
+def unmark_order_paid(order, actor):
+    """Reverse a PAID order back to PENDING, restoring the balance."""
+    if order.payment_status != PaymentStatus.PAID:
+        raise ValueError("Bu buyurtma to'lanmagan.")
+    order.payment_status = PaymentStatus.PENDING
+    order.paid_at = None
+    order.paid_amount = None
+    order.save(update_fields=['payment_status', 'paid_at', 'paid_amount'])
+    return order
+
+
+def get_client_balance(supplier, client):
+    """
+    Returns {
+        'deposited': Decimal,      # total payments received from client
+        'settled': Decimal,        # total paid_amount for PAID orders
+        'balance': Decimal,        # deposited - settled (available credit)
+        'pending_total': Decimal,  # effective total of DELIVERED+PENDING orders (open debt)
+    }
+    3 queries.
+    """
+    deposited = PaymentRecord.objects.filter(
+        supplier=supplier, client=client,
+    ).aggregate(
+        total=Coalesce(Sum('amount'), Value(Decimal('0')), output_field=DecimalField(max_digits=12, decimal_places=2))
+    )['total']
+
+    settled = Order.objects.filter(
+        supplier=supplier, client=client, payment_status=PaymentStatus.PAID,
+    ).aggregate(
+        total=Coalesce(Sum('paid_amount'), Value(Decimal('0')), output_field=DecimalField(max_digits=12, decimal_places=2))
+    )['total']
+
+    _eff_price = Case(
+        When(order_items__adjusted_retail_price__isnull=False, then=F('order_items__adjusted_retail_price')),
+        default=F('order_items__retail_price'),
+        output_field=DecimalField(max_digits=10, decimal_places=2),
+    )
+    _line = ExpressionWrapper(
+        _eff_price * F('order_items__quantity'),
+        output_field=DecimalField(max_digits=12, decimal_places=2),
+    )
+    pending_total = Order.objects.filter(
+        supplier=supplier, client=client,
+        status=OrderStatus.DELIVERED,
+        payment_status=PaymentStatus.PENDING,
+    ).aggregate(
+        total=Coalesce(Sum(_line), Value(Decimal('0')), output_field=DecimalField(max_digits=12, decimal_places=2))
+    )['total']
+
+    return {
+        'deposited': deposited,
+        'settled': settled,
+        'balance': deposited - settled,
+        'pending_total': pending_total,
+    }
+
+
+def get_clients_balance_map(supplier):
+    """
+    Returns {client_id: {'deposited', 'settled', 'balance', 'pending_count', 'last_order_date'}}
+    4 aggregate queries — no N+1.
+    """
+    deposited = {
+        row['client_id']: row['total']
+        for row in PaymentRecord.objects.filter(supplier=supplier)
+        .values('client_id')
+        .annotate(total=Coalesce(
+            Sum('amount'), Value(Decimal('0')),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ))
+    }
+
+    settled = {
+        row['client_id']: row['total']
+        for row in Order.objects.filter(supplier=supplier, payment_status=PaymentStatus.PAID)
+        .values('client_id')
+        .annotate(total=Coalesce(
+            Sum('paid_amount'), Value(Decimal('0')),
+            output_field=DecimalField(max_digits=12, decimal_places=2),
+        ))
+    }
+
+    last_order = {
+        row['client_id']: row['last']
+        for row in Order.objects.filter(supplier=supplier)
+        .exclude(status=OrderStatus.DRAFT)
+        .values('client_id')
+        .annotate(last=Max('submitted_at'))
+    }
+
+    pending_counts = {
+        row['client_id']: row['cnt']
+        for row in Order.objects.filter(
+            supplier=supplier, status=OrderStatus.DELIVERED, payment_status=PaymentStatus.PENDING,
+        )
+        .values('client_id')
+        .annotate(cnt=Count('id'))
+    }
+
+    zero = Decimal('0')
+    all_ids = set(deposited) | set(settled) | set(last_order) | set(pending_counts)
+    return {
+        cid: {
+            'deposited': deposited.get(cid, zero),
+            'settled': settled.get(cid, zero),
+            'balance': deposited.get(cid, zero) - settled.get(cid, zero),
+            'pending_count': pending_counts.get(cid, 0),
+            'last_order_date': last_order.get(cid),
+        }
+        for cid in all_ids
+    }
 
 
 # ── Invites ───────────────────────────────────────────────────────────────

@@ -1,11 +1,12 @@
 import logging
+from decimal import Decimal
 
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
-from orders.constants import MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_SIZE_MB, ALLOWED_IMAGE_MIME_TYPES
-from orders.models import Category, Item
+from orders.constants import ALLOWED_IMAGE_MIME_TYPES, MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_SIZE_MB, OrderStatus
+from orders.models import Category, Item, Order
 
 logger = logging.getLogger(__name__)
 
@@ -107,3 +108,58 @@ class InviteRegisterForm(_PasswordMixin, forms.Form):
     phone = forms.CharField(max_length=30, label='Telefon raqami')
     password = forms.CharField(widget=forms.PasswordInput, label='Parol')
     password_confirm = forms.CharField(widget=forms.PasswordInput, label='Parolni takrorlang')
+
+
+# ── Payment forms ──────────────────────────────────────────────────────────
+
+_INPUT_CLASS = (
+    'w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none '
+    'focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow'
+)
+
+
+_ORDER_STATUS_LABELS = {
+    'ACCEPTED': 'Qabul qilingan',
+    'IN_SHIPMENT': "Jo'natmada",
+    'DELIVERED': 'Yetkazildi',
+}
+
+
+class _OrderChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        date_str = obj.submitted_at.strftime('%d.%m.%Y') if obj.submitted_at else '—'
+        status = _ORDER_STATUS_LABELS.get(obj.status, obj.status)
+        return f'#{obj.pk} — {date_str} ({status})'
+
+
+class PaymentRecordForm(forms.Form):
+    amount = forms.DecimalField(
+        max_digits=12, decimal_places=2, min_value=Decimal('0.01'),
+        label="Miqdor (so'm)",
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'min': '1', 'step': '1'}),
+    )
+    date = forms.DateField(
+        label='Sana',
+        widget=forms.DateInput(attrs={'class': _INPUT_CLASS, 'type': 'date'}),
+    )
+    notes = forms.CharField(
+        max_length=500, required=False, label='Izoh',
+        widget=forms.Textarea(attrs={'class': _INPUT_CLASS, 'rows': '2'}),
+    )
+    order = _OrderChoiceField(
+        queryset=Order.objects.none(), required=False,
+        label="Buyurtma (ixtiyoriy)",
+        empty_label="— Tanlanmagan —",
+        widget=forms.Select(attrs={'class': _INPUT_CLASS}),
+    )
+
+    def __init__(self, supplier, client, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['order'].queryset = (
+            Order.objects
+            .filter(
+                supplier=supplier, client=client,
+                status__in=[OrderStatus.ACCEPTED, OrderStatus.IN_SHIPMENT, OrderStatus.DELIVERED],
+            )
+            .order_by('-submitted_at')
+        )

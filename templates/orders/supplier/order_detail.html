@@ -367,6 +367,81 @@
       </div>
     </div>
 
+    {# ── Payment status — DELIVERED orders only ─── #}
+    {% if order.status == 'DELIVERED' %}
+    <div class="bg-white rounded-2xl border border-gray-200 px-5 py-4">
+      <h2 class="text-sm font-semibold text-gray-900 mb-3">To'lov holati</h2>
+
+      {% if order.payment_status == 'PAID' %}
+        <div class="flex items-center gap-2 mb-3">
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold
+                       bg-green-100 text-green-700">
+            <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+            </svg>
+            To'langan
+          </span>
+        </div>
+        <div class="space-y-1 text-sm mb-4">
+          <p class="text-gray-500">Miqdor: <span class="font-semibold text-gray-900">{{ order.paid_amount|floatformat:0 }} so'm</span></p>
+          {% if order.paid_at %}
+          <p class="text-gray-500">Sana: <span class="text-gray-700">{{ order.paid_at|date:"d.m.Y H:i" }}</span></p>
+          {% endif %}
+        </div>
+        <form method="post" action="{% url 'orders_dashboard:order_unmark_paid' order.pk %}">
+          {% csrf_token %}
+          <button type="submit"
+                  class="w-full rounded-xl border border-gray-200 bg-white hover:bg-gray-50
+                         text-gray-500 text-xs font-medium py-2 transition-colors">
+            To'lovni bekor qilish
+          </button>
+        </form>
+
+      {% else %}
+        {# PENDING — show balance and mark-paid action #}
+        <div class="space-y-2 text-sm mb-4">
+          <div class="flex justify-between">
+            <span class="text-gray-500">Buyurtma summasi</span>
+            <span class="font-semibold text-gray-900">{{ order.total|floatformat:0 }} so'm</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">Mijoz balansi</span>
+            <span class="font-semibold {% if client_balance.balance >= order.total %}text-green-700{% else %}text-red-600{% endif %}">
+              {{ client_balance.balance|floatformat:0 }} so'm
+            </span>
+          </div>
+          {% if client_balance.balance < order.total %}
+          <div class="flex justify-between border-t border-dashed border-red-200 pt-2">
+            <span class="text-red-500 text-xs">Etishmovchi</span>
+            <span class="font-semibold text-red-600 text-xs">
+              {% widthratio client_balance.balance 1 1 as bal %}
+              {{ order.total|floatformat:0 }} so'm yetmaydi
+            </span>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if client_balance.balance >= order.total %}
+        <form method="post" action="{% url 'orders_dashboard:order_mark_paid' order.pk %}">
+          {% csrf_token %}
+          <button type="submit"
+                  class="w-full rounded-xl bg-green-600 hover:bg-green-700 text-white
+                         text-sm font-semibold py-2.5 transition-colors">
+            To'langan deb belgilash
+          </button>
+        </form>
+        {% else %}
+        <a href="{% url 'orders_dashboard:client_detail' order.client_id %}"
+           class="block w-full text-center rounded-xl border border-brand-300 bg-brand-50
+                  hover:bg-brand-100 text-brand-700 text-sm font-medium py-2.5 transition-colors">
+          Balansni to'ldirish →
+        </a>
+        {% endif %}
+      {% endif %}
+
+    </div>
+    {% endif %}
+
     <div class="bg-white rounded-2xl border border-gray-200 px-5 py-4">
       <h2 class="text-sm font-semibold text-gray-900 mb-3">Holat tarixi</h2>
       <div class="space-y-2.5">

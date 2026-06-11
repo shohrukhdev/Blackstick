@@ -59,14 +59,12 @@ class DeliveryStatus:
     }
 
 
-class PaymentType:
-    PAYMENT = 'PAYMENT'
-    CREDIT = 'CREDIT'
-    ADJUSTMENT = 'ADJUSTMENT'
+class PaymentStatus:
+    PENDING = 'PENDING'
+    PAID = 'PAID'
     CHOICES = [
-        ('PAYMENT', "To'lov"),
-        ('CREDIT', 'Kredit'),
-        ('ADJUSTMENT', 'Tuzatish'),
+        ('PENDING', "To'lanmagan"),
+        ('PAID', "To'langan"),
     ]
 
 

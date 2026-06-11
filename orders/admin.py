@@ -108,8 +108,8 @@ class ItemAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'client', 'supplier', 'status', 'prices_adjusted', 'submitted_at', 'total_display']
-    list_filter = ['status', 'supplier', 'prices_adjusted']
+    list_display = ['id', 'client', 'supplier', 'status', 'payment_status', 'prices_adjusted', 'submitted_at', 'total_display']
+    list_filter = ['status', 'payment_status', 'supplier', 'prices_adjusted']
     search_fields = ['client__company_name', 'supplier__business_name']
     readonly_fields = ['created_at', 'updated_at', 'submitted_at', 'accepted_at']
     inlines = [OrderItemInline]
@@ -136,8 +136,8 @@ class ShipmentAdmin(admin.ModelAdmin):
 
 @admin.register(PaymentRecord)
 class PaymentRecordAdmin(admin.ModelAdmin):
-    list_display = ['client', 'supplier', 'amount', 'type', 'date', 'order']
-    list_filter = ['type', 'supplier', 'date']
+    list_display = ['client', 'supplier', 'amount', 'date', 'order']
+    list_filter = ['supplier', 'date']
     search_fields = ['client__company_name', 'supplier__business_name', 'notes']
     readonly_fields = ['created_at', 'created_by']
     date_hierarchy = 'date'

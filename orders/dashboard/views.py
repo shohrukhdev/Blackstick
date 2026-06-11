@@ -10,17 +10,19 @@ from django.db.models.functions import Coalesce
 from django.http import HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.views.generic import TemplateView
 
 from orders.constants import DeliveryStatus, OrderStatus, ShipmentStatus
 from orders.decorators import SupplierLoginRequiredMixin, supplier_required
-from orders.forms import CategoryForm, ClientCreateForm, ItemForm
-from orders.models import Category, Item, Order, OrderItem, Shipment, ShipmentOrder
+from orders.forms import CategoryForm, ClientCreateForm, ItemForm, PaymentRecordForm
+from orders.models import Category, Item, Order, OrderItem, PaymentRecord, Shipment, ShipmentOrder, SupplierClient
 from orders.services import (
     accept_order, add_orders_to_shipment, adjust_order_item_price, archive_item,
     create_client_manually, create_shipment_with_orders, decline_order, delete_category,
-    generate_invite, get_active_invites, get_supplier_catalog, get_supplier_clients,
-    reactivate_item, update_order_note, update_shipment_order_status,
+    delete_payment, generate_invite, get_active_invites, get_client_balance, get_clients_balance_map,
+    get_supplier_catalog, get_supplier_clients, mark_order_paid, unmark_order_paid,
+    reactivate_item, record_payment, update_order_note, update_payment, update_shipment_order_status,
 )
 
 logger = logging.getLogger(__name__)
@@ -123,10 +125,42 @@ def order_detail(request, pk):
         pk=pk,
         supplier=supplier,
     )
+    client_balance = None
+    if order.status == OrderStatus.DELIVERED:
+        client_balance = get_client_balance(supplier, order.client)
     return render(request, 'orders/supplier/order_detail.html', {
         'order': order,
+        'client_balance': client_balance,
         'nav_section': 'dashboard_home',
     })
+
+
+@supplier_required
+def order_mark_paid(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    order = get_object_or_404(Order.objects.select_related('client'), pk=pk, supplier=supplier)
+    try:
+        mark_order_paid(order, supplier, request.user)
+        messages.success(request, f"Buyurtma #{pk} to'langan deb belgilandi.")
+    except ValueError as e:
+        messages.error(request, str(e))
+    return redirect(reverse('orders_dashboard:order_detail', args=[pk]))
+
+
+@supplier_required
+def order_unmark_paid(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    order = get_object_or_404(Order, pk=pk, supplier=supplier)
+    try:
+        unmark_order_paid(order, request.user)
+        messages.success(request, f"Buyurtma #{pk} to'lov holati qaytarildi.")
+    except ValueError as e:
+        messages.error(request, str(e))
+    return redirect(reverse('orders_dashboard:order_detail', args=[pk]))
 
 
 @supplier_required
@@ -324,15 +358,140 @@ def item_reactivate(request, pk):
 # ── Client management ──────────────────────────────────────────────────────
 
 
+_ZERO = Decimal('0')
+_DEFAULT_BALANCE = {
+    'deposited': _ZERO, 'settled': _ZERO, 'balance': _ZERO,
+    'pending_count': 0, 'last_order_date': None,
+}
+
+
 @supplier_required
 def client_list(request):
     supplier = request.user.supplier
-    supplier_clients = get_supplier_clients(supplier)
+    supplier_clients = list(get_supplier_clients(supplier))
+    balance_map = get_clients_balance_map(supplier)
+    for sc in supplier_clients:
+        sc.balance = balance_map.get(sc.client_id, _DEFAULT_BALANCE)
     active_invites = get_active_invites(supplier)
     return render(request, 'orders/supplier/clients.html', {
         'supplier_clients': supplier_clients,
         'active_invites': active_invites,
     })
+
+
+@supplier_required
+def client_detail(request, pk):
+    supplier = request.user.supplier
+    sc = get_object_or_404(
+        SupplierClient.objects.select_related('client', 'client__user'),
+        client_id=pk, supplier=supplier,
+    )
+    client = sc.client
+
+    if request.method == 'POST':
+        payment_form = PaymentRecordForm(supplier, client, request.POST)
+        if payment_form.is_valid():
+            d = payment_form.cleaned_data
+            try:
+                record_payment(
+                    supplier=supplier,
+                    client=client,
+                    amount=d['amount'],
+                    notes=d.get('notes', ''),
+                    date=d['date'],
+                    order=d.get('order'),
+                    created_by=request.user,
+                )
+                messages.success(request, f"To'lov {d['amount']:,.0f} so'm qo'shildi.")
+                return redirect(reverse('orders_dashboard:client_detail', args=[pk]))
+            except ValueError as e:
+                payment_form.add_error(None, str(e))
+    else:
+        payment_form = PaymentRecordForm(supplier, client, initial={'date': timezone.localdate()})
+
+    balance = get_client_balance(supplier, client)
+
+    orders = (
+        Order.objects
+        .filter(supplier=supplier, client=client)
+        .exclude(status=OrderStatus.DRAFT)
+        .annotate(
+            item_count=Count('order_items', distinct=True),
+            order_total=Coalesce(
+                Sum(_LINE_TOTAL),
+                Value(0),
+                output_field=DecimalField(max_digits=12, decimal_places=2),
+            ),
+        )
+        .order_by('-submitted_at')
+    )
+
+    payments_list = list(
+        PaymentRecord.objects
+        .filter(supplier=supplier, client=client)
+        .select_related('order')
+        .order_by('-date', '-created_at')
+    )
+    payments_data = [
+        {
+            'id': p.pk,
+            'amount': p.amount,
+            'date': p.date,
+            'orderId': p.order_id or '',
+            'notes': p.notes,
+            'updateUrl': reverse('orders_dashboard:payment_update', args=[client.pk, p.pk]),
+            'deleteUrl': reverse('orders_dashboard:payment_delete', args=[client.pk, p.pk]),
+        }
+        for p in payments_list
+    ]
+
+    return render(request, 'orders/supplier/client_detail.html', {
+        'sc': sc,
+        'client': client,
+        'balance': balance,
+        'orders': orders,
+        'payments': payments_list,
+        'payments_data': payments_data,
+        'payment_form': payment_form,
+        'OrderStatus': OrderStatus,
+        'nav_section': 'client_list',
+    })
+
+
+@supplier_required
+def payment_update(request, client_pk, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    sc = get_object_or_404(SupplierClient, client_id=client_pk, supplier=supplier)
+    payment = get_object_or_404(PaymentRecord, pk=pk, supplier=supplier, client_id=client_pk)
+    form = PaymentRecordForm(supplier, sc.client, request.POST)
+    if form.is_valid():
+        d = form.cleaned_data
+        try:
+            update_payment(
+                payment,
+                amount=d['amount'],
+                notes=d.get('notes', ''),
+                date=d['date'],
+                order=d.get('order'),
+            )
+            return JsonResponse({'ok': True})
+        except ValueError as e:
+            return JsonResponse({'ok': False, 'errors': {'__all__': [str(e)]}}, status=400)
+    errors = {field: list(errs) for field, errs in form.errors.items()}
+    return JsonResponse({'ok': False, 'errors': errors}, status=400)
+
+
+@supplier_required
+def payment_delete(request, client_pk, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    get_object_or_404(SupplierClient, client_id=client_pk, supplier=supplier)
+    payment = get_object_or_404(PaymentRecord, pk=pk, supplier=supplier, client_id=client_pk)
+    delete_payment(payment)
+    return JsonResponse({'ok': True})
 
 
 @supplier_required

@@ -10,7 +10,7 @@ from orders.constants import (
     OrderStatus,
     ShipmentStatus,
     DeliveryStatus,
-    PaymentType,
+    PaymentStatus,
     InvoiceType,
 )
 
@@ -39,8 +39,8 @@ class Client(models.Model):
     company_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=30)
     address = models.TextField(blank=True, default='')
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    latitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
+    longitude = models.DecimalField(max_digits=10, decimal_places=8, null=True, blank=True)
     location_updated_at = models.DateTimeField(null=True, blank=True)
     telegram_id = models.BigIntegerField(null=True, blank=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -160,12 +160,17 @@ class Order(models.Model):
     status = models.CharField(
         max_length=20, choices=OrderStatus.CHOICES, default=OrderStatus.DRAFT, db_index=True
     )
+    payment_status = models.CharField(
+        max_length=10, choices=PaymentStatus.CHOICES, default=PaymentStatus.PENDING, db_index=True
+    )
     notes = models.TextField(blank=True, default='')
     supplier_note = models.TextField(blank=True, default='')
     prices_adjusted = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     submitted_at = models.DateTimeField(null=True, blank=True, db_index=True)
     accepted_at = models.DateTimeField(null=True, blank=True)
+    paid_at = models.DateTimeField(null=True, blank=True)
+    paid_amount = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -273,7 +278,6 @@ class PaymentRecord(models.Model):
         Order, on_delete=models.SET_NULL, null=True, blank=True, related_name='payment_records'
     )
     amount = models.DecimalField(max_digits=12, decimal_places=2)
-    type = models.CharField(max_length=20, choices=PaymentType.CHOICES, default=PaymentType.PAYMENT)
     notes = models.TextField(blank=True, default='')
     date = models.DateField(db_index=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='payment_records_created')
@@ -285,7 +289,7 @@ class PaymentRecord(models.Model):
         ordering = ['-date', '-created_at']
 
     def __str__(self):
-        return f"{self.get_type_display()} {self.amount} — {self.client} ({self.date})"
+        return f"To'lov {self.amount} — {self.client} ({self.date})"
 
 
 class Expense(models.Model):

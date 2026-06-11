@@ -14,6 +14,8 @@ urlpatterns = [
     path('orders/<int:pk>/', views.order_detail, name='order_detail'),
     path('orders/<int:pk>/accept/', views.order_accept, name='order_accept'),
     path('orders/<int:pk>/decline/', views.order_decline, name='order_decline'),
+    path('orders/<int:pk>/mark-paid/', views.order_mark_paid, name='order_mark_paid'),
+    path('orders/<int:pk>/unmark-paid/', views.order_unmark_paid, name='order_unmark_paid'),
     path('orders/<int:order_pk>/items/<int:item_pk>/adjust/', views.order_adjust_price, name='order_adjust_price'),
     path('orders/<int:pk>/note/', views.order_update_note, name='order_update_note'),
 
@@ -27,10 +29,13 @@ urlpatterns = [
     path('catalog/items/<int:pk>/archive/', views.item_archive, name='item_archive'),
     path('catalog/items/<int:pk>/reactivate/', views.item_reactivate, name='item_reactivate'),
 
-    # Clients — Task 05
+    # Clients — Task 05 + 11
     path('clients/', views.client_list, name='client_list'),
     path('clients/add/', views.client_create, name='client_create'),
     path('clients/invites/generate/', views.invite_generate, name='invite_generate'),
+    path('clients/<int:pk>/', views.client_detail, name='client_detail'),
+    path('clients/<int:client_pk>/payments/<int:pk>/update/', views.payment_update, name='payment_update'),
+    path('clients/<int:client_pk>/payments/<int:pk>/delete/', views.payment_delete, name='payment_delete'),
 
     # Shipments — Task 10
     path('shipments/', views.shipment_list, name='shipment_list'),
