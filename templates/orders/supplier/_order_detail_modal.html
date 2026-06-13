@@ -1,0 +1,127 @@
+{% load orders_tags %}
+
+<div class="space-y-4">
+
+  {# Header #}
+  <div class="flex items-start justify-between gap-3 flex-wrap">
+    <div>
+      <p class="text-lg font-bold text-gray-900">Buyurtma #{{ order.pk }}</p>
+      {% if order.submitted_at %}
+      <p class="text-xs text-gray-400 mt-0.5">{{ order.submitted_at|date:"d.m.Y H:i" }}</p>
+      {% endif %}
+    </div>
+    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold
+                 {{ order.status|status_badge_class }}">
+      {{ order.get_status_display }}
+    </span>
+  </div>
+
+  {# Prices-adjusted banner #}
+  {% if order.prices_adjusted %}
+  <div class="flex items-start gap-3 rounded-xl px-4 py-3 bg-amber-50 border border-amber-200 text-amber-800 text-sm">
+    <svg class="h-5 w-5 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+    </svg>
+    <span>Ushbu buyurtmadagi ba'zi narxlar o'zgartirildi.</span>
+  </div>
+  {% endif %}
+
+  {# Line items #}
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <div class="px-5 py-3.5 border-b border-gray-100">
+      <h3 class="font-semibold text-gray-900 text-sm">Buyurtma tarkibi</h3>
+    </div>
+    <div class="divide-y divide-gray-100">
+      {% for oi in order.order_items.all %}
+      <div class="flex items-start gap-3 px-5 py-4">
+        <div class="h-11 w-11 rounded-xl bg-gray-100 overflow-hidden shrink-0">
+          {% if oi.item and oi.item.image %}
+            <img src="{{ oi.item.image.url }}" alt="{{ oi.item_name }}" class="h-full w-full object-cover">
+          {% else %}
+            <div class="h-full w-full flex items-center justify-center">
+              <svg class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z"/>
+              </svg>
+            </div>
+          {% endif %}
+        </div>
+        <div class="flex-1 min-w-0">
+          <p class="text-sm font-semibold text-gray-900">{{ oi.item_name }}</p>
+          <p class="text-xs text-gray-400 mt-0.5">{{ oi.quantity|floatformat:"-3" }} {{ oi.item_unit|unit_uz }}</p>
+          <div class="flex items-center gap-1.5 mt-1">
+            {% if oi.is_price_adjusted %}
+            <span class="text-xs text-gray-400 line-through">{{ oi.retail_price|uz_money }} so'm</span>
+            <span class="text-sm font-semibold text-amber-600">{{ oi.adjusted_retail_price|uz_money }} so'm</span>
+            {% else %}
+            <span class="text-sm font-semibold text-gray-700">{{ oi.retail_price|uz_money }} so'm</span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="text-right shrink-0 min-w-[5rem]">
+          {% if oi.is_price_adjusted %}
+          <p class="text-xs text-gray-400 line-through leading-tight mb-0.5">{{ oi.original_line_total|uz_money }} so'm</p>
+          <p class="text-sm font-bold text-amber-700">{{ oi.line_total|uz_money }} so'm</p>
+          {% else %}
+          <p class="text-sm font-bold text-gray-900">{{ oi.line_total|uz_money }} so'm</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="flex items-center justify-between px-5 py-4 bg-gray-50 border-t border-gray-200">
+      <span class="text-sm font-semibold text-gray-700">Jami</span>
+      <span class="text-lg font-extrabold text-gray-900">{{ order.total|uz_money }} so'm</span>
+    </div>
+  </div>
+
+  {# Notes #}
+  {% if order.notes or order.supplier_note %}
+  <div class="space-y-3">
+    {% if order.notes %}
+    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Mijoz izohi</p>
+      <p class="text-sm text-gray-700 whitespace-pre-line">{{ order.notes }}</p>
+    </div>
+    {% endif %}
+    {% if order.supplier_note %}
+    <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+      <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Ta'minotchi izohi</p>
+      <p class="text-sm text-gray-700 whitespace-pre-line">{{ order.supplier_note }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {# Status timeline #}
+  <div class="bg-white rounded-xl border border-gray-200 px-4 py-3">
+    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">Holat tarixi</p>
+    <div class="space-y-2.5">
+      <div class="flex items-center gap-2.5">
+        <div class="h-2 w-2 rounded-full shrink-0 {% if order.submitted_at %}bg-brand-500{% else %}bg-gray-200{% endif %}"></div>
+        <span class="text-sm {% if order.submitted_at %}text-gray-700{% else %}text-gray-400{% endif %}">Yuborildi</span>
+        {% if order.submitted_at %}<span class="text-xs text-gray-400 ml-auto">{{ order.submitted_at|date:"d.m H:i" }}</span>{% endif %}
+      </div>
+      <div class="flex items-center gap-2.5">
+        <div class="h-2 w-2 rounded-full shrink-0
+                    {% if order.accepted_at %}bg-green-500{% elif order.status == 'DECLINED' %}bg-red-400{% else %}bg-gray-200{% endif %}"></div>
+        <span class="text-sm
+                     {% if order.accepted_at %}text-gray-700{% elif order.status == 'DECLINED' %}text-red-500{% else %}text-gray-400{% endif %}">
+          {% if order.status == 'DECLINED' %}Rad etildi{% else %}Qabul qilindi{% endif %}
+        </span>
+        {% if order.accepted_at %}<span class="text-xs text-gray-400 ml-auto">{{ order.accepted_at|date:"d.m H:i" }}</span>{% endif %}
+      </div>
+      <div class="flex items-center gap-2.5">
+        <div class="h-2 w-2 rounded-full shrink-0
+                    {% if order.status == 'IN_SHIPMENT' or order.status == 'DELIVERED' %}bg-amber-500{% else %}bg-gray-200{% endif %}"></div>
+        <span class="text-sm {% if order.status == 'IN_SHIPMENT' or order.status == 'DELIVERED' %}text-gray-700{% else %}text-gray-400{% endif %}">Jo'natmada</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <div class="h-2 w-2 rounded-full shrink-0 {% if order.status == 'DELIVERED' %}bg-emerald-500{% else %}bg-gray-200{% endif %}"></div>
+        <span class="text-sm {% if order.status == 'DELIVERED' %}text-gray-700{% else %}text-gray-400{% endif %}">Yetkazildi</span>
+      </div>
+    </div>
+  </div>
+
+</div>

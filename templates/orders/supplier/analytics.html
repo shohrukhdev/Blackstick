@@ -1,0 +1,404 @@
+{% extends "orders/supplier/base.html" %}
+{% block title %}Tahlil — {{ supplier.business_name }}{% endblock %}
+
+{% block supplier_content %}
+<div x-data="analyticsApp('{{ date_from }}', '{{ date_to }}')" x-init="init()">
+
+  {# ── Header ─────────────────────────────────────────────────── #}
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Tahlil</h1>
+    <div x-show="loading" x-cloak class="flex items-center gap-2 text-sm text-gray-500">
+      <svg class="h-4 w-4 animate-spin text-brand-500" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+      </svg>
+      Yuklanmoqda...
+    </div>
+  </div>
+
+  {# ── Date range control ──────────────────────────────────────── #}
+  <div class="mb-6 bg-white rounded-2xl border border-gray-200 p-4">
+    <div class="flex gap-2 mb-3 overflow-x-auto pb-1" style="-webkit-overflow-scrolling:touch">
+      <button @click="setPreset('week')"
+              :class="preset === 'week' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'"
+              class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">
+        Bu hafta
+      </button>
+      <button @click="setPreset('month')"
+              :class="preset === 'month' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'"
+              class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">
+        Bu oy
+      </button>
+      <button @click="setPreset('last_month')"
+              :class="preset === 'last_month' ? 'bg-brand-600 text-white border-brand-600' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'"
+              class="shrink-0 px-4 py-1.5 rounded-full text-sm font-medium border transition-colors">
+        O'tgan oy
+      </button>
+    </div>
+    <div class="flex flex-wrap items-end gap-3">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">Dan</label>
+        <input type="date" x-model="dateFrom" @change="preset = 'custom'"
+               class="rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">Gacha</label>
+        <input type="date" x-model="dateTo" @change="preset = 'custom'"
+               class="rounded-xl border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent">
+      </div>
+      <button @click="loadData()" :disabled="loading"
+              class="rounded-xl bg-brand-600 hover:bg-brand-700 disabled:opacity-60 px-4 py-2 text-sm font-semibold text-white transition-colors">
+        Filtrlash
+      </button>
+    </div>
+  </div>
+
+  {# ── KPI Cards ───────────────────────────────────────────────── #}
+  <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 mb-1 flex items-center">
+        Jami savdo
+        {% include "orders/supplier/_info_tooltip.html" with text="Tanlangan davrda yetkazilgan buyurtmalarning umumiy savdo summasi" %}
+      </p>
+      <p class="text-xl font-bold text-blue-600 truncate" x-text="kpis ? fmtSom(kpis.revenue) : '—'"></p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 mb-1 flex items-center">
+        Jami foyda
+        {% include "orders/supplier/_info_tooltip.html" with text="Yalpi foyda: savdo summasi minus mahsulotlar xarid narxi (yetkazilgan buyurtmalar bo'yicha)" %}
+      </p>
+      <p class="text-xl font-bold text-emerald-600 truncate" x-text="kpis ? fmtSom(kpis.gross_profit) : '—'"></p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 mb-1 flex items-center">
+        Jami xarajat
+        {% include "orders/supplier/_info_tooltip.html" with text="Ushbu davrga kiritilgan operatsion xarajatlar: yetkazib berish, ishchilar, ijara va boshqalar" %}
+      </p>
+      <p class="text-xl font-bold text-orange-500 truncate" x-text="kpis ? fmtSom(kpis.total_expenses) : '—'"></p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 mb-1 flex items-center">
+        Sof foyda
+        {% include "orders/supplier/_info_tooltip.html" with text="Jami foyda minus jami xarajat. Manfiy qiymat — xarajatlar foyda marjasidan oshib ketganini bildiradi" %}
+      </p>
+      <p class="text-xl font-bold truncate"
+         :class="!kpis || kpis.net_profit >= 0 ? 'text-emerald-600' : 'text-red-500'"
+         x-text="kpis ? fmtSom(kpis.net_profit) : '—'"></p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 mb-1 flex items-center">
+        Mijozlar
+        {% include "orders/supplier/_info_tooltip.html" with text="Tanlangan davrda yetkazilgan buyurtmalarda xizmat ko'rsatilgan turli mijozlar soni" %}
+      </p>
+      <p class="text-xl font-bold text-gray-700" x-text="kpis ? kpis.clients_served + ' ta' : '—'"></p>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-xs text-gray-500 mb-1 flex items-center">
+        Yetkazishlar
+        {% include "orders/supplier/_info_tooltip.html" with text="Tanlangan davrda muvaffaqiyatli yetkazib berilgan buyurtmalar soni" %}
+      </p>
+      <p class="text-xl font-bold text-gray-700" x-text="kpis ? kpis.deliveries_made + ' ta' : '—'"></p>
+    </div>
+
+  </div>
+
+  {# ── Revenue over time chart ─────────────────────────────────── #}
+  <div class="mb-4 bg-white rounded-2xl border border-gray-200 p-4">
+    <p class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+      Savdo dinamikasi
+      {% include "orders/supplier/_info_tooltip.html" with text="Yetkazib berish sanasi bo'yicha davr mobaynidagi savdo summasi. Interval: 31 kun — kunlik, 90 kun — haftalik, undan ko'p — oylik" %}
+    </p>
+    <div class="relative" style="height:220px">
+      <canvas id="revenueChart"></canvas>
+      <div x-show="loaded && !loading && kpis && kpis.deliveries_made === 0" x-cloak
+           class="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
+        Bu davrda yetkazilgan buyurtmalar yo'q
+      </div>
+    </div>
+  </div>
+
+  {# ── Top items + Top clients charts ─────────────────────────── #}
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+        Top 10 tovar (savdo bo'yicha)
+        {% include "orders/supplier/_info_tooltip.html" with text="Tanlangan davrda yetkazilgan buyurtmalar ichida savdo summasi bo'yicha eng ko'p daromad keltirgan 10 ta tovar" %}
+      </p>
+      <div id="topItemsWrap" class="relative" style="height:200px">
+        <canvas id="topItemsChart"></canvas>
+        <div x-show="loaded && !loading && kpis && kpis.deliveries_made === 0" x-cloak
+             class="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
+          Ma'lumot yo'q
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-gray-200 p-4">
+      <p class="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+        Top 10 mijoz (savdo bo'yicha)
+        {% include "orders/supplier/_info_tooltip.html" with text="Tanlangan davrda savdo summasi bo'yicha eng faol 10 ta mijoz. Har bir mijoz uchun batafsil ko'rsatkich quyidagi jadvalda" %}
+      </p>
+      <div id="topClientsWrap" class="relative" style="height:200px">
+        <canvas id="topClientsChart"></canvas>
+        <div x-show="loaded && !loading && kpis && kpis.deliveries_made === 0" x-cloak
+             class="absolute inset-0 flex items-center justify-center text-sm text-gray-400">
+          Ma'lumot yo'q
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# ── Per-client breakdown table ──────────────────────────────── #}
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
+    <div class="px-5 py-3 border-b border-gray-100 flex flex-wrap items-center justify-between gap-2">
+      <p class="text-sm font-semibold text-gray-700 flex items-center">
+        Mijozlar kesimida
+        {% include "orders/supplier/_info_tooltip.html" with text="Har bir mijoz uchun tanlangan davr bo'yicha moliyaviy ko'rsatkichlar xulosasi. To'lovlar va qoldiq — davr ichidagi ma'lumotlar asosida" %}
+      </p>
+      <p class="text-xs text-gray-400">To'lovlar va qoldiq — tanlangan davr bo'yicha</p>
+    </div>
+
+    <template x-if="breakdown.length > 0">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-gray-100 bg-gray-50">
+              {% for col, label, tip in breakdown_cols %}
+              <th @click="sort('{{ col }}')"
+                  {% if tip %}title="{{ tip }}"{% endif %}
+                  class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide
+                         cursor-pointer select-none hover:text-gray-700 transition-colors
+                         {% if col == 'company_name' %}text-left{% else %}text-right{% endif %}">
+                {{ label }}{% if tip %}&nbsp;<svg class="h-3 w-3 text-gray-400 inline" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>{% endif %}
+                <span x-show="sortKey === '{{ col }}'" x-text="sortDir === 'asc' ? ' ↑' : ' ↓'"></span>
+              </th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <template x-for="row in sortedBreakdown" :key="row.company_name">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-4 py-3 font-medium text-gray-900 max-w-[140px] truncate"
+                    x-text="row.company_name"></td>
+                <td class="px-4 py-3 text-right text-gray-600"
+                    x-text="row.order_count + ' ta'"></td>
+                <td class="px-4 py-3 text-right font-semibold text-gray-900"
+                    x-text="fmtSom(row.revenue)"></td>
+                <td class="px-4 py-3 text-right text-emerald-700"
+                    x-text="fmtSom(row.gross_profit)"></td>
+                <td class="px-4 py-3 text-right text-blue-700"
+                    x-text="fmtSom(row.total_paid)"></td>
+                <td class="px-4 py-3 text-right font-semibold"
+                    :class="row.outstanding > 0 ? 'text-red-600' : 'text-emerald-600'"
+                    x-text="fmtSom(row.outstanding)"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </template>
+
+    <div x-show="loaded && !loading && breakdown.length === 0" x-cloak
+         class="text-center py-12 text-sm text-gray-400">
+      Bu davrda yetkazilgan buyurtmalar yo'q
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+// Chart instances live outside Alpine so Alpine's reactive proxy never wraps them.
+// Wrapping Chart.js objects in a reactive proxy causes infinite recursion when
+// chart.update() mutates internal state and Alpine re-triggers effects.
+var _charts = {};
+
+function analyticsApp(initialDateFrom, initialDateTo) {
+  return {
+    dateFrom: initialDateFrom,
+    dateTo:   initialDateTo,
+    preset:   'custom',
+    loading:  false,
+    loaded:   false,
+    kpis:     null,
+    breakdown: [],
+    sortKey:  'revenue',
+    sortDir:  'desc',
+
+    init() {
+      this.preset = this._detectPreset();
+      this.$nextTick(() => { this.loadData(); });
+    },
+
+    _isoDate(d) {
+      return d.getFullYear()
+        + '-' + String(d.getMonth() + 1).padStart(2, '0')
+        + '-' + String(d.getDate()).padStart(2, '0');
+    },
+
+    _detectPreset() {
+      const t = new Date(); t.setHours(0, 0, 0, 0);
+      const today  = this._isoDate(t);
+      const mStart = this._isoDate(new Date(t.getFullYear(), t.getMonth(), 1));
+      if (this.dateFrom === mStart && this.dateTo === today) return 'month';
+      const diff = t.getDay() === 0 ? 6 : t.getDay() - 1;
+      const mon  = new Date(t); mon.setDate(t.getDate() - diff);
+      if (this.dateFrom === this._isoDate(mon) && this.dateTo === today) return 'week';
+      const lmLast  = new Date(t.getFullYear(), t.getMonth(), 0);
+      const lmFirst = new Date(lmLast.getFullYear(), lmLast.getMonth(), 1);
+      if (this.dateFrom === this._isoDate(lmFirst) && this.dateTo === this._isoDate(lmLast)) return 'last_month';
+      return 'custom';
+    },
+
+    setPreset(name) {
+      this.preset = name;
+      const t = new Date(); t.setHours(0, 0, 0, 0);
+      if (name === 'week') {
+        const diff = t.getDay() === 0 ? 6 : t.getDay() - 1;
+        const mon  = new Date(t); mon.setDate(t.getDate() - diff);
+        this.dateFrom = this._isoDate(mon);
+        this.dateTo   = this._isoDate(t);
+      } else if (name === 'month') {
+        this.dateFrom = this._isoDate(new Date(t.getFullYear(), t.getMonth(), 1));
+        this.dateTo   = this._isoDate(t);
+      } else if (name === 'last_month') {
+        const lmLast  = new Date(t.getFullYear(), t.getMonth(), 0);
+        const lmFirst = new Date(lmLast.getFullYear(), lmLast.getMonth(), 1);
+        this.dateFrom = this._isoDate(lmFirst);
+        this.dateTo   = this._isoDate(lmLast);
+      }
+      this.loadData();
+    },
+
+    async loadData() {
+      this.loading = true;
+      try {
+        const url = '{% url "orders_dashboard:analytics_chart_data" %}'
+                  + '?from=' + this.dateFrom + '&to=' + this.dateTo;
+        const resp = await fetch(url);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        this.kpis      = data.kpis;
+        this.breakdown = data.breakdown;
+        this.$nextTick(() => { renderCharts(_charts, data); });
+      } catch (e) {
+        console.error('Analytics fetch error', e);
+      } finally {
+        this.loading = false;
+        this.loaded  = true;
+      }
+    },
+
+    sort(key) {
+      if (this.sortKey === key) {
+        this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortKey = key;
+        this.sortDir = 'desc';
+      }
+    },
+
+    get sortedBreakdown() {
+      const key = this.sortKey;
+      const dir = this.sortDir === 'asc' ? 1 : -1;
+      return [...this.breakdown].sort((a, b) => {
+        if (a[key] < b[key]) return -dir;
+        if (a[key] > b[key]) return  dir;
+        return 0;
+      });
+    },
+
+    fmt(n) {
+      return new Intl.NumberFormat('ru-RU').format(Math.round(n || 0));
+    },
+
+    fmtSom(n) {
+      return new Intl.NumberFormat('ru-RU').format(Math.round(n || 0)) + " so'm";
+    },
+  };
+}
+
+function renderCharts(store, data) {
+  function numFmt(n) {
+    return new Intl.NumberFormat('ru-RU').format(Math.round(n || 0));
+  }
+  function tickFmt(v) {
+    var a = Math.abs(v);
+    if (a >= 1000000) return (v / 1000000).toFixed(1) + 'M';
+    if (a >= 1000)    return Math.round(v / 1000) + 'K';
+    return String(Math.round(v));
+  }
+
+  var VERT = {
+    responsive: true, maintainAspectRatio: false, animation: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: function(ctx) { return ' ' + numFmt(ctx.parsed.y) + " so'm"; } } },
+    },
+    scales: {
+      y: { ticks: { callback: tickFmt, font: { size: 11 } }, grid: { color: '#f3f4f6' } },
+      x: { ticks: { font: { size: 11 } }, grid: { display: false } },
+    },
+  };
+
+  var HORIZ = {
+    responsive: true, maintainAspectRatio: false, animation: false, indexAxis: 'y',
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: function(ctx) { return ' ' + numFmt(ctx.parsed.x) + " so'm"; } } },
+    },
+    scales: {
+      x: { ticks: { callback: tickFmt, font: { size: 11 } }, grid: { color: '#f3f4f6' } },
+      y: { ticks: { font: { size: 11 } }, grid: { display: false } },
+    },
+  };
+
+  // Update existing chart in-place, or create fresh — never destroy+create in the same call.
+  function upsert(key, canvasId, labels, values, color, radius, opts) {
+    if (!labels.length) {
+      if (store[key]) { store[key].destroy(); delete store[key]; }
+      return;
+    }
+    if (store[key]) {
+      store[key].data.labels = labels;
+      store[key].data.datasets[0].data = values;
+      store[key].update('none');
+    } else {
+      var el = document.getElementById(canvasId);
+      if (!el) return;
+      store[key] = new Chart(el, {
+        type: 'bar',
+        data: { labels: labels, datasets: [{ data: values, backgroundColor: color, borderRadius: radius, borderSkipped: false }] },
+        options: opts,
+      });
+    }
+  }
+
+  var revLabels    = (data.revenue_over_time || []).map(function(d) { return d.date; });
+  var revValues    = (data.revenue_over_time || []).map(function(d) { return d.revenue; });
+  upsert('revenue', 'revenueChart', revLabels, revValues, '#2563eb', 4, VERT);
+
+  var itemLabels   = (data.top_items || []).map(function(d) { return d.name; });
+  var itemValues   = (data.top_items || []).map(function(d) { return d.revenue; });
+  var itemWrap     = document.getElementById('topItemsWrap');
+  if (itemWrap && itemLabels.length) itemWrap.style.height = Math.max(200, itemLabels.length * 32 + 20) + 'px';
+  upsert('topItems', 'topItemsChart', itemLabels, itemValues, '#059669', 3, HORIZ);
+
+  var clientLabels = (data.top_clients || []).map(function(d) { return d.company_name; });
+  var clientValues = (data.top_clients || []).map(function(d) { return d.revenue; });
+  var clientWrap   = document.getElementById('topClientsWrap');
+  if (clientWrap && clientLabels.length) clientWrap.style.height = Math.max(200, clientLabels.length * 32 + 20) + 'px';
+  upsert('topClients', 'topClientsChart', clientLabels, clientValues, '#7c3aed', 3, HORIZ);
+}
+</script>
+{% endblock %}

@@ -1,5 +1,6 @@
 import json
 import logging
+from datetime import date as date_cls
 from decimal import Decimal, InvalidOperation
 
 from django.contrib import messages
@@ -15,14 +16,20 @@ from django.views.generic import TemplateView
 
 from orders.constants import DeliveryStatus, OrderStatus, ShipmentStatus
 from orders.decorators import SupplierLoginRequiredMixin, supplier_required
-from orders.forms import CategoryForm, ClientCreateForm, ItemForm, PaymentRecordForm
-from orders.models import Category, Item, Order, OrderItem, PaymentRecord, Shipment, ShipmentOrder, SupplierClient
+from orders.analytics import (
+    get_kpis, get_per_client_breakdown, get_revenue_over_time, get_top_clients, get_top_items,
+)
+from orders.forms import CategoryForm, ClientCreateForm, ClientEditForm, ExpenseForm, ItemForm, PaymentRecordForm
+from orders.models import (
+    Category, Expense, Item, Order, OrderItem, PaymentRecord, Shipment, ShipmentOrder, SupplierClient,
+)
 from orders.services import (
     accept_order, add_orders_to_shipment, adjust_order_item_price, archive_item,
-    create_client_manually, create_shipment_with_orders, decline_order, delete_category,
-    delete_payment, generate_invite, get_active_invites, get_client_balance, get_clients_balance_map,
-    get_supplier_catalog, get_supplier_clients, mark_order_paid, unmark_order_paid,
-    reactivate_item, record_payment, update_order_note, update_payment, update_shipment_order_status,
+    create_client_manually, create_expense, create_shipment_with_orders, decline_order,
+    delete_category, delete_payment, generate_invite, get_active_invites, get_client_balance,
+    get_clients_balance_map, get_expenses, get_supplier_catalog, get_supplier_clients,
+    mark_order_paid, unmark_order_paid, reactivate_item, record_payment, update_order_note,
+    update_payment, update_shipment_order_status,
 )
 
 logger = logging.getLogger(__name__)
@@ -459,6 +466,54 @@ def client_detail(request, pk):
 
 
 @supplier_required
+def client_update(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    sc = get_object_or_404(SupplierClient, client_id=pk, supplier=supplier)
+    client = sc.client
+    form = ClientEditForm(request.POST, client_pk=client.pk)
+    if form.is_valid():
+        d = form.cleaned_data
+        client.company_name = d['company_name']
+        client.phone = d['phone']
+        client.address = d.get('address', '')
+        new_lat = d.get('latitude')
+        new_lng = d.get('longitude')
+        location_changed = (new_lat != client.latitude) or (new_lng != client.longitude)
+        client.latitude = new_lat
+        client.longitude = new_lng
+        if location_changed:
+            client.location_updated_at = timezone.now()
+        client.telegram_id = d.get('telegram_id') or None
+        client.save(update_fields=[
+            'company_name', 'phone', 'address',
+            'latitude', 'longitude', 'location_updated_at',
+            'telegram_id',
+        ])
+        email = d.get('email', '') or ''
+        if client.user.email != email:
+            client.user.email = email
+            client.user.save(update_fields=['email'])
+        return JsonResponse({'ok': True})
+    errors = {field: list(errs) for field, errs in form.errors.items()}
+    return JsonResponse({'ok': False, 'errors': errors}, status=400)
+
+
+@supplier_required
+def order_detail_partial(request, pk):
+    supplier = request.user.supplier
+    order = get_object_or_404(
+        Order.objects
+        .select_related('client')
+        .prefetch_related('order_items__item'),
+        pk=pk,
+        supplier=supplier,
+    )
+    return render(request, 'orders/supplier/_order_detail_modal.html', {'order': order})
+
+
+@supplier_required
 def payment_update(request, client_pk, pk):
     if request.method != 'POST':
         return HttpResponseNotAllowed(['POST'])
@@ -682,3 +737,144 @@ def shipment_order_update_status(request, shipment_pk, so_pk):
     except ValueError as e:
         messages.error(request, str(e))
     return redirect(reverse('orders_dashboard:shipment_detail', args=[shipment_pk]))
+
+
+# ── Expenses — Task 12 ─────────────────────────────────────────────────────
+
+
+@supplier_required
+def expense_list(request):
+    supplier = request.user.supplier
+    today = timezone.localdate()
+    month_start = today.replace(day=1)
+
+    date_from_str = request.GET.get('from', '')
+    date_to_str = request.GET.get('to', '')
+    is_filtered = bool(date_from_str or date_to_str)
+
+    date_from = month_start
+    date_to = today
+    filter_errors = []
+
+    if date_from_str:
+        try:
+            date_from = date_cls.fromisoformat(date_from_str)
+        except ValueError:
+            filter_errors.append("Noto'g'ri 'dan' sana formati.")
+            date_from = month_start
+    if date_to_str:
+        try:
+            date_to = date_cls.fromisoformat(date_to_str)
+        except ValueError:
+            filter_errors.append("Noto'g'ri 'gacha' sana formati.")
+            date_to = today
+
+    expenses = list(get_expenses(supplier, date_from=date_from, date_to=date_to))
+    period_total = sum(e.amount for e in expenses)
+
+    form = ExpenseForm(initial={'date': today})
+
+    return render(request, 'orders/supplier/expenses.html', {
+        'expenses': expenses,
+        'period_total': period_total,
+        'form': form,
+        'date_from': date_from.isoformat(),
+        'date_to': date_to.isoformat(),
+        'is_filtered': is_filtered,
+        'filter_errors': filter_errors,
+        'nav_section': 'expense_list',
+    })
+
+
+@supplier_required
+def expense_create(request):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    form = ExpenseForm(request.POST)
+    if form.is_valid():
+        d = form.cleaned_data
+        try:
+            create_expense(
+                supplier=supplier,
+                amount=d['amount'],
+                notes=d['notes'],
+                date=d['date'],
+                created_by=request.user,
+            )
+            messages.success(request, f"Xarajat {d['amount']:,.0f} so'm qo'shildi.")
+        except ValueError as e:
+            messages.error(request, str(e))
+    else:
+        for field_errors in form.errors.values():
+            for err in field_errors:
+                messages.error(request, err)
+    return redirect(reverse('orders_dashboard:expense_list'))
+
+
+@supplier_required
+def expense_delete(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    expense = get_object_or_404(Expense, pk=pk, supplier=supplier)
+    expense.delete()
+    messages.success(request, 'Xarajat o\'chirildi.')
+    return redirect(reverse('orders_dashboard:expense_list'))
+
+
+# ── Analytics — Task 13 ────────────────────────────────────────────────────
+
+
+def _parse_analytics_dates(request):
+    """Return (date_from, date_to) from GET params, defaulting to current month."""
+    today = timezone.localdate()
+    month_start = today.replace(day=1)
+    date_from = month_start
+    date_to = today
+    if raw := request.GET.get('from', ''):
+        try:
+            date_from = date_cls.fromisoformat(raw)
+        except ValueError:
+            pass
+    if raw := request.GET.get('to', ''):
+        try:
+            date_to = date_cls.fromisoformat(raw)
+        except ValueError:
+            pass
+    return date_from, date_to
+
+
+_BREAKDOWN_COLS = [
+    ('company_name', 'Mijoz', ''),
+    ('order_count', 'Buyurtmalar', "Tanlangan davrda yetkazilgan buyurtmalar soni"),
+    ('revenue', 'Savdo', "Yetkazilgan buyurtmalar bo'yicha umumiy savdo summasi"),
+    ('gross_profit', 'Foyda', "Yalpi foyda: savdo summasi minus mahsulot xarid narxi"),
+    ('total_paid', "To'lovlar", "Tanlangan davrda ushbu mijozdan qabul qilingan to'lovlar summasi"),
+    ('outstanding', 'Qoldiq', "Savdo minus to'lovlar. Musbat — mijoz qarzi, manfiy — ortiqcha to'lov"),
+]
+
+
+@supplier_required
+def analytics_dashboard(request):
+    date_from, date_to = _parse_analytics_dates(request)
+    return render(request, 'orders/supplier/analytics.html', {
+        'date_from': date_from.isoformat(),
+        'date_to': date_to.isoformat(),
+        'breakdown_cols': _BREAKDOWN_COLS,
+        'nav_section': 'analytics',
+    })
+
+
+@supplier_required
+def analytics_chart_data(request):
+    supplier = request.user.supplier
+    date_from, date_to = _parse_analytics_dates(request)
+    kpis = get_kpis(supplier, date_from, date_to)
+    return JsonResponse({
+        'kpis': {k: float(v) if isinstance(v, Decimal) else v for k, v in kpis.items()},
+        'revenue_over_time': get_revenue_over_time(supplier, date_from, date_to),
+        'top_items': get_top_items(supplier, date_from, date_to),
+        'top_clients': get_top_clients(supplier, date_from, date_to),
+        'breakdown': get_per_client_breakdown(supplier, date_from, date_to),
+    })

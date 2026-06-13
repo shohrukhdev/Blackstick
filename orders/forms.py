@@ -163,3 +163,84 @@ class PaymentRecordForm(forms.Form):
             )
             .order_by('-submitted_at')
         )
+
+
+# ── Client edit form ──────────────────────────────────────────────────────
+
+
+class ClientEditForm(forms.Form):
+    company_name = forms.CharField(
+        max_length=255, label='Kompaniya nomi',
+        widget=forms.TextInput(attrs={'class': _INPUT_CLASS}),
+    )
+    phone = forms.CharField(
+        max_length=30, label='Telefon raqami',
+        widget=forms.TextInput(attrs={'class': _INPUT_CLASS}),
+    )
+    email = forms.EmailField(
+        required=False, label='Email',
+        widget=forms.EmailInput(attrs={'class': _INPUT_CLASS}),
+    )
+    address = forms.CharField(
+        max_length=500, required=False, label='Manzil',
+        widget=forms.Textarea(attrs={'class': _INPUT_CLASS, 'rows': '2'}),
+    )
+    latitude = forms.DecimalField(
+        max_digits=10, decimal_places=8, required=False,
+        min_value=-90, max_value=90,
+        label='Kenglik (Latitude)',
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'step': 'any', 'placeholder': '41.29950000'}),
+    )
+    longitude = forms.DecimalField(
+        max_digits=11, decimal_places=8, required=False,
+        min_value=-180, max_value=180,
+        label='Uzunlik (Longitude)',
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'step': 'any', 'placeholder': '69.24007000'}),
+    )
+    telegram_id = forms.IntegerField(
+        required=False, label='Telegram ID',
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'placeholder': '123456789'}),
+    )
+
+    def __init__(self, *args, client_pk=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._client_pk = client_pk
+
+    def clean(self):
+        cleaned = super().clean()
+        lat = cleaned.get('latitude')
+        lng = cleaned.get('longitude')
+        if (lat is None) != (lng is None):
+            raise forms.ValidationError("Kenglik va uzunlik ikkalasi ham kiritilishi kerak.")
+        return cleaned
+
+    def clean_telegram_id(self):
+        from orders.models import Client
+        telegram_id = self.cleaned_data.get('telegram_id')
+        if telegram_id is not None:
+            qs = Client.objects.filter(telegram_id=telegram_id)
+            if self._client_pk:
+                qs = qs.exclude(pk=self._client_pk)
+            if qs.exists():
+                raise forms.ValidationError("Bu Telegram ID allaqachon boshqa mijozda ro'yxatdan o'tgan.")
+        return telegram_id
+
+
+# ── Expense forms ──────────────────────────────────────────────────────────
+
+
+class ExpenseForm(forms.Form):
+    amount = forms.DecimalField(
+        max_digits=12, decimal_places=2, min_value=Decimal('1'),
+        label="Miqdor (so'm)",
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'min': '1', 'step': '1',
+                                        'placeholder': '0'}),
+    )
+    date = forms.DateField(
+        label='Sana',
+        widget=forms.DateInput(attrs={'class': _INPUT_CLASS, 'type': 'date'}),
+    )
+    notes = forms.CharField(
+        max_length=500, label='Izoh',
+        widget=forms.TextInput(attrs={'class': _INPUT_CLASS, 'placeholder': 'Xarajat tavsifi'}),
+    )

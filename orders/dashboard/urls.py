@@ -12,6 +12,7 @@ urlpatterns = [
     # Order queue — dashboard home (Task 07)
     path('', views.order_queue, name='dashboard_home'),
     path('orders/<int:pk>/', views.order_detail, name='order_detail'),
+    path('orders/<int:pk>/partial/', views.order_detail_partial, name='order_detail_partial'),
     path('orders/<int:pk>/accept/', views.order_accept, name='order_accept'),
     path('orders/<int:pk>/decline/', views.order_decline, name='order_decline'),
     path('orders/<int:pk>/mark-paid/', views.order_mark_paid, name='order_mark_paid'),
@@ -34,6 +35,7 @@ urlpatterns = [
     path('clients/add/', views.client_create, name='client_create'),
     path('clients/invites/generate/', views.invite_generate, name='invite_generate'),
     path('clients/<int:pk>/', views.client_detail, name='client_detail'),
+    path('clients/<int:pk>/update/', views.client_update, name='client_update'),
     path('clients/<int:client_pk>/payments/<int:pk>/update/', views.payment_update, name='payment_update'),
     path('clients/<int:client_pk>/payments/<int:pk>/delete/', views.payment_delete, name='payment_delete'),
 
@@ -48,7 +50,12 @@ urlpatterns = [
         name='shipment_order_update_status',
     ),
 
-    # Stubs for future tasks
-    path('expenses/', views.DashboardHomeView.as_view(), name='expense_list'),
-    path('analytics/', views.DashboardHomeView.as_view(), name='analytics'),
+    # Expenses — Task 12
+    path('expenses/', views.expense_list, name='expense_list'),
+    path('expenses/add/', views.expense_create, name='expense_create'),
+    path('expenses/<int:pk>/delete/', views.expense_delete, name='expense_delete'),
+
+    # Analytics — Task 13
+    path('analytics/', views.analytics_dashboard, name='analytics'),
+    path('analytics/chart-data/', views.analytics_chart_data, name='analytics_chart_data'),
 ]

@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from orders.constants import DeliveryStatus, OrderStatus, PaymentStatus, ShipmentStatus
 from orders.models import (
-    Category, Client, ClientInvite, Item, Order, OrderItem,
+    Category, Client, ClientInvite, Expense, Item, Order, OrderItem,
     PaymentRecord, Shipment, ShipmentOrder, SupplierClient,
 )
 
@@ -607,6 +607,30 @@ def get_clients_balance_map(supplier):
         }
         for cid in all_ids
     }
+
+
+# ── Expenses ──────────────────────────────────────────────────────────────
+
+
+def create_expense(supplier, amount, notes, date, created_by):
+    if amount <= 0:
+        raise ValueError("Xarajat miqdori musbat bo'lishi kerak.")
+    return Expense.objects.create(
+        supplier=supplier,
+        amount=amount,
+        notes=notes,
+        date=date,
+        created_by=created_by,
+    )
+
+
+def get_expenses(supplier, date_from=None, date_to=None):
+    qs = Expense.objects.filter(supplier=supplier).order_by('-date', '-created_at')
+    if date_from:
+        qs = qs.filter(date__gte=date_from)
+    if date_to:
+        qs = qs.filter(date__lte=date_to)
+    return qs
 
 
 # ── Invites ───────────────────────────────────────────────────────────────
