@@ -80,6 +80,9 @@ jobs:
 
             DOCKER_IMAGE="${IMAGE}:latest" docker compose -f docker-compose.prod.yml up -d --no-deps web
 
+            # Remove old HTTP-only init config if still present (would conflict with booket.conf)
+            rm -f nginx/conf.d/booket-init.conf
+
             docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload || true
 
             # Keep only the 3 most recent images, remove the rest

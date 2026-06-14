@@ -1,4 +1,13 @@
 ###########
+# NPM     #
+###########
+
+FROM node:20-slim AS npm_builder
+WORKDIR /app
+COPY static/package.json static/package-lock.json ./
+RUN npm ci --omit=dev
+
+###########
 # BUILDER #
 ###########
 
@@ -51,6 +60,8 @@ RUN pip install --upgrade pip \
     && pip install --no-cache /wheels/*
 
 COPY . $APP_HOME
+
+COPY --from=npm_builder /app/node_modules $APP_HOME/static/node_modules/
 
 RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.prod.sh \
     && chmod +x $APP_HOME/entrypoint.prod.sh \

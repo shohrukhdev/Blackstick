@@ -5,7 +5,7 @@ echo "==> Running migrations..."
 python manage.py migrate --no-input
 
 echo "==> Collecting static files..."
-python manage.py collectstatic --no-input
+python manage.py collectstatic --no-input --ignore=teeth
 
 echo "==> Compiling translations..."
 python manage.py compilemessages -l en
