@@ -317,6 +317,7 @@ class Invoice(models.Model):
     type = models.CharField(max_length=20, choices=InvoiceType.CHOICES, default=InvoiceType.ORDER)
     pdf_file = models.FileField(upload_to='invoices/', null=True, blank=True)
     generated_at = models.DateTimeField(auto_now_add=True)
+    last_generated_at = models.DateTimeField(null=True, blank=True)
     generated_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='invoices_generated')
 
     class Meta:

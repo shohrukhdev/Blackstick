@@ -8,7 +8,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.db.models import Case, Count, DecimalField, ExpressionWrapper, F, Sum, Value, When
 from django.db.models.functions import Coalesce
-from django.http import HttpResponseNotAllowed, JsonResponse
+from django.http import FileResponse, Http404, HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -27,9 +27,9 @@ from orders.services import (
     accept_order, add_orders_to_shipment, adjust_order_item_price, archive_item,
     create_client_manually, create_expense, create_shipment_with_orders, decline_order,
     delete_category, delete_payment, generate_invite, get_active_invites, get_client_balance,
-    get_clients_balance_map, get_expenses, get_supplier_catalog, get_supplier_clients,
-    mark_order_paid, unmark_order_paid, reactivate_item, record_payment, update_order_note,
-    update_payment, update_shipment_order_status,
+    get_clients_balance_map, get_expenses, get_or_create_order_invoice, get_supplier_catalog,
+    get_supplier_clients, mark_order_paid, unmark_order_paid, reactivate_item, record_payment,
+    update_order_note, update_payment, update_shipment_order_status,
 )
 
 logger = logging.getLogger(__name__)
@@ -878,3 +878,35 @@ def analytics_chart_data(request):
         'top_clients': get_top_clients(supplier, date_from, date_to),
         'breakdown': get_per_client_breakdown(supplier, date_from, date_to),
     })
+
+
+# ── Invoice — Task 14 ──────────────────────────────────────────────────────
+
+
+_INVOICE_ALLOWED_STATUSES = {
+    OrderStatus.ACCEPTED, OrderStatus.IN_SHIPMENT, OrderStatus.DELIVERED,
+}
+
+
+@supplier_required
+def invoice_download(request, order_pk):
+    supplier = request.user.supplier
+    order = get_object_or_404(Order, pk=order_pk, supplier=supplier)
+
+    if order.status not in _INVOICE_ALLOWED_STATUSES:
+        raise Http404
+
+    try:
+        invoice = get_or_create_order_invoice(order, generated_by=request.user)
+    except Exception:
+        logger.exception('Invoice generation failed for order %s', order_pk)
+        return JsonResponse({'error': "Hisob-faktura yaratishda xato yuz berdi."}, status=500)
+
+    response = FileResponse(
+        invoice.pdf_file.open('rb'),
+        content_type='application/pdf',
+    )
+    response['Content-Disposition'] = (
+        f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
+    )
+    return response

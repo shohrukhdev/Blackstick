@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from orders.constants import DeliveryStatus, OrderStatus, PaymentStatus, ShipmentStatus
 from orders.models import (
-    Category, Client, ClientInvite, Expense, Item, Order, OrderItem,
+    Category, Client, ClientInvite, Expense, Invoice, Item, Order, OrderItem,
     PaymentRecord, Shipment, ShipmentOrder, SupplierClient,
 )
 
@@ -637,6 +637,47 @@ def get_expenses(supplier, date_from=None, date_to=None):
 
 
 @transaction.atomic
+def get_or_create_order_invoice(order, generated_by):
+    """Return an Invoice for the order, generating the PDF if needed.
+
+    Caches the PDF file. Regenerates if prices were adjusted after last generation.
+    """
+    from django.core.files.base import ContentFile
+
+    from orders.pdf import generate_order_invoice
+
+    try:
+        invoice = Invoice.objects.get(order=order)
+        if not invoice.pdf_file:
+            needs_regen = True
+        elif order.prices_adjusted:
+            last_gen = invoice.last_generated_at or invoice.generated_at
+            needs_regen = order.updated_at > last_gen
+        else:
+            needs_regen = False
+    except Invoice.DoesNotExist:
+        invoice = Invoice(order=order, generated_by=generated_by)
+        invoice.save()
+        needs_regen = True
+
+    if needs_regen:
+        pdf_bytes = generate_order_invoice(order, invoice)
+        filename = f'inv_{invoice.invoice_number}_{order.pk}.pdf'
+
+        if invoice.pdf_file:
+            try:
+                invoice.pdf_file.delete(save=False)
+            except Exception:
+                pass
+
+        invoice.pdf_file.save(filename, ContentFile(pdf_bytes), save=False)
+        invoice.last_generated_at = timezone.now()
+        invoice.generated_by = generated_by
+        invoice.save(update_fields=['pdf_file', 'last_generated_at', 'generated_by'])
+
+    return invoice
+
+
 def register_via_invite(token, company_name, full_name, phone, password):
     """Validate token, create User+Client+SupplierClient, mark invite used."""
     try:

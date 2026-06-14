@@ -58,4 +58,7 @@ urlpatterns = [
     # Analytics — Task 13
     path('analytics/', views.analytics_dashboard, name='analytics'),
     path('analytics/chart-data/', views.analytics_chart_data, name='analytics_chart_data'),
+
+    # Invoice — Task 14
+    path('orders/<int:order_pk>/invoice/', views.invoice_download, name='invoice_download'),
 ]

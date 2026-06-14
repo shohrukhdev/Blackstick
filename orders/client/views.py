@@ -4,7 +4,7 @@ from decimal import Decimal, InvalidOperation
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
-from django.http import JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
@@ -14,7 +14,8 @@ from orders.decorators import ClientLoginRequiredMixin, client_required
 from orders.forms import InviteRegisterForm
 from orders.models import ClientInvite, Order, SupplierClient
 from orders.services import (
-    get_client_catalog, get_client_orders, register_via_invite, submit_order as _submit_order,
+    get_client_catalog, get_client_orders, get_or_create_order_invoice,
+    register_via_invite, submit_order as _submit_order,
 )
 
 logger = logging.getLogger(__name__)
@@ -220,3 +221,35 @@ def client_order_detail(request, pk):
         'client': client,
         'order': order,
     })
+
+
+# ── Invoice — Task 14 ──────────────────────────────────────────────────────
+
+
+_INVOICE_ALLOWED_STATUSES = {
+    OrderStatus.ACCEPTED, OrderStatus.IN_SHIPMENT, OrderStatus.DELIVERED,
+}
+
+
+@client_required
+def client_invoice_download(request, order_pk):
+    client = request.user.client
+    order = get_object_or_404(Order, pk=order_pk, client=client)
+
+    if order.status not in _INVOICE_ALLOWED_STATUSES:
+        raise Http404
+
+    try:
+        invoice = get_or_create_order_invoice(order, generated_by=request.user)
+    except Exception:
+        logger.exception('Invoice generation failed for order %s', order_pk)
+        return JsonResponse({'error': "Hisob-faktura yaratishda xato yuz berdi."}, status=500)
+
+    response = FileResponse(
+        invoice.pdf_file.open('rb'),
+        content_type='application/pdf',
+    )
+    response['Content-Disposition'] = (
+        f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
+    )
+    return response

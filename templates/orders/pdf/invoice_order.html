@@ -1,0 +1,387 @@
+{% load orders_tags %}<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 22px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #1a1a2e;
+  }
+
+  .supplier-block {
+    flex: 1;
+  }
+
+  .supplier-logo {
+    max-height: 56px;
+    max-width: 140px;
+    object-fit: contain;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .supplier-name {
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1a1a2e;
+  }
+
+  .supplier-meta {
+    margin-top: 3px;
+    font-size: 9pt;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .invoice-title-block {
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 24px;
+  }
+
+  .invoice-title {
+    font-size: 18pt;
+    font-weight: bold;
+    color: #1a1a2e;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .invoice-meta {
+    margin-top: 6px;
+    font-size: 9pt;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  .invoice-meta strong {
+    color: #1a1a1a;
+  }
+
+  /* ── Parties row ── */
+  .parties {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 20px;
+  }
+
+  .party-block {
+    flex: 1;
+    background: #f8f9fc;
+    border: 1px solid #e2e6ee;
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+
+  .party-label {
+    font-size: 7.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #888;
+    margin-bottom: 5px;
+  }
+
+  .party-name {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+  }
+
+  .party-detail {
+    font-size: 9pt;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  /* ── Order ref ── */
+  .order-ref {
+    font-size: 9pt;
+    color: #777;
+    margin-bottom: 14px;
+  }
+
+  /* ── Items table ── */
+  table.items {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0;
+    font-size: 9.5pt;
+  }
+
+  table.items thead tr {
+    background: #1a1a2e;
+    color: #fff;
+  }
+
+  table.items thead th {
+    padding: 8px 8px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 8.5pt;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+
+  table.items thead th.right {
+    text-align: right;
+  }
+
+  table.items tbody tr {
+    border-bottom: 1px solid #eaecf2;
+  }
+
+  table.items tbody tr:last-child {
+    border-bottom: none;
+  }
+
+  table.items tbody td {
+    padding: 7px 8px;
+    vertical-align: top;
+  }
+
+  table.items tbody td.right {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  table.items tbody td.center {
+    text-align: center;
+  }
+
+  .row-num {
+    color: #aaa;
+    font-size: 8.5pt;
+  }
+
+  /* ── Total row ── */
+  .total-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+
+  table.total-table {
+    border-collapse: collapse;
+    width: 260px;
+    font-size: 9.5pt;
+  }
+
+  table.total-table td {
+    padding: 6px 8px;
+  }
+
+  table.total-table tr.grand-total {
+    background: #1a1a2e;
+    color: #fff;
+    font-weight: bold;
+    font-size: 10.5pt;
+  }
+
+  table.total-table tr.grand-total td {
+    padding: 9px 8px;
+  }
+
+  /* ── Payments section ── */
+  .payments-section {
+    margin-top: 22px;
+  }
+
+  .section-title {
+    font-size: 9pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #888;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e2e6ee;
+  }
+
+  table.payments {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+  }
+
+  table.payments thead th {
+    padding: 5px 8px;
+    text-align: left;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 1px solid #e2e6ee;
+    font-size: 8.5pt;
+  }
+
+  table.payments thead th.right {
+    text-align: right;
+  }
+
+  table.payments tbody td {
+    padding: 5px 8px;
+    border-bottom: 1px solid #f0f2f7;
+    vertical-align: top;
+  }
+
+  table.payments tbody td.right {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 32px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e6ee;
+    font-size: 8.5pt;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer-left, .footer-right {
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div class="supplier-block">
+    {% if logo_path %}
+    <img src="{{ logo_path }}" class="supplier-logo" alt="{{ supplier.business_name }}">
+    {% endif %}
+    <div class="supplier-name">{{ supplier.business_name }}</div>
+    <div class="supplier-meta">
+      {% if supplier.phone %}{{ supplier.phone }}<br>{% endif %}
+      {% if supplier.address %}{{ supplier.address }}{% endif %}
+    </div>
+  </div>
+  <div class="invoice-title-block">
+    <div class="invoice-title">Hisob-faktura</div>
+    <div class="invoice-meta">
+      <strong>№:</strong> {{ invoice.invoice_number }}<br>
+      {% if order.submitted_at %}
+      <strong>Sana:</strong> {{ order.submitted_at|date:"d.m.Y" }}<br>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Parties ── -->
+<div class="parties">
+  <div class="party-block">
+    <div class="party-label">Ta'minotchi</div>
+    <div class="party-name">{{ supplier.business_name }}</div>
+    <div class="party-detail">
+      {% if supplier.phone %}Tel: {{ supplier.phone }}<br>{% endif %}
+      {% if supplier.address %}{{ supplier.address }}{% endif %}
+    </div>
+  </div>
+  <div class="party-block">
+    <div class="party-label">Kimga</div>
+    <div class="party-name">{{ client.company_name }}</div>
+    <div class="party-detail">
+      {% if client.phone %}Tel: {{ client.phone }}<br>{% endif %}
+      {% if client.address %}{{ client.address }}{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="order-ref">Buyurtma #{{ order.pk }}</div>
+
+<!-- ── Line items ── -->
+<table class="items">
+  <thead>
+    <tr>
+      <th style="width:28px;">№</th>
+      <th>Nomi</th>
+      <th>O'lchov</th>
+      <th class="right">Miqdor</th>
+      <th class="right">Narx (so'm)</th>
+      <th class="right">Jami (so'm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for oi in order_items %}
+    <tr>
+      <td class="row-num">{{ forloop.counter }}</td>
+      <td>{{ oi.item_name }}</td>
+      <td>{{ oi.item_unit|unit_uz }}</td>
+      <td class="right">{{ oi.quantity|floatformat:"-3" }}</td>
+      <td class="right">{{ oi.effective_retail|uz_money }}</td>
+      <td class="right">{{ oi.line_total|uz_money }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- ── Grand total ── -->
+<div class="total-section">
+  <table class="total-table">
+    <tr class="grand-total">
+      <td>Jami to'lov:</td>
+      <td class="right">{{ order.total|uz_money }} so'm</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ── Payments (only if linked payments exist) ── -->
+{% if payments %}
+<div class="payments-section">
+  <div class="section-title">To'lovlar</div>
+  <table class="payments">
+    <thead>
+      <tr>
+        <th>Sana</th>
+        <th class="right">Miqdor (so'm)</th>
+        <th>Izoh</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for payment in payments %}
+      <tr>
+        <td>{{ payment.date|date:"d.m.Y" }}</td>
+        <td class="right">{{ payment.amount|uz_money }}</td>
+        <td>{{ payment.notes }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+
+<!-- ── Footer ── -->
+<div class="footer">
+  <div class="footer-left">
+    {{ supplier.business_name }}
+    {% if supplier.phone %} · {{ supplier.phone }}{% endif %}
+  </div>
+  <div class="footer-right">
+    {% if supplier.address %}{{ supplier.address }}{% endif %}
+  </div>
+</div>
+
+</body>
+</html>
