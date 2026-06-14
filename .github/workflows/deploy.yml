@@ -78,7 +78,7 @@ jobs:
             echo "$GH_TOKEN" | docker login ghcr.io -u "$GH_USER" --password-stdin
             DOCKER_IMAGE="${IMAGE}:latest" docker compose -f docker-compose.prod.yml pull web
 
-            DOCKER_IMAGE="${IMAGE}:latest" docker compose -f docker-compose.prod.yml up -d --no-deps web
+            DOCKER_IMAGE="${IMAGE}:latest" docker compose -f docker-compose.prod.yml up -d
 
             # Remove HTTPS config that requires SSL certs (not yet issued); using HTTP config
             rm -f nginx/conf.d/booket.conf
