@@ -57,7 +57,7 @@ jobs:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          source: "docker-compose.prod.yml,nginx/conf.d/booket-init.conf"
+          source: "docker-compose.prod.yml,nginx/conf.d/booket.conf"
           target: /opt/blackstick/
 
       - name: Deploy
@@ -80,8 +80,8 @@ jobs:
 
             DOCKER_IMAGE="${IMAGE}:latest" docker compose -f docker-compose.prod.yml up -d
 
-            # Remove HTTPS config that requires SSL certs (not yet issued); using HTTP config
-            rm -f nginx/conf.d/booket.conf
+            # Remove HTTP-only bootstrap config; HTTPS config (booket.conf) is now active
+            rm -f nginx/conf.d/booket-init.conf
 
             docker compose -f docker-compose.prod.yml exec -T nginx nginx -s reload || true
 
