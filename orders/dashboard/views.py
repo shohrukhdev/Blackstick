@@ -42,6 +42,14 @@ class SupplierLoginView(LoginView):
     template_name = 'orders/supplier/login.html'
     redirect_authenticated_user = True
 
+    def dispatch(self, request, *args, **kwargs):
+        # A logged-in user without a supplier profile would loop: protected views
+        # redirect here, and redirect_authenticated_user sends them back. Log out
+        # so the login form is shown and they can authenticate as a supplier.
+        if request.user.is_authenticated and not hasattr(request.user, 'supplier'):
+            logout(request)
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy('orders_dashboard:dashboard_home')
 
