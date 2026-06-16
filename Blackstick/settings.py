@@ -7,7 +7,8 @@ import os
 from pathlib import Path
 
 load_dotenv()
-load_dotenv('.env.local', override=True)
+if not os.environ.get('DOCKER_ENV'):
+    load_dotenv('.env.local', override=True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

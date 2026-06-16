@@ -745,7 +745,7 @@
           const total = parseInt($('#pay_total').val()) || 0;
           const paid = parseInt($('#pay_paid').val()) || 0;
           if (total < 0 || paid < 0) {
-              showToast('{% trans "Amounts cannot be negative." %}', 'error');
+              showToast("{% trans 'Amounts cannot be negative.' %}", "error");
               return;
           }
           $.ajax({
@@ -922,7 +922,7 @@
       function searchClient() {
           var q = $('#ca-client-search-input').val().trim();
           if (q.length < 3) {
-              showToast('{% trans "Enter at least 3 characters" %}', 'warning');
+              showToast("{% trans 'Enter at least 3 characters' %}", "warning");
               return;
           }
           $.ajax({
@@ -966,7 +966,7 @@
           var phone = $('#ca-new-phone').val().trim();
           var email = $('#ca-new-email').val().trim();
           if (!phone && !email) {
-              showToast('{% trans "Provide phone or email to send OTP" %}', 'warning');
+              showToast("{% trans 'Provide phone or email to send OTP' %}", "warning");
               return;
           }
           var contactType = phone ? 'phone' : 'email';
@@ -982,7 +982,7 @@
                   $('#ca-otp-masked-contact').text(response.masked_contact);
                   $('#ca-otp-send-area').addClass('d-none');
                   $('#ca-otp-verify-area').removeClass('d-none');
-                  showToast('{% trans "OTP sent to client" %}', 'success');
+                  showToast("{% trans 'OTP sent to client' %}", "success");
               },
               error: function (err) {
                   var msg = err.responseJSON && err.responseJSON.error ? err.responseJSON.error : err.responseText;
@@ -1003,7 +1003,7 @@
               success: function () {
                   $('#ca-otp-verify-area').addClass('d-none');
                   $('#ca-client-verified-badge').removeClass('d-none');
-                  showToast('{% trans "Client verified" %}', 'success');
+                  showToast("{% trans 'Client verified' %}", "success");
               },
               error: function (err) {
                   var msg = err.responseJSON && err.responseJSON.message ? err.responseJSON.message : err.responseText;
@@ -1017,7 +1017,7 @@
           var endDate = $('#ca-end').val();
           var comment = $('#ca-comment').val();
           if (!startDate) {
-              showToast('{% trans "Start time is required" %}', 'warning');
+              showToast("{% trans 'Start time is required' %}", "warning");
               return;
           }
           var serviceIds = [];
@@ -1033,19 +1033,19 @@
           };
           if (currentClientMode === 'existing') {
               if (!selectedClientId) {
-                  showToast('{% trans "Please search and select a client first" %}', 'warning');
+                  showToast("{% trans 'Please search and select a client first' %}", "warning");
                   return;
               }
               payload.client_id = selectedClientId;
           }
           if (currentClientMode === 'new') {
               if (!newClientOtpId || $('#ca-client-verified-badge').hasClass('d-none')) {
-                  showToast('{% trans "Please verify the client via OTP first" %}', 'warning');
+                  showToast("{% trans 'Please verify the client via OTP first' %}", "warning");
                   return;
               }
               var fullName = $('#ca-new-name').val().trim();
               if (!fullName) {
-                  showToast('{% trans "Client name is required" %}', 'warning');
+                  showToast("{% trans 'Client name is required' %}", "warning");
                   return;
               }
               payload.otp_id = newClientOtpId;

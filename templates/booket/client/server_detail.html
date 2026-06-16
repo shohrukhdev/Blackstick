@@ -225,7 +225,7 @@
           {% else %}{{ ps.server.title }}{% endif %}
         </p>
 
-        <button class="btn-book" onclick="selectServer('{{ ps.id }}', '{{ ps.server.user.first_name }}')">
+        <button class="btn-book" onclick="selectServer('{{ ps.id }}', '{{ ps.server.user.first_name|escapejs }}')">
           {% trans 'Book appointment' %}
         </button>
       </div>

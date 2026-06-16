@@ -238,7 +238,7 @@
           const total = parseInt($('#pay_total').val()) || 0;
           const paid = parseInt($('#pay_paid').val()) || 0;
           if (total < 0 || paid < 0) {
-              showToast('{% trans "Amounts cannot be negative." %}', 'error');
+              showToast("{% trans 'Amounts cannot be negative.' %}", "error");
               return;
           }
           $.ajax({

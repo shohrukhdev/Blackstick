@@ -15,7 +15,7 @@ services:
       - internal
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "admin", "-d", "blackstick"]
+      test: ["CMD", "pg_isready", "-U", "admin", "-d", "postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -50,9 +50,10 @@ services:
       - .env
     environment:
       # Override host-specific values from .env for Docker networking
+      - DOCKER_ENV=1
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_NAME=blackstick
+      - DB_NAME=postgres
       - DB_USER=admin
       - DB_PASSWORD=admin
       - REDIS_URL=redis://redis:6379/0

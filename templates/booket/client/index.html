@@ -243,7 +243,7 @@
             {% endif %}
           </div>
           <button class="btn btn-primary"
-                  onclick="event.stopPropagation(); selectServer('{{ ps.id }}', '{{ ps.server.user.first_name }}')"
+                  onclick="event.stopPropagation(); selectServer('{{ ps.id }}', '{{ ps.server.user.first_name|escapejs }}')"
                   role="button" type="button">
             {% trans 'Book appointment' %}
           </button>
