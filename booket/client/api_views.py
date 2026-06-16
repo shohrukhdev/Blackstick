@@ -296,7 +296,9 @@ def confirmOTP(request):
             otp.save()
 
         specialist_name = server.user.get_full_name() or server.user.username
-        dt = appointment.start_datetime.strftime('%d.%m.%Y %H:%M')
+        local_start = timezone.localtime(appointment.start_datetime)
+        local_end = timezone.localtime(appointment.end_datetime)
+        dt = local_start.strftime('%d.%m.%Y %H:%M')
 
         # Confirmation SMS to the client
         lang = client.language_code or 'ru'
@@ -319,7 +321,7 @@ def confirmOTP(request):
         # Specialist notification SMS
         specialist_sms = (
             f"Sizda yangi uchrashuv/У вас новая встреча! "
-            f"Vaqti/Время: {dt} - {appointment.end_datetime.strftime('%H:%M')}. "
+            f"Vaqti/Время: {dt} - {local_end.strftime('%H:%M')}. "
             f"Mijoz/Клиент: {client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/"
         )
 
