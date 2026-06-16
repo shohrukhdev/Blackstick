@@ -75,7 +75,7 @@
           <ul class="list-group">
             <li class="list-group-item list-group-item-warning">
               <span>{% trans 'Status' %}:</span>
-              <span id="event_status" style="float: right">Confirmed</span>
+              <span id="event_status" style="float: right"></span>
             </li>
             <li class="list-group-item list-group-item-info event-comment" style="display: none;">
               <i class="fa-solid fa-circle-info fa-beat"></i> {% trans 'Client comment' %}:
@@ -228,6 +228,7 @@
 {% block js %}
   {{ block.super }}
   <script>
+      {% include "booket/dashboard/_status_utils.html" %}
       var calendar;
       var lang_code = $(`#cur_lang`).val();
       var dayStartsAt = "{{ appointment.server.providerserver_set.first.day_starts_on|date:'H:i' }}"
@@ -379,7 +380,8 @@
               let trow = `<li class="list-group-item list-group-item-secondary">${service.name} <span class="badge rounded-pill bg-primary"><i>${service.price.toLocaleString()}</i></span></li>`;
               $('#event_services').append(trow);
           });
-          $('#event_status').text(appointment.status);
+          $('#event_status').html(renderStatusBadge(appointment.status));
+          initStatusTooltips(document.getElementById('event_status'));
           $('#server_comment').val(appointment.comment_by_server || '');
           renderAppointmentFiles(appointment.files || []);
 

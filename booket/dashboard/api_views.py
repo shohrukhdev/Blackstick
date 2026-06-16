@@ -116,6 +116,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 appointment.status = 'ACCEPTED'
                 appointment.comment_by_server = comment_by_server
                 appointment.save()
+                self._notify_client_status_change(appointment, 'accept')
                 return Response({'success': 'Appointment accepted.'})
 
             elif action_type == 'reject':
@@ -124,6 +125,7 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
                 appointment.status = 'REJECTED'
                 appointment.comment_by_server = comment_by_server
                 appointment.save()
+                self._notify_client_status_change(appointment, 'reject')
                 return Response({'success': 'Appointment rejected.'})
 
             elif action_type == 'cancel':
@@ -473,3 +475,51 @@ class AppointmentViewSet(viewsets.ReadOnlyModelViewSet):
         except Exception as e:
             logger.exception("API error on create_server_appointment")
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def _notify_client_status_change(self, appointment, action_type):
+        try:
+            client = appointment.client
+            if not client:
+                return
+            provider_server = appointment.server.providerserver_set.select_related('provider').first()
+            if not provider_server:
+                return
+            provider = provider_server.provider
+            from booket.utils import is_demo_provider
+            if is_demo_provider(provider.identifier):
+                return
+
+            lang = client.language_code or 'ru'
+            local_start = timezone.localtime(appointment.start_datetime)
+            dt = local_start.strftime('%d.%m.%Y %H:%M')
+
+            if action_type == 'accept':
+                if lang == 'uz':
+                    text = (f"Xursandchilik bilan xabar beramiz: №{appointment.id} uchrashuvingiz "
+                            f"mutaxassis tomonidan tasdiqlandi. Sana: {dt}. Ko'rishguncha!")
+                elif lang == 'ru':
+                    text = (f"Ваша запись №{appointment.id} подтверждена специалистом. "
+                            f"Дата: {dt}. Не опаздывайте!")
+                else:
+                    text = (f"Your appointment №{appointment.id} has been confirmed by the specialist. "
+                            f"Date: {dt}. See you!")
+            else:
+                if lang == 'uz':
+                    text = (f"Afsuski, №{appointment.id} uchrashuvingiz rad etildi. "
+                            f"Batafsil ma'lumot uchun bizga murojaat qiling.")
+                elif lang == 'ru':
+                    text = (f"К сожалению, ваша запись №{appointment.id} была отклонена. "
+                            f"Свяжитесь с нами для получения подробностей.")
+                else:
+                    text = (f"Unfortunately, your appointment №{appointment.id} has been declined. "
+                            f"Please contact us for more details.")
+
+            if client.phone_number:
+                sms_result = send_sms(phone_number=client.phone_number, message=text)
+                logger.info(f"Status change SMS ({action_type}) to client: {sms_result}")
+            elif client.email:
+                send_mail("booket.uz appointment update", text, "alphadevmanager@gmail.com",
+                          [client.email], fail_silently=True)
+                logger.info(f"Status change email ({action_type}) sent to {client.email}")
+        except Exception:
+            logger.exception(f"Failed to notify client on {action_type}")

@@ -168,7 +168,7 @@
           <ul class="list-group">
             <li class="list-group-item list-group-item-warning">
               <span>{% trans 'Status' %}:</span>
-              <span id="event_status" style="float: right">Confirmed</span>
+              <span id="event_status" style="float: right"></span>
             </li>
             <li class="list-group-item list-group-item-info event-comment" style="display: none;">
               <i class="fa-solid fa-circle-info fa-beat"></i> {% trans 'Client comment' %}:
@@ -229,6 +229,9 @@
             <li class="list-group-item complete-confirm" style="display: none;">
               <span style="color: green;">{% trans 'Mark this appointment as completed?' %}</span>
             </li>
+            <li class="list-group-item accept-confirm" style="display: none;">
+              <span style="color: green;">{% trans 'Accept this appointment and notify the client?' %}</span>
+            </li>
           </ul>
         </div>
 
@@ -258,7 +261,15 @@
             <button onclick="backToEventActions()" type="button"
                     class="btn btn-warning button-shadow">{% trans 'Back' %}</button>
           </div>
+          <div class="btn-group accept-confirm" style="display:none; float:left;">
+            <button onclick="updateAppointment('accept')" type="button"
+                    class="btn btn-success button-shadow">{% trans 'Yes' %}</button>
+            <button onclick="backToEventActions()" type="button"
+                    class="btn btn-warning button-shadow">{% trans 'Back' %}</button>
+          </div>
           <div class="btn-group action-buttons" style="float:left;">
+            <button id="btn_accept" onclick="onAcceptButtonClick()" type="button"
+                    class="btn btn-success button-shadow" style="display:none;">{% trans 'Accept' %}</button>
             <button id="btn_change" onclick="onChangeButtonClick()" type="button"
                     class="btn btn-primary button-shadow">{% trans 'Change' %}</button>
             <button id="btn_cancel" onclick="onCancelButtonClick()" type="button"
@@ -389,6 +400,7 @@
 {% block js %}
   {{ block.super }}
   <script>
+      {% include "booket/dashboard/_status_utils.html" %}
       var calendar;
       var lang_code = $(`#cur_lang`).val();
       var dayStartsAt = "{{ appointment.server.providerserver_set.first.day_starts_on|date:'H:i' }}"
@@ -559,6 +571,7 @@
           $('.cancel-appointment').hide();
           $('.no-show').hide();
           $('.complete-confirm').hide();
+          $('.accept-confirm').hide();
           $('.payment-section').hide();
           $('#time-update').val('');
           $('#event_comments').text('');
@@ -569,6 +582,7 @@
           $('#pay_debt').text('');
           $('#btn_change, #btn_cancel, #btn_no_show').prop('disabled', false);
           $('#btn_complete').hide();
+          $('#btn_accept').hide();
           $(`#client_name`).text(appointment.client_full_name);
           $('#timeframe').text(appointment.start_datetime.slice(11, 16) + " - " + appointment.end_datetime.slice(11, 16));
           $('#event_date').text(formatDate(appointment.end_datetime.slice(0, 10)));
@@ -590,7 +604,8 @@
               let trow = `<li class="list-group-item list-group-item-secondary">${service.name} <span class="badge rounded-pill bg-primary"><i>${service.price.toLocaleString()}</i></span></li>`;
               $('#event_services').append(trow);
           });
-          $('#event_status').text(appointment.status);
+          $('#event_status').html(renderStatusBadge(appointment.status));
+          initStatusTooltips(document.getElementById('event_status'));
           $('#server_comment').val(appointment.comment_by_server || '');
           renderAppointmentFiles(appointment.files || []);
 
@@ -608,6 +623,9 @@
           } else if (status === 'CANCELLED' || status === 'REJECTED' || status === 'NO_SHOW') {
               $('.action-buttons').hide();
           } else {
+              if (status === 'CONFIRMED') {
+                  $('#btn_accept').show();
+              }
               if (eventStart < now) {
                   $('#btn_change, #btn_cancel').prop('disabled', true);
                   if (status === 'ACCEPTED' || status === 'CONFIRMED') {
@@ -632,7 +650,14 @@
           $('.cancel-appointment').hide();
           $('.no-show').hide();
           $('.complete-confirm').hide();
+          $('.accept-confirm').hide();
           $('.action-buttons').show();
+      }
+
+      function onAcceptButtonClick() {
+          $('.event-action').show();
+          $('.accept-confirm').show();
+          $('.action-buttons').hide();
       }
 
       function onCancelButtonClick() {
@@ -688,13 +713,22 @@
               success: function (response) {
                   showToast(response.success, "success");
                   calendar.refetchEvents();
-                  if (actionType === 'complete') {
+                  if (actionType === 'accept') {
+                      selectedAppointment.status = 'ACCEPTED';
+                      $('.accept-confirm').hide();
+                      $('.event-action').hide();
+                      $('#btn_accept').hide();
+                      $('#event_status').html(renderStatusBadge('ACCEPTED'));
+                      initStatusTooltips(document.getElementById('event_status'));
+                      $('.action-buttons').show();
+                  } else if (actionType === 'complete') {
                       selectedAppointment.status = 'COMPLETED';
                       selectedAppointment.total_amount = parseFloat(response.total_amount) || 0;
                       selectedAppointment.paid_amount = selectedAppointment.total_amount;
                       $('.complete-confirm').hide();
                       $('.action-buttons').hide();
-                      $('#event_status').text('COMPLETED');
+                      $('#event_status').html(renderStatusBadge('COMPLETED'));
+                      initStatusTooltips(document.getElementById('event_status'));
                       $('#pay_total').val(selectedAppointment.total_amount);
                       $('#pay_paid').val(selectedAppointment.paid_amount);
                       updateDebtDisplay();

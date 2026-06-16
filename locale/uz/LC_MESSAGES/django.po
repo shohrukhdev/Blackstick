@@ -4052,6 +4052,12 @@ msgstr ""
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
 
+msgid "Accept this appointment and notify the client?"
+msgstr "Ushbu uchrashuvni qabul qilib, mijozga xabar yuborilsinmi?"
+
+msgid "Accept"
+msgstr "Qabul qilish"
+
 msgid "Auto-accept appointments"
 msgstr "Uchrashuvlarni avtomatik qabul qilish"
 
