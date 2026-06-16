@@ -43,7 +43,7 @@ function renderStatusBadge(status) {
     if (!cfg) return status || '';
     const label = cfg.label[STATUS_LANG] || cfg.label['en'];
     const tip   = cfg.tip[STATUS_LANG]   || cfg.tip['en'];
-    return `<span class="badge bg-${cfg.color}">${label}</span>&nbsp;<i class="fas fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="${tip}" style="cursor:help;font-size:.8rem;"></i>`;
+    return `<span class="badge bg-${cfg.color}">${label}</span>&nbsp;<i class="fa-solid fa-circle-info text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="${tip}" style="cursor:help;font-size:.8rem;"></i>`;
 }
 
 function initStatusTooltips(root) {
