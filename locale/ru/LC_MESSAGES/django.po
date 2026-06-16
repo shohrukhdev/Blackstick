@@ -4095,6 +4095,12 @@ msgstr ""
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
 
+msgid "Auto-accept appointments"
+msgstr "Автоматически принимать записи"
+
+msgid "When enabled, new bookings are automatically accepted as soon as the client verifies their OTP. When disabled, each booking must be manually confirmed from the dashboard."
+msgstr "Если включено, новые записи автоматически принимаются после подтверждения OTP клиентом. Если выключено, каждую запись нужно вручную подтвердить из панели управления."
+
 #~ msgid ""
 #~ "Online booking system for salons, clinics and studios. Works 24/7, sends "
 #~ "SMS reminders, shows your analytics."

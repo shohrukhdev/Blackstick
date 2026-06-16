@@ -62,7 +62,7 @@
                   <label class="form-label">{% trans "Off days" %}</label>
                   <div>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="checkbox" id="mon" name="mon" value="yes" 
+                      <input class="form-check-input" type="checkbox" id="mon" name="mon" value="yes"
                             {% if 1 in p_server.get_off_days %} checked {% endif %}>
                       <label class="form-check-label" for="mon">{% trans 'Mon' %}</label>
                     </div>
@@ -97,6 +97,22 @@
                       <label class="form-check-label" for="wed">{% trans 'Sun' %}</label>
                     </div>
                   <!-- Add more checkboxes as needed -->
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="auto_accept" name="auto_accept" value="yes"
+                           {% if p_server.provider.auto_accept %}checked{% endif %}>
+                    <label class="form-check-label" for="auto_accept">
+                      {% trans "Auto-accept appointments" %}
+                      <span
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        title="{% trans 'When enabled, new bookings are automatically accepted as soon as the client verifies their OTP. When disabled, each booking must be manually confirmed from the dashboard.' %}"
+                        style="cursor:help; color: #6c757d; margin-left:4px;">
+                        <i class="fas fa-info-circle"></i>
+                      </span>
+                    </label>
                   </div>
                 </div>
               </div>
@@ -199,6 +215,9 @@
 <script>
   $(document).ready(function () {
       activateNavItem("my_config");
+      document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+          new bootstrap.Tooltip(el);
+      });
   });
 </script>
 {% endblock %}

@@ -4101,6 +4101,12 @@ msgstr ""
 msgid "'{value}' value must be a valid Hashids string."
 msgstr ""
 
+msgid "Auto-accept appointments"
+msgstr "Auto-accept appointments"
+
+msgid "When enabled, new bookings are automatically accepted as soon as the client verifies their OTP. When disabled, each booking must be manually confirmed from the dashboard."
+msgstr "When enabled, new bookings are automatically accepted as soon as the client verifies their OTP. When disabled, each booking must be manually confirmed from the dashboard."
+
 #~ msgid "Top 5 Clients (Completed Appointments)"
 #~ msgstr "Top 5 Clients (Completed Appointments)"
 

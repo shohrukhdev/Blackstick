@@ -202,11 +202,15 @@ def configs(request):
             user.last_name = request.POST.get("last_name")
             user.email = request.POST.get("email")
 
+            provider = p_server.provider
+            provider.auto_accept = request.POST.get("auto_accept") == "yes"
+
             try:
                 p_server.save()
                 user.save()
+                provider.save(update_fields=["auto_accept"])
                 messages.success(request, "Settings updated successfully.")
-                return redirect(reverse("dashboard_config"))  # Redirect to an appropriate page after saving
+                return redirect(reverse("dashboard_config"))
             except Exception as e:
                 logger.exception("View error")
                 messages.error(request, f"Error updating settings: {str(e)}")
