@@ -1,0 +1,53 @@
+{% load i18n %}
+const STATUS_LANG = '{{ LANG_CODE }}';
+const STATUS_CONFIG = {
+    NEW:       { label: {uz: 'Yangi',           ru: 'Новый',       en: 'New'},
+                 color: 'secondary',
+                 tip:   {uz: 'Mijoz yozildi, lekin OTP orqali tasdiqlamadi.',
+                         ru: 'Клиент записался, но ещё не подтвердил через OTP.',
+                         en: 'Client booked but has not verified via OTP yet.'} },
+    CONFIRMED: { label: {uz: 'Tasdiqlangan',    ru: 'Подтверждён', en: 'Confirmed'},
+                 color: 'info text-dark',
+                 tip:   {uz: 'OTP tasdiqlandi. Mutaxassis qabul qilishini kutmoqda.',
+                         ru: 'OTP подтверждён. Ожидает принятия специалистом.',
+                         en: 'OTP verified. Waiting for specialist to accept.'} },
+    ACCEPTED:  { label: {uz: 'Qabul qilingan', ru: 'Принят',       en: 'Accepted'},
+                 color: 'primary',
+                 tip:   {uz: 'Mutaxassis uchrashuvni qabul qildi.',
+                         ru: 'Специалист принял эту запись.',
+                         en: 'Specialist accepted this appointment.'} },
+    COMPLETED: { label: {uz: 'Yakunlangan',     ru: 'Завершён',    en: 'Completed'},
+                 color: 'success',
+                 tip:   {uz: 'Uchrashuv muvaffaqiyatli yakunlandi.',
+                         ru: 'Приём успешно завершён.',
+                         en: 'Appointment has been completed.'} },
+    REJECTED:  { label: {uz: 'Rad etilgan',     ru: 'Отклонён',    en: 'Rejected'},
+                 color: 'danger',
+                 tip:   {uz: 'Mutaxassis uchrashuvni rad etdi.',
+                         ru: 'Специалист отклонил эту запись.',
+                         en: 'Specialist declined this appointment.'} },
+    CANCELLED: { label: {uz: 'Bekor qilingan',  ru: 'Отменён',     en: 'Cancelled'},
+                 color: 'warning text-dark',
+                 tip:   {uz: 'Uchrashuv bekor qilindi.',
+                         ru: 'Запись была отменена.',
+                         en: 'Appointment was cancelled.'} },
+    NO_SHOW:   { label: {uz: 'Kelmadi',         ru: 'Не явился',   en: 'No-show'},
+                 color: 'dark',
+                 tip:   {uz: 'Mijoz uchrashuvga kelmadi.',
+                         ru: 'Клиент не явился на приём.',
+                         en: 'Client did not show up.'} },
+};
+
+function renderStatusBadge(status) {
+    const cfg = STATUS_CONFIG[status];
+    if (!cfg) return status || '';
+    const label = cfg.label[STATUS_LANG] || cfg.label['en'];
+    const tip   = cfg.tip[STATUS_LANG]   || cfg.tip['en'];
+    return `<span class="badge bg-${cfg.color}">${label}</span>&nbsp;<i class="fas fa-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="${tip}" style="cursor:help;font-size:.8rem;"></i>`;
+}
+
+function initStatusTooltips(root) {
+    (root || document).querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+        bootstrap.Tooltip.getOrCreateInstance(el);
+    });
+}
