@@ -1,5 +1,6 @@
 {% load i18n %}
-const STATUS_LANG = '{{ LANG_CODE }}';
+{% get_current_language as CURRENT_LANG %}
+const STATUS_LANG = '{{ CURRENT_LANG }}'.split('-')[0];
 const STATUS_CONFIG = {
     NEW:       { label: {uz: 'Yangi',           ru: 'Новый',       en: 'New'},
                  color: 'secondary',
@@ -43,7 +44,7 @@ function renderStatusBadge(status) {
     if (!cfg) return status || '';
     const label = cfg.label[STATUS_LANG] || cfg.label['en'];
     const tip   = cfg.tip[STATUS_LANG]   || cfg.tip['en'];
-    return `<span class="badge bg-${cfg.color}">${label}</span>&nbsp;<i class="fa-solid fa-circle-info text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="${tip}" style="cursor:help;font-size:.8rem;"></i>`;
+    return `<span class="badge bg-${cfg.color}">${label}</span>&nbsp;<span class="text-muted" data-bs-toggle="tooltip" data-bs-placement="top" title="${tip}" style="cursor:help;font-size:.85rem;display:inline-block;"><i class="fa-solid fa-circle-info"></i></span>`;
 }
 
 function initStatusTooltips(root) {
