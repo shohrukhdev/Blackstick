@@ -54,17 +54,17 @@
                 {% endif %}
                 id="currentFlag" alt="Flag" style="width:100%; height:auto;">
             </div>
-            <span id="currentLang">{{ LANG_CODE }}</span>
+            <span id="currentLang">{% if LANG_CODE == 'uz' %}O'zbek{% elif LANG_CODE == 'ru' %}Русский{% else %}English{% endif %}</span>
           </button>
 
           <div class="lang-dropdown" id="langDropdown">
-            <div class="lang-option" data-lang="UZ" data-flag="{% static 'design/images/uzbekistan.svg' %}">
-              <img src="{% static 'design/images/uzbekistan.svg' %}" alt="Uzbek Flag"> Uzbek
+            <div class="lang-option" data-lang="UZ" data-name="O'zbek" data-flag="{% static 'design/images/uzbekistan.svg' %}">
+              <img src="{% static 'design/images/uzbekistan.svg' %}" alt="Uzbek Flag"> O'zbek
             </div>
-            <div class="lang-option" data-lang="RU" data-flag="{% static 'design/images/russia.svg' %}">
-              <img src="{% static 'design/images/russia.svg' %}" alt="Russian Flag"> Russian
+            <div class="lang-option" data-lang="RU" data-name="Русский" data-flag="{% static 'design/images/russia.svg' %}">
+              <img src="{% static 'design/images/russia.svg' %}" alt="Russian Flag"> Русский
             </div>
-            <div class="lang-option" data-lang="EN" data-flag="{% static 'design/images/usa.svg' %}">
+            <div class="lang-option" data-lang="EN" data-name="English" data-flag="{% static 'design/images/usa.svg' %}">
               <img src="{% static 'design/images/usa.svg' %}" alt="English Flag"> English
             </div>
           </div>

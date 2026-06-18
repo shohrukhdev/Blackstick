@@ -135,8 +135,9 @@ function toggleLanguageDropdown() {
 
 function handleLanguageChange() {
     const lang = $(this).data("lang").toLowerCase();
+    const name = $(this).data("name");
     const flag = $(this).data("flag");
-    $("#currentLang").text(lang);
+    $("#currentLang").text(name);
     $("#currentFlag").attr("src", flag);
     $("#langDropdown").removeClass("show");
     $("#cur_lang").val(lang);
