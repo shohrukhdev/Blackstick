@@ -278,6 +278,7 @@ class PaymentRecord(models.Model):
         Order, on_delete=models.SET_NULL, null=True, blank=True, related_name='payment_records'
     )
     amount = models.DecimalField(max_digits=12, decimal_places=2)
+    balance_after = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     notes = models.TextField(blank=True, default='')
     date = models.DateField(db_index=True)
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='payment_records_created')
@@ -313,6 +314,9 @@ class Invoice(models.Model):
     invoice_number = models.CharField(max_length=20, unique=True, editable=False)
     order = models.OneToOneField(
         Order, on_delete=models.CASCADE, related_name='invoice', null=True, blank=True
+    )
+    payment = models.OneToOneField(
+        'PaymentRecord', on_delete=models.CASCADE, related_name='receipt', null=True, blank=True
     )
     type = models.CharField(max_length=20, choices=InvoiceType.CHOICES, default=InvoiceType.ORDER)
     pdf_file = models.FileField(upload_to='invoices/', null=True, blank=True)

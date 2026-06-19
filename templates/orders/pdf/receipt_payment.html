@@ -1,0 +1,284 @@
+{% load orders_tags %}<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<style>
+  @page {
+    size: A5;
+    margin: 16mm 16mm 16mm 16mm;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid #1a1a2e;
+  }
+
+  .supplier-logo {
+    max-height: 48px;
+    max-width: 120px;
+    object-fit: contain;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .supplier-name {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #1a1a2e;
+  }
+
+  .supplier-meta {
+    margin-top: 3px;
+    font-size: 8.5pt;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .receipt-title-block {
+    text-align: right;
+    flex-shrink: 0;
+    margin-left: 20px;
+  }
+
+  .receipt-title {
+    font-size: 16pt;
+    font-weight: bold;
+    color: #1a1a2e;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .receipt-meta {
+    margin-top: 6px;
+    font-size: 8.5pt;
+    color: #555;
+    line-height: 1.7;
+  }
+
+  .receipt-meta strong {
+    color: #1a1a1a;
+  }
+
+  /* ── Parties ── */
+  .parties {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .party-block {
+    flex: 1;
+    background: #f8f9fc;
+    border: 1px solid #e2e6ee;
+    border-radius: 4px;
+    padding: 9px 11px;
+  }
+
+  .party-label {
+    font-size: 7pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #888;
+    margin-bottom: 4px;
+  }
+
+  .party-name {
+    font-size: 10.5pt;
+    font-weight: bold;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+  }
+
+  .party-detail {
+    font-size: 8.5pt;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  /* ── Payment summary box ── */
+  .summary-box {
+    border: 1px solid #e2e6ee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 14px;
+    border-bottom: 1px solid #f0f2f7;
+    font-size: 9.5pt;
+  }
+
+  .summary-row:last-child {
+    border-bottom: none;
+  }
+
+  .summary-label {
+    color: #555;
+  }
+
+  .summary-value {
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+
+  .summary-row.payment-amount {
+    background: #1a1a2e;
+  }
+
+  .summary-row.payment-amount .summary-label,
+  .summary-row.payment-amount .summary-value {
+    color: #fff;
+    font-size: 11pt;
+    font-weight: bold;
+  }
+
+  .summary-row.balance-after {
+    background: #f0fdf4;
+  }
+
+  .summary-row.balance-after .summary-value {
+    color: #166534;
+  }
+
+  /* ── Notes ── */
+  .notes-section {
+    margin-bottom: 18px;
+  }
+
+  .section-label {
+    font-size: 7.5pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: #888;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e2e6ee;
+  }
+
+  .notes-text {
+    font-size: 9pt;
+    color: #444;
+    line-height: 1.5;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 24px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e6ee;
+    font-size: 8pt;
+    color: #888;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <div>
+    {% if logo_path %}
+    <img src="{{ logo_path }}" class="supplier-logo" alt="{{ supplier.business_name }}">
+    {% endif %}
+    <div class="supplier-name">{{ supplier.business_name }}</div>
+    <div class="supplier-meta">
+      {% if supplier.phone %}{{ supplier.phone }}<br>{% endif %}
+      {% if supplier.address %}{{ supplier.address }}{% endif %}
+    </div>
+  </div>
+  <div class="receipt-title-block">
+    <div class="receipt-title">Kvitansiya</div>
+    <div class="receipt-meta">
+      <strong>№:</strong> {{ invoice.invoice_number }}<br>
+      <strong>Sana:</strong> {{ payment.date|date:"d.m.Y" }}<br>
+      <strong>Vaqt:</strong> {{ payment.created_at|time:"H:i" }}<br>
+    </div>
+  </div>
+</div>
+
+<!-- ── Parties ── -->
+<div class="parties">
+  <div class="party-block">
+    <div class="party-label">Ta'minotchi</div>
+    <div class="party-name">{{ supplier.business_name }}</div>
+    <div class="party-detail">
+      {% if supplier.phone %}Tel: {{ supplier.phone }}<br>{% endif %}
+      {% if supplier.address %}{{ supplier.address }}{% endif %}
+    </div>
+  </div>
+  <div class="party-block">
+    <div class="party-label">Mijoz</div>
+    <div class="party-name">{{ client.company_name }}</div>
+    <div class="party-detail">
+      {% if client.phone %}Tel: {{ client.phone }}<br>{% endif %}
+      {% if client.address %}{{ client.address }}{% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- ── Payment summary ── -->
+<div class="summary-box">
+  {% if balance_before is not None %}
+  <div class="summary-row">
+    <span class="summary-label">To'lovdan oldingi balans</span>
+    <span class="summary-value">{{ balance_before|uz_money }} so'm</span>
+  </div>
+  {% endif %}
+
+  <div class="summary-row payment-amount">
+    <span class="summary-label">To'lov miqdori</span>
+    <span class="summary-value">+{{ payment.amount|uz_money }} so'm</span>
+  </div>
+
+  {% if balance_after is not None %}
+  <div class="summary-row balance-after">
+    <span class="summary-label">To'lovdan keyingi balans</span>
+    <span class="summary-value">{{ balance_after|uz_money }} so'm</span>
+  </div>
+  {% endif %}
+
+  {% if payment.order %}
+  <div class="summary-row">
+    <span class="summary-label">Buyurtma</span>
+    <span class="summary-value">#{{ payment.order_id }}</span>
+  </div>
+  {% endif %}
+</div>
+
+<!-- ── Notes ── -->
+{% if payment.notes %}
+<div class="notes-section">
+  <div class="section-label">Izoh</div>
+  <div class="notes-text">{{ payment.notes }}</div>
+</div>
+{% endif %}
+
+<!-- ── Footer ── -->
+<div class="footer">
+  <div>{{ supplier.business_name }}{% if supplier.phone %} · {{ supplier.phone }}{% endif %}</div>
+  <div>{{ payment.date|date:"d.m.Y" }}</div>
+</div>
+
+</body>
+</html>

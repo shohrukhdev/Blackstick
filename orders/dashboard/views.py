@@ -27,7 +27,8 @@ from orders.services import (
     accept_order, add_orders_to_shipment, adjust_order_item_price, archive_item,
     create_client_manually, create_expense, create_shipment_with_orders, decline_order,
     delete_category, delete_payment, generate_invite, get_active_invites, get_client_balance,
-    get_clients_balance_map, get_expenses, get_or_create_order_invoice, get_supplier_catalog,
+    get_clients_balance_map, get_expenses, get_or_create_order_invoice,
+    get_or_create_payment_receipt, get_supplier_catalog,
     get_supplier_clients, mark_order_paid, unmark_order_paid, reactivate_item, record_payment,
     update_order_note, update_payment, update_shipment_order_status,
 )
@@ -456,6 +457,7 @@ def client_detail(request, pk):
             'notes': p.notes,
             'updateUrl': reverse('orders_dashboard:payment_update', args=[client.pk, p.pk]),
             'deleteUrl': reverse('orders_dashboard:payment_delete', args=[client.pk, p.pk]),
+            'receiptUrl': reverse('orders_dashboard:payment_receipt_download', args=[client.pk, p.pk]),
         }
         for p in payments_list
     ]
@@ -915,6 +917,31 @@ def invoice_download(request, order_pk):
         content_type='application/pdf',
     )
     response['Content-Disposition'] = (
-        f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
+        f'inline; filename="invoice_{invoice.invoice_number}.pdf"'
+    )
+    return response
+
+
+@supplier_required
+def payment_receipt_download(request, client_pk, payment_pk):
+    supplier = request.user.supplier
+    payment = get_object_or_404(
+        PaymentRecord,
+        pk=payment_pk,
+        supplier=supplier,
+        client_id=client_pk,
+    )
+    try:
+        receipt = get_or_create_payment_receipt(payment, generated_by=request.user)
+    except Exception:
+        logger.exception('Receipt generation failed for payment %s', payment_pk)
+        return JsonResponse({'error': "Kvitansiya yaratishda xato yuz berdi."}, status=500)
+
+    response = FileResponse(
+        receipt.pdf_file.open('rb'),
+        content_type='application/pdf',
+    )
+    response['Content-Disposition'] = (
+        f'inline; filename="receipt_{receipt.invoice_number}.pdf"'
     )
     return response

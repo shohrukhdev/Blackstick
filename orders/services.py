@@ -417,13 +417,17 @@ def _sync_shipment_status(shipment):
 # ── Payments ──────────────────────────────────────────────────────────────
 
 
+@transaction.atomic
 def record_payment(supplier, client, amount, notes, date, order=None, created_by=None):
     if amount <= 0:
         raise ValueError("To'lov miqdori musbat bo'lishi kerak.")
+    balance_data = get_client_balance(supplier, client)
+    balance_after = balance_data['balance'] + amount
     return PaymentRecord.objects.create(
         supplier=supplier,
         client=client,
         amount=amount,
+        balance_after=balance_after,
         notes=notes,
         date=date,
         order=order,
@@ -675,6 +679,41 @@ def get_or_create_order_invoice(order, generated_by):
         invoice.generated_by = generated_by
         invoice.save(update_fields=['pdf_file', 'last_generated_at', 'generated_by'])
 
+    return invoice
+
+
+@transaction.atomic
+def get_or_create_payment_receipt(payment, generated_by):
+    """Return an Invoice (type=PAYMENT) for the payment, generating the PDF if needed.
+
+    Always regenerates if no pdf_file is stored yet; otherwise returns the cached PDF.
+    """
+    from django.core.files.base import ContentFile
+
+    from orders.constants import InvoiceType
+    from orders.pdf import generate_payment_receipt
+
+    try:
+        invoice = Invoice.objects.get(payment=payment)
+        if invoice.pdf_file:
+            return invoice
+    except Invoice.DoesNotExist:
+        invoice = Invoice(payment=payment, type=InvoiceType.PAYMENT, generated_by=generated_by)
+        invoice.save()
+
+    pdf_bytes = generate_payment_receipt(payment, invoice)
+    filename = f'receipt_{invoice.invoice_number}_{payment.pk}.pdf'
+
+    if invoice.pdf_file:
+        try:
+            invoice.pdf_file.delete(save=False)
+        except Exception:
+            pass
+
+    invoice.pdf_file.save(filename, ContentFile(pdf_bytes), save=False)
+    invoice.last_generated_at = timezone.now()
+    invoice.generated_by = generated_by
+    invoice.save(update_fields=['pdf_file', 'last_generated_at', 'generated_by'])
     return invoice
 
 

@@ -284,6 +284,7 @@
       <strong>№:</strong> {{ invoice.invoice_number }}<br>
       {% if order.submitted_at %}
       <strong>Sana:</strong> {{ order.submitted_at|date:"d.m.Y" }}<br>
+      <strong>Vaqt:</strong> {{ order.submitted_at|time:"H:i" }}<br>
       {% endif %}
     </div>
   </div>

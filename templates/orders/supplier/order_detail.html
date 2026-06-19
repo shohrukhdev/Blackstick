@@ -27,6 +27,7 @@
       </span>
       {% if order.status == 'ACCEPTED' or order.status == 'IN_SHIPMENT' or order.status == 'DELIVERED' %}
       <a href="{% url 'orders_dashboard:invoice_download' order.pk %}"
+         target="_blank" rel="noopener noreferrer"
          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200
                 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-800
                 text-xs font-medium shadow-sm transition-colors">
@@ -397,7 +398,7 @@
           </span>
         </div>
         <div class="space-y-1 text-sm mb-4">
-          <p class="text-gray-500">Miqdor: <span class="font-semibold text-gray-900">{{ order.paid_amount|floatformat:0 }} so'm</span></p>
+          <p class="text-gray-500">Miqdor: <span class="font-semibold text-gray-900">{{ order.paid_amount|uz_money }} so'm</span></p>
           {% if order.paid_at %}
           <p class="text-gray-500">Sana: <span class="text-gray-700">{{ order.paid_at|date:"d.m.Y H:i" }}</span></p>
           {% endif %}
@@ -416,12 +417,12 @@
         <div class="space-y-2 text-sm mb-4">
           <div class="flex justify-between">
             <span class="text-gray-500">Buyurtma summasi</span>
-            <span class="font-semibold text-gray-900">{{ order.total|floatformat:0 }} so'm</span>
+            <span class="font-semibold text-gray-900">{{ order.total|uz_money }} so'm</span>
           </div>
           <div class="flex justify-between">
             <span class="text-gray-500">Mijoz balansi</span>
             <span class="font-semibold {% if client_balance.balance >= order.total %}text-green-700{% else %}text-red-600{% endif %}">
-              {{ client_balance.balance|floatformat:0 }} so'm
+              {{ client_balance.balance|uz_money }} so'm
             </span>
           </div>
           {% if client_balance.balance < order.total %}
@@ -429,7 +430,7 @@
             <span class="text-red-500 text-xs">Etishmovchi</span>
             <span class="font-semibold text-red-600 text-xs">
               {% widthratio client_balance.balance 1 1 as bal %}
-              {{ order.total|floatformat:0 }} so'm yetmaydi
+              {{ order.total|uz_money }} so'm yetmaydi
             </span>
           </div>
           {% endif %}

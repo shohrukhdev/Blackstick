@@ -61,4 +61,11 @@ urlpatterns = [
 
     # Invoice — Task 14
     path('orders/<int:order_pk>/invoice/', views.invoice_download, name='invoice_download'),
+
+    # Payment receipt
+    path(
+        'clients/<int:client_pk>/payments/<int:payment_pk>/receipt/',
+        views.payment_receipt_download,
+        name='payment_receipt_download',
+    ),
 ]

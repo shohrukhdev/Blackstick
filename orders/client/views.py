@@ -250,6 +250,6 @@ def client_invoice_download(request, order_pk):
         content_type='application/pdf',
     )
     response['Content-Disposition'] = (
-        f'attachment; filename="invoice_{invoice.invoice_number}.pdf"'
+        f'inline; filename="invoice_{invoice.invoice_number}.pdf"'
     )
     return response

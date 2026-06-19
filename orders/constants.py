@@ -70,8 +70,10 @@ class PaymentStatus:
 
 class InvoiceType:
     ORDER = 'ORDER'
+    PAYMENT = 'PAYMENT'
     CHOICES = [
         ('ORDER', 'Buyurtma'),
+        ('PAYMENT', "To'lov kvitansiyasi"),
     ]
 
 
