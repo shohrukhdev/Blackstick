@@ -1,0 +1,144 @@
+{% extends "orders/client/base.html" %}
+{% load orders_tags %}
+{% block title %}To'lovlar{% endblock %}
+
+{% block page_bg %}bg-gradient-to-br from-slate-100 via-white to-blue-50{% endblock %}
+{% block top_bar_class %}bg-white/80 backdrop-blur-xl border-b border-white/50 shadow-sm{% endblock %}
+
+{% block client_content %}
+<div x-data="paymentsPage({{ has_next|yesno:'true,false' }}, {{ next_page }})">
+
+  {# ── Supplier switcher (only shown when client has multiple suppliers) ── #}
+  {% if supplier_links|length > 1 %}
+  <div class="sticky top-14 z-10 bg-white/75 backdrop-blur-xl border-b border-white/50 shadow-sm">
+    <div class="flex gap-1.5 px-4 py-2.5 max-w-2xl mx-auto overflow-x-auto no-scrollbar">
+      {% for link in supplier_links %}
+      <a href="?supplier={{ link.supplier.pk }}"
+         class="shrink-0 px-3.5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 whitespace-nowrap
+                {% if link.supplier.pk == supplier.pk %}
+                  bg-gradient-to-r from-brand-400 to-brand-600 text-white shadow-sm
+                {% else %}
+                  bg-white/70 backdrop-blur-sm border border-gray-200/70 text-gray-600 hover:bg-white hover:border-brand-200 hover:text-brand-600
+                {% endif %}">
+        {{ link.supplier.business_name }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="pb-28 px-4 pt-5 max-w-2xl mx-auto space-y-4">
+
+    {# ── Balance summary card ───────────────────────────────────────────── #}
+    <div class="rounded-2xl overflow-hidden shadow-md">
+      {# Main balance #}
+      <div class="{% if balance.balance > 0 %}bg-gradient-to-br from-emerald-500 to-emerald-600
+                  {% elif balance.balance < 0 %}bg-gradient-to-br from-red-500 to-red-600
+                  {% else %}bg-gradient-to-br from-slate-500 to-slate-600{% endif %}
+                  px-5 py-5 text-white">
+        <p class="text-sm font-medium opacity-80 mb-1">Joriy balans</p>
+        <p class="text-3xl font-bold tracking-tight">
+          {% if balance.balance > 0 %}+{% elif balance.balance < 0 %}&minus;{% endif %}{{ balance.balance|uz_money }}
+          <span class="text-lg font-normal opacity-70 ml-1">so'm</span>
+        </p>
+        {% if balance.pending_total > 0 %}
+        <p class="text-xs mt-2 opacity-75">
+          Kutilayotgan to'lov: {{ balance.pending_total|uz_money }} so'm
+        </p>
+        {% endif %}
+      </div>
+
+      {# Stats row #}
+      <div class="bg-white grid grid-cols-2 divide-x divide-gray-100">
+        <div class="px-4 py-3">
+          <p class="text-xs text-gray-400 mb-0.5">Jami kirim</p>
+          <p class="text-sm font-semibold text-emerald-600">+{{ balance.deposited|uz_money }} so'm</p>
+        </div>
+        <div class="px-4 py-3">
+          <p class="text-xs text-gray-400 mb-0.5">Jami chiqim</p>
+          <p class="text-sm font-semibold text-amber-600">&minus;{{ balance.settled|uz_money }} so'm</p>
+        </div>
+      </div>
+    </div>
+
+    {# ── Ledger history ─────────────────────────────────────────────────── #}
+    <div class="bg-white/85 backdrop-blur-md rounded-2xl border border-white/60 shadow-md overflow-hidden">
+      <div class="px-4 pt-4 pb-1 flex items-center justify-between">
+        <p class="text-sm font-semibold text-gray-700">Operatsiyalar tarixi</p>
+        <p class="text-xs text-gray-400">{{ supplier.business_name }}</p>
+      </div>
+
+      <div id="ledger-list" class="px-4 divide-y divide-gray-100">
+        {% include "orders/client/_payment_entries.html" %}
+      </div>
+
+      {# Load more #}
+      <div class="px-4 pb-4 pt-2">
+        <button x-show="!done"
+                @click="loadMore()"
+                :disabled="loading"
+                class="w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-200
+                       bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200/80
+                       disabled:opacity-50 disabled:cursor-not-allowed">
+          <span x-show="!loading">Ko'proq ko'rsatish</span>
+          <span x-show="loading" class="flex items-center justify-center gap-2">
+            <svg class="h-4 w-4 animate-spin text-brand-500" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+            </svg>
+            Yuklanmoqda...
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function paymentsPage(initialHasNext, initialNextPage) {
+  return {
+    done: !initialHasNext,
+    nextPage: initialNextPage,
+    loading: false,
+    error: false,
+
+    async loadMore() {
+      if (this.loading || this.done) return;
+      this.loading = true;
+      this.error = false;
+
+      try {
+        const params = new URLSearchParams(window.location.search);
+        params.set('page', this.nextPage);
+        params.set('partial', '1');
+
+        const r = await fetch(window.location.pathname + '?' + params.toString());
+        if (!r.ok) throw new Error('Network error');
+        const html = await r.text();
+
+        const tmp = document.createElement('div');
+        tmp.innerHTML = html;
+
+        const meta = tmp.querySelector('#payment-entries-meta');
+        const hasNext = meta?.dataset.hasNext === 'true';
+        const nextPg = parseInt(meta?.dataset.nextPage || (this.nextPage + 1), 10);
+        meta?.remove();
+
+        document.getElementById('ledger-list').insertAdjacentHTML('beforeend', tmp.innerHTML);
+
+        this.done = !hasNext;
+        this.nextPage = nextPg;
+      } catch {
+        this.error = true;
+      } finally {
+        this.loading = false;
+      }
+    },
+  };
+}
+</script>
+{% endblock %}

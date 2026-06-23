@@ -1,6 +1,6 @@
 import logging
 import uuid
-from datetime import timedelta
+from datetime import datetime, time as dt_time, timedelta
 from decimal import Decimal
 
 from django.contrib.auth.models import User
@@ -10,6 +10,7 @@ from django.db.models import (
 )
 from django.db.models.functions import Coalesce
 from django.utils import timezone
+from django.utils.timezone import make_aware
 
 from orders.constants import DeliveryStatus, OrderStatus, PaymentStatus, ShipmentStatus
 from orders.models import (
@@ -611,6 +612,77 @@ def get_clients_balance_map(supplier):
         }
         for cid in all_ids
     }
+
+
+def get_client_ledger_page(supplier, client, page=1, page_size=20):
+    """
+    Merged, paginated ledger for one supplier-client pair.
+    Combines PaymentRecord deposits (+) and PAID Order debits (-), sorted newest first.
+
+    Strategy: fetch `page * page_size` rows from each source (bounded DB queries),
+    merge-sort in Python, then slice the requested page. 4 queries total regardless
+    of page number. Accurate for up to tens of thousands of records; beyond that a
+    materialised ledger table would be the next step.
+
+    Returns (entries: list[dict], has_next: bool).
+    Each entry has: type, date, amount, sign (+1/-1), notes, order_id, balance_after.
+    """
+    limit = page * page_size
+    fallback_dt = make_aware(datetime(2000, 1, 1))
+
+    deposits = list(
+        PaymentRecord.objects
+        .filter(supplier=supplier, client=client)
+        .order_by('-date', '-created_at')
+        .values('id', 'amount', 'date', 'notes', 'balance_after', 'order_id', 'created_at')
+        [:limit]
+    )
+
+    debits = list(
+        Order.objects
+        .filter(supplier=supplier, client=client, payment_status=PaymentStatus.PAID)
+        .order_by('-paid_at')
+        .values('id', 'paid_amount', 'paid_at')
+        [:limit]
+    )
+
+    entries = []
+    for p in deposits:
+        sort_dt = make_aware(datetime.combine(p['date'], dt_time.max))
+        entries.append({
+            'type': 'deposit',
+            'sort_dt': sort_dt,
+            'date': p['date'],
+            'amount': p['amount'],
+            'sign': 1,
+            'notes': p['notes'],
+            'order_id': p['order_id'],
+            'balance_after': p['balance_after'],
+        })
+
+    for o in debits:
+        paid_at = o['paid_at']
+        entries.append({
+            'type': 'order_paid',
+            'sort_dt': paid_at or fallback_dt,
+            'date': paid_at.date() if paid_at else None,
+            'amount': o['paid_amount'],
+            'sign': -1,
+            'notes': '',
+            'order_id': o['id'],
+            'balance_after': None,
+        })
+
+    entries.sort(key=lambda e: e['sort_dt'], reverse=True)
+
+    deposit_count = PaymentRecord.objects.filter(supplier=supplier, client=client).count()
+    debit_count = Order.objects.filter(
+        supplier=supplier, client=client, payment_status=PaymentStatus.PAID
+    ).count()
+    total = deposit_count + debit_count
+
+    start = (page - 1) * page_size
+    return entries[start:start + page_size], total > limit
 
 
 # ── Expenses ──────────────────────────────────────────────────────────────

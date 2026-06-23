@@ -14,7 +14,8 @@ from orders.decorators import ClientLoginRequiredMixin, client_required
 from orders.forms import InviteRegisterForm
 from orders.models import ClientInvite, Order, SupplierClient
 from orders.services import (
-    get_client_catalog, get_client_orders, get_or_create_order_invoice,
+    get_client_balance, get_client_catalog, get_client_ledger_page,
+    get_client_orders, get_or_create_order_invoice,
     register_via_invite, submit_order as _submit_order,
 )
 
@@ -224,6 +225,65 @@ def client_order_detail(request, pk):
 
 
 # ── Invoice — Task 14 ──────────────────────────────────────────────────────
+
+
+_PAYMENT_PAGE_SIZE = 20
+
+
+def _resolve_supplier_for_client(client, request):
+    """Return (supplier, links_qs). supplier is None only if no active links exist."""
+    links = (
+        SupplierClient.objects
+        .filter(client=client, is_active=True)
+        .select_related('supplier')
+        .order_by('supplier__business_name')
+    )
+    if not links.exists():
+        return None, links
+    if links.count() == 1:
+        return links.first().supplier, links
+    supplier_id = request.GET.get('supplier')
+    if supplier_id:
+        try:
+            return links.get(supplier__pk=int(supplier_id)).supplier, links
+        except (SupplierClient.DoesNotExist, ValueError, TypeError):
+            pass
+    return links.first().supplier, links
+
+
+@client_required
+def client_payments(request):
+    client = request.user.client
+    supplier, links = _resolve_supplier_for_client(client, request)
+
+    if supplier is None:
+        return render(request, 'orders/client/no_supplier.html', {'client': client})
+
+    try:
+        page_num = max(1, int(request.GET.get('page', 1)))
+    except (ValueError, TypeError):
+        page_num = 1
+
+    balance = get_client_balance(supplier, client)
+    entries, has_next = get_client_ledger_page(supplier, client, page=page_num, page_size=_PAYMENT_PAGE_SIZE)
+
+    if request.GET.get('partial') == '1':
+        return render(request, 'orders/client/_payment_entries.html', {
+            'entries': entries,
+            'has_next': has_next,
+            'next_page': page_num + 1,
+            'supplier': supplier,
+        })
+
+    return render(request, 'orders/client/payments.html', {
+        'client': client,
+        'supplier': supplier,
+        'supplier_links': links,
+        'balance': balance,
+        'entries': entries,
+        'has_next': has_next,
+        'next_page': 2,
+    })
 
 
 _INVOICE_ALLOWED_STATUSES = {
