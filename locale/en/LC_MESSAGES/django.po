@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-31 15:08+0500\n"
+"POT-Creation-Date: 2026-06-24 11:32+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,34 +17,99 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/booket/client/index.html:5 templates/booket/client/main.html:6
-msgid "Main"
-msgstr "Main"
+#: templates/booket/about.html:9
+msgid "How Booket Works"
+msgstr ""
 
-#: templates/booket/client/index.html:33 templates/booket/client/index.html:558
-#: templates/home.html:17
-msgid "Home"
-msgstr "Home"
+#: templates/booket/about.html:621 templates/booket/about.html:1203
+#: templates/landing/index.html:961 templates/landing/index.html:1482
+#: templates/landing/index.html:1520
+#, fuzzy
+#| msgid "Log Out"
+msgid "Log in"
+msgstr "Log Out"
 
-#: templates/booket/client/index.html:36 templates/booket/client/index.html:559
-#: templates/booket/client/main.html:115
-#: templates/booket/dashboard/dashboard.html:359
-#: templates/booket/provider.html:44 templates/booket/provider.html:79
-#: templates/booket/service_list.html:5 templates/dent/settings/main.html:50
-#: templates/dent/settings/service/list.html:5
-msgid "Services"
-msgstr "Services"
+#: templates/booket/about.html:629
+msgid "Product Tour"
+msgstr ""
 
-#: templates/booket/client/index.html:39 templates/booket/client/index.html:560
-#: templates/booket/client/main.html:188
-msgid "Specialists"
-msgstr "Specialists"
+#: templates/booket/about.html:630
+msgid "See exactly how"
+msgstr ""
 
-#: templates/booket/client/index.html:122
-msgid "Location"
-msgstr "Location"
+#: templates/booket/about.html:630
+msgid "Booket works"
+msgstr ""
 
-#: templates/booket/client/index.html:129 templates/booket/client/main.html:359
+#: templates/booket/about.html:631
+msgid ""
+"A step-by-step walkthrough for business owners, staff, and clients — with "
+"real app screens."
+msgstr ""
+
+#: templates/booket/about.html:633
+#, fuzzy
+#| msgid "Provider"
+msgid "For Providers"
+msgstr "Provider"
+
+#: templates/booket/about.html:634
+msgid "For Staff"
+msgstr ""
+
+#: templates/booket/about.html:635 templates/booket/about.html:978
+#, fuzzy
+#| msgid "Client"
+msgid "For Clients"
+msgstr "Client"
+
+#: templates/booket/about.html:644
+msgid "Business Owners"
+msgstr ""
+
+#: templates/booket/about.html:645
+msgid "Set up and manage your business"
+msgstr ""
+
+#: templates/booket/about.html:646
+msgid "Four steps from registration to receiving your first online booking."
+msgstr ""
+
+#: templates/booket/about.html:653
+msgid "Create your business profile"
+msgstr ""
+
+#: templates/booket/about.html:654
+msgid ""
+"Register your business, set a name and get a unique public URL — your "
+"personal booking page that clients will visit. Upload a photo, add your "
+"address and phone."
+msgstr ""
+
+#: templates/booket/about.html:656
+msgid "Your URL is permanent: booket.uz/your-identifier"
+msgstr ""
+
+#: templates/booket/about.html:657
+msgid "Set your business working hours (open / close time)"
+msgstr ""
+
+#: templates/booket/about.html:658
+msgid "Add a description visible on your public page"
+msgstr ""
+
+#: templates/booket/about.html:669
+#, fuzzy
+#| msgid "First name"
+msgid "Business name"
+msgstr "First name"
+
+#: templates/booket/about.html:673
+msgid "Your booking URL"
+msgstr ""
+
+#: templates/booket/about.html:680 templates/booket/about.html:924
+#: templates/booket/client/index.html:129
 #: templates/booket/dashboard/dashboard.html:55
 #: templates/booket/dashboard/dashboard.html:157
 #: templates/booket/dashboard/history.html:54
@@ -55,27 +120,565 @@ msgstr "Location"
 msgid "Phone"
 msgstr "Phone"
 
+#: templates/booket/about.html:684 templates/booket/provider_edit.html:60
+msgid "Address"
+msgstr "Address"
+
+#: templates/booket/about.html:687
+msgid "Save changes"
+msgstr ""
+
+#: templates/booket/about.html:697
+msgid "Define your service catalog"
+msgstr ""
+
+#: templates/booket/about.html:698
+#, fuzzy
+#| msgid "Service categories"
+msgid "Create service categories (like \\"
+msgstr "Service categories"
+
+#: templates/booket/about.html:700
+msgid "Unlimited service categories and services"
+msgstr ""
+
+#: templates/booket/about.html:701
+msgid "Each service has its own duration (shown in booking slots)"
+msgstr ""
+
+#: templates/booket/about.html:702
+msgid "Staff can override prices for their own appointments"
+msgstr ""
+
+#: templates/booket/about.html:708 templates/booket/about.html:1036
+#, fuzzy
+#| msgid "Email address"
+msgid "Nail Care"
+msgstr "Email address"
+
+#: templates/booket/about.html:709
+#, fuzzy
+#| msgid "Add new service"
+msgid "Add service"
+msgstr "Add new service"
+
+#: templates/booket/about.html:712 templates/booket/about.html:777
+#: templates/booket/about.html:872 templates/booket/about.html:896
+#: templates/booket/about.html:929 templates/booket/about.html:1039
+msgid "Classic Manicure"
+msgstr ""
+
+#: templates/booket/about.html:713 templates/booket/about.html:722
+#: templates/booket/about.html:731 templates/booket/about.html:933
+#: templates/booket/client/main.html:659 templates/booket/client/main.html:700
+msgid "min"
+msgstr "min"
+
+#: templates/booket/about.html:721 templates/booket/about.html:778
+#: templates/booket/about.html:880 templates/booket/about.html:1044
+msgid "Gel Manicure"
+msgstr ""
+
+#: templates/booket/about.html:730 templates/booket/about.html:779
+#: templates/booket/about.html:888 templates/booket/about.html:1049
+msgid "Pedicure"
+msgstr ""
+
+#: templates/booket/about.html:746
+msgid "Add staff and set their schedules"
+msgstr ""
+
+#: templates/booket/about.html:747
+msgid ""
+"Each staff member gets their own schedule: working hours per day, days off, "
+"and a personal list of services they perform — with optional custom pricing."
+msgstr ""
+
+#: templates/booket/about.html:749
+msgid "Set different hours for each day of the week"
+msgstr ""
+
+#: templates/booket/about.html:750
+msgid "Mark specific days as off (fully unavailable)"
+msgstr ""
+
+#: templates/booket/about.html:751
+msgid "Assign only the services this person performs"
+msgstr ""
+
+#: templates/booket/about.html:752
+msgid "Each staff member gets their own personal booking link"
+msgstr ""
+
+#: templates/booket/about.html:761
+#, fuzzy
+#| msgid "Edit Specialist"
+msgid "Nail specialist"
+msgstr "Edit Specialist"
+
+#: templates/booket/about.html:765
+msgid "Working hours"
+msgstr ""
+
+#: templates/booket/about.html:767 templates/booket/about.html:826
+#, fuzzy
+#| msgid "Mon"
+msgid "Mo"
+msgstr "Mon"
+
+#: templates/booket/about.html:768 templates/booket/about.html:827
+#, fuzzy
+#| msgid "Tue"
+msgid "Tu"
+msgstr "Tue"
+
+#: templates/booket/about.html:769 templates/booket/about.html:828
+#, fuzzy
+#| msgid "Wed"
+msgid "We"
+msgstr "Wed"
+
+#: templates/booket/about.html:770 templates/booket/about.html:829
+#, fuzzy
+#| msgid "Thu"
+msgid "Th"
+msgstr "Thu"
+
+#: templates/booket/about.html:771 templates/booket/about.html:830
+#, fuzzy
+#| msgid "Fri"
+msgid "Fr"
+msgstr "Fri"
+
+#: templates/booket/about.html:772 templates/booket/about.html:831
+#, fuzzy
+#| msgid "Sat"
+msgid "Sa"
+msgstr "Sat"
+
+#: templates/booket/about.html:773 templates/booket/about.html:832
+#, fuzzy
+#| msgid "Sun"
+msgid "Su"
+msgstr "Sun"
+
+#: templates/booket/about.html:773
+msgid "Off"
+msgstr ""
+
+#: templates/booket/about.html:775 templates/booket/client/index.html:36
+#: templates/booket/client/index.html:559 templates/booket/client/main.html:423
+#: templates/booket/client/main.html:458 templates/booket/client/main.html:890
+#: templates/booket/dashboard/dashboard.html:370
+#: templates/booket/provider.html:44 templates/booket/provider.html:79
+#: templates/booket/service_list.html:5 templates/dent/settings/main.html:50
+#: templates/dent/settings/service/list.html:5
+msgid "Services"
+msgstr "Services"
+
+#: templates/booket/about.html:790
+msgid "Monitor your business from the dashboard"
+msgstr ""
+
+#: templates/booket/about.html:791
+msgid ""
+"The provider dashboard gives a full picture of your business: revenue, "
+"appointment trends, staff performance, loyal clients, debtors, and no-shows."
+msgstr ""
+
+#: templates/booket/about.html:793
+msgid "Revenue broken down by charged, paid, and outstanding"
+msgstr ""
+
+#: templates/booket/about.html:794
+#, fuzzy
+#| msgid "Appointment confirmed!"
+msgid "Appointment trend chart over any date range"
+msgstr "Appointment confirmed!"
+
+#: templates/booket/about.html:795
+msgid "Top 5 loyal clients and top 5 no-shows"
+msgstr ""
+
+#: templates/booket/about.html:796
+msgid "Per-staff breakdown: appointments, revenue, completion rate"
+msgstr ""
+
+#: templates/booket/about.html:802
+msgid "Business Overview"
+msgstr ""
+
+#: templates/booket/about.html:803
+msgid "Jun 2025"
+msgstr ""
+
+#: templates/booket/about.html:808
+#, fuzzy
+#| msgid "All appointments"
+msgid "Total appointments"
+msgstr "All appointments"
+
+#: templates/booket/about.html:812
+#, fuzzy
+#| msgid "Completed"
+msgid "Completion rate"
+msgstr "Completed"
+
+#: templates/booket/about.html:816
+msgid "Revenue, so'm"
+msgstr ""
+
+#: templates/booket/about.html:820
+#, fuzzy
+#| msgid "New clients"
+msgid "Active clients"
+msgstr "New clients"
+
+#: templates/booket/about.html:824
+#, fuzzy
+#| msgid "All appointments"
+msgid "Appointments this week"
+msgstr "All appointments"
+
+#: templates/booket/about.html:846
+#, fuzzy
+#| msgid "Specialists"
+msgid "Staff & Specialists"
+msgstr "Specialists"
+
+#: templates/booket/about.html:847
+msgid "Your personal workspace"
+msgstr ""
+
+#: templates/booket/about.html:848
+msgid ""
+"Every staff member gets their own dashboard, calendar, and personal booking "
+"link."
+msgstr ""
+
+#: templates/booket/about.html:857
+msgid "Your daily calendar"
+msgstr ""
+
+#: templates/booket/about.html:861
+msgid "Tuesday, June 24"
+msgstr ""
+
+#: templates/booket/about.html:882 templates/booket/about.html:905
+msgid "CONFIRMED"
+msgstr ""
+
+#: templates/booket/about.html:890 templates/booket/about.html:906
+msgid "ACCEPTED"
+msgstr ""
+
+#: templates/booket/about.html:898 templates/booket/about.html:907
+msgid "COMPLETED"
+msgstr ""
+
+#: templates/booket/about.html:903
+msgid "Each appointment has a status lifecycle:"
+msgstr ""
+
+#: templates/booket/about.html:915
+#, fuzzy
+#| msgid "Cancel appointment?"
+msgid "Manage each appointment"
+msgstr "Cancel appointment?"
+
+#: templates/booket/about.html:928
+#, fuzzy
+#| msgid "Services"
+msgid "Service"
+msgstr "Services"
+
+#: templates/booket/about.html:932
+#, fuzzy
+#| msgid "Duration(minutes)"
+msgid "Duration"
+msgstr "Duration(minutes)"
+
+#: templates/booket/about.html:936
+#, fuzzy
+#| msgid "Date birth"
+msgid "Date & time"
+msgstr "Date birth"
+
+#: templates/booket/about.html:937
+msgid "Jun 24, 10:00"
+msgstr ""
+
+#: templates/booket/about.html:940 templates/booket/client/index.html:475
+#: templates/booket/client/index.html:507 templates/booket/client/main.html:794
+#: templates/booket/client/main.html:846
+#: templates/booket/client/server_detail.html:449
+#: templates/booket/client/server_detail.html:476
+msgid "Confirm"
+msgstr "Confirm"
+
+#: templates/booket/about.html:941
+msgid "Reject"
+msgstr ""
+
+#: templates/booket/about.html:946
+msgid "Charged"
+msgstr ""
+
+#: templates/booket/about.html:950
+#: templates/booket/dashboard/dashboard.html:206
+#: templates/booket/dashboard/history.html:100
+#: templates/booket/dashboard/provider_dashboard.html:113
+#: templates/booket/dashboard/provider_history.html:106
+#: templates/dent/treatement.html:751 templates/dent/treatment_edit.html:99
+#: templates/dent/treatment_history.html:41
+#: templates/dent/treatment_info.html:101
+#: templates/dent/treatment_print.html:113
+msgid "Paid"
+msgstr "Paid"
+
+#: templates/booket/about.html:954
+msgid "Outstanding"
+msgstr ""
+
+#: templates/booket/about.html:957
+msgid "Add a private note about this client..."
+msgstr ""
+
+#: templates/booket/about.html:963
+msgid "Your personal booking link"
+msgstr ""
+
+#: templates/booket/about.html:979
+msgid "Book an appointment in under 2 minutes"
+msgstr ""
+
+#: templates/booket/about.html:980
+msgid ""
+"No account needed. Just a name and phone number. Confirm with a one-time SMS "
+"code."
+msgstr ""
+
+#: templates/booket/about.html:990
+msgid "Step 1"
+msgstr ""
+
+#: templates/booket/about.html:991
+msgid "Open the booking page"
+msgstr ""
+
+#: templates/booket/about.html:1002
+#, fuzzy
+#| msgid "Specialists"
+msgid "Choose a specialist"
+msgstr "Specialists"
+
+#: templates/booket/about.html:1006 templates/booket/about.html:1011
+#: templates/booket/about.html:1016
+msgid "Book"
+msgstr ""
+
+#: templates/booket/about.html:1021
+msgid "Client visits the provider's unique URL or scans a QR code."
+msgstr ""
+
+#: templates/booket/about.html:1031
+msgid "Step 2"
+msgstr ""
+
+#: templates/booket/about.html:1032
+#, fuzzy
+#| msgid "services"
+msgid "Choose a service"
+msgstr "services"
+
+#: templates/booket/about.html:1053
+msgid "Only services assigned to that specialist are shown."
+msgstr ""
+
+#: templates/booket/about.html:1063
+msgid "Step 3"
+msgstr ""
+
+#: templates/booket/about.html:1064
+#, fuzzy
+#| msgid "Select date and time!"
+msgid "Pick a date and time"
+msgstr "Select date and time!"
+
+#: templates/booket/about.html:1069
+msgid "June 2025"
+msgstr ""
+
+#: templates/booket/about.html:1096
+msgid "Only truly free slots are shown — taken times are never displayed."
+msgstr ""
+
+#: templates/booket/about.html:1106
+msgid "Step 4"
+msgstr ""
+
+#: templates/booket/about.html:1107
+#, fuzzy
+#| msgid "Confirmation code"
+msgid "Confirm with SMS code"
+msgstr "Confirmation code"
+
+#: templates/booket/about.html:1116
+#, fuzzy
+#| msgid "Code sent to"
+msgid "SMS code sent"
+msgstr "Code sent to"
+
+#: templates/booket/about.html:1125
+msgid "Enter the 4-digit code from your SMS"
+msgstr ""
+
+#: templates/booket/about.html:1126
+#, fuzzy
+#| msgid "Confirm the appointment by"
+msgid "Confirm appointment"
+msgstr "Confirm the appointment by"
+
+#: templates/booket/about.html:1130 templates/booket/client/index.html:490
+#: templates/booket/client/main.html:811
+#: templates/booket/client/server_detail.html:460
+msgid "Appointment confirmed!"
+msgstr "Appointment confirmed!"
+
+#: templates/booket/about.html:1131
+msgid "Jun 24 at 11:30 · Dilnoza K."
+msgstr ""
+
+#: templates/booket/about.html:1134
+msgid "No account or app needed. The OTP prevents fake bookings."
+msgstr ""
+
+#: templates/booket/about.html:1147 templates/landing/index.html:948
+#: templates/landing/index.html:1161 templates/landing/index.html:1514
+msgid "Features"
+msgstr ""
+
+#: templates/booket/about.html:1148
+msgid "Everything built in"
+msgstr ""
+
+#: templates/booket/about.html:1153
+msgid "24/7 Self-booking"
+msgstr ""
+
+#: templates/booket/about.html:1154
+msgid ""
+"Clients can book at 2 AM from any device. No phone call, no waiting. Your "
+"business keeps accepting appointments while you sleep."
+msgstr ""
+
+#: templates/booket/about.html:1158
+msgid "SMS OTP verification"
+msgstr ""
+
+#: templates/booket/about.html:1159
+msgid ""
+"Every booking is confirmed by a one-time SMS code sent to the client's "
+"phone. This eliminates fake appointments and ensures real phone numbers."
+msgstr ""
+
+#: templates/booket/about.html:1163
+msgid "Individual staff schedules"
+msgstr ""
+
+#: templates/booket/about.html:1164
+msgid ""
+"Each staff member has their own working hours, days off, and service list. "
+"Clients only see slots that are actually available for that person."
+msgstr ""
+
+#: templates/booket/about.html:1168
+msgid "Zero double bookings"
+msgstr ""
+
+#: templates/booket/about.html:1169
+msgid ""
+"The system blocks taken slots in real time. Two clients can never be booked "
+"at the same time with the same specialist — it is structurally impossible."
+msgstr ""
+
+#: templates/booket/about.html:1173
+#, fuzzy
+#| msgid "Treatment history"
+msgid "Client history & notes"
+msgstr "Treatment history"
+
+#: templates/booket/about.html:1174
+msgid ""
+"Every visit is recorded. Staff can add private notes and attach files to "
+"each appointment — past records stay accessible for every future visit."
+msgstr ""
+
+#: templates/booket/about.html:1178
+msgid "Analytics dashboard"
+msgstr ""
+
+#: templates/booket/about.html:1179
+msgid ""
+"Track revenue (charged vs paid vs outstanding), completion rates, no-shows, "
+"top clients, and per-staff performance — all filterable by date range."
+msgstr ""
+
+#: templates/booket/about.html:1188
+msgid "Ready to try it for your business?"
+msgstr ""
+
+#: templates/booket/about.html:1189
+msgid "Write to us on Telegram — we'll set up your account personally."
+msgstr ""
+
+#: templates/booket/about.html:1191 templates/landing/index.html:1478
+msgid "Message us on Telegram"
+msgstr ""
+
+#: templates/booket/about.html:1202 templates/booket/client/index.html:33
+#: templates/booket/client/index.html:558 templates/booket/client/main.html:422
+#: templates/booket/client/main.html:457 templates/booket/client/main.html:889
+#: templates/home.html:17
+msgid "Home"
+msgstr "Home"
+
+#: templates/booket/client/index.html:5
+msgid "Main"
+msgstr "Main"
+
+#: templates/booket/client/index.html:39 templates/booket/client/index.html:560
+#: templates/booket/client/main.html:424 templates/booket/client/main.html:459
+#: templates/booket/client/main.html:891
+msgid "Specialists"
+msgstr "Specialists"
+
+#: templates/booket/client/index.html:122
+msgid "Location"
+msgstr "Location"
+
 #: templates/booket/client/index.html:138
 msgid "On media"
 msgstr "On media"
 
-#: templates/booket/client/index.html:170
+#: templates/booket/client/index.html:170 templates/booket/client/main.html:541
 msgid "Our Services"
 msgstr "Our Services"
 
-#: templates/booket/client/index.html:217
+#: templates/booket/client/index.html:217 templates/booket/client/main.html:584
 msgid "Our Specialists"
 msgstr "Our Specialists"
 
-#: templates/booket/client/index.html:248 templates/booket/client/main.html:212
+#: templates/booket/client/index.html:248 templates/booket/client/main.html:479
+#: templates/booket/client/main.html:613
 #: templates/booket/client/server_detail.html:229
-#: templates/landing/index.html:1028
+#: templates/landing/index.html:1027
 msgid "Book appointment"
 msgstr "Book appointment"
 
 #: templates/booket/client/index.html:260
 #: templates/booket/client/index.html:285
-#: templates/booket/client/index.html:326 templates/booket/client/main.html:231
+#: templates/booket/client/index.html:326 templates/booket/client/main.html:639
 #: templates/booket/client/server_detail.html:253
 #: templates/booket/client/server_detail.html:277
 #: templates/booket/client/server_detail.html:316
@@ -84,8 +687,8 @@ msgid "Specialist"
 msgstr "Specialist"
 
 #: templates/booket/client/index.html:272
-#: templates/booket/client/index.html:314 templates/booket/client/main.html:426
-#: templates/booket/client/main.html:432
+#: templates/booket/client/index.html:314 templates/booket/client/main.html:827
+#: templates/booket/client/main.html:837
 #: templates/booket/client/server_detail.html:264
 #: templates/booket/client/server_detail.html:304
 #: templates/dent/treatement.html:380
@@ -93,30 +696,31 @@ msgid "Next"
 msgstr "Next"
 
 #: templates/booket/client/index.html:293
-#: templates/booket/client/index.html:357 templates/booket/client/main.html:326
+#: templates/booket/client/index.html:357 templates/booket/client/main.html:659
+#: templates/booket/client/main.html:699
 #: templates/booket/client/server_detail.html:285
 #: templates/booket/client/server_detail.html:345
 msgid "Estimated duration"
 msgstr "Estimated duration"
 
 #: templates/booket/client/index.html:293
-#: templates/booket/client/index.html:357 templates/booket/client/main.html:304
-#: templates/booket/client/main.html:327
+#: templates/booket/client/index.html:357
 #: templates/booket/client/server_detail.html:285
 #: templates/booket/client/server_detail.html:345
 msgid "minutes"
 msgstr "minutes"
 
 #: templates/booket/client/index.html:312
-#: templates/booket/client/index.html:504 templates/booket/client/main.html:434
-#: templates/booket/client/main.html:437
+#: templates/booket/client/index.html:504 templates/booket/client/main.html:834
+#: templates/booket/client/main.html:844
 #: templates/booket/client/server_detail.html:207
 #: templates/booket/client/server_detail.html:302
 #: templates/booket/client/server_detail.html:474
-#: templates/booket/dashboard/dashboard.html:241
-#: templates/booket/dashboard/dashboard.html:247
-#: templates/booket/dashboard/dashboard.html:253
-#: templates/booket/dashboard/dashboard.html:259
+#: templates/booket/dashboard/dashboard.html:244
+#: templates/booket/dashboard/dashboard.html:250
+#: templates/booket/dashboard/dashboard.html:256
+#: templates/booket/dashboard/dashboard.html:262
+#: templates/booket/dashboard/dashboard.html:268
 #: templates/booket/dashboard/provider_dashboard.html:144
 #: templates/booket/dashboard/provider_dashboard.html:150
 #: templates/booket/dashboard/provider_dashboard.html:156
@@ -139,12 +743,12 @@ msgstr "minutes"
 msgid "Back"
 msgstr "Back"
 
-#: templates/booket/client/index.html:347 templates/booket/client/main.html:290
+#: templates/booket/client/index.html:347 templates/booket/client/main.html:694
 #: templates/booket/client/server_detail.html:336
 msgid "Selected services"
 msgstr "Selected services"
 
-#: templates/booket/client/index.html:361 templates/booket/client/main.html:324
+#: templates/booket/client/index.html:361 templates/booket/client/main.html:703
 #: templates/booket/client/server_detail.html:349
 #: templates/booket/dashboard/dashboard.html:205
 #: templates/booket/dashboard/history.html:99
@@ -159,7 +763,7 @@ msgstr "Selected services"
 msgid "Total"
 msgstr "Total"
 
-#: templates/booket/client/index.html:361
+#: templates/booket/client/index.html:361 templates/booket/client/main.html:704
 #: templates/booket/client/server_detail.html:349
 #: templates/dent/treatment_print.html:99
 #: templates/dent/treatment_print.html:111
@@ -168,29 +772,30 @@ msgstr "Total"
 msgid "sum"
 msgstr "sum"
 
-#: templates/booket/client/index.html:373 templates/booket/client/main.html:343
+#: templates/booket/client/index.html:373 templates/booket/client/main.html:716
 #: templates/booket/client/server_detail.html:359
 msgid "Confirm the appointment by"
 msgstr "Confirm the appointment by"
 
 #: templates/booket/client/index.html:377
-#: templates/booket/client/index.html:386 templates/booket/client/main.html:347
+#: templates/booket/client/index.html:386 templates/booket/client/main.html:719
+#: templates/booket/client/main.html:724
 #: templates/booket/client/server_detail.html:363
 #: templates/booket/client/server_detail.html:372
-#: templates/booket/dashboard/dashboard.html:322
+#: templates/booket/dashboard/dashboard.html:333
 msgid "Phone number"
 msgstr "Phone number"
 
 #: templates/booket/client/index.html:381
 #: templates/booket/client/index.html:405
-#: templates/booket/client/index.html:406 templates/booket/client/main.html:352
-#: templates/booket/client/main.html:355
+#: templates/booket/client/index.html:406 templates/booket/client/main.html:720
+#: templates/booket/client/main.html:734 templates/booket/client/main.html:735
 #: templates/booket/client/server_detail.html:367
 #: templates/booket/client/server_detail.html:382
 #: templates/booket/client/server_detail.html:383
 #: templates/booket/dashboard/dashboard.html:61
 #: templates/booket/dashboard/dashboard.html:162
-#: templates/booket/dashboard/dashboard.html:325
+#: templates/booket/dashboard/dashboard.html:336
 #: templates/booket/dashboard/history.html:59
 #: templates/booket/dashboard/provider_dashboard.html:69
 #: templates/booket/dashboard/provider_history.html:65
@@ -199,23 +804,24 @@ msgstr "Phone number"
 msgid "Email"
 msgstr "Email"
 
-#: templates/booket/client/index.html:398
+#: templates/booket/client/index.html:398 templates/booket/client/main.html:729
 #: templates/booket/client/server_detail.html:377
 msgid "Enter exactly 9 digits after +998"
 msgstr "Enter exactly 9 digits after +998"
 
-#: templates/booket/client/index.html:412
+#: templates/booket/client/index.html:412 templates/booket/client/main.html:742
 #: templates/booket/client/server_detail.html:389
 msgid "Enter client information"
 msgstr "Enter client information"
 
-#: templates/booket/client/index.html:413 templates/booket/client/main.html:366
+#: templates/booket/client/index.html:413 templates/booket/client/main.html:745
 #: templates/booket/client/server_detail.html:390
 msgid "Client information exists."
 msgstr "Client information exists."
 
 #: templates/booket/client/index.html:416
-#: templates/booket/client/index.html:418 templates/booket/client/main.html:373
+#: templates/booket/client/index.html:418 templates/booket/client/main.html:749
+#: templates/booket/client/main.html:750
 #: templates/booket/client/server_detail.html:393
 #: templates/booket/client/server_detail.html:395
 #: templates/dent/add_patient.html:26 templates/dent/edit_patient.html:26
@@ -223,49 +829,49 @@ msgstr "Client information exists."
 msgid "Full name"
 msgstr "Full name"
 
-#: templates/booket/client/index.html:424 templates/booket/client/main.html:379
+#: templates/booket/client/index.html:424 templates/booket/client/main.html:755
 #: templates/booket/client/server_detail.html:401
 msgid "Date of birth"
 msgstr "Date of birth"
 
-#: templates/booket/client/index.html:435 templates/booket/client/main.html:383
+#: templates/booket/client/index.html:435 templates/booket/client/main.html:759
 #: templates/booket/client/server_detail.html:412
 msgid "Gender"
 msgstr "Gender"
 
-#: templates/booket/client/index.html:437 templates/booket/client/main.html:385
+#: templates/booket/client/index.html:437 templates/booket/client/main.html:761
 #: templates/booket/client/server_detail.html:414
 #: templates/dent/add_patient.html:36 templates/dent/edit_patient.html:36
 msgid "Male"
 msgstr "Male"
 
-#: templates/booket/client/index.html:438 templates/booket/client/main.html:386
+#: templates/booket/client/index.html:438 templates/booket/client/main.html:762
 #: templates/booket/client/server_detail.html:415
 #: templates/dent/add_patient.html:37 templates/dent/edit_patient.html:37
 msgid "Female"
 msgstr "Female"
 
-#: templates/booket/client/index.html:444
+#: templates/booket/client/index.html:444 templates/booket/client/main.html:768
 #: templates/booket/client/server_detail.html:421
 msgid "Comments (optional)"
 msgstr "Comments (optional)"
 
-#: templates/booket/client/index.html:452 templates/booket/client/main.html:399
+#: templates/booket/client/index.html:452 templates/booket/client/main.html:774
 #: templates/booket/client/server_detail.html:429
 msgid "Agree to terms of use"
 msgstr "Agree to terms of use"
 
-#: templates/booket/client/index.html:461
+#: templates/booket/client/index.html:461 templates/booket/client/main.html:781
 #: templates/booket/client/server_detail.html:437
 msgid "Enter confirmation code"
 msgstr "Enter confirmation code"
 
-#: templates/booket/client/index.html:462
+#: templates/booket/client/index.html:462 templates/booket/client/main.html:783
 #: templates/booket/client/server_detail.html:438
 msgid "Code sent to"
 msgstr "Code sent to"
 
-#: templates/booket/client/index.html:465
+#: templates/booket/client/index.html:465 templates/booket/client/main.html:786
 #: templates/booket/client/server_detail.html:440
 msgid "Demo code"
 msgstr "Demo code"
@@ -275,133 +881,84 @@ msgstr "Demo code"
 msgid "Confirmation code"
 msgstr "Confirmation code"
 
-#: templates/booket/client/index.html:475
-#: templates/booket/client/index.html:507 templates/booket/client/main.html:401
-#: templates/booket/client/main.html:412
-#: templates/booket/client/server_detail.html:449
-#: templates/booket/client/server_detail.html:476
-msgid "Confirm"
-msgstr "Confirm"
-
-#: templates/booket/client/index.html:478
+#: templates/booket/client/index.html:478 templates/booket/client/main.html:797
 #: templates/booket/client/server_detail.html:451
 msgid "Resend in"
 msgstr "Resend in"
 
-#: templates/booket/client/index.html:478
+#: templates/booket/client/index.html:478 templates/booket/client/main.html:797
 #: templates/booket/client/server_detail.html:451
 msgid "sec"
 msgstr "sec"
 
-#: templates/booket/client/index.html:482
+#: templates/booket/client/index.html:482 templates/booket/client/main.html:800
 #: templates/booket/client/server_detail.html:454
 msgid "Resend code"
 msgstr "Resend code"
 
-#: templates/booket/client/index.html:490
-#: templates/booket/client/server_detail.html:460
-msgid "Appointment confirmed!"
-msgstr "Appointment confirmed!"
-
-#: templates/booket/client/index.html:493
+#: templates/booket/client/index.html:493 templates/booket/client/main.html:814
 #: templates/booket/client/server_detail.html:464
 msgid "Done"
 msgstr "Done"
 
-#: templates/booket/client/index.html:546
+#: templates/booket/client/index.html:546 templates/booket/client/main.html:882
 msgid "Contacts"
 msgstr "Contacts"
 
-#: templates/booket/client/index.html:556
+#: templates/booket/client/index.html:556 templates/booket/client/main.html:887
 msgid "Navigations"
 msgstr "Navigations"
 
-#: templates/booket/client/index.html:569
+#: templates/booket/client/index.html:569 templates/booket/client/main.html:899
 msgid "Location not specified"
 msgstr ""
 
-#: templates/booket/client/index.html:578
+#: templates/booket/client/index.html:578 templates/booket/client/main.html:904
 msgid "All Rights Reserved."
 msgstr "All Rights Reserved."
 
-#: templates/booket/client/index.html:581
+#: templates/booket/client/index.html:581 templates/booket/client/main.html:906
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
-#: templates/booket/client/index.html:583
+#: templates/booket/client/index.html:583 templates/booket/client/main.html:907
 msgid "Terms of Service"
 msgstr "Terms of Service"
 
-#: templates/booket/client/main.html:66
-msgid "Language:"
-msgstr "Language:"
+#: templates/booket/client/main.html:651
+#, fuzzy
+#| msgid "Selected services"
+msgid "Select one or more services"
+msgstr "Selected services"
 
-#: templates/booket/client/main.html:206 templates/booket/client/main.html:559
-msgid "More"
-msgstr "More"
-
-#: templates/booket/client/main.html:246
-msgid "Select date and time!"
-msgstr "Select date and time!"
-
-#: templates/booket/client/main.html:247
-msgid "Estimated service time"
-msgstr "Estimated service time"
-
-#: templates/booket/client/main.html:249
-msgid "min"
-msgstr "min"
-
-#: templates/booket/client/main.html:282
+#: templates/booket/client/main.html:686
 #: templates/booket/dashboard/dashboard.html:45
 #: templates/dent/calendar.html:132 templates/dent/calendar_list.html:48
 #: templates/dent/reception_calendar.html:142
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2529
 msgid "Time"
 msgstr "Time"
 
-#: templates/booket/client/main.html:338
-msgid ""
-"Your appointment confirmed successfully! Please be on time. If you want to "
-"cancel or change appointment please use the link from the SMS or contact the "
-"provider."
+#: templates/booket/client/main.html:690
+#: templates/dent/settings/finance_board.html:97
+#: templates/dent/treatment_edit.html:32
+#: templates/dent/treatment_history.html:37
+#: templates/dent/treatment_info.html:35
+msgid "Date"
+msgstr "Date"
+
+#: templates/booket/client/main.html:1007
+#, fuzzy
+#| msgid "Services"
+msgid "1 / 3 — Services"
+msgstr "Services"
+
+#: templates/booket/client/main.html:1008
+msgid "2 / 3 — Date & Time"
 msgstr ""
 
-#: templates/booket/client/main.html:369
-msgid "Enter client information."
-msgstr "Enter client information."
-
-#: templates/booket/client/main.html:391
-msgid "Comments(optional)"
-msgstr "Comments(optional)"
-
-#: templates/booket/client/main.html:408
-msgid "Confirmation code was sent to"
-msgstr "Confirmation code was sent to"
-
-#: templates/booket/client/main.html:415
-msgid "Resend"
-msgstr "Resend"
-
-#: templates/booket/client/main.html:428
-#: templates/booket/dashboard/dashboard.html:273
-#: templates/booket/dashboard/dashboard.html:379
-#: templates/booket/dashboard/history.html:107
-#: templates/booket/dashboard/provider_dashboard.html:168
-#: templates/booket/dashboard/provider_dashboard.html:217
-#: templates/booket/dashboard/provider_history.html:112
-#: templates/dent/calendar.html:110 templates/dent/calendar.html:138
-#: templates/dent/calendar_list.html:100
-#: templates/dent/reception_calendar.html:120
-#: templates/dent/reception_calendar.html:148
-#: templates/dent/treatment_edit.html:141
-#: templates/dent/treatment_info.html:140
-msgid "Close"
-msgstr "Close"
-
-#: templates/booket/client/main.html:556
-msgid "Less"
-msgstr "Less"
+#: templates/booket/client/main.html:1009
+msgid "3 / 3 — Confirm"
+msgstr ""
 
 #: templates/booket/client/server_detail.html:240
 #, fuzzy
@@ -411,7 +968,7 @@ msgstr "No information provided."
 
 #: templates/booket/container.html:36
 #: templates/booket/dashboard/dashboard.html:5
-#: templates/landing/index.html:1260
+#: templates/landing/index.html:1259
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -495,10 +1052,10 @@ msgstr "Reminder"
 
 #: templates/booket/dashboard/dashboard.html:119
 #: templates/booket/dashboard/dashboard.html:185
-#: templates/booket/dashboard/dashboard.html:380
+#: templates/booket/dashboard/dashboard.html:391
 #: templates/booket/dashboard/history.html:79
-#: templates/booket/dashboard/my_config.html:106
-#: templates/booket/dashboard/my_config.html:180
+#: templates/booket/dashboard/my_config.html:122
+#: templates/booket/dashboard/my_config.html:196
 #: templates/booket/dashboard/provider_dashboard.html:92
 #: templates/booket/dashboard/provider_dashboard.html:215
 #: templates/booket/dashboard/provider_history.html:85
@@ -517,7 +1074,6 @@ msgstr "Save"
 #: templates/dent/settings/dashboard.html:37
 #: templates/dent/settings/service/edit.html:63
 #: templates/dent/settings/user/edit.html:44
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:159
 msgid "Status"
 msgstr "Status"
 
@@ -553,17 +1109,6 @@ msgstr "Files"
 msgid "Payment"
 msgstr "Payments"
 
-#: templates/booket/dashboard/dashboard.html:206
-#: templates/booket/dashboard/history.html:100
-#: templates/booket/dashboard/provider_dashboard.html:113
-#: templates/booket/dashboard/provider_history.html:106
-#: templates/dent/treatement.html:751 templates/dent/treatment_edit.html:99
-#: templates/dent/treatment_history.html:41
-#: templates/dent/treatment_info.html:101
-#: templates/dent/treatment_print.html:113
-msgid "Paid"
-msgstr "Paid"
-
 #: templates/booket/dashboard/dashboard.html:215
 #: templates/booket/dashboard/provider_dashboard.html:121
 msgid "Make sure client has informed about the update!"
@@ -593,205 +1138,227 @@ msgstr "Client didn't come for no reason?"
 msgid "Mark this appointment as completed?"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:239
+#: templates/booket/dashboard/dashboard.html:233
+msgid "Accept this appointment and notify the client?"
+msgstr "Accept this appointment and notify the client?"
+
+#: templates/booket/dashboard/dashboard.html:242
 #: templates/booket/dashboard/provider_dashboard.html:142
 #: templates/booket/provider_edit.html:227 templates/booket/server_edit.html:90
 #: templates/booket/service_type_edit.html:67
 msgid "Update"
 msgstr "Update"
 
-#: templates/booket/dashboard/dashboard.html:245
-#: templates/booket/dashboard/dashboard.html:251
-#: templates/booket/dashboard/dashboard.html:257
+#: templates/booket/dashboard/dashboard.html:248
+#: templates/booket/dashboard/dashboard.html:254
+#: templates/booket/dashboard/dashboard.html:260
+#: templates/booket/dashboard/dashboard.html:266
 #: templates/booket/dashboard/provider_dashboard.html:148
 #: templates/booket/dashboard/provider_dashboard.html:154
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:801
 msgid "Yes"
 msgstr "Yes"
 
-#: templates/booket/dashboard/dashboard.html:263
+#: templates/booket/dashboard/dashboard.html:272
+msgid "Accept"
+msgstr "Accept"
+
+#: templates/booket/dashboard/dashboard.html:274
 #: templates/booket/dashboard/provider_dashboard.html:160
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:463
 msgid "Change"
 msgstr "Change"
 
-#: templates/booket/dashboard/dashboard.html:265
+#: templates/booket/dashboard/dashboard.html:276
 #: templates/booket/dashboard/provider_dashboard.html:162
 #: templates/dent/calendar.html:139 templates/dent/calendar_list.html:46
 #: templates/dent/reception_calendar.html:149
 msgid "Cancel"
 msgstr "Cancel"
 
-#: templates/booket/dashboard/dashboard.html:267
+#: templates/booket/dashboard/dashboard.html:278
 #: templates/booket/dashboard/provider_dashboard.html:164
 msgid "No-show"
 msgstr "No-show"
 
-#: templates/booket/dashboard/dashboard.html:269
+#: templates/booket/dashboard/dashboard.html:280
 #, fuzzy
 #| msgid "Completed"
 msgid "Complete"
 msgstr "Completed"
 
-#: templates/booket/dashboard/dashboard.html:285
+#: templates/booket/dashboard/dashboard.html:284
+#: templates/booket/dashboard/dashboard.html:390
+#: templates/booket/dashboard/history.html:107
+#: templates/booket/dashboard/provider_dashboard.html:168
+#: templates/booket/dashboard/provider_dashboard.html:217
+#: templates/booket/dashboard/provider_history.html:112
+#: templates/dent/calendar.html:110 templates/dent/calendar.html:138
+#: templates/dent/calendar_list.html:100
+#: templates/dent/reception_calendar.html:120
+#: templates/dent/reception_calendar.html:148
+#: templates/dent/treatment_edit.html:141
+#: templates/dent/treatment_info.html:140
+msgid "Close"
+msgstr "Close"
+
+#: templates/booket/dashboard/dashboard.html:296
 #, fuzzy
 #| msgid "Completed Appointments"
 msgid "Create Appointment"
 msgstr "Completed Appointments"
 
-#: templates/booket/dashboard/dashboard.html:294
+#: templates/booket/dashboard/dashboard.html:305
 #: templates/booket/dashboard/provider_dashboard.html:200
 msgid "Guest"
 msgstr "Guest"
 
-#: templates/booket/dashboard/dashboard.html:295
+#: templates/booket/dashboard/dashboard.html:306
 msgid "Existing Client"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:296
+#: templates/booket/dashboard/dashboard.html:307
 #, fuzzy
 #| msgid "New clients"
 msgid "New Client"
 msgstr "New clients"
 
-#: templates/booket/dashboard/dashboard.html:301
+#: templates/booket/dashboard/dashboard.html:312
 msgid "Walk-in / no client record"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:307
+#: templates/booket/dashboard/dashboard.html:318
 msgid "Phone or email…"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:308
+#: templates/booket/dashboard/dashboard.html:319
 msgid "Search"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:319
+#: templates/booket/dashboard/dashboard.html:330
 #, fuzzy
 #| msgid "Full name"
 msgid "Full name *"
 msgstr "Full name"
 
-#: templates/booket/dashboard/dashboard.html:329
+#: templates/booket/dashboard/dashboard.html:340
 msgid "Send OTP to client"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:334
+#: templates/booket/dashboard/dashboard.html:345
 msgid "Enter OTP code"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:335
+#: templates/booket/dashboard/dashboard.html:346
 msgid "Verify"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:340
+#: templates/booket/dashboard/dashboard.html:351
 msgid "Client identity verified"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:348
+#: templates/booket/dashboard/dashboard.html:359
 #: templates/booket/dashboard/provider_dashboard.html:190
 #: templates/booket/dashboard/provider_history.html:55
 msgid "Server"
 msgstr "Server"
 
-#: templates/booket/dashboard/dashboard.html:353
+#: templates/booket/dashboard/dashboard.html:364
 #: templates/booket/dashboard/provider_dashboard.html:203
 msgid "Starts at"
 msgstr "Starts at"
 
-#: templates/booket/dashboard/dashboard.html:359
+#: templates/booket/dashboard/dashboard.html:370
 #, fuzzy
 #| msgid "Location"
 msgid "optional"
 msgstr "Location"
 
-#: templates/booket/dashboard/dashboard.html:366
+#: templates/booket/dashboard/dashboard.html:377
 #: templates/booket/dashboard/provider_dashboard.html:207
 msgid "Ends at"
 msgstr "Ends at"
 
-#: templates/booket/dashboard/dashboard.html:368
+#: templates/booket/dashboard/dashboard.html:379
 msgid "Auto-calculated from selected services"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:371
+#: templates/booket/dashboard/dashboard.html:382
 #: templates/booket/dashboard/provider_dashboard.html:211
 msgid "Comment"
 msgstr "Comment"
 
-#: templates/booket/dashboard/dashboard.html:474
-#: templates/booket/dashboard/provider_dashboard.html:264
+#: templates/booket/dashboard/dashboard.html:486
+#: templates/booket/dashboard/provider_dashboard.html:265
 msgid "Create"
 msgstr "Create"
 
-#: templates/booket/dashboard/dashboard.html:748
-#: templates/booket/dashboard/history.html:241
+#: templates/booket/dashboard/dashboard.html:782
+#: templates/booket/dashboard/history.html:246
 msgid "Amounts cannot be negative."
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:776
-#: templates/booket/dashboard/dashboard.html:841
-#: templates/booket/dashboard/history.html:289
-#: templates/booket/dashboard/history.html:353
-#: templates/booket/dashboard/provider_dashboard.html:505
-#: templates/booket/dashboard/provider_dashboard.html:569
-#: templates/booket/dashboard/provider_history.html:259
-#: templates/booket/dashboard/provider_history.html:323
+#: templates/booket/dashboard/dashboard.html:810
+#: templates/booket/dashboard/dashboard.html:875
+#: templates/booket/dashboard/history.html:294
+#: templates/booket/dashboard/history.html:358
+#: templates/booket/dashboard/provider_dashboard.html:507
+#: templates/booket/dashboard/provider_dashboard.html:571
+#: templates/booket/dashboard/provider_history.html:264
+#: templates/booket/dashboard/provider_history.html:328
 msgid "No files attached."
 msgstr "No files attached."
 
-#: templates/booket/dashboard/dashboard.html:801
-#: templates/booket/dashboard/history.html:314
-#: templates/booket/dashboard/provider_dashboard.html:530
-#: templates/booket/dashboard/provider_history.html:284
+#: templates/booket/dashboard/dashboard.html:835
+#: templates/booket/dashboard/history.html:319
+#: templates/booket/dashboard/provider_dashboard.html:532
+#: templates/booket/dashboard/provider_history.html:289
 msgid "Please select at least one file."
 msgstr "Please select at least one file."
 
-#: templates/booket/dashboard/dashboard.html:879
+#: templates/booket/dashboard/dashboard.html:913
 msgid "No services configured"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:925
+#: templates/booket/dashboard/dashboard.html:959
 msgid "Enter at least 3 characters"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:936
+#: templates/booket/dashboard/dashboard.html:970
 #, fuzzy
 #| msgid "No debtor patients found"
 msgid "No clients found"
 msgstr "No debtor patients found"
 
-#: templates/booket/dashboard/dashboard.html:969
+#: templates/booket/dashboard/dashboard.html:1003
 msgid "Provide phone or email to send OTP"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:985
+#: templates/booket/dashboard/dashboard.html:1019
 msgid "OTP sent to client"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:1006
+#: templates/booket/dashboard/dashboard.html:1040
 #, fuzzy
 #| msgid "Client Name"
 msgid "Client verified"
 msgstr "Client Name"
 
-#: templates/booket/dashboard/dashboard.html:1020
+#: templates/booket/dashboard/dashboard.html:1054
 #, fuzzy
 #| msgid "Start time"
 msgid "Start time is required"
 msgstr "Start time"
 
-#: templates/booket/dashboard/dashboard.html:1036
+#: templates/booket/dashboard/dashboard.html:1070
 #, fuzzy
 #| msgid "Please select at least one file."
 msgid "Please search and select a client first"
 msgstr "Please select at least one file."
 
-#: templates/booket/dashboard/dashboard.html:1043
+#: templates/booket/dashboard/dashboard.html:1077
 msgid "Please verify the client via OTP first"
 msgstr ""
 
-#: templates/booket/dashboard/dashboard.html:1048
+#: templates/booket/dashboard/dashboard.html:1082
 msgid "Client name is required"
 msgstr ""
 
@@ -848,7 +1415,6 @@ msgid "Last name"
 msgstr "Last name"
 
 #: templates/booket/dashboard/my_config.html:42
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1915
 msgid "Email address"
 msgstr "Email address"
 
@@ -867,63 +1433,70 @@ msgstr "Off days"
 #: templates/booket/dashboard/my_config.html:67
 #: templates/booket/dashboard/provider_statistics.html:442
 #: templates/booket/dashboard/statistics.html:370
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:16
 msgid "Mon"
 msgstr "Mon"
 
 #: templates/booket/dashboard/my_config.html:72
 #: templates/booket/dashboard/provider_statistics.html:442
 #: templates/booket/dashboard/statistics.html:370
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:17
 msgid "Tue"
 msgstr "Tue"
 
 #: templates/booket/dashboard/my_config.html:77
 #: templates/booket/dashboard/provider_statistics.html:442
 #: templates/booket/dashboard/statistics.html:370
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:18
 msgid "Wed"
 msgstr "Wed"
 
 #: templates/booket/dashboard/my_config.html:82
 #: templates/booket/dashboard/provider_statistics.html:443
 #: templates/booket/dashboard/statistics.html:371
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:19
 msgid "Thu"
 msgstr "Thu"
 
 #: templates/booket/dashboard/my_config.html:87
 #: templates/booket/dashboard/provider_statistics.html:443
 #: templates/booket/dashboard/statistics.html:371
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:20
 msgid "Fri"
 msgstr "Fri"
 
 #: templates/booket/dashboard/my_config.html:92
 #: templates/booket/dashboard/provider_statistics.html:443
 #: templates/booket/dashboard/statistics.html:371
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:21
 msgid "Sat"
 msgstr "Sat"
 
 #: templates/booket/dashboard/my_config.html:97
 #: templates/booket/dashboard/provider_statistics.html:443
 #: templates/booket/dashboard/statistics.html:371
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:22
 msgid "Sun"
 msgstr "Sun"
 
+#: templates/booket/dashboard/my_config.html:107
+msgid "Auto-accept appointments"
+msgstr "Auto-accept appointments"
+
 #: templates/booket/dashboard/my_config.html:111
+msgid ""
+"When enabled, new bookings are automatically accepted as soon as the client "
+"verifies their OTP. When disabled, each booking must be manually confirmed "
+"from the dashboard."
+msgstr ""
+"When enabled, new bookings are automatically accepted as soon as the client "
+"verifies their OTP. When disabled, each booking must be manually confirmed "
+"from the dashboard."
+
+#: templates/booket/dashboard/my_config.html:127
 msgid "Service settings"
 msgstr "Service settings"
 
-#: templates/booket/dashboard/my_config.html:156
+#: templates/booket/dashboard/my_config.html:172
 #: templates/booket/server_service.html:88 templates/booket/service_add.html:74
 #: templates/booket/service_edit.html:83
 msgid "Base price"
 msgstr "Base price"
 
-#: templates/booket/dashboard/my_config.html:159
+#: templates/booket/dashboard/my_config.html:175
 #: templates/booket/server_service.html:91
 #: templates/booket/service_list.html:53
 #: templates/dent/settings/service/add.html:52
@@ -932,12 +1505,12 @@ msgstr "Base price"
 msgid "Price"
 msgstr "Price"
 
-#: templates/booket/dashboard/my_config.html:166
+#: templates/booket/dashboard/my_config.html:182
 #: templates/booket/server_service.html:98
 msgid "Duration(minutes)"
 msgstr "Duration(minutes)"
 
-#: templates/booket/dashboard/my_config.html:176
+#: templates/booket/dashboard/my_config.html:192
 #: templates/booket/server_service.html:108
 msgid "Service active"
 msgstr "Service active"
@@ -946,7 +1519,7 @@ msgstr "Service active"
 msgid "Provider Dashboard"
 msgstr "Provider Dashboard"
 
-#: templates/booket/dashboard/provider_dashboard.html:650
+#: templates/booket/dashboard/provider_dashboard.html:652
 msgid "Please select a server."
 msgstr "Please select a server."
 
@@ -1246,10 +1819,6 @@ msgstr "Edit provider"
 msgid "Name"
 msgstr "Name"
 
-#: templates/booket/provider_edit.html:60
-msgid "Address"
-msgstr "Address"
-
 #: templates/booket/provider_edit.html:65 templates/booket/service_add.html:70
 #: templates/booket/service_edit.html:78 templates/booket/service_list.html:52
 #: templates/dent/settings/service/add.html:48
@@ -1317,7 +1886,6 @@ msgstr "Link (e.g., https://...)"
 #: templates/booket/provider_photo.html:227
 #: templates/booket/provider_photo.html:245 templates/dent/patient_list.html:12
 #: templates/dent/settings/user/list.html:25
-#: venv/lib/python3.12/site-packages/django/forms/formsets.py:499
 msgid "Delete"
 msgstr "Delete"
 
@@ -1394,7 +1962,6 @@ msgid "Info"
 msgstr "Info"
 
 #: templates/booket/server_edit.html:74
-#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:420
 msgid "Image"
 msgstr "Image"
 
@@ -1700,13 +2267,6 @@ msgstr "Debtor patients"
 msgid "Treatments history"
 msgstr "Treatments history"
 
-#: templates/dent/settings/finance_board.html:97
-#: templates/dent/treatment_edit.html:32
-#: templates/dent/treatment_history.html:37
-#: templates/dent/treatment_info.html:35
-msgid "Date"
-msgstr "Date"
-
 #: templates/dent/settings/finance_board.html:98
 msgid "Total Amount"
 msgstr "Total Amount"
@@ -1953,7 +2513,6 @@ msgid "Treatment history"
 msgstr "Treatment history"
 
 #: templates/dent/treatment_info.html:19
-#: venv/lib/python3.12/site-packages/django/db/models/fields/files.py:244
 msgid "File"
 msgstr "File"
 
@@ -1996,2122 +2555,827 @@ msgid ""
 "Let clients book themselves 24/7. SMS reminders. Staff schedules. Analytics."
 msgstr ""
 
-#: templates/landing/index.html:948 templates/landing/index.html:1162
-#: templates/landing/index.html:1587
-msgid "Features"
-msgstr ""
-
-#: templates/landing/index.html:949 templates/landing/index.html:1589
+#: templates/landing/index.html:949 templates/landing/index.html:1515
 msgid "How it works"
 msgstr ""
 
-#: templates/landing/index.html:950 templates/landing/index.html:1368
-#: templates/landing/index.html:1588
-#, fuzzy
-#| msgid "Price"
-msgid "Pricing"
-msgstr "Price"
-
-#: templates/landing/index.html:962 templates/landing/index.html:1555
-#: templates/landing/index.html:1594
-#, fuzzy
-#| msgid "Log Out"
-msgid "Log in"
-msgstr "Log Out"
-
-#: templates/landing/index.html:977
+#: templates/landing/index.html:976
 msgid "Built for Uzbekistan businesses"
 msgstr ""
 
-#: templates/landing/index.html:980
+#: templates/landing/index.html:979
 msgid "Let clients book themselves"
 msgstr ""
 
-#: templates/landing/index.html:981
+#: templates/landing/index.html:980
 msgid "you focus on your work"
 msgstr ""
 
-#: templates/landing/index.html:984
+#: templates/landing/index.html:983
 msgid ""
 "Online booking system for salons, clinics, studios and any appointment-based "
 "business. Works 24/7, sends SMS reminders, shows your analytics."
 msgstr ""
 
-#: templates/landing/index.html:988
+#: templates/landing/index.html:987
 msgid "Start free for 30 days"
 msgstr ""
 
-#: templates/landing/index.html:991
+#: templates/landing/index.html:990
 msgid "See how it works"
 msgstr ""
 
-#: templates/landing/index.html:995
+#: templates/landing/index.html:994
 msgid "No credit card required"
 msgstr ""
 
-#: templates/landing/index.html:996
+#: templates/landing/index.html:995
 #, fuzzy
 #| msgid "minutes"
 msgid "5-minute setup"
 msgstr "minutes"
 
-#: templates/landing/index.html:997
+#: templates/landing/index.html:996
 msgid "Support in Uzbek"
 msgstr ""
 
-#: templates/landing/index.html:1014
+#: templates/landing/index.html:1013
 #, fuzzy
 #| msgid "services"
 msgid "Choose service"
 msgstr "services"
 
-#: templates/landing/index.html:1021
+#: templates/landing/index.html:1020
 #, fuzzy
 #| msgid "New time"
 msgid "Choose time"
 msgstr "New time"
 
-#: templates/landing/index.html:1045
+#: templates/landing/index.html:1044
 msgid "Always available"
 msgstr ""
 
-#: templates/landing/index.html:1051
+#: templates/landing/index.html:1050
 msgid "Languages (UZ, RU, EN)"
 msgstr ""
 
-#: templates/landing/index.html:1057
+#: templates/landing/index.html:1056
 msgid "Free trial days"
 msgstr ""
 
-#: templates/landing/index.html:1063
+#: templates/landing/index.html:1062
 #, fuzzy
 #| msgid "Start time"
 msgid "Setup time"
 msgstr "Start time"
 
-#: templates/landing/index.html:1073
+#: templates/landing/index.html:1072
 msgid "Hair salons"
 msgstr ""
 
-#: templates/landing/index.html:1074
+#: templates/landing/index.html:1073
 msgid "Dental clinics"
 msgstr ""
 
-#: templates/landing/index.html:1075
+#: templates/landing/index.html:1074
 msgid "Beauty studios"
 msgstr ""
 
-#: templates/landing/index.html:1076
+#: templates/landing/index.html:1075
 msgid "Medical clinics"
 msgstr ""
 
-#: templates/landing/index.html:1077
+#: templates/landing/index.html:1076
 msgid "Fitness trainers"
 msgstr ""
 
-#: templates/landing/index.html:1078
+#: templates/landing/index.html:1077
 msgid "Nail studios"
 msgstr ""
 
-#: templates/landing/index.html:1079
+#: templates/landing/index.html:1078
 #, fuzzy
 #| msgid "Photos"
 msgid "Photo studios"
 msgstr "Photos"
 
-#: templates/landing/index.html:1080
+#: templates/landing/index.html:1079
 msgid "Tattoo & piercing"
 msgstr ""
 
-#: templates/landing/index.html:1081
+#: templates/landing/index.html:1080
 msgid "And more..."
 msgstr ""
 
-#: templates/landing/index.html:1089
+#: templates/landing/index.html:1088
 msgid "The problem"
 msgstr ""
 
-#: templates/landing/index.html:1090
+#: templates/landing/index.html:1089
 msgid "Do these problems sound familiar?"
 msgstr ""
 
-#: templates/landing/index.html:1091
+#: templates/landing/index.html:1090
 msgid ""
 "Most salons and clinics face these daily challenges. Every missed call is a "
 "lost client."
 msgstr ""
 
-#: templates/landing/index.html:1097
+#: templates/landing/index.html:1096
 msgid "Non-stop phone calls"
 msgstr ""
 
-#: templates/landing/index.html:1098
+#: templates/landing/index.html:1097
 msgid ""
 "While serving a client, the phone rings again. If you don't answer, the "
 "booking is lost. If you do, your work stops."
 msgstr ""
 
-#: templates/landing/index.html:1104
+#: templates/landing/index.html:1103
 msgid "Double bookings"
 msgstr ""
 
-#: templates/landing/index.html:1105
+#: templates/landing/index.html:1104
 msgid ""
 "Tracking appointments in a notebook or WhatsApp always leads to mistakes. "
 "Two clients booked at the same time."
 msgstr ""
 
-#: templates/landing/index.html:1111
+#: templates/landing/index.html:1110
 msgid "Clients who don't show up"
 msgstr ""
 
-#: templates/landing/index.html:1112
+#: templates/landing/index.html:1111
 msgid ""
 "The client forgot, didn't come. You're left with empty time you can't "
 "recover. No reminder was sent."
 msgstr ""
 
-#: templates/landing/index.html:1123
+#: templates/landing/index.html:1122
 msgid "The solution"
 msgstr ""
 
-#: templates/landing/index.html:1124
+#: templates/landing/index.html:1123
 msgid "Start in 3 simple steps"
 msgstr ""
 
-#: templates/landing/index.html:1125
+#: templates/landing/index.html:1124
 msgid "From registration to your first online booking — under 15 minutes."
 msgstr ""
 
-#: templates/landing/index.html:1132
+#: templates/landing/index.html:1131
 msgid "Create your business"
 msgstr ""
 
-#: templates/landing/index.html:1133
+#: templates/landing/index.html:1132
 msgid ""
 "Add your salon or clinic name, staff members, services and prices. All in "
 "one place."
 msgstr ""
 
-#: templates/landing/index.html:1141
+#: templates/landing/index.html:1140
 msgid "Share your link"
 msgstr ""
 
-#: templates/landing/index.html:1142
+#: templates/landing/index.html:1141
 msgid ""
 "Send your personal booking link to clients via Instagram, WhatsApp, or add "
 "it to your profile bio."
 msgstr ""
 
-#: templates/landing/index.html:1150
+#: templates/landing/index.html:1149
 msgid "Receive bookings"
 msgstr ""
 
-#: templates/landing/index.html:1151
+#: templates/landing/index.html:1150
 msgid ""
 "Clients book themselves, you get a notification. SMS reminders are sent "
 "automatically. No calls needed."
 msgstr ""
 
-#: templates/landing/index.html:1163
+#: templates/landing/index.html:1162
 msgid "Everything you need in one place"
 msgstr ""
 
-#: templates/landing/index.html:1164
+#: templates/landing/index.html:1163
 msgid ""
 "Built for real businesses in Uzbekistan. Nothing unnecessary, nothing "
 "missing."
 msgstr ""
 
-#: templates/landing/index.html:1170
+#: templates/landing/index.html:1169
 msgid "24/7 Online booking"
 msgstr ""
 
-#: templates/landing/index.html:1171
+#: templates/landing/index.html:1170
 msgid "Clients can book at midnight. You sleep — your business keeps working."
 msgstr ""
 
-#: templates/landing/index.html:1177
+#: templates/landing/index.html:1176
 #, fuzzy
 #| msgid "Reminder"
 msgid "SMS reminders"
 msgstr "Reminder"
 
-#: templates/landing/index.html:1178
+#: templates/landing/index.html:1177
 msgid "Automatic SMS before each appointment. No-shows drop significantly."
 msgstr ""
 
-#: templates/landing/index.html:1184
+#: templates/landing/index.html:1183
 #, fuzzy
 #| msgid "Staff management"
 msgid "Staff schedule management"
 msgstr "Staff management"
 
-#: templates/landing/index.html:1185
+#: templates/landing/index.html:1184
 msgid ""
 "Manage each staff member's schedule, working hours, and days off "
 "individually."
 msgstr ""
 
-#: templates/landing/index.html:1191
+#: templates/landing/index.html:1190
 msgid "Analytics & reports"
 msgstr ""
 
-#: templates/landing/index.html:1192
+#: templates/landing/index.html:1191
 msgid ""
 "Revenue, popular services, top clients, staff performance — see it all at a "
 "glance."
 msgstr ""
 
-#: templates/landing/index.html:1198
+#: templates/landing/index.html:1197
 #, fuzzy
 #| msgid "Treatment history"
 msgid "Client history"
 msgstr "Treatment history"
 
-#: templates/landing/index.html:1199
+#: templates/landing/index.html:1198
 msgid ""
 "Full visit history, notes, and files per client. Know your clients better."
 msgstr ""
 
-#: templates/landing/index.html:1205 templates/landing/index.html:1409
+#: templates/landing/index.html:1204
 #, fuzzy
 #| msgid "Payments"
 msgid "Payment tracking"
 msgstr "Payments"
 
-#: templates/landing/index.html:1206
+#: templates/landing/index.html:1205
 msgid ""
 "Track total charged, amount paid, and outstanding debts per appointment."
 msgstr ""
 
-#: templates/landing/index.html:1230
+#: templates/landing/index.html:1229
 msgid "QR code & links"
 msgstr ""
 
-#: templates/landing/index.html:1231
+#: templates/landing/index.html:1230
 msgid "Your own link — shareable everywhere"
 msgstr ""
 
-#: templates/landing/index.html:1233
+#: templates/landing/index.html:1232
 msgid ""
 "Every provider gets a unique personal booking page. Generate a QR code and "
 "put it anywhere your clients are — online and offline."
 msgstr ""
 
-#: templates/landing/index.html:1236
+#: templates/landing/index.html:1235
 msgid "Business cards"
 msgstr ""
 
-#: templates/landing/index.html:1237
+#: templates/landing/index.html:1236
 msgid "Instagram bio"
 msgstr ""
 
-#: templates/landing/index.html:1238
+#: templates/landing/index.html:1237
 msgid "Shop window sticker"
 msgstr ""
 
-#: templates/landing/index.html:1239
+#: templates/landing/index.html:1238
 msgid "Outdoor ad boards"
 msgstr ""
 
-#: templates/landing/index.html:1240
+#: templates/landing/index.html:1239
 msgid "WhatsApp & Telegram"
 msgstr ""
 
-#: templates/landing/index.html:1241
+#: templates/landing/index.html:1240
 msgid "Flyers & brochures"
 msgstr ""
 
-#: templates/landing/index.html:1246
+#: templates/landing/index.html:1245
 msgid "Individual staff links too."
 msgstr ""
 
-#: templates/landing/index.html:1247
+#: templates/landing/index.html:1246
 msgid ""
 "Each staff member gets their own personal booking link, so clients can go "
 "straight to their favourite specialist."
 msgstr ""
 
-#: templates/landing/index.html:1261
+#: templates/landing/index.html:1260
 msgid "Know your business inside out"
 msgstr ""
 
-#: templates/landing/index.html:1262
+#: templates/landing/index.html:1261
 msgid ""
 "Both providers and staff get their own dashboard tailored to what they need "
 "to see."
 msgstr ""
 
-#: templates/landing/index.html:1272
+#: templates/landing/index.html:1271
 #, fuzzy
 #| msgid "Provider Statistics"
 msgid "Provider analytics"
 msgstr "Provider Statistics"
 
-#: templates/landing/index.html:1273
+#: templates/landing/index.html:1272
 msgid "Business owner view"
 msgstr ""
 
-#: templates/landing/index.html:1277
+#: templates/landing/index.html:1276
 msgid "Revenue: total charged, paid & outstanding debt"
 msgstr ""
 
-#: templates/landing/index.html:1278
+#: templates/landing/index.html:1277
 #, fuzzy
 #| msgid "Appointment confirmed!"
 msgid "Appointment trends over any date range"
 msgstr "Appointment confirmed!"
 
-#: templates/landing/index.html:1279
+#: templates/landing/index.html:1278
 msgid "Top 5 loyal clients by visit count"
 msgstr ""
 
-#: templates/landing/index.html:1280
+#: templates/landing/index.html:1279
 #, fuzzy
 #| msgid "Top 5 Clients (No-Show Appointments)"
 msgid "Top 5 no-show clients"
 msgstr "Top 5 Clients (No-Show Appointments)"
 
-#: templates/landing/index.html:1281
+#: templates/landing/index.html:1280
 msgid "Debtor list (clients with unpaid balances)"
 msgstr ""
 
-#: templates/landing/index.html:1282
+#: templates/landing/index.html:1281
 msgid "Staff performance: appointments, revenue, rate"
 msgstr ""
 
-#: templates/landing/index.html:1283
+#: templates/landing/index.html:1282
 msgid "Busiest days of the week"
 msgstr ""
 
-#: templates/landing/index.html:1284
+#: templates/landing/index.html:1283
 #, fuzzy
 #| msgid "New clients"
 msgid "New vs returning clients breakdown"
 msgstr "New clients"
 
-#: templates/landing/index.html:1295
+#: templates/landing/index.html:1294
 #, fuzzy
 #| msgid "Staff list"
 msgid "Staff analytics"
 msgstr "Staff list"
 
-#: templates/landing/index.html:1296
+#: templates/landing/index.html:1295
 msgid "Individual staff view"
 msgstr ""
 
-#: templates/landing/index.html:1300
+#: templates/landing/index.html:1299
 msgid "Personal calendar: daily & weekly view"
 msgstr ""
 
-#: templates/landing/index.html:1301
+#: templates/landing/index.html:1300
 msgid "Full appointment history with statuses"
 msgstr ""
 
-#: templates/landing/index.html:1302
+#: templates/landing/index.html:1301
 msgid "Client notes and attached files per visit"
 msgstr ""
 
-#: templates/landing/index.html:1303
+#: templates/landing/index.html:1302
 #, fuzzy
 #| msgid "Cancel appointment?"
 msgid "Payment tracking per appointment"
 msgstr "Cancel appointment?"
 
-#: templates/landing/index.html:1304
+#: templates/landing/index.html:1303
 msgid "Personal stats: revenue, visits, completion rate"
 msgstr ""
 
-#: templates/landing/index.html:1305
+#: templates/landing/index.html:1304
 msgid "Top loyal & no-show clients for their schedule"
 msgstr ""
 
-#: templates/landing/index.html:1306
+#: templates/landing/index.html:1305
 msgid "Appointment trends for their own bookings"
 msgstr ""
 
-#: templates/landing/index.html:1307
+#: templates/landing/index.html:1306
 msgid "Busiest days breakdown"
 msgstr ""
 
-#: templates/landing/index.html:1320
+#: templates/landing/index.html:1319
 msgid "Who it's for"
 msgstr ""
 
-#: templates/landing/index.html:1321
+#: templates/landing/index.html:1320
 msgid "Built for everyone in your business"
 msgstr ""
 
-#: templates/landing/index.html:1327
+#: templates/landing/index.html:1326
 msgid "Business owners"
 msgstr ""
 
-#: templates/landing/index.html:1329
+#: templates/landing/index.html:1328
 msgid "Manage multiple staff from one dashboard"
 msgstr ""
 
-#: templates/landing/index.html:1330
+#: templates/landing/index.html:1329
 msgid "See revenue and analytics"
 msgstr ""
 
-#: templates/landing/index.html:1331
+#: templates/landing/index.html:1330
 msgid "Build your client database automatically"
 msgstr ""
 
-#: templates/landing/index.html:1332
+#: templates/landing/index.html:1331
 msgid "Save hours on phone calls every week"
 msgstr ""
 
-#: templates/landing/index.html:1339
+#: templates/landing/index.html:1338
 #, fuzzy
 #| msgid "Specialists"
 msgid "Staff & specialists"
 msgstr "Specialists"
 
-#: templates/landing/index.html:1341
+#: templates/landing/index.html:1340
 msgid "See your own daily and weekly schedule"
 msgstr ""
 
-#: templates/landing/index.html:1342
+#: templates/landing/index.html:1341
 msgid "Client history and personal notes"
 msgstr ""
 
-#: templates/landing/index.html:1343
+#: templates/landing/index.html:1342
 msgid "Clear view of who is coming and when"
 msgstr ""
 
-#: templates/landing/index.html:1344
+#: templates/landing/index.html:1343
 msgid "No phone interruptions during work"
 msgstr ""
 
-#: templates/landing/index.html:1351
+#: templates/landing/index.html:1350
 #, fuzzy
 #| msgid "Client"
 msgid "Clients"
 msgstr "Client"
 
-#: templates/landing/index.html:1353
+#: templates/landing/index.html:1352
 msgid "Book any time, from any device"
 msgstr ""
 
-#: templates/landing/index.html:1354
+#: templates/landing/index.html:1353
 #, fuzzy
 #| msgid "Enter confirmation code"
 msgid "SMS confirmation and reminder"
 msgstr "Enter confirmation code"
 
-#: templates/landing/index.html:1355
+#: templates/landing/index.html:1354
 msgid "Easy cancellation or rescheduling"
 msgstr ""
 
-#: templates/landing/index.html:1356
+#: templates/landing/index.html:1355
 msgid "No account registration required"
 msgstr ""
 
 #: templates/landing/index.html:1369
-msgid "Simple, transparent pricing"
-msgstr ""
-
-#: templates/landing/index.html:1370
-msgid "Start with a free trial. Pay only for what you use. No hidden fees."
-msgstr ""
-
-#: templates/landing/index.html:1377
-msgid "Trial"
-msgstr ""
-
-#: templates/landing/index.html:1378
-msgid "/ 30 days"
-msgstr ""
-
-#: templates/landing/index.html:1379
-msgid "Full access for 30 days. No credit card. Cancel any time."
-msgstr ""
-
-#: templates/landing/index.html:1381
-msgid "All features included"
-msgstr ""
-
-#: templates/landing/index.html:1382
-msgid "Unlimited bookings"
-msgstr ""
-
-#: templates/landing/index.html:1383
-msgid "SMS OTP confirmations"
-msgstr ""
-
-#: templates/landing/index.html:1384
-msgid "Analytics dashboard"
-msgstr ""
-
-#: templates/landing/index.html:1385
-msgid "UZ / RU / EN support"
-msgstr ""
-
-#: templates/landing/index.html:1387
-#, fuzzy
-#| msgid "Start time"
-msgid "Start free trial"
-msgstr "Start time"
-
-#: templates/landing/index.html:1394
-msgid "Most popular"
-msgstr ""
-
-#: templates/landing/index.html:1395
-#, fuzzy
-#| msgid "Calendar"
-msgid "Standard"
-msgstr "Calendar"
-
-#: templates/landing/index.html:1398
-msgid "UZS / server / month"
-msgstr ""
-
-#: templates/landing/index.html:1400
-msgid "+ 700 UZS per completed appointment on top of the base fee."
-msgstr ""
-
-#: templates/landing/index.html:1402
-msgid "Example:"
-msgstr ""
-
-#: templates/landing/index.html:1403
-msgid "1 staff member × 100 appointments = 20,000 + 70,000 = 90,000 UZS/month"
-msgstr ""
-
-#: templates/landing/index.html:1406
-msgid "Everything in Trial"
-msgstr ""
-
-#: templates/landing/index.html:1407
-msgid "Unlimited staff members"
-msgstr ""
-
-#: templates/landing/index.html:1408
-#, fuzzy
-#| msgid "Treatment history"
-msgid "Full client history"
-msgstr "Treatment history"
-
-#: templates/landing/index.html:1410
-#, fuzzy
-#| msgid "No files attached."
-msgid "File attachments"
-msgstr "No files attached."
-
-#: templates/landing/index.html:1412 templates/landing/index.html:1547
-#, fuzzy
-#| msgid "Tooth state"
-msgid "Get started"
-msgstr "Tooth state"
-
-#: templates/landing/index.html:1419
-msgid "Enterprise"
-msgstr ""
-
-#: templates/landing/index.html:1420
-msgid "Custom"
-msgstr ""
-
-#: templates/landing/index.html:1421
-msgid "For businesses with 5 or more active staff members. Negotiated pricing."
-msgstr ""
-
-#: templates/landing/index.html:1423
-msgid "Everything in Standard"
-msgstr ""
-
-#: templates/landing/index.html:1424
-#, fuzzy
-#| msgid "Staff management"
-msgid "5+ staff members"
-msgstr "Staff management"
-
-#: templates/landing/index.html:1425
-msgid "Volume-based discounts"
-msgstr ""
-
-#: templates/landing/index.html:1426
-msgid "Priority support"
-msgstr ""
-
-#: templates/landing/index.html:1427
-msgid "Dedicated onboarding"
-msgstr ""
-
-#: templates/landing/index.html:1429
-#, fuzzy
-#| msgid "Contacts"
-msgid "Contact us"
-msgstr "Contacts"
-
-#: templates/landing/index.html:1442
 msgid "Frequently asked questions"
 msgstr ""
 
-#: templates/landing/index.html:1451
+#: templates/landing/index.html:1378
 msgid "How does the free trial work?"
 msgstr ""
 
-#: templates/landing/index.html:1455
+#: templates/landing/index.html:1382
 msgid ""
 "After registration, you get 30 days of full access with no restrictions. No "
 "credit card is required. After the trial, you choose whether to continue "
 "with the Standard plan."
 msgstr ""
 
-#: templates/landing/index.html:1462
+#: templates/landing/index.html:1389
 msgid "Do clients need to create an account?"
 msgstr ""
 
-#: templates/landing/index.html:1466
+#: templates/landing/index.html:1393
 msgid ""
 "No. Clients book using just their name and phone number, then confirm with a "
 "one-time SMS code. No registration, no app download."
 msgstr ""
 
-#: templates/landing/index.html:1473
+#: templates/landing/index.html:1400
 msgid "How many staff members can I add?"
 msgstr ""
 
-#: templates/landing/index.html:1477
+#: templates/landing/index.html:1404
 msgid ""
 "As many as you need. Each staff member gets their own schedule, services, "
 "and pricing. You pay 20,000 UZS per active staff member per month."
 msgstr ""
 
-#: templates/landing/index.html:1484
+#: templates/landing/index.html:1411
 msgid "Does it work on mobile phones?"
 msgstr ""
 
-#: templates/landing/index.html:1488
+#: templates/landing/index.html:1415
 msgid ""
 "Yes, fully. Both the booking page (for clients) and the management dashboard "
 "(for staff and owners) are mobile-friendly. No app download needed."
 msgstr ""
 
-#: templates/landing/index.html:1495
+#: templates/landing/index.html:1422
 msgid "How is payment handled?"
 msgstr ""
 
-#: templates/landing/index.html:1499
+#: templates/landing/index.html:1426
 msgid ""
 "Currently billing is handled manually — contact us to discuss payment "
 "details. Online payment integration is coming soon."
 msgstr ""
 
-#: templates/landing/index.html:1506
+#: templates/landing/index.html:1433
 msgid "Can I cancel at any time?"
 msgstr ""
 
-#: templates/landing/index.html:1510
+#: templates/landing/index.html:1437
 msgid ""
 "Yes. No contracts, no lock-in. Cancel or pause your account whenever you "
 "want. Your data is always yours."
 msgstr ""
 
-#: templates/landing/index.html:1517
+#: templates/landing/index.html:1444
 msgid "Is my data secure?"
 msgstr ""
 
-#: templates/landing/index.html:1521
+#: templates/landing/index.html:1448
 msgid ""
 "Yes. All data is stored on encrypted servers. Client information and booking "
 "history are only accessible to you and your staff."
 msgstr ""
 
-#: templates/landing/index.html:1528
+#: templates/landing/index.html:1455
 msgid "Is there customer support?"
 msgstr ""
 
-#: templates/landing/index.html:1532
+#: templates/landing/index.html:1459
 msgid ""
 "Yes. Reach us via Telegram for fast support in Uzbek or Russian. We also "
 "help with the initial setup at no extra cost."
 msgstr ""
 
-#: templates/landing/index.html:1548
+#: templates/landing/index.html:1474
+#, fuzzy
+#| msgid "Tooth state"
+msgid "Get started"
+msgstr "Tooth state"
+
+#: templates/landing/index.html:1475
 msgid "Ready to try it?"
 msgstr ""
 
-#: templates/landing/index.html:1549
+#: templates/landing/index.html:1476
 msgid ""
 "Write to us on Telegram — we'll set up your account and walk you through the "
 "first steps personally."
 msgstr ""
 
-#: templates/landing/index.html:1551
-msgid "Message us on Telegram"
-msgstr ""
-
-#: templates/landing/index.html:1554
+#: templates/landing/index.html:1481
 msgid "Or log in if you already have an account:"
 msgstr ""
 
-#: templates/landing/index.html:1565
+#: templates/landing/index.html:1492
 msgid "Stop losing bookings to missed calls"
 msgstr ""
 
-#: templates/landing/index.html:1566
+#: templates/landing/index.html:1493
 msgid "30-day free trial. No card required. Cancel any time."
 msgstr ""
 
-#: templates/landing/index.html:1568
+#: templates/landing/index.html:1495
 msgid "Start for free today"
 msgstr ""
 
-#: templates/landing/index.html:1579
+#: templates/landing/index.html:1506
 msgid "Online booking system for Uzbekistan"
 msgstr ""
 
-#: templates/landing/index.html:1586
+#: templates/landing/index.html:1513
 msgid "Product"
 msgstr ""
 
-#: templates/landing/index.html:1593
+#: templates/landing/index.html:1519
 #, fuzzy
 #| msgid "Discount"
 msgid "Account"
 msgstr "Discount"
 
-#: templates/landing/index.html:1595
+#: templates/landing/index.html:1521
 msgid "Get access"
 msgstr ""
 
-#: templates/landing/index.html:1598
+#: templates/landing/index.html:1524
 #, fuzzy
 #| msgid "Contacts"
 msgid "Contact"
 msgstr "Contacts"
 
-#: templates/landing/index.html:1616
+#: templates/landing/index.html:1542
 #, fuzzy
 #| msgid "All Rights Reserved."
 msgid "All rights reserved."
 msgstr "All Rights Reserved."
 
-#: templates/landing/index.html:1617
+#: templates/landing/index.html:1543
 msgid "Made in Uzbekistan"
 msgstr ""
 
-#: venv/lib/python3.12/site-packages/bitfield/admin.py:48
-msgid "All"
-msgstr ""
+#~ msgid "Language:"
+#~ msgstr "Language:"
 
-#: venv/lib/python3.12/site-packages/django/contrib/messages/apps.py:16
-msgid "Messages"
-msgstr ""
+#~ msgid "More"
+#~ msgstr "More"
 
-#: venv/lib/python3.12/site-packages/django/contrib/sitemaps/apps.py:8
-msgid "Site Maps"
-msgstr ""
+#~ msgid "Estimated service time"
+#~ msgstr "Estimated service time"
 
-#: venv/lib/python3.12/site-packages/django/contrib/staticfiles/apps.py:9
+#~ msgid "Enter client information."
+#~ msgstr "Enter client information."
+
+#~ msgid "Comments(optional)"
+#~ msgstr "Comments(optional)"
+
+#~ msgid "Confirmation code was sent to"
+#~ msgstr "Confirmation code was sent to"
+
+#~ msgid "Resend"
+#~ msgstr "Resend"
+
+#~ msgid "Less"
+#~ msgstr "Less"
+
 #, fuzzy
-#| msgid "Save File"
-msgid "Static Files"
-msgstr "Save File"
+#~| msgid "Price"
+#~ msgid "Pricing"
+#~ msgstr "Price"
 
-#: venv/lib/python3.12/site-packages/django/contrib/syndication/apps.py:7
 #, fuzzy
-#| msgid "Location"
-msgid "Syndication"
-msgstr "Location"
+#~| msgid "Start time"
+#~ msgid "Start free trial"
+#~ msgstr "Start time"
 
-#. Translators: String used to replace omitted page numbers in elided page
-#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
-#: venv/lib/python3.12/site-packages/django/core/paginator.py:30
-msgid "…"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/paginator.py:32
-msgid "That page number is not an integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/paginator.py:33
-msgid "That page number is less than 1"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/paginator.py:34
-msgid "That page contains no results"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:22
-msgid "Enter a valid value."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:70
-msgid "Enter a valid domain name."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:152
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:768
-msgid "Enter a valid URL."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:213
-msgid "Enter a valid integer."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:224
 #, fuzzy
-#| msgid "Email address"
-msgid "Enter a valid email address."
-msgstr "Email address"
+#~| msgid "Calendar"
+#~ msgid "Standard"
+#~ msgstr "Calendar"
 
-#. Translators: "letters" means latin letters: a-z and A-Z.
-#: venv/lib/python3.12/site-packages/django/core/validators.py:307
-msgid ""
-"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:315
-msgid ""
-"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
-"hyphens."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:327
-#: venv/lib/python3.12/site-packages/django/core/validators.py:336
-#: venv/lib/python3.12/site-packages/django/core/validators.py:350
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2215
-#, python-format
-msgid "Enter a valid %(protocol)s address."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:329
-msgid "IPv4"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:338
-#: venv/lib/python3.12/site-packages/django/utils/ipv6.py:30
-msgid "IPv6"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:352
-msgid "IPv4 or IPv6"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:393
-msgid "Enter only digits separated by commas."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:399
-#, python-format
-msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:434
-#, python-format
-msgid "Ensure this value is less than or equal to %(limit_value)s."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:443
-#, python-format
-msgid "Ensure this value is greater than or equal to %(limit_value)s."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:452
-#, python-format
-msgid "Ensure this value is a multiple of step size %(limit_value)s."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:459
-#, python-format
-msgid ""
-"Ensure this value is a multiple of step size %(limit_value)s, starting from "
-"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:491
-#, python-format
-msgid ""
-"Ensure this value has at least %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at least %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:509
-#, python-format
-msgid ""
-"Ensure this value has at most %(limit_value)d character (it has "
-"%(show_value)d)."
-msgid_plural ""
-"Ensure this value has at most %(limit_value)d characters (it has "
-"%(show_value)d)."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:532
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:359
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:398
 #, fuzzy
-#| msgid "Phone number"
-msgid "Enter a number."
-msgstr "Phone number"
+#~| msgid "Treatment history"
+#~ msgid "Full client history"
+#~ msgstr "Treatment history"
 
-#: venv/lib/python3.12/site-packages/django/core/validators.py:534
-#, python-format
-msgid "Ensure that there are no more than %(max)s digit in total."
-msgid_plural "Ensure that there are no more than %(max)s digits in total."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:539
-#, python-format
-msgid "Ensure that there are no more than %(max)s decimal place."
-msgid_plural "Ensure that there are no more than %(max)s decimal places."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:544
-#, python-format
-msgid ""
-"Ensure that there are no more than %(max)s digit before the decimal point."
-msgid_plural ""
-"Ensure that there are no more than %(max)s digits before the decimal point."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:615
-#, python-format
-msgid ""
-"File extension “%(extension)s” is not allowed. Allowed extensions are: "
-"%(allowed_extensions)s."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/core/validators.py:677
-msgid "Null characters are not allowed."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/base.py:1571
-#: venv/lib/python3.12/site-packages/django/forms/models.py:908
-msgid "and"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/base.py:1573
-#, python-format
-msgid "%(model_name)s with this %(field_labels)s already exists."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/constraints.py:22
-#, python-format
-msgid "Constraint “%(name)s” is violated."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:134
-#, python-format
-msgid "Value %(value)r is not a valid choice."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:135
-msgid "This field cannot be null."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:136
-msgid "This field cannot be blank."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:137
-#, python-format
-msgid "%(model_name)s with this %(field_label)s already exists."
-msgstr ""
-
-#. Translators: The 'lookup_type' is one of 'date', 'year' or
-#. 'month'. Eg: "Title must be unique for pub_date year"
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:141
-#, python-format
-msgid ""
-"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:180
-#, python-format
-msgid "Field of type: %(field_type)s"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1156
-#, python-format
-msgid "“%(value)s” value must be either True or False."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1157
-#, python-format
-msgid "“%(value)s” value must be either True, False, or None."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1159
-msgid "Boolean (Either True or False)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1209
-#, python-format
-msgid "String (up to %(max_length)s)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1211
-msgid "String (unlimited)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1320
-msgid "Comma-separated integers"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1421
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
-"format."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1425
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1560
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
-"date."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1429
-msgid "Date (without time)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1556
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
-"HH:MM[:ss[.uuuuuu]][TZ] format."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1564
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
-"[TZ]) but it is an invalid date/time."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1569
 #, fuzzy
-#| msgid "Date birth"
-msgid "Date (with time)"
-msgstr "Date birth"
+#~| msgid "No files attached."
+#~ msgid "File attachments"
+#~ msgstr "No files attached."
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1696
-#, python-format
-msgid "“%(value)s” value must be a decimal number."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1698
 #, fuzzy
-#| msgid "Phone number"
-msgid "Decimal number"
-msgstr "Phone number"
+#~| msgid "Staff management"
+#~ msgid "5+ staff members"
+#~ msgstr "Staff management"
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1859
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in [DD] "
-"[[HH:]MM:]ss[.uuuuuu] format."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1863
 #, fuzzy
-#| msgid "Duration(minutes)"
-msgid "Duration"
-msgstr "Duration(minutes)"
+#~| msgid "Contacts"
+#~ msgid "Contact us"
+#~ msgstr "Contacts"
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:1940
 #, fuzzy
-#| msgid "File"
-msgid "File path"
-msgstr "File"
+#~| msgid "Save File"
+#~ msgid "Static Files"
+#~ msgstr "Save File"
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2018
-#, python-format
-msgid "“%(value)s” value must be a float."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2020
-msgid "Floating point number"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2060
-#, python-format
-msgid "“%(value)s” value must be an integer."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2062
-msgid "Integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2158
-msgid "Big (8 byte) integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2175
-msgid "Small integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2183
 #, fuzzy
-#| msgid "Email address"
-msgid "IPv4 address"
-msgstr "Email address"
+#~| msgid "Location"
+#~ msgid "Syndication"
+#~ msgstr "Location"
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2214
 #, fuzzy
-#| msgid "Address"
-msgid "IP address"
-msgstr "Address"
+#~| msgid "Email address"
+#~ msgid "Enter a valid email address."
+#~ msgstr "Email address"
 
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2305
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2306
-#, python-format
-msgid "“%(value)s” value must be either None, True or False."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2308
-msgid "Boolean (Either True, False or None)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2359
-msgid "Positive big integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2374
-msgid "Positive integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2389
-msgid "Positive small integer"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2405
-#, python-format
-msgid "Slug (up to %(max_length)s)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2441
-msgid "Text"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2521
-#, python-format
-msgid ""
-"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
-"format."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2525
-#, python-format
-msgid ""
-"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
-"invalid time."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2637
-msgid "URL"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2661
-msgid "Raw binary data"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2726
-#, python-format
-msgid "“%(value)s” is not a valid UUID."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/__init__.py:2728
-msgid "Universally unique identifier"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:24
-msgid "A JSON object"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/json.py:26
-msgid "Value must be valid JSON."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:932
-#, python-format
-msgid "%(model)s instance with %(field)s %(value)r does not exist."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:934
-msgid "Foreign Key (type determined by related field)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1228
-msgid "One-to-one relationship"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1285
-#, python-format
-msgid "%(from)s-%(to)s relationship"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1287
-#, python-format
-msgid "%(from)s-%(to)s relationships"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/db/models/fields/related.py:1335
-msgid "Many-to-many relationship"
-msgstr ""
-
-#. Translators: If found as last label character, these punctuation
-#. characters will prevent the default label_suffix to be appended to the label
-#: venv/lib/python3.12/site-packages/django/forms/boundfield.py:185
-msgid ":?.!"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:95
-msgid "This field is required."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:308
 #, fuzzy
-#| msgid "Phone number"
-msgid "Enter a whole number."
-msgstr "Phone number"
+#~| msgid "Phone number"
+#~ msgid "Enter a number."
+#~ msgstr "Phone number"
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:479
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:1260
-msgid "Enter a valid date."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:502
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:1261
-msgid "Enter a valid time."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:529
-msgid "Enter a valid date/time."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:563
 #, fuzzy
-#| msgid "Enter client information."
-msgid "Enter a valid duration."
-msgstr "Enter client information."
+#~| msgid "Phone number"
+#~ msgid "Decimal number"
+#~ msgstr "Phone number"
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:564
-#, python-brace-format
-msgid "The number of days must be between {min_days} and {max_days}."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:633
-msgid "No file was submitted. Check the encoding type on the form."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:634
 #, fuzzy
-#| msgid "No files attached."
-msgid "No file was submitted."
-msgstr "No files attached."
+#~| msgid "File"
+#~ msgid "File path"
+#~ msgstr "File"
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:635
-msgid "The submitted file is empty."
-msgstr ""
+#, fuzzy
+#~| msgid "Email address"
+#~ msgid "IPv4 address"
+#~ msgstr "Email address"
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:637
-#, python-format
-msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
-msgid_plural ""
-"Ensure this filename has at most %(max)d characters (it has %(length)d)."
-msgstr[0] ""
-msgstr[1] ""
+#, fuzzy
+#~| msgid "Address"
+#~ msgid "IP address"
+#~ msgstr "Address"
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:642
-msgid "Please either submit a file or check the clear checkbox, not both."
-msgstr ""
+#, fuzzy
+#~| msgid "Phone number"
+#~ msgid "Enter a whole number."
+#~ msgstr "Phone number"
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:710
-msgid ""
-"Upload a valid image. The file you uploaded was either not an image or a "
-"corrupted image."
-msgstr ""
+#, fuzzy
+#~| msgid "Enter client information."
+#~ msgid "Enter a valid duration."
+#~ msgstr "Enter client information."
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:882
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:968
-#: venv/lib/python3.12/site-packages/django/forms/models.py:1592
-#, python-format
-msgid "Select a valid choice. %(value)s is not one of the available choices."
-msgstr ""
+#, fuzzy
+#~| msgid "No files attached."
+#~ msgid "No file was submitted."
+#~ msgstr "No files attached."
 
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:970
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:1089
-#: venv/lib/python3.12/site-packages/django/forms/models.py:1590
-msgid "Enter a list of values."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:1090
-msgid "Enter a complete value."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:1329
-msgid "Enter a valid UUID."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/fields.py:1359
-msgid "Enter a valid JSON."
-msgstr ""
-
-#. Translators: This is the default suffix added to form field labels
-#: venv/lib/python3.12/site-packages/django/forms/forms.py:94
-msgid ":"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/forms.py:230
-#, python-format
-msgid "(Hidden field %(name)s) %(error)s"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/formsets.py:61
-#, python-format
-msgid ""
-"ManagementForm data is missing or has been tampered with. Missing fields: "
-"%(field_names)s. You may need to file a bug report if the issue persists."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/formsets.py:65
-#, python-format
-msgid "Please submit at most %(num)d form."
-msgid_plural "Please submit at most %(num)d forms."
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/forms/formsets.py:70
 #, fuzzy, python-format
-#| msgid "Please select at least one file."
-msgid "Please submit at least %(num)d form."
-msgid_plural "Please submit at least %(num)d forms."
-msgstr[0] "Please select at least one file."
-msgstr[1] "Please select at least one file."
+#~| msgid "Please select at least one file."
+#~ msgid "Please submit at least %(num)d form."
+#~ msgid_plural "Please submit at least %(num)d forms."
+#~ msgstr[0] "Please select at least one file."
+#~ msgstr[1] "Please select at least one file."
 
-#: venv/lib/python3.12/site-packages/django/forms/formsets.py:484
-#: venv/lib/python3.12/site-packages/django/forms/formsets.py:491
-msgid "Order"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/models.py:901
 #, fuzzy, python-format
-#| msgid "Please select at least one file."
-msgid "Please correct the duplicate data for %(field)s."
-msgstr "Please select at least one file."
+#~| msgid "Please select at least one file."
+#~ msgid "Please correct the duplicate data for %(field)s."
+#~ msgstr "Please select at least one file."
 
-#: venv/lib/python3.12/site-packages/django/forms/models.py:906
-#, python-format
-msgid "Please correct the duplicate data for %(field)s, which must be unique."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/models.py:913
-#, python-format
-msgid ""
-"Please correct the duplicate data for %(field_name)s which must be unique "
-"for the %(lookup)s in %(date_field)s."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/models.py:922
-msgid "Please correct the duplicate values below."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/models.py:1359
-msgid "The inline value did not match the parent instance."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/models.py:1450
-msgid "Select a valid choice. That choice is not one of the available choices."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/models.py:1594
-#, python-format
-msgid "“%(pk)s” is not a valid value."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/utils.py:227
-#, python-format
-msgid ""
-"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
-"may be ambiguous or it may not exist."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:461
-msgid "Clear"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:462
 #, fuzzy
-#| msgid "Currency"
-msgid "Currently"
-msgstr "Currency"
+#~| msgid "Currency"
+#~ msgid "Currently"
+#~ msgstr "Currency"
 
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:800
-msgid "Unknown"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/forms/widgets.py:802
-msgid "No"
-msgstr ""
-
-#. Translators: Please do not add spaces around commas.
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:873
-msgid "yes,no,maybe"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:903
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:920
-#, python-format
-msgid "%(size)d byte"
-msgid_plural "%(size)d bytes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:922
-#, python-format
-msgid "%s KB"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:924
-#, python-format
-msgid "%s MB"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:926
-#, python-format
-msgid "%s GB"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:928
-#, python-format
-msgid "%s TB"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/template/defaultfilters.py:930
-#, python-format
-msgid "%s PB"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:74
-msgid "p.m."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:75
-msgid "a.m."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:80
-msgid "PM"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:81
 #, fuzzy
-#| msgid "NAME"
-msgid "AM"
-msgstr "NAME"
+#~| msgid "NAME"
+#~ msgid "AM"
+#~ msgstr "NAME"
 
-#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:153
-msgid "midnight"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dateformat.py:155
-msgid "noon"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:7
-msgid "Monday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:8
-msgid "Tuesday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:9
-msgid "Wednesday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:10
-msgid "Thursday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:11
-msgid "Friday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:12
-msgid "Saturday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:13
-msgid "Sunday"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:25
-msgid "January"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:26
-msgid "February"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:27
-msgid "March"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:28
-msgid "April"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:29
-msgid "May"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:30
-msgid "June"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:31
-msgid "July"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:32
-msgid "August"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:33
-msgid "September"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:34
-msgid "October"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:35
 #, fuzzy
-#| msgid "Phone number"
-msgid "November"
-msgstr "Phone number"
+#~| msgid "Phone number"
+#~ msgid "November"
+#~ msgstr "Phone number"
 
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:36
-msgid "December"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:39
-msgid "jan"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:40
-msgid "feb"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:41
-msgid "mar"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:42
-msgid "apr"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:43
-msgid "may"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:44
 #, fuzzy
-#| msgid "Sun"
-msgid "jun"
-msgstr "Sun"
+#~| msgid "Sun"
+#~ msgid "jun"
+#~ msgstr "Sun"
 
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:45
-msgid "jul"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:46
-msgid "aug"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:47
 #, fuzzy
-#| msgid "sec"
-msgid "sep"
-msgstr "sec"
+#~| msgid "sec"
+#~ msgid "sep"
+#~ msgstr "sec"
 
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:48
-msgid "oct"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:49
-msgid "nov"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:50
 #, fuzzy
-#| msgid "sec"
-msgid "dec"
-msgstr "sec"
+#~| msgid "sec"
+#~ msgid "dec"
+#~ msgstr "sec"
 
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:53
-msgctxt "abbrev. month"
-msgid "Jan."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:54
-msgctxt "abbrev. month"
-msgid "Feb."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:55
-msgctxt "abbrev. month"
-msgid "March"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:56
-msgctxt "abbrev. month"
-msgid "April"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:57
-msgctxt "abbrev. month"
-msgid "May"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:58
-msgctxt "abbrev. month"
-msgid "June"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:59
-msgctxt "abbrev. month"
-msgid "July"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:60
-msgctxt "abbrev. month"
-msgid "Aug."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:61
-msgctxt "abbrev. month"
-msgid "Sept."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:62
-msgctxt "abbrev. month"
-msgid "Oct."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:63
-msgctxt "abbrev. month"
-msgid "Nov."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:64
-msgctxt "abbrev. month"
-msgid "Dec."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:67
-msgctxt "alt. month"
-msgid "January"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:68
-msgctxt "alt. month"
-msgid "February"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:69
-msgctxt "alt. month"
-msgid "March"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:70
-msgctxt "alt. month"
-msgid "April"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:71
-msgctxt "alt. month"
-msgid "May"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:72
-msgctxt "alt. month"
-msgid "June"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:73
-msgctxt "alt. month"
-msgid "July"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:74
-msgctxt "alt. month"
-msgid "August"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:75
-msgctxt "alt. month"
-msgid "September"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:76
-msgctxt "alt. month"
-msgid "October"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:77
 #, fuzzy
-#| msgid "Phone number"
-msgctxt "alt. month"
-msgid "November"
-msgstr "Phone number"
+#~| msgid "Phone number"
+#~ msgctxt "alt. month"
+#~ msgid "November"
+#~ msgstr "Phone number"
 
-#: venv/lib/python3.12/site-packages/django/utils/dates.py:78
-msgctxt "alt. month"
-msgid "December"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/ipv6.py:8
-msgid "This is not a valid IPv6 address."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/text.py:75
-#, python-format
-msgctxt "String to return when truncating text"
-msgid "%(truncated_text)s…"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/text.py:286
 #, fuzzy
-#| msgid "More"
-msgid "or"
-msgstr "More"
+#~| msgid "More"
+#~ msgid "or"
+#~ msgstr "More"
 
-#. Translators: This string is used as a separator between list elements
-#: venv/lib/python3.12/site-packages/django/utils/text.py:305
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:135
-msgid ", "
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:8
-#, python-format
-msgid "%(num)d year"
-msgid_plural "%(num)d years"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:9
-#, python-format
-msgid "%(num)d month"
-msgid_plural "%(num)d months"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:10
-#, python-format
-msgid "%(num)d week"
-msgid_plural "%(num)d weeks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:11
-#, python-format
-msgid "%(num)d day"
-msgid_plural "%(num)d days"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:12
-#, python-format
-msgid "%(num)d hour"
-msgid_plural "%(num)d hours"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/utils/timesince.py:13
-#, python-format
-msgid "%(num)d minute"
-msgid_plural "%(num)d minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:29
-msgid "Forbidden"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:30
-msgid "CSRF verification failed. Request aborted."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:34
-msgid ""
-"You are seeing this message because this HTTPS site requires a “Referer "
-"header” to be sent by your web browser, but none was sent. This header is "
-"required for security reasons, to ensure that your browser is not being "
-"hijacked by third parties."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:40
-msgid ""
-"If you have configured your browser to disable “Referer” headers, please re-"
-"enable them, at least for this site, or for HTTPS connections, or for “same-"
-"origin” requests."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:45
-msgid ""
-"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
-"including the “Referrer-Policy: no-referrer” header, please remove them. The "
-"CSRF protection requires the “Referer” header to do strict referer checking. "
-"If you’re concerned about privacy, use alternatives like <a "
-"rel=\"noreferrer\" …> for links to third-party sites."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:54
-msgid ""
-"You are seeing this message because this site requires a CSRF cookie when "
-"submitting forms. This cookie is required for security reasons, to ensure "
-"that your browser is not being hijacked by third parties."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:60
-msgid ""
-"If you have configured your browser to disable cookies, please re-enable "
-"them, at least for this site, or for “same-origin” requests."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/csrf.py:66
-msgid "More information is available with DEBUG=True."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:44
-msgid "No year specified"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:64
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:115
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:214
 #, fuzzy
-#| msgid "Date of birth"
-msgid "Date out of range"
-msgstr "Date of birth"
+#~| msgid "Date of birth"
+#~ msgid "Date out of range"
+#~ msgstr "Date of birth"
 
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:94
-msgid "No month specified"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:147
-msgid "No day specified"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:194
-msgid "No week specified"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:349
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:380
-#, python-format
-msgid "No %(verbose_name_plural)s available"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:652
-#, python-format
-msgid ""
-"Future %(verbose_name_plural)s not available because "
-"%(class_name)s.allow_future is False."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/dates.py:692
-#, python-format
-msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/detail.py:56
-#, python-format
-msgid "No %(verbose_name)s found matching the query"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/list.py:70
-msgid "Page is not “last”, nor can it be converted to an int."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/list.py:77
-#, python-format
-msgid "Invalid page (%(page_number)s): %(message)s"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/generic/list.py:169
-#, python-format
-msgid "Empty list and “%(class_name)s.allow_empty” is False."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/static.py:49
-msgid "Directory indexes are not allowed here."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/static.py:51
-#, python-format
-msgid "“%(path)s” does not exist"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/static.py:68
-#: venv/lib/python3.12/site-packages/django/views/templates/directory_index.html:8
-#: venv/lib/python3.12/site-packages/django/views/templates/directory_index.html:11
-#, python-format
-msgid "Index of %(directory)s"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:7
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:204
-msgid "The install worked successfully! Congratulations!"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:206
-#, python-format
-msgid ""
-"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
-"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:208
-#, python-format
-msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" "
-"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
-"configured any URLs."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:217
-msgid "Django Documentation"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:218
-msgid "Topics, references, &amp; how-to’s"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:226
-msgid "Tutorial: A Polling App"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:227
-msgid "Get started with Django"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:235
-msgid "Django Community"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django/views/templates/default_urlconf.html:236
-msgid "Connect, get help, or contribute"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:62
-msgid "Average Duration (sec)"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:81
-msgid "Could not find job {} in the database! Skipping execution..."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:105
-msgid ""
-"Maximum runtime of {} seconds exceeded! Not all jobs could be completed "
-"successfully. Pending jobs: {}"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:124
-msgid "Executed job '{}'!"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:132
-msgid "Run the selected django jobs"
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/admin.py:160
 #, fuzzy
-#| msgid "Duration(minutes)"
-msgid "Duration (sec)"
-msgstr "Duration(minutes)"
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:18
-msgid "Unique id for this job."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:26
-msgid "Date and time at which this job is scheduled to be executed next."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:72
-msgid "Unique ID for this job execution."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:78
-msgid "The job that this execution relates to."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:86
-msgid "The current status of this job execution."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:91
-msgid "Date and time at which this job was executed."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:101
-msgid "Total run time of this job (in seconds)."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:109
-msgid "Timestamp at which this job was finished."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:116
-msgid "Details of exception that occurred during job execution (if any)."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/django_apscheduler/models.py:123
-msgid "Traceback of exception that occurred during job execution (if any)."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/hashid_field/field.py:25
-#, python-format
-msgid "'%(value)s' value must be a positive integer or a valid Hashids string."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/hashid_field/field.py:26
-#, python-format
-msgid "'%(value)s' value must be a valid Hashids string."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/hashid_field/rest.py:24
-msgid "value must be a positive integer or a valid Hashids string."
-msgstr ""
-
-#: venv/lib/python3.12/site-packages/hashid_field/rest.py:25
-#, python-brace-format
-msgid "'{value}' value must be a valid Hashids string."
-msgstr ""
-
-msgid "Accept this appointment and notify the client?"
-msgstr "Accept this appointment and notify the client?"
-
-msgid "Accept"
-msgstr "Accept"
-
-msgid "Auto-accept appointments"
-msgstr "Auto-accept appointments"
-
-msgid "When enabled, new bookings are automatically accepted as soon as the client verifies their OTP. When disabled, each booking must be manually confirmed from the dashboard."
-msgstr "When enabled, new bookings are automatically accepted as soon as the client verifies their OTP. When disabled, each booking must be manually confirmed from the dashboard."
+#~| msgid "Duration(minutes)"
+#~ msgid "Duration (sec)"
+#~ msgstr "Duration(minutes)"
 
 #~ msgid "Top 5 Clients (Completed Appointments)"
 #~ msgstr "Top 5 Clients (Completed Appointments)"

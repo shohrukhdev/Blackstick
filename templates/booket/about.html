@@ -1,0 +1,1229 @@
+{% load i18n %}
+{% load static %}
+{% get_current_language as LANG_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANG_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "How Booket Works" %} — Booket.uz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Mono:ital,wght@0,400;0,500&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4338ca;
+      --primary-light: #818cf8;
+      --primary-xlight: #eef2ff;
+      --accent: #10b981;
+      --accent-dark: #059669;
+      --hero-bg: #0c0a1e;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --bg-light: #f8fafc;
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.04);
+      --shadow-lg: 0 20px 48px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); overflow-x: hidden; background: #fff; }
+
+    /* ── NAVBAR ── */
+    .about-nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .nav-brand { font-size: 1.25rem; font-weight: 800; color: var(--text); text-decoration: none; letter-spacing: -0.5px; }
+    .nav-brand span { color: var(--primary); }
+    .lang-sw { display: flex; gap: 3px; }
+    .lang-btn {
+      background: none; border: 1px solid #cbd5e1; color: var(--text-muted);
+      border-radius: 6px; padding: 4px 9px; font-size: 0.72rem; font-weight: 700;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .lang-btn:hover, .lang-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+    .btn-login {
+      background: var(--primary); color: #fff; border: none; border-radius: 8px;
+      padding: 0.45rem 1rem; font-size: 0.85rem; font-weight: 600; text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-login:hover { background: var(--primary-dark); color: #fff; }
+
+    /* ── HERO ── */
+    .tour-hero {
+      background: linear-gradient(135deg, #0c0a1e 0%, #1a1640 55%, #1e1b5e 100%);
+      padding: 64px 0 60px;
+      position: relative; overflow: hidden;
+    }
+    .tour-hero::before {
+      content: '';
+      position: absolute; width: 550px; height: 550px;
+      background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+      top: -180px; right: -80px; pointer-events: none;
+    }
+    .tour-hero::after {
+      content: '';
+      position: absolute; width: 350px; height: 350px;
+      background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%);
+      bottom: -80px; left: -60px; pointer-events: none;
+    }
+    .tour-label {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 30px; color: var(--primary-light);
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
+      padding: 5px 14px; margin-bottom: 1.25rem;
+    }
+    .tour-hero h1 {
+      font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; color: #fff;
+      letter-spacing: -0.75px; line-height: 1.15; margin-bottom: 1rem;
+    }
+    .tour-hero h1 .hi {
+      background: linear-gradient(135deg, var(--primary-light), var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .tour-sub { font-size: 1rem; color: rgba(255,255,255,0.58); line-height: 1.7; max-width: 500px; margin-bottom: 2rem; }
+    .jump-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .jump-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 30px; color: rgba(255,255,255,0.8);
+      font-size: 0.85rem; font-weight: 600; padding: 8px 18px;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .jump-pill:hover { background: rgba(99,102,241,0.3); border-color: rgba(99,102,241,0.5); color: #fff; transform: translateY(-2px); }
+
+    /* ── SECTION COMMONS ── */
+    .tour-section { padding: 84px 0; }
+    .tour-section.alt { background: var(--bg-light); }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.7rem; font-weight: 800; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--primary); margin-bottom: 0.6rem;
+    }
+    .eyebrow::before {
+      content: ''; display: inline-block; width: 16px; height: 2px;
+      background: var(--primary); border-radius: 2px;
+    }
+    .tour-section h2 {
+      font-size: clamp(1.5rem, 2.8vw, 2.1rem); font-weight: 800; color: var(--text);
+      letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 0.6rem;
+    }
+    .section-intro { font-size: 0.97rem; color: var(--text-muted); line-height: 1.7; max-width: 500px; }
+
+    /* ── STEP ROWS ── */
+    .step-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center;
+      margin-bottom: 4.5rem;
+      opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .step-row.visible { opacity: 1; transform: translateY(0); }
+    .step-row.rev { direction: rtl; }
+    .step-row.rev > * { direction: ltr; }
+    @media (max-width: 860px) { .step-row, .step-row.rev { grid-template-columns: 1fr; direction: ltr; gap: 2rem; } }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 9px; font-size: 0.85rem; font-weight: 800; color: #fff;
+      margin-bottom: 0.9rem; box-shadow: 0 4px 10px rgba(99,102,241,0.3);
+    }
+    .step-title { font-size: 1.25rem; font-weight: 700; color: var(--text); letter-spacing: -0.3px; margin-bottom: 0.65rem; }
+    .step-desc { font-size: 0.93rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1rem; }
+    .step-points { list-style: none; padding: 0; }
+    .step-points li {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 0.87rem; color: var(--text-muted); margin-bottom: 0.5rem; line-height: 1.5;
+    }
+    .step-points li::before {
+      content: ''; display: inline-block; width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+    }
+
+    /* ── BROWSER FRAME ── */
+    .browser-frame {
+      background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .browser-bar {
+      background: #f1f5f9; padding: 9px 14px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .b-dots { display: flex; gap: 5px; }
+    .b-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .b-dot:nth-child(1) { background: #fc5c57; }
+    .b-dot:nth-child(2) { background: #fdbc40; }
+    .b-dot:nth-child(3) { background: #33c748; }
+    .b-url {
+      flex: 1; background: #fff; border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 10px;
+      font-size: 0.7rem; color: var(--text-muted); font-family: 'DM Mono', monospace;
+    }
+    .b-body { padding: 18px 20px; }
+
+    /* ── FORM MOCKUP ── */
+    .mf-group { margin-bottom: 13px; }
+    .mf-label {
+      display: block; font-size: 0.7rem; font-weight: 700; color: var(--text-muted);
+      text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 5px;
+    }
+    .mf-input {
+      width: 100%; background: var(--bg-light); border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 9px 12px; font-size: 0.85rem; color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+    .mf-url-row {
+      display: flex; border: 1.5px solid var(--primary); border-radius: 8px;
+      overflow: hidden; box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+    }
+    .mf-url-prefix {
+      background: var(--primary-xlight); color: var(--primary-dark);
+      font-size: 0.75rem; font-weight: 600; padding: 9px 10px;
+      border-right: 1.5px solid #c7d2fe; white-space: nowrap;
+      font-family: 'DM Mono', monospace;
+    }
+    .mf-url-val {
+      background: #fff; padding: 9px 12px; font-size: 0.85rem;
+      font-weight: 700; color: var(--primary-dark); font-family: 'DM Mono', monospace;
+    }
+    .mf-save {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; border: none; border-radius: 8px; padding: 9px 18px;
+      font-size: 0.85rem; font-weight: 700; box-shadow: 0 4px 12px rgba(99,102,241,0.3);
+    }
+
+    /* ── SERVICE TABLE MOCKUP ── */
+    .svc-table {
+      background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .svc-table-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 16px;
+      background: linear-gradient(135deg, var(--primary-xlight), #f5f3ff);
+      border-bottom: 1px solid #ddd6fe;
+    }
+    .svc-cat-name {
+      font-size: 0.88rem; font-weight: 700; color: var(--primary-dark);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .svc-add-btn {
+      background: var(--primary); color: #fff; border: none; border-radius: 6px;
+      padding: 5px 11px; font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .svc-row {
+      display: flex; align-items: center; padding: 10px 16px;
+      border-bottom: 1px solid #f1f5f9; transition: background 0.1s;
+    }
+    .svc-row:last-child { border-bottom: none; }
+    .svc-row:hover { background: #fafbff; }
+    .svc-name { font-size: 0.83rem; font-weight: 600; color: var(--text); flex: 1; }
+    .svc-dur {
+      background: #f1f5f9; border-radius: 5px; padding: 3px 7px;
+      font-size: 0.7rem; font-weight: 600; color: var(--text-muted); margin-right: 10px;
+    }
+    .svc-price { font-size: 0.8rem; font-weight: 700; color: var(--primary); min-width: 80px; text-align: right; margin-right: 10px; }
+    .svc-acts { display: flex; gap: 4px; }
+    .svc-act {
+      width: 27px; height: 27px; border-radius: 6px; border: none;
+      display: flex; align-items: center; justify-content: center; font-size: 0.7rem; cursor: pointer;
+    }
+    .svc-act.e { background: #eff6ff; color: #3b82f6; }
+    .svc-act.d { background: #fff1f2; color: #e11d48; }
+
+    /* ── SCHEDULE MOCKUP ── */
+    .sched-card {
+      background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .sched-hd {
+      background: linear-gradient(135deg, #0c0a1e, #1a1640);
+      padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .sched-av {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700; color: #fff;
+    }
+    .sched-name { font-size: 0.88rem; font-weight: 700; color: #fff; }
+    .sched-role { font-size: 0.68rem; color: rgba(255,255,255,0.5); }
+    .sched-body { padding: 14px 16px; }
+    .sched-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 14px;
+    }
+    .sched-day { text-align: center; }
+    .sched-day-lbl { font-size: 0.58rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .sched-hrs {
+      background: var(--primary-xlight); border: 1px solid #c7d2fe;
+      border-radius: 6px; padding: 4px 2px; font-size: 0.55rem;
+      font-weight: 600; color: var(--primary-dark); line-height: 1.4; text-align: center;
+    }
+    .sched-off {
+      background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px;
+      padding: 4px 2px; font-size: 0.6rem; font-weight: 600; color: #cbd5e1;
+      text-align: center; text-decoration: line-through;
+    }
+    .svc-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .svc-tag {
+      background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 20px;
+      padding: 3px 10px; font-size: 0.7rem; font-weight: 600; color: #065f46;
+    }
+
+    /* ── DASHBOARD MOCKUP ── */
+    .dash-card {
+      background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .dash-hd {
+      padding: 13px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .dash-title { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+    .dash-date { font-size: 0.72rem; color: var(--text-muted); }
+    .dash-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 16px;
+    }
+    .dash-stat {
+      background: var(--bg-light); border-radius: 10px; padding: 10px 12px; border: 1px solid var(--border);
+    }
+    .dash-stat.hi { background: linear-gradient(135deg, #eef2ff, #f0f4ff); border-color: #c7d2fe; }
+    .dash-stat.gr { background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border-color: #a7f3d0; }
+    .dash-val { font-size: 1.15rem; font-weight: 800; color: var(--text); line-height: 1; }
+    .dash-stat.hi .dash-val { color: var(--primary-dark); }
+    .dash-stat.gr .dash-val { color: var(--accent-dark); }
+    .dash-lbl { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; margin-top: 3px; }
+    .dash-chart-sec { padding: 0 16px 16px; }
+    .dash-chart-lbl { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; }
+    .dash-chart { display: flex; align-items: flex-end; gap: 5px; height: 54px; }
+    .bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .bar { width: 100%; background: linear-gradient(to top, var(--primary-dark), var(--primary-light)); border-radius: 4px 4px 0 0; opacity: 0.85; }
+    .bar-d { font-size: 0.58rem; color: var(--text-muted); font-weight: 600; }
+
+    /* ── STAFF SECTION GRID ── */
+    .staff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    @media (max-width: 860px) { .staff-grid { grid-template-columns: 1fr; } }
+
+    /* ── CALENDAR MOCKUP ── */
+    .cal-card {
+      background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .cal-hd {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      padding: 13px 16px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .cal-date { font-size: 0.88rem; font-weight: 700; color: #fff; }
+    .cal-nav { display: flex; gap: 4px; }
+    .cal-nav-btn {
+      width: 24px; height: 24px; background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2); border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: #fff;
+    }
+    .appt-list { padding: 8px; }
+    .appt-card {
+      display: flex; align-items: flex-start; gap: 9px;
+      padding: 9px 11px; border-radius: 9px; margin-bottom: 5px;
+      border: 1.5px solid var(--border); background: #fff;
+    }
+    .appt-time { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); min-width: 36px; padding-top: 2px; }
+    .appt-info { flex: 1; }
+    .appt-client { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .appt-svc { font-size: 0.72rem; color: var(--text-muted); }
+    .status-badge { font-size: 0.62rem; font-weight: 700; border-radius: 20px; padding: 2px 8px; white-space: nowrap; }
+    .s-new      { background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; }
+    .s-confirmed{ background: #fefce8; color: #d97706; border: 1px solid #fde68a; }
+    .s-accepted { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+    .s-completed{ background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+
+    /* ── APPOINTMENT DETAIL ── */
+    .appt-detail {
+      background: #fff; border-radius: 14px; box-shadow: var(--shadow-lg);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .detail-hd {
+      padding: 13px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .detail-title { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+    .detail-body { padding: 14px 16px; }
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 0; border-bottom: 1px solid #f8fafc; font-size: 0.8rem;
+    }
+    .detail-key { color: var(--text-muted); font-weight: 500; }
+    .detail-val { font-weight: 600; color: var(--text); }
+    .act-row { display: flex; gap: 7px; margin: 11px 0; }
+    .btn-confirm {
+      flex: 1; background: var(--accent); color: #fff; border: none; border-radius: 8px;
+      padding: 8px; font-size: 0.78rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .btn-reject {
+      flex: 1; background: #fff; color: #e11d48; border: 1.5px solid #fecdd3;
+      border-radius: 8px; padding: 8px; font-size: 0.78rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .price-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin: 9px 0; }
+    .price-chip {
+      background: var(--bg-light); border: 1px solid var(--border); border-radius: 8px;
+      padding: 6px 8px; text-align: center;
+    }
+    .price-chip-val { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+    .price-chip-key { font-size: 0.6rem; color: var(--text-muted); }
+    .price-chip.owe .price-chip-val { color: #e11d48; }
+    .notes-area {
+      width: 100%; background: var(--bg-light); border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 8px 10px; font-size: 0.78rem; color: var(--text-muted);
+      resize: none; height: 48px; font-family: 'Inter', sans-serif;
+    }
+    .personal-link {
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #eef2ff, #f0f4ff);
+      border: 1.5px solid #c7d2fe; border-radius: 10px; padding: 10px 12px; margin-top: 10px;
+    }
+    .personal-link i { color: var(--primary); flex-shrink: 0; font-size: 0.82rem; }
+    .pl-label { font-size: 0.66rem; color: var(--text-muted); }
+    .pl-url { font-size: 0.78rem; font-weight: 700; color: var(--primary-dark); font-family: 'DM Mono', monospace; }
+
+    /* ── CLIENT STEPS ── */
+    .client-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; position: relative; }
+    @media (max-width: 900px) { .client-steps { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 540px) { .client-steps { grid-template-columns: 1fr; } }
+    .client-steps::before {
+      content: '';
+      position: absolute; top: 28px; left: 8%; width: 84%; height: 2px;
+      background: linear-gradient(to right, var(--primary), var(--accent)); z-index: 0;
+    }
+    @media (max-width: 900px) { .client-steps::before { display: none; } }
+    .cs { position: relative; z-index: 1; opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .cs.visible { opacity: 1; transform: translateY(0); }
+    .cs:nth-child(1) { transition-delay: 0s; }
+    .cs:nth-child(2) { transition-delay: 0.1s; }
+    .cs:nth-child(3) { transition-delay: 0.2s; }
+    .cs:nth-child(4) { transition-delay: 0.3s; }
+    .cs-num {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 0.82rem; font-weight: 800; color: #fff; margin: 0 auto 0.9rem;
+      box-shadow: 0 4px 12px rgba(99,102,241,0.3); border: 3px solid #fff;
+    }
+    .cs-card { background: #fff; border-radius: 14px; box-shadow: var(--shadow-md); overflow: hidden; border: 1px solid var(--border); }
+    .cs-hd { padding: 10px 12px 0; }
+    .cs-eyebrow { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary); }
+    .cs-title { font-size: 0.85rem; font-weight: 700; color: var(--text); padding: 3px 0 8px; }
+    .cs-body { padding: 0 10px 10px; }
+
+    /* ── PHONE MINI ── */
+    .phone-mini {
+      background: #1a1a2e; border-radius: 18px; padding: 7px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3); max-width: 148px; margin: 0 auto;
+    }
+    .pm-notch { width: 44px; height: 4px; background: #2d2b52; border-radius: 3px; margin: 0 auto 6px; }
+    .pm-screen { background: #fff; border-radius: 10px; overflow: hidden; }
+    .pm-hd { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); padding: 7px 9px; }
+    .pm-salon { font-size: 0.68rem; font-weight: 700; color: #fff; }
+    .pm-loc { font-size: 0.58rem; color: rgba(255,255,255,0.65); }
+    .pm-body { padding: 6px; }
+    .pm-staff {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--bg-light); border-radius: 6px; padding: 5px 6px;
+      margin-bottom: 4px; border: 1px solid var(--border);
+    }
+    .pm-av {
+      width: 20px; height: 20px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.55rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .av-i { background: var(--primary); }
+    .av-g { background: var(--accent); }
+    .av-a { background: #f59e0b; }
+    .pm-sname { font-size: 0.62rem; font-weight: 600; color: var(--text); flex: 1; }
+    .pm-book { font-size: 0.52rem; font-weight: 700; background: var(--primary); color: #fff; border-radius: 4px; padding: 2px 5px; }
+
+    /* ── SERVICE PICKER ── */
+    .svc-picker { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .svc-picker-hd {
+      background: var(--bg-light); padding: 7px 10px;
+      font-size: 0.68rem; font-weight: 700; color: var(--text-muted);
+      border-bottom: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .svc-pick-row {
+      display: flex; align-items: center; gap: 7px;
+      padding: 7px 10px; border-bottom: 1px solid #f8fafc; font-size: 0.73rem; cursor: pointer;
+    }
+    .svc-pick-row:last-child { border-bottom: none; }
+    .svc-pick-row.sel { background: #eef2ff; }
+    .svc-radio {
+      width: 14px; height: 14px; border-radius: 50%; border: 2px solid #cbd5e1;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .svc-pick-row.sel .svc-radio { border-color: var(--primary); background: var(--primary); }
+    .svc-pick-row.sel .svc-radio::after { content: ''; width: 4px; height: 4px; background: #fff; border-radius: 50%; }
+    .svc-pick-name { flex: 1; font-weight: 600; color: var(--text); }
+    .svc-pick-row.sel .svc-pick-name { color: var(--primary-dark); }
+    .svc-pick-price { font-size: 0.68rem; font-weight: 700; color: var(--primary); }
+
+    /* ── DATE PICKER ── */
+    .dp { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .dp-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 10px; background: var(--bg-light); border-bottom: 1px solid var(--border);
+      font-size: 0.75rem; font-weight: 700; color: var(--text);
+    }
+    .dp-nav { display: flex; gap: 3px; }
+    .dp-btn {
+      width: 20px; height: 20px; border: 1px solid var(--border); background: #fff;
+      border-radius: 4px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.58rem; color: var(--text-muted);
+    }
+    .dp-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; padding: 6px; }
+    .dp-cell {
+      text-align: center; font-size: 0.62rem; padding: 3px 2px;
+      border-radius: 4px; font-weight: 500; color: #cbd5e1;
+    }
+    .dp-cell.avl { color: var(--text); font-weight: 600; }
+    .dp-cell.sel { background: var(--primary); color: #fff; font-weight: 700; border-radius: 5px; }
+    .dp-cell.td { border: 1.5px solid var(--primary); color: var(--primary); font-weight: 700; border-radius: 5px; }
+    .time-slots { display: flex; flex-wrap: wrap; gap: 4px; padding: 6px 7px; border-top: 1px solid var(--border); }
+    .ts {
+      background: var(--bg-light); border: 1.5px solid var(--border);
+      border-radius: 5px; padding: 4px 7px; font-size: 0.67rem; font-weight: 600; color: var(--text-muted);
+    }
+    .ts.sel { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+    /* ── OTP MOCKUP ── */
+    .otp-mock { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .otp-body { padding: 9px; }
+    .otp-field {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--bg-light); border: 1.5px solid var(--border);
+      border-radius: 7px; padding: 7px 9px; margin-bottom: 6px;
+      font-size: 0.78rem; color: var(--text);
+    }
+    .otp-field i { color: var(--text-muted); font-size: 0.7rem; }
+    .otp-divider { display: flex; align-items: center; gap: 7px; margin: 7px 0; }
+    .otp-line { flex: 1; height: 1px; background: var(--border); }
+    .otp-txt { font-size: 0.62rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+    .otp-boxes { display: flex; gap: 5px; justify-content: center; margin: 7px 0; }
+    .otp-box {
+      width: 32px; height: 36px; border: 2px solid var(--primary); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; font-weight: 700; color: var(--primary-dark); background: var(--primary-xlight);
+    }
+    .otp-hint { font-size: 0.62rem; color: var(--text-muted); text-align: center; margin-bottom: 7px; }
+    .otp-btn {
+      display: block; width: 100%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: #fff; border: none; border-radius: 7px; padding: 8px;
+      font-size: 0.78rem; font-weight: 700; text-align: center;
+    }
+    .otp-success {
+      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+      border-top: 1px solid #a7f3d0; padding: 10px; text-align: center;
+    }
+    .otp-check { font-size: 1.4rem; color: var(--accent); margin-bottom: 3px; }
+    .otp-ok { font-size: 0.75rem; font-weight: 700; color: #065f46; }
+    .otp-ok-sub { font-size: 0.65rem; color: #059669; margin-top: 2px; }
+
+    /* ── FEATURES GRID ── */
+    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+    @media (max-width: 900px) { .feat-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .feat-grid { grid-template-columns: 1fr; } }
+    .feat-card {
+      background: #fff; border: 1.5px solid var(--border); border-radius: 16px; padding: 1.5rem;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.5s ease, transform 0.5s ease, border-color 0.2s, box-shadow 0.2s;
+    }
+    .feat-card.visible { opacity: 1; transform: translateY(0); }
+    .feat-card:hover { border-color: #c7d2fe; box-shadow: 0 12px 32px rgba(99,102,241,0.1); transform: translateY(-4px); }
+    .feat-card.visible:hover { transform: translateY(-4px); }
+    .feat-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.1rem; margin-bottom: 1rem;
+    }
+    .fi-i { background: #eef2ff; color: var(--primary); }
+    .fi-g { background: #ecfdf5; color: #059669; }
+    .fi-a { background: #fffbeb; color: #d97706; }
+    .fi-r { background: #fff1f2; color: #e11d48; }
+    .fi-c { background: #ecfeff; color: #0891b2; }
+    .fi-p { background: #faf5ff; color: #9333ea; }
+    .feat-title { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 0.45rem; }
+    .feat-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.65; }
+    .feat-card:nth-child(1) { transition-delay: 0s; }
+    .feat-card:nth-child(2) { transition-delay: 0.07s; }
+    .feat-card:nth-child(3) { transition-delay: 0.14s; }
+    .feat-card:nth-child(4) { transition-delay: 0.21s; }
+    .feat-card:nth-child(5) { transition-delay: 0.28s; }
+    .feat-card:nth-child(6) { transition-delay: 0.35s; }
+
+    /* ── CTA ── */
+    .tour-cta {
+      background: linear-gradient(135deg, #0c0a1e, #1e1b5e);
+      padding: 72px 0; text-align: center; position: relative; overflow: hidden;
+    }
+    .tour-cta::before {
+      content: ''; position: absolute; width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%);
+      top: -100px; right: -80px; pointer-events: none;
+    }
+    .tour-cta h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 800; color: #fff; margin-bottom: 0.7rem; letter-spacing: -0.4px; }
+    .tour-cta p { font-size: 0.97rem; color: rgba(255,255,255,0.58); margin-bottom: 1.75rem; }
+    .btn-tg {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #229ED9; color: #fff; text-decoration: none; border-radius: 10px;
+      padding: 0.85rem 1.75rem; font-size: 0.97rem; font-weight: 700;
+      transition: opacity 0.15s, transform 0.15s; box-shadow: 0 6px 20px rgba(34,158,217,0.4);
+    }
+    .btn-tg:hover { opacity: 0.9; transform: translateY(-2px); color: #fff; }
+
+    /* ── FOOTER ── */
+    .tour-footer { background: #0c0a1e; padding: 26px 0; border-top: 1px solid rgba(255,255,255,0.06); }
+    .ft-brand { font-size: 1.1rem; font-weight: 800; color: #fff; text-decoration: none; }
+    .ft-brand span { color: var(--primary-light); }
+    .ft-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .ft-link { font-size: 0.82rem; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.15s; }
+    .ft-link:hover { color: rgba(255,255,255,0.8); }
+    .ft-copy { font-size: 0.75rem; color: rgba(255,255,255,0.22); }
+
+    /* ── FADE-IN GENERIC ── */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════════════ -->
+<nav class="about-nav">
+  <div class="container d-flex align-items-center justify-content-between gap-3">
+    <a href="{% url 'landing' %}" class="nav-brand">booket<span>.uz</span></a>
+    <div class="d-flex align-items-center gap-3">
+      <form action="{% url 'set_language' %}" method="post" class="lang-sw">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+        <button type="submit" name="language" value="uz" class="lang-btn {% if LANG_CODE == 'uz' %}active{% endif %}">UZ</button>
+        <button type="submit" name="language" value="ru" class="lang-btn {% if LANG_CODE == 'ru' %}active{% endif %}">RU</button>
+        <button type="submit" name="language" value="en" class="lang-btn {% if LANG_CODE == 'en' %}active{% endif %}">EN</button>
+      </form>
+      <a href="{% url 'b_login' %}" class="btn-login">{% trans "Log in" %}</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO ════════════════════════════════════════════════════════ -->
+<section class="tour-hero">
+  <div class="container position-relative" style="z-index:1;">
+    <div class="tour-label"><i class="fa-solid fa-circle-play fa-xs"></i> {% trans "Product Tour" %}</div>
+    <h1>{% trans "See exactly how" %} <span class="hi">{% trans "Booket works" %}</span></h1>
+    <p class="tour-sub">{% trans "A step-by-step walkthrough for business owners, staff, and clients — with real app screens." %}</p>
+    <div class="jump-pills">
+      <a href="#providers" class="jump-pill"><i class="fa-solid fa-briefcase fa-xs"></i> {% trans "For Providers" %}</a>
+      <a href="#staff" class="jump-pill"><i class="fa-solid fa-scissors fa-xs"></i> {% trans "For Staff" %}</a>
+      <a href="#clients" class="jump-pill"><i class="fa-solid fa-mobile-screen fa-xs"></i> {% trans "For Clients" %}</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PROVIDER JOURNEY ════════════════════════════════════════════ -->
+<section class="tour-section" id="providers">
+  <div class="container">
+    <div class="mb-5 fade-in">
+      <div class="eyebrow">{% trans "Business Owners" %}</div>
+      <h2>{% trans "Set up and manage your business" %}</h2>
+      <p class="section-intro">{% trans "Four steps from registration to receiving your first online booking." %}</p>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="step-row">
+      <div class="step-content">
+        <div class="step-num">1</div>
+        <div class="step-title">{% trans "Create your business profile" %}</div>
+        <p class="step-desc">{% trans "Register your business, set a name and get a unique public URL — your personal booking page that clients will visit. Upload a photo, add your address and phone." %}</p>
+        <ul class="step-points">
+          <li>{% trans "Your URL is permanent: booket.uz/your-identifier" %}</li>
+          <li>{% trans "Set your business working hours (open / close time)" %}</li>
+          <li>{% trans "Add a description visible on your public page" %}</li>
+        </ul>
+      </div>
+      <div>
+        <div class="browser-frame">
+          <div class="browser-bar">
+            <div class="b-dots"><span class="b-dot"></span><span class="b-dot"></span><span class="b-dot"></span></div>
+            <div class="b-url">booket.uz/b/provider/edit/</div>
+          </div>
+          <div class="b-body">
+            <div class="mf-group">
+              <label class="mf-label">{% trans "Business name" %}</label>
+              <div class="mf-input">Nail Studio Pro</div>
+            </div>
+            <div class="mf-group">
+              <label class="mf-label">{% trans "Your booking URL" %}</label>
+              <div class="mf-url-row">
+                <span class="mf-url-prefix">booket.uz/</span>
+                <span class="mf-url-val">nail-studio-pro</span>
+              </div>
+            </div>
+            <div class="mf-group">
+              <label class="mf-label">{% trans "Phone" %}</label>
+              <div class="mf-input">+998 90 123 45 67</div>
+            </div>
+            <div class="mf-group">
+              <label class="mf-label">{% trans "Address" %}</label>
+              <div class="mf-input">Toshkent, Chilonzor tumani</div>
+            </div>
+            <button class="mf-save"><i class="fa-solid fa-check fa-xs"></i> {% trans "Save changes" %}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-row rev">
+      <div class="step-content">
+        <div class="step-num">2</div>
+        <div class="step-title">{% trans "Define your service catalog" %}</div>
+        <p class="step-desc">{% trans "Create service categories (like \"Nail Care\" or \"Hair\"), then add services inside each — with name, duration, and price. All names can be entered in Uzbek, Russian, and English." %}</p>
+        <ul class="step-points">
+          <li>{% trans "Unlimited service categories and services" %}</li>
+          <li>{% trans "Each service has its own duration (shown in booking slots)" %}</li>
+          <li>{% trans "Staff can override prices for their own appointments" %}</li>
+        </ul>
+      </div>
+      <div>
+        <div class="svc-table">
+          <div class="svc-table-hd">
+            <span class="svc-cat-name"><i class="fa-solid fa-layer-group fa-xs" style="color:var(--primary);"></i> {% trans "Nail Care" %}</span>
+            <button class="svc-add-btn"><i class="fa-solid fa-plus fa-xs"></i> {% trans "Add service" %}</button>
+          </div>
+          <div class="svc-row">
+            <span class="svc-name">{% trans "Classic Manicure" %}</span>
+            <span class="svc-dur">45 {% trans "min" %}</span>
+            <span class="svc-price">45 000 so'm</span>
+            <div class="svc-acts">
+              <button class="svc-act e"><i class="fa-solid fa-pen fa-xs"></i></button>
+              <button class="svc-act d"><i class="fa-solid fa-trash fa-xs"></i></button>
+            </div>
+          </div>
+          <div class="svc-row">
+            <span class="svc-name">{% trans "Gel Manicure" %}</span>
+            <span class="svc-dur">60 {% trans "min" %}</span>
+            <span class="svc-price">65 000 so'm</span>
+            <div class="svc-acts">
+              <button class="svc-act e"><i class="fa-solid fa-pen fa-xs"></i></button>
+              <button class="svc-act d"><i class="fa-solid fa-trash fa-xs"></i></button>
+            </div>
+          </div>
+          <div class="svc-row">
+            <span class="svc-name">{% trans "Pedicure" %}</span>
+            <span class="svc-dur">60 {% trans "min" %}</span>
+            <span class="svc-price">55 000 so'm</span>
+            <div class="svc-acts">
+              <button class="svc-act e"><i class="fa-solid fa-pen fa-xs"></i></button>
+              <button class="svc-act d"><i class="fa-solid fa-trash fa-xs"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step-row">
+      <div class="step-content">
+        <div class="step-num">3</div>
+        <div class="step-title">{% trans "Add staff and set their schedules" %}</div>
+        <p class="step-desc">{% trans "Each staff member gets their own schedule: working hours per day, days off, and a personal list of services they perform — with optional custom pricing." %}</p>
+        <ul class="step-points">
+          <li>{% trans "Set different hours for each day of the week" %}</li>
+          <li>{% trans "Mark specific days as off (fully unavailable)" %}</li>
+          <li>{% trans "Assign only the services this person performs" %}</li>
+          <li>{% trans "Each staff member gets their own personal booking link" %}</li>
+        </ul>
+      </div>
+      <div>
+        <div class="sched-card">
+          <div class="sched-hd">
+            <div class="sched-av">D</div>
+            <div>
+              <div class="sched-name">Dilnoza Karimova</div>
+              <div class="sched-role">{% trans "Nail specialist" %}</div>
+            </div>
+          </div>
+          <div class="sched-body">
+            <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">{% trans "Working hours" %}</div>
+            <div class="sched-grid">
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "Mo" %}</div><div class="sched-hrs">09:00<br>18:00</div></div>
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "Tu" %}</div><div class="sched-hrs">09:00<br>18:00</div></div>
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "We" %}</div><div class="sched-hrs">09:00<br>18:00</div></div>
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "Th" %}</div><div class="sched-hrs">09:00<br>18:00</div></div>
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "Fr" %}</div><div class="sched-hrs">09:00<br>18:00</div></div>
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "Sa" %}</div><div class="sched-hrs">10:00<br>16:00</div></div>
+              <div class="sched-day"><div class="sched-day-lbl">{% trans "Su" %}</div><div class="sched-off">{% trans "Off" %}</div></div>
+            </div>
+            <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">{% trans "Services" %}</div>
+            <div class="svc-tags">
+              <span class="svc-tag">{% trans "Classic Manicure" %}</span>
+              <span class="svc-tag">{% trans "Gel Manicure" %}</span>
+              <span class="svc-tag">{% trans "Pedicure" %}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step-row rev" style="margin-bottom:0;">
+      <div class="step-content">
+        <div class="step-num">4</div>
+        <div class="step-title">{% trans "Monitor your business from the dashboard" %}</div>
+        <p class="step-desc">{% trans "The provider dashboard gives a full picture of your business: revenue, appointment trends, staff performance, loyal clients, debtors, and no-shows." %}</p>
+        <ul class="step-points">
+          <li>{% trans "Revenue broken down by charged, paid, and outstanding" %}</li>
+          <li>{% trans "Appointment trend chart over any date range" %}</li>
+          <li>{% trans "Top 5 loyal clients and top 5 no-shows" %}</li>
+          <li>{% trans "Per-staff breakdown: appointments, revenue, completion rate" %}</li>
+        </ul>
+      </div>
+      <div>
+        <div class="dash-card">
+          <div class="dash-hd">
+            <span class="dash-title">{% trans "Business Overview" %}</span>
+            <span class="dash-date">{% trans "Jun 2025" %}</span>
+          </div>
+          <div class="dash-stats">
+            <div class="dash-stat hi">
+              <div class="dash-val">142</div>
+              <div class="dash-lbl">{% trans "Total appointments" %}</div>
+            </div>
+            <div class="dash-stat gr">
+              <div class="dash-val">87%</div>
+              <div class="dash-lbl">{% trans "Completion rate" %}</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-val" style="font-size:0.95rem;">8 400 000</div>
+              <div class="dash-lbl">{% trans "Revenue, so'm" %}</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-val">63</div>
+              <div class="dash-lbl">{% trans "Active clients" %}</div>
+            </div>
+          </div>
+          <div class="dash-chart-sec">
+            <div class="dash-chart-lbl">{% trans "Appointments this week" %}</div>
+            <div class="dash-chart">
+              <div class="bar-wrap"><div class="bar" style="height:60%;"></div><span class="bar-d">{% trans "Mo" %}</span></div>
+              <div class="bar-wrap"><div class="bar" style="height:85%;"></div><span class="bar-d">{% trans "Tu" %}</span></div>
+              <div class="bar-wrap"><div class="bar" style="height:45%;"></div><span class="bar-d">{% trans "We" %}</span></div>
+              <div class="bar-wrap"><div class="bar" style="height:100%;"></div><span class="bar-d">{% trans "Th" %}</span></div>
+              <div class="bar-wrap"><div class="bar" style="height:70%;"></div><span class="bar-d">{% trans "Fr" %}</span></div>
+              <div class="bar-wrap"><div class="bar" style="height:50%;"></div><span class="bar-d">{% trans "Sa" %}</span></div>
+              <div class="bar-wrap"><div class="bar" style="height:15%; opacity:0.4;"></div><span class="bar-d">{% trans "Su" %}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ STAFF JOURNEY ═══════════════════════════════════════════════ -->
+<section class="tour-section alt" id="staff">
+  <div class="container">
+    <div class="mb-5 fade-in">
+      <div class="eyebrow">{% trans "Staff & Specialists" %}</div>
+      <h2>{% trans "Your personal workspace" %}</h2>
+      <p class="section-intro">{% trans "Every staff member gets their own dashboard, calendar, and personal booking link." %}</p>
+    </div>
+
+    <div class="staff-grid fade-in">
+
+      <!-- Calendar -->
+      <div>
+        <div style="font-size:0.88rem;font-weight:700;color:var(--text);margin-bottom:0.9rem;">
+          <i class="fa-solid fa-calendar-days fa-sm" style="color:var(--primary);margin-right:6px;"></i>
+          {% trans "Your daily calendar" %}
+        </div>
+        <div class="cal-card">
+          <div class="cal-hd">
+            <span class="cal-date">{% trans "Tuesday, June 24" %}</span>
+            <div class="cal-nav">
+              <div class="cal-nav-btn"><i class="fa-solid fa-chevron-left fa-xs"></i></div>
+              <div class="cal-nav-btn"><i class="fa-solid fa-chevron-right fa-xs"></i></div>
+            </div>
+          </div>
+          <div class="appt-list">
+            <div class="appt-card">
+              <span class="appt-time">10:00</span>
+              <div class="appt-info">
+                <div class="appt-client">Malika T.</div>
+                <div class="appt-svc">{% trans "Classic Manicure" %}</div>
+              </div>
+              <span class="status-badge s-new">NEW</span>
+            </div>
+            <div class="appt-card">
+              <span class="appt-time">11:30</span>
+              <div class="appt-info">
+                <div class="appt-client">Zulfiya A.</div>
+                <div class="appt-svc">{% trans "Gel Manicure" %}</div>
+              </div>
+              <span class="status-badge s-confirmed">{% trans "CONFIRMED" %}</span>
+            </div>
+            <div class="appt-card">
+              <span class="appt-time">13:00</span>
+              <div class="appt-info">
+                <div class="appt-client">Nodira B.</div>
+                <div class="appt-svc">{% trans "Pedicure" %}</div>
+              </div>
+              <span class="status-badge s-accepted">{% trans "ACCEPTED" %}</span>
+            </div>
+            <div class="appt-card">
+              <span class="appt-time">15:30</span>
+              <div class="appt-info">
+                <div class="appt-client">Dildora M.</div>
+                <div class="appt-svc">{% trans "Classic Manicure" %}</div>
+              </div>
+              <span class="status-badge s-completed">{% trans "COMPLETED" %}</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.9rem;line-height:1.6;">
+          {% trans "Each appointment has a status lifecycle:" %}
+          <span class="status-badge s-new" style="margin:0 3px;">NEW</span> →
+          <span class="status-badge s-confirmed" style="margin:0 3px;">{% trans "CONFIRMED" %}</span> →
+          <span class="status-badge s-accepted" style="margin:0 3px;">{% trans "ACCEPTED" %}</span> →
+          <span class="status-badge s-completed" style="margin:0 3px;">{% trans "COMPLETED" %}</span>
+        </div>
+      </div>
+
+      <!-- Detail panel -->
+      <div>
+        <div style="font-size:0.88rem;font-weight:700;color:var(--text);margin-bottom:0.9rem;">
+          <i class="fa-solid fa-clipboard-list fa-sm" style="color:var(--primary);margin-right:6px;"></i>
+          {% trans "Manage each appointment" %}
+        </div>
+        <div class="appt-detail">
+          <div class="detail-hd">
+            <span class="detail-title">Malika Toshmatova</span>
+            <span class="status-badge s-new">NEW</span>
+          </div>
+          <div class="detail-body">
+            <div class="detail-row">
+              <span class="detail-key">{% trans "Phone" %}</span>
+              <span class="detail-val">+998 90 123 45 67</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-key">{% trans "Service" %}</span>
+              <span class="detail-val">{% trans "Classic Manicure" %}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-key">{% trans "Duration" %}</span>
+              <span class="detail-val">45 {% trans "min" %}</span>
+            </div>
+            <div class="detail-row" style="border-bottom:none;">
+              <span class="detail-key">{% trans "Date & time" %}</span>
+              <span class="detail-val">{% trans "Jun 24, 10:00" %}</span>
+            </div>
+            <div class="act-row">
+              <button class="btn-confirm"><i class="fa-solid fa-check fa-xs"></i> {% trans "Confirm" %}</button>
+              <button class="btn-reject"><i class="fa-solid fa-xmark fa-xs"></i> {% trans "Reject" %}</button>
+            </div>
+            <div class="price-grid">
+              <div class="price-chip">
+                <div class="price-chip-val">45 000</div>
+                <div class="price-chip-key">{% trans "Charged" %}</div>
+              </div>
+              <div class="price-chip">
+                <div class="price-chip-val">0</div>
+                <div class="price-chip-key">{% trans "Paid" %}</div>
+              </div>
+              <div class="price-chip owe">
+                <div class="price-chip-val">45 000</div>
+                <div class="price-chip-key">{% trans "Outstanding" %}</div>
+              </div>
+            </div>
+            <textarea class="notes-area" placeholder="{% trans "Add a private note about this client..." %}"></textarea>
+          </div>
+        </div>
+        <div class="personal-link">
+          <i class="fa-solid fa-link"></i>
+          <div>
+            <div class="pl-label">{% trans "Your personal booking link" %}</div>
+            <div class="pl-url">booket.uz/dilnoza-k</div>
+          </div>
+          <i class="fa-regular fa-copy fa-sm" style="color:var(--text-muted);margin-left:auto;cursor:pointer;"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CLIENT JOURNEY ══════════════════════════════════════════════ -->
+<section class="tour-section" id="clients">
+  <div class="container">
+    <div class="text-center mb-5 fade-in">
+      <div class="eyebrow" style="justify-content:center;">{% trans "For Clients" %}</div>
+      <h2>{% trans "Book an appointment in under 2 minutes" %}</h2>
+      <p class="section-intro mx-auto">{% trans "No account needed. Just a name and phone number. Confirm with a one-time SMS code." %}</p>
+    </div>
+
+    <div class="client-steps">
+
+      <!-- Step 1 -->
+      <div class="cs">
+        <div class="cs-num">1</div>
+        <div class="cs-card">
+          <div class="cs-hd">
+            <div class="cs-eyebrow">{% trans "Step 1" %}</div>
+            <div class="cs-title">{% trans "Open the booking page" %}</div>
+          </div>
+          <div class="cs-body">
+            <div class="phone-mini">
+              <div class="pm-notch"></div>
+              <div class="pm-screen">
+                <div class="pm-hd">
+                  <div class="pm-salon">Nail Studio Pro</div>
+                  <div class="pm-loc">Toshkent, Chilonzor</div>
+                </div>
+                <div class="pm-body">
+                  <div style="font-size:0.58rem;font-weight:700;color:var(--text-muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px;">{% trans "Choose a specialist" %}</div>
+                  <div class="pm-staff">
+                    <div class="pm-av av-i">D</div>
+                    <span class="pm-sname">Dilnoza</span>
+                    <span class="pm-book">{% trans "Book" %}</span>
+                  </div>
+                  <div class="pm-staff">
+                    <div class="pm-av av-g">M</div>
+                    <span class="pm-sname">Malika</span>
+                    <span class="pm-book">{% trans "Book" %}</span>
+                  </div>
+                  <div class="pm-staff">
+                    <div class="pm-av av-a">Z</div>
+                    <span class="pm-sname">Zulfiya</span>
+                    <span class="pm-book">{% trans "Book" %}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-top:10px;line-height:1.5;">{% trans "Client visits the provider's unique URL or scans a QR code." %}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="cs">
+        <div class="cs-num">2</div>
+        <div class="cs-card">
+          <div class="cs-hd">
+            <div class="cs-eyebrow">{% trans "Step 2" %}</div>
+            <div class="cs-title">{% trans "Choose a service" %}</div>
+          </div>
+          <div class="cs-body">
+            <div class="svc-picker">
+              <div class="svc-picker-hd">{% trans "Nail Care" %}</div>
+              <div class="svc-pick-row">
+                <span class="svc-radio"></span>
+                <span class="svc-pick-name">{% trans "Classic Manicure" %}</span>
+                <span class="svc-pick-price">45 000</span>
+              </div>
+              <div class="svc-pick-row sel">
+                <span class="svc-radio"></span>
+                <span class="svc-pick-name">{% trans "Gel Manicure" %} ✓</span>
+                <span class="svc-pick-price">65 000</span>
+              </div>
+              <div class="svc-pick-row">
+                <span class="svc-radio"></span>
+                <span class="svc-pick-name">{% trans "Pedicure" %}</span>
+                <span class="svc-pick-price">55 000</span>
+              </div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-top:10px;line-height:1.5;">{% trans "Only services assigned to that specialist are shown." %}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="cs">
+        <div class="cs-num">3</div>
+        <div class="cs-card">
+          <div class="cs-hd">
+            <div class="cs-eyebrow">{% trans "Step 3" %}</div>
+            <div class="cs-title">{% trans "Pick a date and time" %}</div>
+          </div>
+          <div class="cs-body">
+            <div class="dp">
+              <div class="dp-hd">
+                <span>{% trans "June 2025" %}</span>
+                <div class="dp-nav">
+                  <div class="dp-btn"><i class="fa-solid fa-chevron-left" style="font-size:.5rem;"></i></div>
+                  <div class="dp-btn"><i class="fa-solid fa-chevron-right" style="font-size:.5rem;"></i></div>
+                </div>
+              </div>
+              <div class="dp-grid">
+                <span class="dp-cell">Mo</span><span class="dp-cell">Tu</span><span class="dp-cell">We</span>
+                <span class="dp-cell">Th</span><span class="dp-cell">Fr</span><span class="dp-cell">Sa</span><span class="dp-cell">Su</span>
+                <span class="dp-cell"></span><span class="dp-cell"></span><span class="dp-cell"></span>
+                <span class="dp-cell"></span><span class="dp-cell"></span><span class="dp-cell avl">1</span><span class="dp-cell"></span>
+                <span class="dp-cell avl">2</span><span class="dp-cell avl">3</span><span class="dp-cell avl">4</span>
+                <span class="dp-cell avl">5</span><span class="dp-cell avl">6</span><span class="dp-cell avl">7</span><span class="dp-cell"></span>
+                <span class="dp-cell avl">9</span><span class="dp-cell avl">10</span><span class="dp-cell avl">11</span>
+                <span class="dp-cell avl">12</span><span class="dp-cell avl">13</span><span class="dp-cell avl">14</span><span class="dp-cell"></span>
+                <span class="dp-cell avl">16</span><span class="dp-cell avl">17</span><span class="dp-cell avl">18</span>
+                <span class="dp-cell avl">19</span><span class="dp-cell avl">20</span><span class="dp-cell avl">21</span><span class="dp-cell"></span>
+                <span class="dp-cell td">23</span><span class="dp-cell sel">24</span><span class="dp-cell avl">25</span>
+                <span class="dp-cell avl">26</span><span class="dp-cell avl">27</span><span class="dp-cell avl">28</span><span class="dp-cell"></span>
+              </div>
+              <div class="time-slots">
+                <span class="ts">10:00</span>
+                <span class="ts sel">11:30</span>
+                <span class="ts">13:00</span>
+                <span class="ts">15:00</span>
+              </div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-top:10px;line-height:1.5;">{% trans "Only truly free slots are shown — taken times are never displayed." %}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="cs">
+        <div class="cs-num">4</div>
+        <div class="cs-card">
+          <div class="cs-hd">
+            <div class="cs-eyebrow">{% trans "Step 4" %}</div>
+            <div class="cs-title">{% trans "Confirm with SMS code" %}</div>
+          </div>
+          <div class="cs-body">
+            <div class="otp-mock">
+              <div class="otp-body">
+                <div class="otp-field"><i class="fa-solid fa-user"></i> Malika Toshmatova</div>
+                <div class="otp-field"><i class="fa-solid fa-phone"></i> +998 90 123 45 67</div>
+                <div class="otp-divider">
+                  <div class="otp-line"></div>
+                  <span class="otp-txt">{% trans "SMS code sent" %}</span>
+                  <div class="otp-line"></div>
+                </div>
+                <div class="otp-boxes">
+                  <div class="otp-box">4</div>
+                  <div class="otp-box">7</div>
+                  <div class="otp-box">1</div>
+                  <div class="otp-box">2</div>
+                </div>
+                <div class="otp-hint">{% trans "Enter the 4-digit code from your SMS" %}</div>
+                <button class="otp-btn">{% trans "Confirm appointment" %}</button>
+              </div>
+              <div class="otp-success">
+                <div class="otp-check"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="otp-ok">{% trans "Appointment confirmed!" %}</div>
+                <div class="otp-ok-sub">{% trans "Jun 24 at 11:30 · Dilnoza K." %}</div>
+              </div>
+            </div>
+            <p style="font-size:0.78rem;color:var(--text-muted);margin-top:10px;line-height:1.5;">{% trans "No account or app needed. The OTP prevents fake bookings." %}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ FEATURES ════════════════════════════════════════════════════ -->
+<section class="tour-section alt">
+  <div class="container">
+    <div class="text-center mb-5 fade-in">
+      <div class="eyebrow" style="justify-content:center;">{% trans "Features" %}</div>
+      <h2>{% trans "Everything built in" %}</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon fi-i"><i class="fa-solid fa-clock"></i></div>
+        <div class="feat-title">{% trans "24/7 Self-booking" %}</div>
+        <p class="feat-desc">{% trans "Clients can book at 2 AM from any device. No phone call, no waiting. Your business keeps accepting appointments while you sleep." %}</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-g"><i class="fa-solid fa-comment-sms"></i></div>
+        <div class="feat-title">{% trans "SMS OTP verification" %}</div>
+        <p class="feat-desc">{% trans "Every booking is confirmed by a one-time SMS code sent to the client's phone. This eliminates fake appointments and ensures real phone numbers." %}</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-a"><i class="fa-solid fa-calendar-days"></i></div>
+        <div class="feat-title">{% trans "Individual staff schedules" %}</div>
+        <p class="feat-desc">{% trans "Each staff member has their own working hours, days off, and service list. Clients only see slots that are actually available for that person." %}</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-r"><i class="fa-solid fa-ban"></i></div>
+        <div class="feat-title">{% trans "Zero double bookings" %}</div>
+        <p class="feat-desc">{% trans "The system blocks taken slots in real time. Two clients can never be booked at the same time with the same specialist — it is structurally impossible." %}</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-c"><i class="fa-solid fa-notes-medical"></i></div>
+        <div class="feat-title">{% trans "Client history & notes" %}</div>
+        <p class="feat-desc">{% trans "Every visit is recorded. Staff can add private notes and attach files to each appointment — past records stay accessible for every future visit." %}</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon fi-p"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="feat-title">{% trans "Analytics dashboard" %}</div>
+        <p class="feat-desc">{% trans "Track revenue (charged vs paid vs outstanding), completion rates, no-shows, top clients, and per-staff performance — all filterable by date range." %}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ═════════════════════════════════════════════════════════ -->
+<section class="tour-cta">
+  <div class="container position-relative" style="z-index:1;">
+    <h2>{% trans "Ready to try it for your business?" %}</h2>
+    <p>{% trans "Write to us on Telegram — we'll set up your account personally." %}</p>
+    <a href="https://t.me/ImaProgrammer001" target="_blank" class="btn-tg">
+      <i class="fa-brands fa-telegram"></i> {% trans "Message us on Telegram" %}
+    </a>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════ -->
+<footer class="tour-footer">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <a href="{% url 'landing' %}" class="ft-brand">booket<span>.uz</span></a>
+      <div class="ft-links">
+        <a href="{% url 'landing' %}" class="ft-link">{% trans "Home" %}</a>
+        <a href="{% url 'b_login' %}" class="ft-link">{% trans "Log in" %}</a>
+        <a href="https://t.me/booketuz" target="_blank" class="ft-link">Telegram</a>
+      </div>
+      <form action="{% url 'set_language' %}" method="post" class="lang-sw">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+        <button type="submit" name="language" value="uz" class="lang-btn {% if LANG_CODE == 'uz' %}active{% endif %}">UZ</button>
+        <button type="submit" name="language" value="ru" class="lang-btn {% if LANG_CODE == 'ru' %}active{% endif %}">RU</button>
+        <button type="submit" name="language" value="en" class="lang-btn {% if LANG_CODE == 'en' %}active{% endif %}">EN</button>
+      </form>
+    </div>
+    <div class="ft-copy mt-3">© 2025 Booket.uz</div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.step-row, .fade-in, .cs, .feat-card').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -14,6 +14,10 @@ def landing(request):
     return render(request, 'landing/index.html')
 
 
+def about_page(request):
+    return render(request, 'booket/about.html')
+
+
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")
