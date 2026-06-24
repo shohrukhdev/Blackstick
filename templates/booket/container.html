@@ -3,149 +3,146 @@
 {% load l10n %}
 {% block title %} Home {% endblock %}
 {% block container %}
-  <style>
-      .profile-menu {
-          .dropdown-menu {
-              right: 0;
-              left: unset;
-          }
+{% get_current_language as LANG_CODE %}
+<div class="app-body">
 
-          .fa-fw {
-              margin-right: 10px;
-          }
-      }
+  <!-- SIDEBAR -->
+  <aside class="app-sidebar" id="appSidebar">
 
-      .toggle-change {
-          &::after {
-              border-top: 0;
-              border-bottom: .3em solid;
-          }
-      }
-  </style>
-  {% get_current_language as LANG_CODE %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">{{ request.user.server_user }}</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a id="dashboard-nav-link" class="nav-link" aria-current="page" href="{% url 'dashboard_main' %}">{% trans 'Dashboard' %}</a>
-          </li>
-          <li class="nav-item">
-            <a id="history-nav-link" class="nav-link" href="{% url 'dashboard_history' %}">{% trans 'History' %}</a>
-          </li>
-          {% if request.session.provider %}
-          <li class="nav-item">
-            <a id="provider-dashboard-nav-link" class="nav-link" href="{% url 'provider_dashboard_main' %}">{% trans 'Provider dashboard' %}</a>
-          </li>
-          <li class="nav-item">
-            <a id="provider-history-nav-link" class="nav-link" href="{% url 'provider_history' %}">{% trans 'Provider history' %}</a>
-          </li>
-          <li class="nav-item">
-            <a id="provider-settings-nav-link" class="nav-link" href="{% url 'b_provider_main' %}">{% trans 'Provider Settings' %}</a>
-          </li>
-          
-          {% endif %}
-          <div class="server_bar">
-            <li class="nav-item">
-              <a id="my_config" class="nav-link" href="{% url 'dashboard_config' %}"><i class="fa-solid fa-gear"></i> {% trans 'My settings' %}</a>
-            </li>
-          </div>
+    <div class="sidebar-brand">
+      <a href="{% url 'landing' %}" class="sidebar-brand-link">booket<span>.uz</span></a>
+    </div>
 
-
-        </ul>
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 profile-menu">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-               aria-expanded="false">
-              <i class="fas fa-user"></i>
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item">
-                <i class="fas fa-sliders-h fa-fw"></i>
-                <form id="setlangform" style="float: right;" action="{% url 'set_language' %}" method="post">
-                  {% csrf_token %}
-                  <div class="input-group input-group-sm mb-3">
-                    <input type="hidden" name="text" value="{{ redirect_to }}">
-                    <select class="form-control" id="cur_lang" name="language" onchange="submitlang()">
-                      {% get_available_languages as LANGUAGES %}
-                      {% get_language_info_list for LANGUAGES as languages %}
-                      {% for language in languages %}
-                        <option class="form-control" value="{{ language.code }}"
-                          {% if language.code == LANG_CODE %} selected {% endif %}>
-                          {{ language.name_local }}
-                        </option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </form>
-              </a></li>
-              <li><a class="dropdown-item" href="#"><i class="fas fa-cog fa-fw"></i> {% trans "Settings" %}</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li>
-                <a class="dropdown-item">
-                  <form method="post" action="{% url 'b_logout' %}">
-                    {% csrf_token %}
-                    <button class="btn btn-sm btn-secondary" style="float: right">
-                      <i class="fas fa-sign-out-alt fa-fw"></i> {% trans "Logout" %}
-                    </button>
-                  </form>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar">{{ request.user.first_name|slice:":1"|upper }}{{ request.user.last_name|slice:":1"|upper }}</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+        <div class="sidebar-user-role">{{ request.user.server_user }}</div>
       </div>
     </div>
-  </nav>
-  {% block content %}
-  {% endblock %}
 
-  <script>
-      function submitUserLogoutForm() {
-          $('#user-logout-form').submit();
-      }
+    <nav class="sidebar-nav">
+      <a id="dashboard-nav-link" class="sidebar-nav-item" href="{% url 'dashboard_main' %}">
+        <i class="fa-solid fa-calendar-days"></i>
+        <span>{% trans 'Dashboard' %}</span>
+      </a>
+      <a id="history-nav-link" class="sidebar-nav-item" href="{% url 'dashboard_history' %}">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>{% trans 'History' %}</span>
+      </a>
+      <a id="my_config" class="sidebar-nav-item" href="{% url 'dashboard_config' %}">
+        <i class="fa-solid fa-gear"></i>
+        <span>{% trans 'My settings' %}</span>
+      </a>
+      {% if request.session.provider %}
+      <div class="sidebar-section-label">{% trans 'Provider' %}</div>
+      <a id="provider-dashboard-nav-link" class="sidebar-nav-item" href="{% url 'provider_dashboard_main' %}">
+        <i class="fa-solid fa-briefcase"></i>
+        <span>{% trans 'Provider dashboard' %}</span>
+      </a>
+      <a id="provider-history-nav-link" class="sidebar-nav-item" href="{% url 'provider_history' %}">
+        <i class="fa-solid fa-list-check"></i>
+        <span>{% trans 'Provider history' %}</span>
+      </a>
+      <a id="provider-settings-nav-link" class="sidebar-nav-item" href="{% url 'b_provider_main' %}">
+        <i class="fa-solid fa-sliders"></i>
+        <span>{% trans 'Provider Settings' %}</span>
+      </a>
+      {% endif %}
+    </nav>
 
-      var cur_lang = document.getElementById('cur_lang').value;
+    <div class="sidebar-footer">
+      <form id="setlangform" action="{% url 'set_language' %}" method="post" class="sidebar-lang">
+        {% csrf_token %}
+        <input type="hidden" name="text" value="{{ redirect_to }}">
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <button type="submit" name="language" value="{{ language.code }}" class="lang-chip {% if language.code == LANG_CODE %}active{% endif %}">{{ language.code|upper }}</button>
+        {% endfor %}
+      </form>
+      <form method="post" action="{% url 'b_logout' %}">
+        {% csrf_token %}
+        <button class="btn-sidebar-logout" type="submit">
+          <i class="fa-solid fa-sign-out-alt"></i> {% trans "Logout" %}
+        </button>
+      </form>
+    </div>
 
-      function submitlang() {
-          $('#setlangform').submit();
-      }
+  </aside>
 
-      document.querySelectorAll('.dropdown-toggle').forEach(item => {
-          item.addEventListener('click', event => {
-              if (event.target.classList.contains('dropdown-toggle')) {
-                  event.target.classList.toggle('toggle-change');
-              } else if (event.target.parentElement.classList.contains('dropdown-toggle')) {
-                  event.target.parentElement.classList.toggle('toggle-change');
-              }
-          })
-      });
+  <!-- Sidebar overlay for mobile -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-      // Show Django messages and service-level feedback as toasts
-      document.addEventListener("DOMContentLoaded", function () {
-          {% for message in messages %}
-          showToast("{{ message|escapejs }}", "{{ message.tags }}");
-          {% endfor %}
-          {% if success is False and error %}
-          showToast("{{ error|escapejs }}", "error");
-          {% elif success is True %}
-          showToast("{% trans 'Operation completed successfully.' %}", "success");
-          {% endif %}
-      });
+  <!-- MAIN AREA -->
+  <div class="app-main">
 
-      function activateNavItem(itemId) {
-          $('.nav-link').removeClass('active').removeAttr('aria-current');
-          const $navItem = $(`#${itemId}`);
-          if ($navItem.length) {
-              $navItem.addClass('active').attr('aria-current', 'page');
-          }
-      }
-  </script>
+    <!-- Top header bar -->
+    <header class="app-header">
+      <button class="sidebar-toggle-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="app-header-title"></div>
+    </header>
+
+    <!-- Page content -->
+    <main class="app-content">
+      {% block content %}{% endblock %}
+    </main>
+
+  </div>
+
+</div>
+
+<script>
+  // Sidebar toggle for mobile
+  var sidebar = document.getElementById('appSidebar');
+  var overlay = document.getElementById('sidebarOverlay');
+  var toggleBtn = document.getElementById('sidebarToggle');
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function () {
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    });
+  }
+  if (overlay) {
+    overlay.addEventListener('click', function () {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    });
+  }
+
+  function activateNavItem(itemId) {
+    document.querySelectorAll('.sidebar-nav-item').forEach(function (el) {
+      el.classList.remove('active');
+      el.removeAttribute('aria-current');
+    });
+    var el = document.getElementById(itemId);
+    if (el) {
+      el.classList.add('active');
+      el.setAttribute('aria-current', 'page');
+    }
+  }
+
+  function submitUserLogoutForm() {
+    $('#user-logout-form').submit();
+  }
+
+  function submitlang() {
+    document.getElementById('setlangform').submit();
+  }
+
+  // Show Django messages and service-level feedback as toasts
+  document.addEventListener("DOMContentLoaded", function () {
+    {% for message in messages %}
+    showToast("{{ message|escapejs }}", "{{ message.tags }}");
+    {% endfor %}
+    {% if success is False and error %}
+    showToast("{{ error|escapejs }}", "error");
+    {% elif success is True %}
+    showToast("{% trans 'Operation completed successfully.' %}", "success");
+    {% endif %}
+  });
+</script>
 {% endblock %}
