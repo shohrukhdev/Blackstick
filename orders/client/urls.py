@@ -13,5 +13,6 @@ urlpatterns = [
     path('orders/<int:pk>/', views.client_order_detail, name='client_order_detail'),
     path('orders/<int:order_pk>/invoice/', views.client_invoice_download, name='client_invoice_download'),
     path('payments/', views.client_payments, name='client_payments'),
+    path('link-telegram/', views.link_telegram, name='link_telegram'),
     path('', views.CatalogView.as_view(), name='client_catalog'),
 ]

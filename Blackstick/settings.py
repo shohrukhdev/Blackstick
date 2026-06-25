@@ -248,3 +248,4 @@ CELERY_ACCEPT_CONTENT = ['json']
 # Telegram
 TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
 TELEGRAM_BOT_WEBHOOK_SECRET = os.environ.get('TELEGRAM_BOT_WEBHOOK_SECRET', '')
+SITE_URL = os.environ.get('SITE_URL', 'https://booket.uz')

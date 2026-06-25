@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView
 from django.db.models import Case, Count, DecimalField, ExpressionWrapper, F, Sum, Value, When
 from django.db.models.functions import Coalesce
+from django.core.cache import cache
 from django.http import FileResponse, Http404, HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -945,3 +946,36 @@ def payment_receipt_download(request, client_pk, payment_pk):
         f'inline; filename="receipt_{receipt.invoice_number}.pdf"'
     )
     return response
+
+
+# ── Telegram account linking ───────────────────────────────────────────────
+
+
+@supplier_required
+def link_telegram(request):
+    """
+    Supplier visits this URL (with ?token=<short_lived_token>) after clicking the
+    bot link.  The token was stored in cache by the /start handler.
+    """
+    token = request.GET.get('token', '')
+    if not token:
+        return render(request, 'orders/supplier/link_telegram.html', {'error': 'Token kiritilmagan.'})
+
+    telegram_id = cache.get(f'telegram:link:{token}')
+    if telegram_id is None:
+        return render(request, 'orders/supplier/link_telegram.html', {
+            'error': "Token muddati o'tgan yoki yaroqsiz.",
+        })
+
+    supplier = request.user.supplier
+    from orders.models import Supplier
+    if Supplier.objects.filter(telegram_id=telegram_id).exclude(pk=supplier.pk).exists():
+        return render(request, 'orders/supplier/link_telegram.html', {
+            'error': "Bu Telegram akkaunt allaqachon boshqa hisob bilan bog'langan.",
+        })
+
+    supplier.telegram_id = telegram_id
+    supplier.save(update_fields=['telegram_id'])
+    cache.delete(f'telegram:link:{token}')
+
+    return render(request, 'orders/supplier/link_telegram.html', {'success': True})

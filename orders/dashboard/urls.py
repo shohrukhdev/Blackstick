@@ -62,6 +62,9 @@ urlpatterns = [
     # Invoice — Task 14
     path('orders/<int:order_pk>/invoice/', views.invoice_download, name='invoice_download'),
 
+    # Telegram account linking
+    path('link-telegram/', views.link_telegram, name='link_telegram'),
+
     # Payment receipt
     path(
         'clients/<int:client_pk>/payments/<int:payment_pk>/receipt/',

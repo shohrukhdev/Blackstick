@@ -4,6 +4,7 @@ from decimal import Decimal, InvalidOperation
 
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
+from django.core.cache import cache
 from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -313,3 +314,36 @@ def client_invoice_download(request, order_pk):
         f'inline; filename="invoice_{invoice.invoice_number}.pdf"'
     )
     return response
+
+
+# ── Telegram account linking ───────────────────────────────────────────────
+
+
+@client_required
+def link_telegram(request):
+    """
+    Client visits this URL (with ?token=<short_lived_token>) after clicking the
+    bot link.  The token was stored in cache by the /start handler with the
+    sender's telegram_id as the value.  We save that telegram_id to the Client
+    profile and confirm to the user.
+    """
+    token = request.GET.get('token', '')
+    if not token:
+        return render(request, 'orders/client/link_telegram.html', {'error': 'Token kiritilmagan.'})
+
+    telegram_id = cache.get(f'telegram:link:{token}')
+    if telegram_id is None:
+        return render(request, 'orders/client/link_telegram.html', {'error': 'Token muddati o\'tgan yoki yaroqsiz.'})
+
+    client = request.user.client
+    from orders.models import Client
+    if Client.objects.filter(telegram_id=telegram_id).exclude(pk=client.pk).exists():
+        return render(request, 'orders/client/link_telegram.html', {
+            'error': 'Bu Telegram akkaunt allaqachon boshqa hisob bilan bog\'langan.',
+        })
+
+    client.telegram_id = telegram_id
+    client.save(update_fields=['telegram_id'])
+    cache.delete(f'telegram:link:{token}')
+
+    return render(request, 'orders/client/link_telegram.html', {'success': True})
