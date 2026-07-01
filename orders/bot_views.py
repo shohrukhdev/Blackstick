@@ -9,21 +9,6 @@ from telegram import Update
 
 logger = logging.getLogger(__name__)
 
-_application = None
-
-
-def _get_application():
-    global _application
-    if _application is None:
-        from orders.bot import get_application
-        _application = get_application()
-    return _application
-
-
-async def _process(app, update):
-    await app.initialize()
-    await app.process_update(update)
-
 
 @csrf_exempt
 def telegram_webhook(request):
@@ -37,10 +22,16 @@ def telegram_webhook(request):
             return HttpResponseForbidden('Invalid secret token')
 
     try:
-        app = _get_application()
+        from orders.bot import get_application
         data = json.loads(request.body)
-        update = Update.de_json(data, app.bot)
-        asyncio.run(_process(app, update))
+
+        async def _process():
+            app = get_application()
+            async with app:
+                update = Update.de_json(data, app.bot)
+                await app.process_update(update)
+
+        asyncio.run(_process())
     except Exception:
         logger.exception('Error processing Telegram update')
 

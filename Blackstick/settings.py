@@ -34,7 +34,7 @@ os.environ["AWS_DEFAULT_REGION"] = "eu-north-1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG', False))
 
-_allowed_hosts = os.environ.get('ALLOWED_HOSTS', 'booket.uz,localhost')
+_allowed_hosts = os.environ.get('ALLOWED_HOSTS', 'booket.uz,localhost,jurist-matted-turmoil.ngrok-free.dev')
 ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts.split(',') if h.strip()]
 
 _csrf_origins = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://booket.uz')

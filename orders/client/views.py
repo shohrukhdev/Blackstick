@@ -331,7 +331,7 @@ def link_telegram(request):
     if not token:
         return render(request, 'orders/client/link_telegram.html', {'error': 'Token kiritilmagan.'})
 
-    telegram_id = cache.get(f'telegram:link:{token}')
+    telegram_id = cache.get(f'telegram:link:client:{token}')
     if telegram_id is None:
         return render(request, 'orders/client/link_telegram.html', {'error': 'Token muddati o\'tgan yoki yaroqsiz.'})
 
@@ -344,6 +344,9 @@ def link_telegram(request):
 
     client.telegram_id = telegram_id
     client.save(update_fields=['telegram_id'])
-    cache.delete(f'telegram:link:{token}')
+    cache.delete(f'telegram:link:client:{token}')
+
+    from orders.celery_tasks import send_telegram_welcome
+    send_telegram_welcome.delay(telegram_id, 'client', client.company_name)
 
     return render(request, 'orders/client/link_telegram.html', {'success': True})
