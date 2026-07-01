@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
 from orders.constants import ALLOWED_IMAGE_MIME_TYPES, MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_SIZE_MB, OrderStatus
-from orders.models import Category, Item, Order
+from orders.models import Category, Item, Order, Supplier
 
 logger = logging.getLogger(__name__)
 
@@ -224,6 +224,43 @@ class ClientEditForm(forms.Form):
             if qs.exists():
                 raise forms.ValidationError("Bu Telegram ID allaqachon boshqa mijozda ro'yxatdan o'tgan.")
         return telegram_id
+
+
+# ── Supplier profile form ─────────────────────────────────────────────────
+
+
+class SupplierProfileForm(forms.ModelForm):
+    class Meta:
+        model = Supplier
+        fields = ['business_name', 'phone', 'address', 'logo']
+        labels = {
+            'business_name': 'Biznes nomi',
+            'phone': 'Telefon raqami',
+            'address': 'Manzil',
+            'logo': 'Logo',
+        }
+        widgets = {
+            'address': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['address'].required = False
+        self.fields['logo'].required = False
+        if self.instance and self.instance.pk and self.instance.logo:
+            self.fields['logo'].help_text = 'Yangi rasm yuklamasangiz, mavjudi saqlanadi.'
+
+    def clean_logo(self):
+        logo = self.cleaned_data.get('logo')
+        if logo and hasattr(logo, 'size') and logo.size > 0:
+            if logo.size > MAX_IMAGE_SIZE_BYTES:
+                raise forms.ValidationError(
+                    f'Rasm hajmi {MAX_IMAGE_SIZE_MB} MB dan oshmasligi kerak.'
+                )
+            content_type = getattr(logo, 'content_type', None)
+            if content_type and content_type not in ALLOWED_IMAGE_MIME_TYPES:
+                raise forms.ValidationError('Faqat JPEG, PNG va WebP formatlar qabul qilinadi.')
+        return logo
 
 
 # ── Expense forms ──────────────────────────────────────────────────────────

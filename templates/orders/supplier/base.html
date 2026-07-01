@@ -35,8 +35,9 @@
 
     </nav>
 
-    {# Logout #}
-    <div class="px-3 py-4 border-t border-gray-200 shrink-0">
+    {# Settings + Logout #}
+    <div class="px-3 py-4 border-t border-gray-200 shrink-0 space-y-0.5">
+      {% include "orders/supplier/_nav_link.html" with href="orders_dashboard:supplier_settings" name="supplier_settings" label="Sozlamalar" %}
       <form method="post" action="{% url 'orders_dashboard:supplier_logout' %}">
         {% csrf_token %}
         <button type="submit"

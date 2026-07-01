@@ -1,0 +1,168 @@
+{% extends "orders/supplier/base.html" %}
+{% block title %}Sozlamalar — {{ supplier.business_name }}{% endblock %}
+
+{% block supplier_content %}
+<div class="max-w-lg mx-auto"
+     x-data="{
+       logoPreview: {% if supplier.logo %}'{{ supplier.logo.url }}'{% else %}null{% endif %},
+       previewLogo(e) {
+         const f = e.target.files[0];
+         if (f) this.logoPreview = URL.createObjectURL(f);
+       }
+     }">
+
+  <h1 class="text-xl font-bold text-gray-900 mb-6">Sozlamalar</h1>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6 space-y-6">
+
+    {# Section: Profile #}
+    <div>
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">Profil ma'lumotlari</h2>
+
+      {% if form.non_field_errors %}
+        <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+          {% for error in form.non_field_errors %}
+            <p class="text-sm text-red-700">{{ error }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data" novalidate class="space-y-5">
+        {% csrf_token %}
+
+        {# Logo upload #}
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.logo.label }}
+          </label>
+          <div class="flex items-center gap-4 mb-3">
+            <div class="h-16 w-16 rounded-xl overflow-hidden bg-gray-100 border border-gray-200 shrink-0 flex items-center justify-center">
+              <img x-show="logoPreview" :src="logoPreview" x-cloak class="h-full w-full object-cover">
+              <div x-show="!logoPreview"
+                   class="h-full w-full flex items-center justify-center bg-brand-600">
+                <span class="text-white font-bold text-xl leading-none">
+                  {{ supplier.business_name|first|upper }}
+                </span>
+              </div>
+            </div>
+            <div class="flex-1">
+              <input type="file"
+                     name="{{ form.logo.html_name }}"
+                     id="{{ form.logo.id_for_label }}"
+                     accept="image/*"
+                     @change="previewLogo($event)"
+                     class="block w-full text-sm text-gray-600
+                            file:mr-3 file:py-2 file:px-4
+                            file:rounded-lg file:border-0 file:text-sm file:font-medium
+                            file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100
+                            cursor-pointer">
+              {% if form.logo.help_text %}
+                <p class="mt-1 text-xs text-gray-500">{{ form.logo.help_text }}</p>
+              {% endif %}
+              {% if form.logo.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ form.logo.errors|join:", " }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {# Business name #}
+        <div>
+          <label for="{{ form.business_name.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.business_name.label }} <span class="text-red-500">*</span>
+          </label>
+          <input type="text"
+                 name="{{ form.business_name.html_name }}"
+                 id="{{ form.business_name.id_for_label }}"
+                 value="{{ form.business_name.value|default:'' }}"
+                 class="w-full rounded-xl border px-3.5 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                        {% if form.business_name.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+          {% if form.business_name.errors %}
+            <p class="mt-1.5 text-xs text-red-600">{{ form.business_name.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        {# Phone #}
+        <div>
+          <label for="{{ form.phone.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.phone.label }} <span class="text-red-500">*</span>
+          </label>
+          <input type="text"
+                 name="{{ form.phone.html_name }}"
+                 id="{{ form.phone.id_for_label }}"
+                 value="{{ form.phone.value|default:'' }}"
+                 class="w-full rounded-xl border px-3.5 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                        {% if form.phone.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+          {% if form.phone.errors %}
+            <p class="mt-1.5 text-xs text-red-600">{{ form.phone.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        {# Address #}
+        <div>
+          <label for="{{ form.address.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.address.label }}
+          </label>
+          <textarea name="{{ form.address.html_name }}"
+                    id="{{ form.address.id_for_label }}"
+                    rows="3"
+                    class="w-full rounded-xl border px-3.5 py-2.5 text-sm resize-none
+                           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                           {% if form.address.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">{{ form.address.value|default:'' }}</textarea>
+          {% if form.address.errors %}
+            <p class="mt-1.5 text-xs text-red-600">{{ form.address.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        <div class="pt-2 border-t border-gray-100">
+          <button type="submit"
+                  class="rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold
+                         px-6 py-2.5 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+            Saqlash
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    {# Section: Account #}
+    <div class="pt-4 border-t border-gray-100">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-gray-400 mb-4">Hisob</h2>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-500">Foydalanuvchi nomi</span>
+          <span class="font-medium text-gray-900">{{ request.user.username }}</span>
+        </div>
+        {% if request.user.email %}
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-500">Email</span>
+          <span class="font-medium text-gray-900">{{ request.user.email }}</span>
+        </div>
+        {% endif %}
+        <div class="flex items-center justify-between text-sm">
+          <span class="text-gray-500">Telegram</span>
+          {% if supplier.telegram_id %}
+            <span class="inline-flex items-center gap-1.5 text-green-700 font-medium">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Bog'langan
+            </span>
+          {% else %}
+            <a href="{% url 'orders_dashboard:link_telegram' %}"
+               class="text-brand-600 hover:text-brand-700 font-medium">
+              Bog'lash
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

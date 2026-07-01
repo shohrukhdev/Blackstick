@@ -20,7 +20,7 @@ from orders.decorators import SupplierLoginRequiredMixin, supplier_required
 from orders.analytics import (
     get_kpis, get_per_client_breakdown, get_revenue_over_time, get_top_clients, get_top_items,
 )
-from orders.forms import CategoryForm, ClientCreateForm, ClientEditForm, ExpenseForm, ItemForm, PaymentRecordForm
+from orders.forms import CategoryForm, ClientCreateForm, ClientEditForm, ExpenseForm, ItemForm, PaymentRecordForm, SupplierProfileForm
 from orders.models import (
     Category, Expense, Item, Order, OrderItem, PaymentRecord, Shipment, ShipmentOrder, SupplierClient,
 )
@@ -982,3 +982,20 @@ def link_telegram(request):
     send_telegram_welcome.delay(telegram_id, 'supplier', supplier.business_name)
 
     return render(request, 'orders/supplier/link_telegram.html', {'success': True})
+
+
+# ── Supplier profile / settings ───────────────────────────────────────────
+
+
+@supplier_required
+def supplier_settings(request):
+    supplier = request.user.supplier
+    if request.method == 'POST':
+        form = SupplierProfileForm(request.POST, request.FILES, instance=supplier)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profil muvaffaqiyatli saqlandi.")
+            return redirect(reverse('orders_dashboard:supplier_settings'))
+    else:
+        form = SupplierProfileForm(instance=supplier)
+    return render(request, 'orders/supplier/settings.html', {'form': form})

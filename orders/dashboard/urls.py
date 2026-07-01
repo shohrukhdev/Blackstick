@@ -65,6 +65,9 @@ urlpatterns = [
     # Telegram account linking
     path('link-telegram/', views.link_telegram, name='link_telegram'),
 
+    # Supplier settings / profile
+    path('settings/', views.supplier_settings, name='supplier_settings'),
+
     # Payment receipt
     path(
         'clients/<int:client_pk>/payments/<int:payment_pk>/receipt/',
