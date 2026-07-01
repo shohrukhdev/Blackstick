@@ -23,9 +23,9 @@ class Command(BaseCommand):
 
     async def _set_webhook(self, token: str, webhook_url: str, secret: str) -> None:
         from telegram import Bot
-        bot = Bot(token=token)
         kwargs = {'url': webhook_url}
         if secret:
             kwargs['secret_token'] = secret
-        await bot.set_webhook(**kwargs)
+        async with Bot(token=token) as bot:
+            await bot.set_webhook(**kwargs)
         self.stdout.write(self.style.SUCCESS(f'Webhook set to: {webhook_url}'))
