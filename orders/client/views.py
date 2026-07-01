@@ -2,13 +2,15 @@ import json
 import logging
 from decimal import Decimal, InvalidOperation
 
+from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.core.cache import cache
 from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 from orders.constants import OrderStatus
 from orders.decorators import ClientLoginRequiredMixin, client_required
@@ -29,9 +31,6 @@ logger = logging.getLogger(__name__)
 class ClientLoginView(LoginView):
     template_name = 'orders/client/login.html'
     redirect_authenticated_user = True
-
-    def get_success_url(self):
-        return reverse_lazy('orders_client:client_catalog')
 
     def form_valid(self, form):
         user = form.get_user()
@@ -314,6 +313,45 @@ def client_invoice_download(request, order_pk):
         f'inline; filename="invoice_{invoice.invoice_number}.pdf"'
     )
     return response
+
+
+# ── Telegram Mini App auto-auth ────────────────────────────────────────────
+
+
+@csrf_exempt
+def client_tma_auth(request):
+    """
+    Verify Telegram WebApp initData and create a Django session for the linked client.
+    Called by JS on the login page when window.Telegram.WebApp.initData is present.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'ok': False}, status=405)
+
+    try:
+        body = json.loads(request.body)
+        init_data = body.get('initData', '')
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'ok': False}, status=400)
+
+    try:
+        from orders.tma_auth import verify_init_data
+        data = verify_init_data(init_data, settings.TELEGRAM_BOT_TOKEN)
+    except ValueError as exc:
+        logger.debug('TMA auth failed: %s', exc)
+        return JsonResponse({'ok': False, 'error': str(exc)}, status=401)
+
+    telegram_id = (data.get('user') or {}).get('id')
+    if not telegram_id:
+        return JsonResponse({'ok': False, 'error': 'no_user'}, status=401)
+
+    from orders.models import Client
+    try:
+        client = Client.objects.select_related('user').get(telegram_id=telegram_id)
+    except Client.DoesNotExist:
+        return JsonResponse({'ok': False, 'error': 'not_linked'}, status=404)
+
+    login(request, client.user, backend='django.contrib.auth.backends.ModelBackend')
+    return JsonResponse({'ok': True})
 
 
 # ── Telegram account linking ───────────────────────────────────────────────

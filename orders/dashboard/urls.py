@@ -68,6 +68,9 @@ urlpatterns = [
     # Supplier settings / profile
     path('settings/', views.supplier_settings, name='supplier_settings'),
 
+    # Telegram Mini App auto-auth
+    path('tma-auth/', views.supplier_tma_auth, name='supplier_tma_auth'),
+
     # Payment receipt
     path(
         'clients/<int:client_pk>/payments/<int:payment_pk>/receipt/',

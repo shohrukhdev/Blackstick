@@ -3,17 +3,19 @@ import logging
 from datetime import date as date_cls
 from decimal import Decimal, InvalidOperation
 
+from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.db.models import Case, Count, DecimalField, ExpressionWrapper, F, Sum, Value, When
 from django.db.models.functions import Coalesce
 from django.core.cache import cache
 from django.http import FileResponse, Http404, HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView
+from django.views.decorators.csrf import csrf_exempt
 
 from orders.constants import DeliveryStatus, OrderStatus, ShipmentStatus
 from orders.decorators import SupplierLoginRequiredMixin, supplier_required
@@ -51,9 +53,6 @@ class SupplierLoginView(LoginView):
         if request.user.is_authenticated and not hasattr(request.user, 'supplier'):
             logout(request)
         return super().dispatch(request, *args, **kwargs)
-
-    def get_success_url(self):
-        return reverse_lazy('orders_dashboard:dashboard_home')
 
     def form_valid(self, form):
         user = form.get_user()
@@ -999,3 +998,42 @@ def supplier_settings(request):
     else:
         form = SupplierProfileForm(instance=supplier)
     return render(request, 'orders/supplier/settings.html', {'form': form})
+
+
+# ── Telegram Mini App auto-auth ────────────────────────────────────────────
+
+
+@csrf_exempt
+def supplier_tma_auth(request):
+    """
+    Verify Telegram WebApp initData and create a Django session for the linked supplier.
+    Called by JS on the login page when window.Telegram.WebApp.initData is present.
+    """
+    if request.method != 'POST':
+        return JsonResponse({'ok': False}, status=405)
+
+    try:
+        body = json.loads(request.body)
+        init_data = body.get('initData', '')
+    except (json.JSONDecodeError, ValueError):
+        return JsonResponse({'ok': False}, status=400)
+
+    try:
+        from orders.tma_auth import verify_init_data
+        data = verify_init_data(init_data, settings.TELEGRAM_BOT_TOKEN)
+    except ValueError as exc:
+        logger.debug('Supplier TMA auth failed: %s', exc)
+        return JsonResponse({'ok': False, 'error': str(exc)}, status=401)
+
+    telegram_id = (data.get('user') or {}).get('id')
+    if not telegram_id:
+        return JsonResponse({'ok': False, 'error': 'no_user'}, status=401)
+
+    from orders.models import Supplier
+    try:
+        supplier = Supplier.objects.select_related('user').get(telegram_id=telegram_id)
+    except Supplier.DoesNotExist:
+        return JsonResponse({'ok': False, 'error': 'not_linked'}, status=404)
+
+    login(request, supplier.user, backend='django.contrib.auth.backends.ModelBackend')
+    return JsonResponse({'ok': True})

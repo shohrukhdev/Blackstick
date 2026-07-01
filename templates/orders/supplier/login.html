@@ -1,5 +1,32 @@
 {% extends "orders/base.html" %}
 {% block title %}Kirish — Ta'minotchi{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function () {
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (!tg || !tg.initData) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const next = params.get('next') || '/orders/';
+
+  const banner = document.getElementById('tma-banner');
+  if (banner) banner.classList.remove('hidden');
+
+  fetch('/orders/tma-auth/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ initData: tg.initData }),
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (d.ok) { window.location.href = next; }
+    })
+    .catch(function () {});
+}());
+</script>
+{% endblock %}
+
 {% block content %}
 
 <div class="min-h-screen bg-gradient-to-br from-brand-50 to-gray-100 flex items-center justify-center px-4 py-12">
@@ -18,6 +45,11 @@
         </div>
         <h1 class="text-xl font-bold text-gray-900">Buyurtma tizimi</h1>
         <p class="mt-1 text-sm text-gray-500">Ta'minotchi hisobiga kiring</p>
+      </div>
+
+      {# Shown only inside Telegram Mini App while auto-login is in progress #}
+      <div id="tma-banner" class="hidden mb-5 rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700 text-center">
+        Telegram orqali kirilmoqda…
       </div>
 
       {# Non-field errors #}
