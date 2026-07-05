@@ -66,6 +66,33 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: blackstick_local_celery
+    command: celery -A Blackstick worker -l info
+    volumes:
+      - .:/app                        # same code mount so changes apply without rebuild
+    env_file:
+      - .env
+    environment:
+      - DOCKER_ENV=1
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=admin
+      - DB_PASSWORD=admin
+      - REDIS_URL=redis://redis:6379/0
+    networks:
+      - internal
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:

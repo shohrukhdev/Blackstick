@@ -977,8 +977,8 @@ def link_telegram(request):
     supplier.save(update_fields=['telegram_id'])
     cache.delete(f'telegram:link:supplier:{token}')
 
-    from orders.celery_tasks import send_telegram_welcome
-    send_telegram_welcome.delay(telegram_id, 'supplier', supplier.business_name)
+    from orders.celery_tasks import send_welcome_sync
+    send_welcome_sync(telegram_id, 'supplier', supplier.business_name)
 
     return render(request, 'orders/supplier/link_telegram.html', {'success': True})
 
