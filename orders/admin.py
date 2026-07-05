@@ -15,6 +15,8 @@ from orders.models import (
     PaymentRecord,
     Expense,
     Invoice,
+    LandingCard,
+    LandingCardImage,
 )
 
 
@@ -178,3 +180,17 @@ class InvoiceAdmin(admin.ModelAdmin):
         if obj.pdf_file:
             return format_html('<a href="{}" target="_blank">Yuklab olish</a>', obj.pdf_file.url)
         return '—'
+
+
+class LandingCardImageInline(admin.TabularInline):
+    model = LandingCardImage
+    extra = 1
+
+
+@admin.register(LandingCard)
+class LandingCardAdmin(admin.ModelAdmin):
+    list_display = ['supplier', 'title', 'display_order', 'is_active', 'created_at']
+    list_filter = ['is_active', 'supplier']
+    search_fields = ['title', 'supplier__business_name']
+    ordering = ['supplier', 'display_order']
+    inlines = [LandingCardImageInline]

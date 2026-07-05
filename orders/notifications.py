@@ -113,3 +113,31 @@ def notify_client_order_delivered(order):
         f'Hisobingiz: /balance'
     )
     send_telegram_notification.delay(order.client.telegram_id, text)
+
+
+def notify_client_payment_received(client, amount: Decimal, balance_after: Decimal, supplier_name: str):
+    from orders.celery_tasks import send_telegram_notification
+    if not client.telegram_id:
+        return
+    text = (
+        f"💳 <b>Hisobingizga to'lov qo'shildi!</b>\n\n"
+        f"Ta'minotchi: <b>{supplier_name}</b>\n"
+        f"Miqdor: <b>{_fmt(amount)}</b>\n"
+        f"Joriy balans: <b>{_fmt(balance_after)}</b>\n\n"
+        f"Batafsil: /balance"
+    )
+    send_telegram_notification.delay(client.telegram_id, text)
+
+
+def notify_supplier_client_payment(supplier, client, amount: Decimal, balance_after: Decimal):
+    """Notify supplier that a payment was recorded (confirmation)."""
+    from orders.celery_tasks import send_telegram_notification
+    if not supplier.telegram_id:
+        return
+    text = (
+        f"✅ <b>To'lov qayd etildi</b>\n\n"
+        f"Mijoz: <b>{client.company_name}</b>\n"
+        f"Miqdor: <b>{_fmt(amount)}</b>\n"
+        f"Joriy balans: <b>{_fmt(balance_after)}</b>"
+    )
+    send_telegram_notification.delay(supplier.telegram_id, text)

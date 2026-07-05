@@ -6,7 +6,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
 
 from orders.constants import ALLOWED_IMAGE_MIME_TYPES, MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_SIZE_MB, OrderStatus
-from orders.models import Category, Item, Order, Supplier
+from orders.models import Category, Item, LandingCard, Order, Supplier
 
 logger = logging.getLogger(__name__)
 
@@ -226,6 +226,50 @@ class ClientEditForm(forms.Form):
         return telegram_id
 
 
+# ── Client profile form (client-facing settings) ─────────────────────────
+
+
+class ClientProfileForm(forms.Form):
+    company_name = forms.CharField(
+        max_length=255, label='Kompaniya nomi',
+        widget=forms.TextInput(attrs={'class': _INPUT_CLASS}),
+    )
+    full_name = forms.CharField(
+        max_length=150, label="To'liq ism",
+        widget=forms.TextInput(attrs={'class': _INPUT_CLASS}),
+    )
+    phone = forms.CharField(
+        max_length=30, label='Telefon raqami',
+        widget=forms.TextInput(attrs={'class': _INPUT_CLASS}),
+    )
+    address = forms.CharField(
+        max_length=500, required=False, label='Manzil',
+        widget=forms.Textarea(attrs={'class': _INPUT_CLASS, 'rows': '2'}),
+    )
+    latitude = forms.DecimalField(
+        max_digits=10, decimal_places=8, required=False,
+        min_value=-90, max_value=90,
+        label='Kenglik (Latitude)',
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'step': 'any',
+                                        'placeholder': '41.29950000'}),
+    )
+    longitude = forms.DecimalField(
+        max_digits=11, decimal_places=8, required=False,
+        min_value=-180, max_value=180,
+        label='Uzunlik (Longitude)',
+        widget=forms.NumberInput(attrs={'class': _INPUT_CLASS, 'step': 'any',
+                                        'placeholder': '69.24007000'}),
+    )
+
+    def clean(self):
+        cleaned = super().clean()
+        lat = cleaned.get('latitude')
+        lng = cleaned.get('longitude')
+        if (lat is None) != (lng is None):
+            raise forms.ValidationError("Kenglik va uzunlik ikkalasi ham kiritilishi kerak.")
+        return cleaned
+
+
 # ── Supplier profile form ─────────────────────────────────────────────────
 
 
@@ -281,3 +325,38 @@ class ExpenseForm(forms.Form):
         max_length=500, label='Izoh',
         widget=forms.TextInput(attrs={'class': _INPUT_CLASS, 'placeholder': 'Xarajat tavsifi'}),
     )
+
+
+# ── Landing card form ──────────────────────────────────────────────────────
+
+
+_SELECT_CLASS = (
+    'w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm bg-white '
+    'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow'
+)
+
+
+class LandingCardForm(forms.ModelForm):
+    class Meta:
+        model = LandingCard
+        fields = ['title', 'subtitle', 'item', 'display_order', 'is_active']
+        labels = {
+            'title': 'Sarlavha',
+            'subtitle': 'Qo\'shimcha matn (ixtiyoriy)',
+            'item': 'Tovar (ixtiyoriy)',
+            'display_order': 'Tartib raqami',
+            'is_active': 'Faol',
+        }
+        widgets = {
+            'title': forms.TextInput(attrs={'class': _INPUT_CLASS}),
+            'subtitle': forms.Textarea(attrs={'id': 'id_subtitle', 'rows': 5}),
+            'display_order': forms.NumberInput(attrs={'min': 0, 'class': _INPUT_CLASS}),
+            'item': forms.Select(attrs={'class': _SELECT_CLASS}),
+        }
+
+    def __init__(self, supplier, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['item'].queryset = Item.objects.filter(supplier=supplier, is_active=True).order_by('name')
+        self.fields['item'].required = False
+        self.fields['item'].empty_label = '— Tovar bog\'lamasdan —'
+        self.fields['subtitle'].required = False

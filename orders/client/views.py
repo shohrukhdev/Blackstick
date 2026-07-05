@@ -3,18 +3,20 @@ import logging
 from decimal import Decimal, InvalidOperation
 
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView
 from django.core.cache import cache
 from django.http import FileResponse, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from orders.constants import OrderStatus
 from orders.decorators import ClientLoginRequiredMixin, client_required
-from orders.forms import InviteRegisterForm
+from orders.forms import ClientProfileForm, InviteRegisterForm
 from orders.models import ClientInvite, Order, SupplierClient
 from orders.services import (
     get_client_balance, get_client_catalog, get_client_ledger_page,
@@ -40,12 +42,36 @@ class ClientLoginView(LoginView):
         return super().form_valid(form)
 
     def get_default_redirect_url(self):
+        user = self.request.user
+        if hasattr(user, 'client'):
+            links = (
+                SupplierClient.objects
+                .filter(client=user.client, is_active=True)
+                .values_list('supplier_id', flat=True)
+            )
+            ids = list(links)
+            if len(ids) == 1:
+                return reverse('supplier_landing', kwargs={'supplier_id': ids[0]})
+            if len(ids) > 1:
+                return reverse('orders_client:pick_supplier')
         return reverse('orders_client:client_catalog')
 
 
 def client_logout(request):
     logout(request)
     return redirect(reverse('orders_client:client_login'))
+
+
+@client_required
+def pick_supplier(request):
+    client = request.user.client
+    links = list(
+        SupplierClient.objects
+        .filter(client=client, is_active=True)
+        .select_related('supplier')
+        .order_by('supplier__business_name')
+    )
+    return render(request, 'orders/client/pick_supplier.html', {'links': links, 'client': client})
 
 
 # ── Invite registration ────────────────────────────────────────────────────
@@ -102,6 +128,12 @@ class CatalogView(ClientLoginRequiredMixin, View):
         )
 
         if not links.exists():
+            # Check if there are disabled links (vs no links at all)
+            has_any = SupplierClient.objects.filter(client=client).exists()
+            if has_any:
+                return render(request, 'orders/client/account_disabled.html', {
+                    'client': client,
+                }, status=403)
             return render(request, 'orders/client/no_supplier.html', {'client': client})
 
         if links.count() == 1:
@@ -199,10 +231,12 @@ def client_order_list(request):
     else:
         tab = 'active'
         orders = list(get_client_orders(client, statuses=OrderStatus.ACTIVE))
+    supplier, _ = _resolve_supplier_for_client(client, request)
     return render(request, 'orders/client/order_list.html', {
         'client': client,
         'orders': orders,
         'active_tab': tab,
+        'supplier': supplier,
     })
 
 
@@ -221,6 +255,7 @@ def client_order_detail(request, pk):
     return render(request, 'orders/client/order_detail.html', {
         'client': client,
         'order': order,
+        'supplier': order.supplier,
     })
 
 
@@ -313,6 +348,55 @@ def client_invoice_download(request, order_pk):
         f'inline; filename="invoice_{invoice.invoice_number}.pdf"'
     )
     return response
+
+
+# ── Client profile settings ────────────────────────────────────────────────
+
+
+@client_required
+def client_settings(request):
+    client = request.user.client
+    user = request.user
+    supplier, _ = _resolve_supplier_for_client(client, request)
+
+    if request.method == 'POST':
+        form = ClientProfileForm(request.POST)
+        if form.is_valid():
+            d = form.cleaned_data
+            client.company_name = d['company_name']
+            client.phone = d['phone']
+            client.address = d.get('address', '')
+            lat = d.get('latitude')
+            lng = d.get('longitude')
+            client.latitude = lat
+            client.longitude = lng
+            if lat is not None and lng is not None:
+                client.location_updated_at = timezone.now()
+            client.save(update_fields=[
+                'company_name', 'phone', 'address',
+                'latitude', 'longitude', 'location_updated_at',
+            ])
+            full_name = d.get('full_name', '').strip()
+            user.first_name = full_name
+            user.last_name = ''
+            user.save(update_fields=['first_name', 'last_name'])
+            messages.success(request, "Profil muvaffaqiyatli yangilandi.")
+            return redirect(reverse('orders_client:client_settings'))
+    else:
+        form = ClientProfileForm(initial={
+            'company_name': client.company_name,
+            'full_name': user.first_name,
+            'phone': client.phone,
+            'address': client.address,
+            'latitude': client.latitude,
+            'longitude': client.longitude,
+        })
+
+    return render(request, 'orders/client/settings.html', {
+        'client': client,
+        'supplier': supplier,
+        'form': form,
+    })
 
 
 # ── Telegram Mini App auto-auth ────────────────────────────────────────────

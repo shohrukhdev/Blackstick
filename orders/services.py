@@ -104,6 +104,12 @@ def get_supplier_clients(supplier):
     )
 
 
+def toggle_supplier_client(supplier_client: SupplierClient) -> SupplierClient:
+    supplier_client.is_active = not supplier_client.is_active
+    supplier_client.save(update_fields=['is_active'])
+    return supplier_client
+
+
 def get_active_invites(supplier):
     return (
         ClientInvite.objects
@@ -424,7 +430,7 @@ def record_payment(supplier, client, amount, notes, date, order=None, created_by
         raise ValueError("To'lov miqdori musbat bo'lishi kerak.")
     balance_data = get_client_balance(supplier, client)
     balance_after = balance_data['balance'] + amount
-    return PaymentRecord.objects.create(
+    record = PaymentRecord.objects.create(
         supplier=supplier,
         client=client,
         amount=amount,
@@ -434,6 +440,10 @@ def record_payment(supplier, client, amount, notes, date, order=None, created_by
         order=order,
         created_by=created_by,
     )
+    from orders import notifications
+    notifications.notify_client_payment_received(client, amount, balance_after, supplier.business_name)
+    notifications.notify_supplier_client_payment(supplier, client, amount, balance_after)
+    return record
 
 
 def update_payment(payment, amount, notes, date, order=None):

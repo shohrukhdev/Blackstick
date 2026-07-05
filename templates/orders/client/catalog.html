@@ -269,7 +269,21 @@ function catalogPage() {
     init() {
       const key = window._SUPPLIER_ID ? `cart_notes_${window._SUPPLIER_ID}` : null;
       if (key) this.notes = localStorage.getItem(key) || '';
-      this.$nextTick(() => this.setupScrollSpy());
+      this.$nextTick(() => {
+        this.setupScrollSpy();
+        this.scrollToItemFromUrl();
+      });
+    },
+
+    scrollToItemFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const itemId = params.get('item');
+      if (!itemId) return;
+      const card = document.getElementById(`item-${itemId}`);
+      if (!card) return;
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('ring-2', 'ring-brand-500', 'ring-offset-2');
+      setTimeout(() => card.classList.remove('ring-2', 'ring-brand-500', 'ring-offset-2'), 2000);
     },
 
     setupScrollSpy() {

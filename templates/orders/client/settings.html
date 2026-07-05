@@ -1,0 +1,246 @@
+{% extends "orders/client/base.html" %}
+{% block title %}Profil{% endblock %}
+
+{% block client_content %}
+<div class="max-w-lg mx-auto px-4 py-6 pb-32">
+
+  <h1 class="text-xl font-bold text-gray-900 mb-6">Profil sozlamalari</h1>
+
+  {% if form.non_field_errors %}
+  <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+    {% for error in form.non_field_errors %}
+    <p class="text-sm text-red-700">{{ error }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="post" novalidate class="space-y-5">
+    {% csrf_token %}
+
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/80 p-5 space-y-5 shadow-sm">
+      <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">Ma'lumotlar</h2>
+
+      {# Company name #}
+      <div>
+        <label for="{{ form.company_name.id_for_label }}"
+               class="block text-sm font-medium text-gray-700 mb-1.5">
+          {{ form.company_name.label }} <span class="text-red-500">*</span>
+        </label>
+        <input type="text"
+               name="{{ form.company_name.html_name }}"
+               id="{{ form.company_name.id_for_label }}"
+               value="{{ form.company_name.value|default:'' }}"
+               class="w-full rounded-xl border px-3.5 py-2.5 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                      {% if form.company_name.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+        {% if form.company_name.errors %}
+        <p class="mt-1.5 text-xs text-red-600">{{ form.company_name.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+
+      {# Full name #}
+      <div>
+        <label for="{{ form.full_name.id_for_label }}"
+               class="block text-sm font-medium text-gray-700 mb-1.5">
+          {{ form.full_name.label }} <span class="text-red-500">*</span>
+        </label>
+        <input type="text"
+               name="{{ form.full_name.html_name }}"
+               id="{{ form.full_name.id_for_label }}"
+               value="{{ form.full_name.value|default:'' }}"
+               class="w-full rounded-xl border px-3.5 py-2.5 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                      {% if form.full_name.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+        {% if form.full_name.errors %}
+        <p class="mt-1.5 text-xs text-red-600">{{ form.full_name.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+
+      {# Phone #}
+      <div>
+        <label for="{{ form.phone.id_for_label }}"
+               class="block text-sm font-medium text-gray-700 mb-1.5">
+          {{ form.phone.label }} <span class="text-red-500">*</span>
+        </label>
+        <input type="tel"
+               name="{{ form.phone.html_name }}"
+               id="{{ form.phone.id_for_label }}"
+               value="{{ form.phone.value|default:'' }}"
+               class="w-full rounded-xl border px-3.5 py-2.5 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                      {% if form.phone.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+        {% if form.phone.errors %}
+        <p class="mt-1.5 text-xs text-red-600">{{ form.phone.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+
+      {# Address #}
+      <div>
+        <label for="{{ form.address.id_for_label }}"
+               class="block text-sm font-medium text-gray-700 mb-1.5">
+          {{ form.address.label }}
+        </label>
+        <textarea name="{{ form.address.html_name }}"
+                  id="{{ form.address.id_for_label }}"
+                  rows="2"
+                  class="w-full rounded-xl border px-3.5 py-2.5 text-sm resize-none
+                         focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                         {% if form.address.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">{{ form.address.value|default:'' }}</textarea>
+        {% if form.address.errors %}
+        <p class="mt-1.5 text-xs text-red-600">{{ form.address.errors|join:", " }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Location section #}
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/80 p-5 space-y-4 shadow-sm"
+         x-data="locationPicker()">
+
+      <div class="flex items-center justify-between">
+        <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">Manzil (joylashuv)</h2>
+        {% if client.has_location %}
+        <a href="{{ client.maps_url }}" target="_blank" rel="noopener"
+           class="inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700 font-medium">
+          <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+          </svg>
+          Xaritada ko'rish
+        </a>
+        {% endif %}
+      </div>
+
+      <button type="button"
+              @click="detect()"
+              :disabled="detecting"
+              class="w-full flex items-center justify-center gap-2 rounded-xl border border-brand-200
+                     bg-brand-50 hover:bg-brand-100 text-brand-700 text-sm font-medium
+                     py-2.5 transition-colors disabled:opacity-60">
+        <svg class="h-4 w-4" :class="detecting ? 'animate-spin' : ''"
+             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+        </svg>
+        <span x-text="detecting ? 'Aniqlanmoqda...' : 'Hozirgi joylashuvni aniqlash'"></span>
+      </button>
+
+      <p x-show="geoError" x-text="geoError" x-cloak class="text-xs text-red-600"></p>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label for="{{ form.latitude.id_for_label }}"
+                 class="block text-xs font-medium text-gray-500 mb-1">
+            {{ form.latitude.label }}
+          </label>
+          <input type="number"
+                 name="{{ form.latitude.html_name }}"
+                 id="{{ form.latitude.id_for_label }}"
+                 x-model="lat"
+                 step="any"
+                 placeholder="41.29950000"
+                 class="w-full rounded-xl border px-3 py-2 text-sm tabular-nums
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                        {% if form.latitude.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+          {% if form.latitude.errors %}
+          <p class="mt-1 text-xs text-red-600">{{ form.latitude.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+        <div>
+          <label for="{{ form.longitude.id_for_label }}"
+                 class="block text-xs font-medium text-gray-500 mb-1">
+            {{ form.longitude.label }}
+          </label>
+          <input type="number"
+                 name="{{ form.longitude.html_name }}"
+                 id="{{ form.longitude.id_for_label }}"
+                 x-model="lng"
+                 step="any"
+                 placeholder="69.24007000"
+                 class="w-full rounded-xl border px-3 py-2 text-sm tabular-nums
+                        focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-shadow
+                        {% if form.longitude.errors %}border-red-400 bg-red-50{% else %}border-gray-300{% endif %}">
+          {% if form.longitude.errors %}
+          <p class="mt-1 text-xs text-red-600">{{ form.longitude.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <p x-show="lat && lng" x-cloak class="text-xs text-green-700 flex items-center gap-1">
+        <svg class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Joylashuv belgilangan
+      </p>
+    </div>
+
+    {# Account info #}
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200/80 p-5 space-y-3 shadow-sm">
+      <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">Hisob</h2>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-500">Foydalanuvchi nomi</span>
+        <span class="font-medium text-gray-900">{{ request.user.username }}</span>
+      </div>
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-gray-500">Telegram</span>
+        {% if client.telegram_id %}
+          <span class="inline-flex items-center gap-1.5 text-green-700 font-medium">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Bog'langan
+          </span>
+        {% else %}
+          <span class="text-gray-400 text-xs">Bog'lanmagan</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="pt-1">
+      <button type="submit"
+              class="w-full rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold
+                     py-3 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 shadow-sm">
+        Saqlash
+      </button>
+    </div>
+
+  </form>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function locationPicker() {
+  return {
+    lat: '{{ form.latitude.value|default:"" }}',
+    lng: '{{ form.longitude.value|default:"" }}',
+    detecting: false,
+    geoError: '',
+
+    detect() {
+      if (!navigator.geolocation) {
+        this.geoError = 'Qurilmangiz joylashuvni qo\'llab-quvvatlamaydi.';
+        return;
+      }
+      this.detecting = true;
+      this.geoError = '';
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          this.lat = pos.coords.latitude.toFixed(8);
+          this.lng = pos.coords.longitude.toFixed(8);
+          this.detecting = false;
+        },
+        (err) => {
+          this.geoError = 'Joylashuvni aniqlab bo\'lmadi. Ruxsat berilganligini tekshiring.';
+          this.detecting = false;
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    },
+  };
+}
+</script>
+{% endblock %}

@@ -343,3 +343,35 @@ class Invoice(models.Model):
         prefix = f'INV-{now.strftime("%Y%m")}'
         count = cls.objects.filter(invoice_number__startswith=prefix).count()
         return f'{prefix}-{count + 1:04d}'
+
+
+class LandingCard(models.Model):
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='landing_cards')
+    title = models.CharField(max_length=120)
+    subtitle = models.TextField(blank=True, default='')
+    item = models.ForeignKey(
+        Item, on_delete=models.SET_NULL, null=True, blank=True, related_name='+',
+    )
+    display_order = models.PositiveSmallIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
+        verbose_name = 'Landing karta'
+        verbose_name_plural = 'Landing kartalar'
+
+    def __str__(self):
+        return f'{self.supplier} — {self.title}'
+
+
+class LandingCardImage(models.Model):
+    card = models.ForeignKey(LandingCard, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='landing_cards/%Y/%m/')
+    display_order = models.PositiveSmallIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
+        verbose_name = 'Landing karta rasm'
+        verbose_name_plural = 'Landing karta rasmlar'

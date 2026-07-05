@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ supplier.business_name }}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd',
+              400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8',
+              800: '#1e40af', 900: '#1e3a8a',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    [x-cloak] { display: none !important; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+{# ── Header ─────────────────────────────────────────────── #}
+<header class="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 h-14 flex items-center justify-between shadow-sm">
+  <div class="flex items-center gap-3">
+    {% if supplier.logo %}
+      <img src="{{ supplier.logo.url }}" alt="" class="h-8 w-8 rounded-lg object-cover shrink-0">
+    {% else %}
+      <div class="h-8 w-8 rounded-lg bg-brand-600 flex items-center justify-center shrink-0">
+        <span class="text-white font-bold text-sm leading-none">{{ supplier.business_name|first|upper }}</span>
+      </div>
+    {% endif %}
+    <span class="font-semibold text-gray-900 text-sm">{{ supplier.business_name }}</span>
+  </div>
+  <a href="{% url 'orders_client:client_catalog' %}"
+     class="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700
+            px-4 py-2 text-sm font-semibold text-white transition-colors">
+    Katalog
+    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+    </svg>
+  </a>
+</header>
+
+{% if cards %}
+<div class="max-w-2xl mx-auto px-4 py-5 space-y-4">
+
+  {% for card in cards %}
+  {% with images=card.images.all %}
+  {% if images %}
+  {# ── Card ─────────────────────────────────────────────── #}
+  <div class="bg-white rounded-2xl shadow-md overflow-hidden"
+       x-data="{
+         current: 0,
+         total: {{ images|length }},
+         timer: null,
+         paused: false,
+         start() {
+           this.timer = setInterval(() => { if (!this.paused) this.advance(); }, 4000);
+         },
+         advance() { this.current = (this.current + 1) % this.total; },
+         next() { this.current = (this.current + 1) % this.total; },
+         prev() { this.current = (this.current - 1 + this.total) % this.total; },
+         touchStartX: 0,
+         onTouchStart(e) { this.touchStartX = e.changedTouches[0].clientX; },
+         onTouchEnd(e) {
+           const dx = e.changedTouches[0].clientX - this.touchStartX;
+           if (dx > 50) this.prev(); else if (dx < -50) this.next();
+         },
+       }"
+       x-init="start()"
+       @mouseenter="paused = true"
+       @mouseleave="paused = false"
+       @touchstart.passive="onTouchStart($event)"
+       @touchend.passive="onTouchEnd($event)">
+
+    {# Image carousel — 16:9 aspect ratio #}
+    <div class="relative overflow-hidden aspect-video">
+      {% for img in images %}
+      <div x-show="current === {{ forloop.counter0 }}"
+           x-transition:enter="transition-opacity duration-500"
+           x-transition:enter-start="opacity-0"
+           x-transition:enter-end="opacity-100"
+           x-transition:leave="transition-opacity duration-300"
+           x-transition:leave-start="opacity-100"
+           x-transition:leave-end="opacity-0"
+           class="absolute inset-0"
+           {% if not forloop.first %}x-cloak{% endif %}>
+        <img src="{{ img.image.url }}" alt="{{ card.title }}"
+             class="w-full h-full object-cover">
+      </div>
+      {% endfor %}
+
+      {% if images|length > 1 %}
+      {# Arrows (desktop) #}
+      <button @click="prev()"
+              class="hidden sm:flex absolute left-3 top-1/2 -translate-y-1/2 z-10
+                     h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm shadow
+                     items-center justify-center text-gray-700 hover:bg-white transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+        </svg>
+      </button>
+      <button @click="next()"
+              class="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 z-10
+                     h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm shadow
+                     items-center justify-center text-gray-700 hover:bg-white transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+        </svg>
+      </button>
+
+      {# Dots #}
+      <div class="absolute bottom-3 inset-x-0 flex justify-center gap-1.5 z-10">
+        {% for img in images %}
+        <button @click="current = {{ forloop.counter0 }}"
+                class="rounded-full transition-all duration-300"
+                :class="current === {{ forloop.counter0 }}
+                  ? 'w-5 h-2 bg-white shadow'
+                  : 'w-2 h-2 bg-white/60 hover:bg-white/80'">
+        </button>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    {# Card content #}
+    <div class="p-5">
+      <h3 class="text-lg font-bold text-gray-900 leading-snug">{{ card.title }}</h3>
+      {% if card.subtitle %}
+      <div class="text-sm text-gray-600 mt-2 leading-relaxed prose prose-sm max-w-none">
+        {{ card.subtitle|safe }}
+      </div>
+      {% endif %}
+      {% if card.item %}
+      <div class="mt-4">
+        <a href="{% url 'orders_client:client_catalog' %}?item={{ card.item_id }}"
+           class="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700
+                  px-4 py-2 text-sm font-semibold text-white transition-colors">
+          Ko'proq
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+          </svg>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+  {% endwith %}
+  {% endfor %}
+
+  {# ── Bottom CTA ─────────────────────────────────────────── #}
+  <div class="pt-2 pb-6">
+    <a href="{% url 'orders_client:client_catalog' %}"
+       class="flex items-center justify-center gap-2 w-full rounded-2xl
+              bg-brand-600 hover:bg-brand-700
+              px-8 py-4 text-sm font-semibold text-white
+              shadow-lg shadow-brand-600/30
+              hover:shadow-xl hover:shadow-brand-700/30
+              transition-all duration-200">
+      <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
+      </svg>
+      Katalogga o'tish
+    </a>
+  </div>
+
+</div>
+
+{% else %}
+{# ── Empty state ─────────────────────────────────────────── #}
+<div class="flex flex-col items-center justify-center py-32 px-4 text-center">
+  <div class="h-16 w-16 rounded-2xl bg-gray-200 flex items-center justify-center mb-4">
+    <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+    </svg>
+  </div>
+  <p class="font-semibold text-gray-700">Hozircha ma'lumot yo'q</p>
+  <a href="{% url 'orders_client:client_catalog' %}"
+     class="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700
+            px-5 py-2.5 text-sm font-semibold text-white transition-colors">
+    <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+    </svg>
+    Katalogga o'tish
+  </a>
+</div>
+{% endif %}
+
+</body>
+</html>

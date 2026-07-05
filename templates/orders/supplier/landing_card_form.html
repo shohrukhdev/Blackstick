@@ -1,0 +1,227 @@
+{% extends "orders/supplier/base.html" %}
+{% load static %}
+{% block title %}{% if is_create %}Yangi karta{% else %}Kartani tahrirlash{% endif %} — {{ supplier.business_name }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.css">
+{% endblock %}
+
+{% block supplier_content %}
+<div class="max-w-2xl mx-auto">
+
+  <a href="{% url 'orders_dashboard:landing_cards' %}"
+     class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 mb-6 group">
+    <svg class="h-4 w-4 transition-transform group-hover:-translate-x-0.5" fill="none" viewBox="0 0 24 24"
+         stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+    </svg>
+    Landing sahifaga qaytish
+  </a>
+
+  <div class="bg-white rounded-2xl border border-gray-200 p-6">
+    <h1 class="text-xl font-bold text-gray-900 mb-6">
+      {% if is_create %}Yangi karta{% else %}Kartani tahrirlash{% endif %}
+    </h1>
+
+    {% if form.non_field_errors %}
+    <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+      {% for error in form.non_field_errors %}
+      <p class="text-sm text-red-700">{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if image_errors %}
+    <div class="mb-5 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
+      {% for error in image_errors %}
+      <p class="text-sm text-red-700">{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      <div class="space-y-5">
+
+        {# Title #}
+        <div>
+          <label for="{{ form.title.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.title.label }} <span class="text-red-500">*</span>
+          </label>
+          {{ form.title }}
+          {% if form.title.errors %}
+          <p class="mt-1 text-xs text-red-600">{{ form.title.errors|join:", " }}</p>
+          {% endif %}
+        </div>
+
+        {# Subtitle (WYSIWYG) #}
+        <div>
+          <label for="{{ form.subtitle.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.subtitle.label }}
+          </label>
+          {{ form.subtitle }}
+        </div>
+
+        {# Item #}
+        <div>
+          <label for="{{ form.item.id_for_label }}"
+                 class="block text-sm font-medium text-gray-700 mb-1.5">
+            {{ form.item.label }}
+          </label>
+          {{ form.item }}
+          <p class="mt-1 text-xs text-gray-400">
+            Tanlangan tovar "Ko'proq" tugmasi orqali katalogda ochiladi
+          </p>
+        </div>
+
+        {# Display order + Is active row #}
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="{{ form.display_order.id_for_label }}"
+                   class="block text-sm font-medium text-gray-700 mb-1.5">
+              {{ form.display_order.label }}
+            </label>
+            {{ form.display_order }}
+          </div>
+          <div class="flex flex-col justify-end pb-0.5">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox"
+                     name="{{ form.is_active.html_name }}"
+                     id="{{ form.is_active.id_for_label }}"
+                     {% if form.is_active.value %}checked{% endif %}
+                     class="h-5 w-5 rounded border-gray-300 text-brand-600 focus:ring-brand-500">
+              <span class="text-sm font-medium text-gray-700">{{ form.is_active.label }}</span>
+            </label>
+          </div>
+        </div>
+
+        {# ── Existing images (edit only) ─────────────────── #}
+        {% if not is_create and existing_images %}
+        <div>
+          <p class="block text-sm font-medium text-gray-700 mb-2">Mavjud rasmlar</p>
+          <div class="grid grid-cols-3 sm:grid-cols-4 gap-3" id="existing-images-grid">
+            {% for img in existing_images %}
+            <div class="relative group" id="img-wrapper-{{ img.pk }}">
+              <div class="h-24 rounded-xl overflow-hidden bg-gray-100 border border-gray-200">
+                <img src="{{ img.image.url }}" alt="" class="h-full w-full object-cover">
+              </div>
+              <button type="button"
+                      onclick="deleteCardImage(this, '{% url 'orders_dashboard:landing_card_image_delete' card.pk img.pk %}', '{{ csrf_token }}')"
+                      class="absolute top-1 right-1 h-6 w-6 rounded-full bg-red-500 hover:bg-red-600
+                             flex items-center justify-center text-white
+                             opacity-0 group-hover:opacity-100 transition-opacity">
+                <svg class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {# ── Upload images ─────────────────────────────────── #}
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">
+            {% if is_create %}Rasmlar <span class="text-red-500">*</span>{% else %}Yangi rasmlar qo'shish{% endif %}
+          </label>
+          <input type="file"
+                 name="images"
+                 multiple
+                 accept="image/*"
+                 id="images-upload"
+                 onchange="previewLandingImages(this)"
+                 class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4
+                        file:rounded-xl file:border-0 file:text-sm file:font-semibold
+                        file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100
+                        transition-colors cursor-pointer">
+          <p class="mt-1.5 text-xs text-gray-400">
+            Bir vaqtda bir nechta rasm tanlash mumkin. JPEG, PNG va WebP qabul qilinadi (maks. 5 MB/rasm).
+          </p>
+
+          {# New image previews #}
+          <div id="new-img-preview" class="mt-3 grid grid-cols-3 sm:grid-cols-4 gap-3 hidden"></div>
+        </div>
+
+      </div>
+
+      {# Submit #}
+      <div class="flex gap-3 mt-8 pt-6 border-t border-gray-100">
+        <a href="{% url 'orders_dashboard:landing_cards' %}"
+           class="flex-1 text-center rounded-xl border border-gray-300 bg-white px-4 py-2.5
+                  text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+          Bekor qilish
+        </a>
+        <button type="submit"
+                class="flex-1 rounded-xl bg-brand-600 hover:bg-brand-700 px-4 py-2.5
+                       text-sm font-semibold text-white transition-colors">
+          {% if is_create %}Qo'shish{% else %}Saqlash{% endif %}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.9.0/dist/summernote-lite.min.js"></script>
+<script>
+$(function () {
+  $('#id_subtitle').summernote({
+    placeholder: "Qo'shimcha tavsif (ixtiyoriy)...",
+    tabsize: 2,
+    height: 160,
+    toolbar: [
+      ['style', ['bold', 'italic', 'underline', 'clear']],
+      ['font', ['strikethrough']],
+      ['color', ['color']],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ['insert', ['link']],
+      ['view', ['codeview']],
+    ],
+  });
+});
+
+function previewLandingImages(input) {
+  var grid = document.getElementById('new-img-preview');
+  grid.innerHTML = '';
+  if (!input.files || !input.files.length) {
+    grid.classList.add('hidden');
+    return;
+  }
+  grid.classList.remove('hidden');
+  Array.from(input.files).forEach(function(f) {
+    var url = URL.createObjectURL(f);
+    var div = document.createElement('div');
+    div.className = 'h-24 rounded-xl overflow-hidden bg-gray-100 border border-gray-200';
+    var img = document.createElement('img');
+    img.src = url;
+    img.className = 'h-full w-full object-cover';
+    div.appendChild(img);
+    grid.appendChild(div);
+  });
+}
+
+function deleteCardImage(btn, url, csrfToken) {
+  if (!confirm("Rasmni o'chirishni tasdiqlaysizmi?")) return;
+  btn.disabled = true;
+  fetch(url, {
+    method: 'POST',
+    headers: { 'X-CSRFToken': csrfToken },
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.ok) {
+      var wrapper = btn.closest('[id^="img-wrapper-"]');
+      if (wrapper) wrapper.remove();
+    } else {
+      btn.disabled = false;
+    }
+  })
+  .catch(function() { btn.disabled = false; });
+}
+</script>
+{% endblock %}

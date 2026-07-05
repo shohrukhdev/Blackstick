@@ -77,4 +77,14 @@ urlpatterns = [
         views.payment_receipt_download,
         name='payment_receipt_download',
     ),
+
+    # Client toggle (B3)
+    path('clients/<int:pk>/toggle/', views.client_toggle, name='client_toggle'),
+
+    # Landing cards (B4)
+    path('landing/', views.landing_cards, name='landing_cards'),
+    path('landing/create/', views.landing_card_create, name='landing_card_create'),
+    path('landing/<int:pk>/edit/', views.landing_card_update, name='landing_card_update'),
+    path('landing/<int:pk>/delete/', views.landing_card_delete, name='landing_card_delete'),
+    path('landing/<int:card_pk>/image/<int:image_pk>/delete/', views.landing_card_image_delete, name='landing_card_image_delete'),
 ]

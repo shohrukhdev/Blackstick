@@ -32,7 +32,7 @@ from orders.services import (
     delete_category, delete_payment, generate_invite, get_active_invites, get_client_balance,
     get_clients_balance_map, get_expenses, get_or_create_order_invoice,
     get_or_create_payment_receipt, get_supplier_catalog,
-    get_supplier_clients, mark_order_paid, unmark_order_paid, reactivate_item, record_payment,
+    mark_order_paid, unmark_order_paid, reactivate_item, record_payment,
     update_order_note, update_payment, update_shipment_order_status,
 )
 
@@ -384,7 +384,12 @@ _DEFAULT_BALANCE = {
 @supplier_required
 def client_list(request):
     supplier = request.user.supplier
-    supplier_clients = list(get_supplier_clients(supplier))
+    supplier_clients = list(
+        SupplierClient.objects
+        .filter(supplier=supplier)
+        .select_related('client', 'client__user')
+        .order_by('-is_active', 'client__company_name')
+    )
     balance_map = get_clients_balance_map(supplier)
     for sc in supplier_clients:
         sc.balance = balance_map.get(sc.client_id, _DEFAULT_BALANCE)
@@ -505,6 +510,10 @@ def client_update(request, pk):
         if client.user.email != email:
             client.user.email = email
             client.user.save(update_fields=['email'])
+        is_active = request.POST.get('is_active') == '1'
+        if sc.is_active != is_active:
+            sc.is_active = is_active
+            sc.save(update_fields=['is_active'])
         return JsonResponse({'ok': True})
     errors = {field: list(errs) for field, errs in form.errors.items()}
     return JsonResponse({'ok': False, 'errors': errors}, status=400)
@@ -1036,4 +1045,144 @@ def supplier_tma_auth(request):
         return JsonResponse({'ok': False, 'error': 'not_linked'}, status=404)
 
     login(request, supplier.user, backend='django.contrib.auth.backends.ModelBackend')
+    return JsonResponse({'ok': True})
+
+
+# ── Client toggle (B3) ────────────────────────────────────────────────────
+
+
+@supplier_required
+def client_toggle(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    sc = get_object_or_404(SupplierClient, pk=pk, supplier=supplier)
+    from orders.services import toggle_supplier_client
+    toggle_supplier_client(sc)
+    label = 'Faollashtirildi' if sc.is_active else "O'chirildi"
+    return JsonResponse({'ok': True, 'is_active': sc.is_active, 'label': label})
+
+
+# ── Landing cards (B4) ────────────────────────────────────────────────────
+
+
+@supplier_required
+def landing_cards(request):
+    supplier = request.user.supplier
+    from orders.models import LandingCard
+    cards = list(
+        LandingCard.objects
+        .filter(supplier=supplier)
+        .prefetch_related('images')
+        .select_related('item')
+        .order_by('display_order', 'created_at')
+    )
+    landing_url = request.build_absolute_uri(
+        reverse('supplier_landing', args=[supplier.pk])
+    )
+    return render(request, 'orders/supplier/landing_cards.html', {
+        'cards': cards,
+        'landing_url': landing_url,
+        'nav_section': 'landing_cards',
+    })
+
+
+@supplier_required
+def landing_card_create(request):
+    from django.db import transaction
+    supplier = request.user.supplier
+    from orders.constants import ALLOWED_IMAGE_MIME_TYPES, MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_SIZE_MB
+    from orders.forms import LandingCardForm
+    from orders.models import LandingCardImage
+    image_errors = []
+    if request.method == 'POST':
+        form = LandingCardForm(supplier, request.POST)
+        images = request.FILES.getlist('images')
+        if form.is_valid():
+            if not images:
+                image_errors.append('Kamida bitta rasm yuklanishi kerak.')
+            else:
+                for img in images:
+                    if img.size > MAX_IMAGE_SIZE_BYTES:
+                        image_errors.append(f'{img.name}: hajm {MAX_IMAGE_SIZE_MB} MB dan oshmasligi kerak.')
+                    elif getattr(img, 'content_type', None) and img.content_type not in ALLOWED_IMAGE_MIME_TYPES:
+                        image_errors.append(f'{img.name}: faqat JPEG, PNG va WebP qabul qilinadi.')
+            if not image_errors:
+                with transaction.atomic():
+                    card = form.save(commit=False)
+                    card.supplier = supplier
+                    card.save()
+                    for i, img in enumerate(images):
+                        LandingCardImage.objects.create(card=card, image=img, display_order=i)
+                messages.success(request, 'Karta qo\'shildi.')
+                return redirect(reverse('orders_dashboard:landing_cards'))
+    else:
+        form = LandingCardForm(supplier)
+    return render(request, 'orders/supplier/landing_card_form.html', {
+        'form': form,
+        'is_create': True,
+        'image_errors': image_errors,
+        'nav_section': 'landing_cards',
+    })
+
+
+@supplier_required
+def landing_card_update(request, pk):
+    supplier = request.user.supplier
+    from orders.constants import ALLOWED_IMAGE_MIME_TYPES, MAX_IMAGE_SIZE_BYTES, MAX_IMAGE_SIZE_MB
+    from orders.forms import LandingCardForm
+    from orders.models import LandingCard, LandingCardImage
+    card = get_object_or_404(LandingCard, pk=pk, supplier=supplier)
+    image_errors = []
+    if request.method == 'POST':
+        form = LandingCardForm(supplier, request.POST, instance=card)
+        images = request.FILES.getlist('images')
+        if form.is_valid():
+            for img in images:
+                if img.size > MAX_IMAGE_SIZE_BYTES:
+                    image_errors.append(f'{img.name}: hajm {MAX_IMAGE_SIZE_MB} MB dan oshmasligi kerak.')
+                elif getattr(img, 'content_type', None) and img.content_type not in ALLOWED_IMAGE_MIME_TYPES:
+                    image_errors.append(f'{img.name}: faqat JPEG, PNG va WebP qabul qilinadi.')
+            if not image_errors:
+                form.save()
+                existing_count = card.images.count()
+                for i, img in enumerate(images):
+                    LandingCardImage.objects.create(card=card, image=img, display_order=existing_count + i)
+                messages.success(request, 'Karta yangilandi.')
+                return redirect(reverse('orders_dashboard:landing_cards'))
+    else:
+        form = LandingCardForm(supplier, instance=card)
+    card.refresh_from_db()
+    existing_images = list(card.images.order_by('display_order', 'created_at'))
+    return render(request, 'orders/supplier/landing_card_form.html', {
+        'form': form,
+        'card': card,
+        'existing_images': existing_images,
+        'is_create': False,
+        'image_errors': image_errors,
+        'nav_section': 'landing_cards',
+    })
+
+
+@supplier_required
+def landing_card_delete(request, pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    from orders.models import LandingCard
+    card = get_object_or_404(LandingCard, pk=pk, supplier=supplier)
+    card.delete()
+    messages.success(request, 'Karta o\'chirildi.')
+    return redirect(reverse('orders_dashboard:landing_cards'))
+
+
+@supplier_required
+def landing_card_image_delete(request, card_pk, image_pk):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed(['POST'])
+    supplier = request.user.supplier
+    from orders.models import LandingCard, LandingCardImage
+    card = get_object_or_404(LandingCard, pk=card_pk, supplier=supplier)
+    image = get_object_or_404(LandingCardImage, pk=image_pk, card=card)
+    image.delete()
     return JsonResponse({'ok': True})

@@ -1,0 +1,148 @@
+{% extends "orders/supplier/base.html" %}
+{% block title %}Landing sahifa — {{ supplier.business_name }}{% endblock %}
+
+{% block supplier_content %}
+<div x-data="landingPage()">
+
+  {# ── Header ─────────────────────────────────────────────── #}
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Landing sahifa</h1>
+      <p class="text-sm text-gray-500 mt-0.5">Ommaviy sahifada ko'rinadigan slaydlarni boshqaring</p>
+    </div>
+    <div class="flex gap-2">
+      <a href="{{ landing_url }}" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-1.5 rounded-xl border border-gray-300 bg-white
+                px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/>
+        </svg>
+        Ko'rish
+      </a>
+      <button @click="copyUrl()"
+              class="inline-flex items-center gap-1.5 rounded-xl border border-gray-300 bg-white
+                     px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5A3.375 3.375 0 006.375 7.5H5.25m11.25 0h-5.25"/>
+        </svg>
+        <span x-text="copied ? 'Nusxalandi ✓' : 'Havolani nusxalash'"></span>
+      </button>
+      <a href="{% url 'orders_dashboard:landing_slide_create' %}"
+         class="inline-flex items-center gap-1.5 rounded-xl bg-brand-600 hover:bg-brand-700
+                px-3.5 py-2 text-sm font-semibold text-white transition-colors">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+        </svg>
+        Yangi slayd
+      </a>
+    </div>
+  </div>
+
+  {% if slides %}
+  <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <ul class="divide-y divide-gray-100" id="slides-list">
+      {% for slide in slides %}
+      <li class="flex items-center gap-4 px-5 py-4">
+
+        {# Thumbnail #}
+        <div class="h-16 w-24 rounded-xl overflow-hidden bg-gray-100 shrink-0">
+          <img src="{{ slide.image.url }}" alt="{{ slide.title }}"
+               class="h-full w-full object-cover">
+        </div>
+
+        {# Info #}
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <p class="text-sm font-semibold text-gray-900 truncate">{{ slide.title }}</p>
+            {% if not slide.is_active %}
+            <span class="shrink-0 text-xs font-medium text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">
+              Faolsiz
+            </span>
+            {% endif %}
+          </div>
+          {% if slide.subtitle %}
+          <p class="text-xs text-gray-500 mt-0.5 truncate">{{ slide.subtitle }}</p>
+          {% endif %}
+          <div class="flex items-center gap-3 mt-1">
+            <span class="text-xs text-gray-400">Tartib: {{ slide.display_order }}</span>
+            {% if slide.item %}
+            <span class="text-xs text-brand-600">⬛ {{ slide.item.name }}</span>
+            {% else %}
+            <span class="text-xs text-gray-300">Tovar bog'lanmagan</span>
+            {% endif %}
+          </div>
+        </div>
+
+        {# Actions #}
+        <div class="flex items-center gap-1 shrink-0">
+          <a href="{% url 'orders_dashboard:landing_slide_update' slide.pk %}"
+             class="h-8 w-8 flex items-center justify-center rounded-lg text-gray-400
+                    hover:text-brand-600 hover:bg-brand-50 transition-colors"
+             title="Tahrirlash">
+            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125"/>
+            </svg>
+          </a>
+          <form method="post" action="{% url 'orders_dashboard:landing_slide_delete' slide.pk %}"
+                @submit.prevent="if(confirm('Slaydni o\'chirishni tasdiqlaysizmi?')) $el.submit()">
+            {% csrf_token %}
+            <button type="submit"
+                    class="h-8 w-8 flex items-center justify-center rounded-lg text-gray-400
+                           hover:text-red-500 hover:bg-red-50 transition-colors"
+                    title="O'chirish">
+              <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  {% else %}
+  <div class="text-center py-20">
+    <div class="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-gray-100 mb-4">
+      <svg class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+          d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/>
+      </svg>
+    </div>
+    <p class="font-semibold text-gray-900">Hali slaydlar yo'q</p>
+    <p class="text-sm text-gray-500 mt-1 mb-5">Birinchi slaydni qo'shing va landing sahifangizni faollashtiring</p>
+    <a href="{% url 'orders_dashboard:landing_slide_create' %}"
+       class="inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700
+              px-5 py-2.5 text-sm font-semibold text-white transition-colors">
+      <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+      </svg>
+      Yangi slayd
+    </a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function landingPage() {
+  return {
+    copied: false,
+    async copyUrl() {
+      try {
+        await navigator.clipboard.writeText('{{ landing_url }}');
+        this.copied = true;
+        setTimeout(() => { this.copied = false; }, 2000);
+      } catch (_) {}
+    },
+  };
+}
+</script>
+{% endblock %}

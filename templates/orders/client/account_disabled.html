@@ -1,0 +1,16 @@
+{% extends "orders/client/base.html" %}
+{% block title %}Hisob o'chirilgan{% endblock %}
+{% block client_content %}
+<div class="flex flex-col items-center justify-center py-24 px-4 text-center">
+  <div class="h-16 w-16 rounded-2xl bg-red-50 flex items-center justify-center mb-4">
+    <svg class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+    </svg>
+  </div>
+  <p class="font-semibold text-gray-900">Hisobingiz o'chirilgan</p>
+  <p class="text-sm text-gray-500 mt-1 max-w-xs">
+    Ta'minotchingiz sizning kirishingizni vaqtincha cheklagan. Batafsil ma'lumot uchun ta'minotchingiz bilan bog'laning.
+  </p>
+</div>
+{% endblock %}
