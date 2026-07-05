@@ -127,3 +127,9 @@ dmypy.json
 /media/
 media/
 media.env.local
+
+# Production-specific — keep off GitHub
+docker-compose.prod.yml
+.env.prod
+.env.prod.db
+.env.proxy-companion
