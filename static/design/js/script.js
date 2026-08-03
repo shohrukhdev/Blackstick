@@ -58,6 +58,34 @@ function t(key) {
     return (MESSAGES[lang] && MESSAGES[lang][key]) || (MESSAGES.en && MESSAGES.en[key]) || key;
 }
 
+/** flatpickr locale objects for the date-of-birth picker (English is flatpickr's built-in default). */
+const DOB_LOCALES = {
+    ru: {
+        weekdays: {
+            shorthand: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+            longhand: ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+        },
+        months: {
+            shorthand: ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+            longhand: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"]
+        },
+        firstDayOfWeek: 1,
+        ordinal: () => ""
+    },
+    uz: {
+        weekdays: {
+            shorthand: ["Yak", "Du", "Se", "Cho", "Pa", "Ju", "Sha"],
+            longhand: ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"]
+        },
+        months: {
+            shorthand: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul", "Avg", "Sen", "Okt", "Noy", "Dek"],
+            longhand: ["Yanvar", "Fevral", "Mart", "Aprel", "May", "Iyun", "Iyul", "Avgust", "Sentabr", "Oktabr", "Noyabr", "Dekabr"]
+        },
+        firstDayOfWeek: 1,
+        ordinal: () => ""
+    }
+};
+
 // ─── Globals ───────────────────────────────────────────────────────────────────
 
 /** Booking state accumulated across all three modal steps. */
@@ -71,6 +99,9 @@ let responseData = {};
 /** First and last visible date in the date-picker (used for pagination). */
 let firstDate;
 let lastDate;
+
+/** flatpickr instance for the #dob field (kept so autofill/reset can stay in sync with it). */
+let dobPicker;
 
 let timerInterval = null;
 
@@ -90,12 +121,63 @@ function initializeModals() {
 
 function initializeComponents() {
     $('[data-toggle="popover"]').popover({ trigger: 'click', placement: 'auto' });
-    flatpickr('.date-picker', {
+    initializeDobPicker();
+    appointment.provider_identifier = $("#provider_identifier").val();
+}
+
+/**
+ * Sets up the #dob flatpickr: month/weekday names in the site's active language,
+ * blocks future dates, and caps how far back the calendar can go (100 years) so the
+ * year dropdown added below has a fixed, matching range.
+ */
+function initializeDobPicker() {
+    const today = new Date();
+    const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
+
+    const config = {
         dateFormat: "d.m.Y",
         allowInput: false,
-        disableMobile: true
+        disableMobile: true,
+        maxDate: "today",
+        minDate: minDate,
+        onReady: addDobYearDropdown,
+        onMonthChange: syncDobYearDropdown,
+        onYearChange: syncDobYearDropdown
+    };
+    // Omit `locale` entirely for English so flatpickr keeps its built-in default —
+    // explicitly passing `locale: undefined` would override that default with undefined.
+    const locale = DOB_LOCALES[getLang()];
+    if (locale) config.locale = locale;
+
+    dobPicker = flatpickr('.date-picker', config);
+}
+
+/**
+ * flatpickr's stock year field is a spinner that takes dozens of clicks (or careful
+ * typing) to reach a birth year. Add a <select> next to it so a year is one click away,
+ * driven entirely through flatpickr's public jumpToDate() API so the picker's own
+ * internal state stays correct — the original spinner is just hidden, not removed.
+ */
+function addDobYearDropdown(selectedDates, dateStr, instance) {
+    const currentYear = new Date().getFullYear();
+    const minYear = currentYear - 100;
+
+    const $select = $('<select class="flatpickr-dob-year-select"></select>');
+    for (let year = currentYear; year >= minYear; year--) {
+        $select.append($('<option></option>').val(year).text(year));
+    }
+    $select.on('change', function () {
+        instance.jumpToDate(new Date(Number(this.value), instance.currentMonth, 1));
     });
-    appointment.provider_identifier = $("#provider_identifier").val();
+
+    $(instance.currentYearElement).closest('.numInputWrapper').hide().after($select);
+    instance._dobYearSelect = $select;
+    syncDobYearDropdown(selectedDates, dateStr, instance);
+}
+
+/** Keeps the year dropdown in sync when the < > arrows page across a year boundary. */
+function syncDobYearDropdown(selectedDates, dateStr, instance) {
+    if (instance._dobYearSelect) instance._dobYearSelect.val(instance.currentYear);
 }
 
 function setupEventListeners() {
@@ -503,7 +585,8 @@ function selectConfirmByEmail() {
 }
 
 function clearConfirmFields() {
-    $("#full_name, #dob, #phone, #email").val("");
+    $("#full_name, #phone, #email").val("");
+    if (dobPicker) dobPicker.clear();
     $("#sex").val("m");
     $("#client_id").val("");
 }
@@ -554,7 +637,10 @@ function searchClient(searchData) {
         success: function (response) {
             if (response.success) {
                 $('#full_name').val(response.client_full_name);
-                $('#dob').val(response.client_dob);
+                if (dobPicker) {
+                    if (response.client_dob) dobPicker.setDate(response.client_dob, true, "Y-m-d");
+                    else dobPicker.clear();
+                }
                 $('#sex').val(response.client_sex);
                 $('#client_id').val(response.client_id);
                 $('#enter_text').hide();
@@ -564,7 +650,8 @@ function searchClient(searchData) {
             }
         },
         error: function () {
-            $('#full_name, #dob').val('');
+            $('#full_name').val('');
+            if (dobPicker) dobPicker.clear();
             $('#sex').val('m');
             $('#client_id').val('');
             $('#clientFound').hide();

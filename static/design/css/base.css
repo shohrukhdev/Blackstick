@@ -874,6 +874,17 @@ button:focus{
   margin-left: 8px;
 }
 
+.flatpickr-dob-year-select {
+  height: 26px;
+  font-size: 14px;
+  font-family: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  padding: 0 4px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
 .form-inline-group{
   display: flex;
   gap: 10px;
