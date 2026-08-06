@@ -20,6 +20,7 @@ from datetime import datetime
 from django.utils import timezone
 
 from ..constants import DEMO_PROVIDERS
+from ..notifications import notify_new_booking
 from ..sms_service import send_sms
 from ..utils import valid_signature, mask_email, mask_phone_number, is_demo_provider
 
@@ -284,8 +285,6 @@ def confirmOTP(request):
 
         otp.is_verified = True
         appointment = otp.appointment
-        server = appointment.server
-        client = appointment.client
 
         provider = get_object_or_404(Provider, identifier=provider_identifier)
 
@@ -295,43 +294,7 @@ def confirmOTP(request):
             appointment.save()
             otp.save()
 
-        specialist_name = server.user.get_full_name() or server.user.username
-        local_start = timezone.localtime(appointment.start_datetime)
-        local_end = timezone.localtime(appointment.end_datetime)
-        dt = local_start.strftime('%d.%m.%Y %H:%M')
-
-        # Confirmation SMS to the client
-        lang = client.language_code or 'ru'
-        if lang == 'uz':
-            client_sms = (
-                f"Siz No{appointment.id} uchrashuvni tasdiqlading. "
-                f"Sana: {dt}. Mutaxassis: {specialist_name}. Kechikmaslikka harakat qiling!"
-            )
-        elif lang == 'ru':
-            client_sms = (
-                f"Вы записаны на приём №{appointment.id}. "
-                f"Дата: {dt}. Специалист: {specialist_name}. Не опаздывайте!"
-            )
-        else:
-            client_sms = (
-                f"Your appointment No{appointment.id} is confirmed. "
-                f"Date: {dt}. Specialist: {specialist_name}. Don't be late!"
-            )
-
-        # Specialist notification SMS
-        specialist_sms = (
-            f"Sizda yangi uchrashuv/У вас новая встреча! "
-            f"Vaqti/Время: {dt} - {local_end.strftime('%H:%M')}. "
-            f"Mijoz/Клиент: {client.full_name}. Batafsil/Подробнее: https://booket.uz/dashboard/main/"
-        )
-
-        if not is_demo_provider(provider_identifier):
-            if client.phone_number:
-                sms_result = send_sms(phone_number=client.phone_number, message=client_sms)
-                logger.info(f"Client confirmation SMS: {sms_result}")
-            if server.phone_number:
-                sms_result = send_sms(phone_number=server.phone_number, message=specialist_sms)
-                logger.info(f"Specialist notification SMS: {sms_result}")
+        notify_new_booking(appointment, provider_identifier)
 
         return Response({
             "success": True,
